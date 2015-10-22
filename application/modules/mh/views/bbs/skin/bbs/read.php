@@ -8,11 +8,18 @@
 <div class="panel panel-default <?=$b_row['b_notice']>0?'bbs-notice':''?> bbs-mode-read">
 	<div class="panel-heading">
 		<h3 class="panel-title text-center bbs-title"><?=html_escape($b_row['b_title'])?>
-		<sup><span class="label label-success">New</span>
+		<sup class="pull-right"><span class="label label-success">New</span>
 		<span class="label label-info">12</span></sup>
+		<div class="clearfix"></div>
 		</h3>
 	</div>
 	<ul class="list-group">
+		<li class="list-group-item form-inline">
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon1">작성자</span>
+				<span class="form-control" id="basic-addon1"><?=html_escape($b_row['b_name'])?></span>
+			</div>
+		</li>
 		<li class="list-group-item form-inline">
 		<? if(isset($b_row['b_link'][0])): ?>
 			<a class="label label-info glyphicon glyphicon-link" href="<?=html_escape($b_row['b_link'])?>" target="_blank">링크</a>

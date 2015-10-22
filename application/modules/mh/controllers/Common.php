@@ -2,7 +2,8 @@
 
 class Common extends MX_Controller {
 
-	var $logedin = false;
+	public $logedin = false;
+	private $m_row = array();
 
 	public function __construct($bbs_conf=array())
 	{
@@ -15,6 +16,7 @@ class Common extends MX_Controller {
 		$this->config->set_item('menu_rows', $this->menu_m->get_menu_rows());
 		$this->config->set_item('menu_tree', $this->menu_m->get_menu_tree());
 
+		$this->init_login();
 		$t = $this->get_login('m_id');
 
 		$this->logedin = isset($t[0]);
@@ -25,7 +27,17 @@ class Common extends MX_Controller {
 		$this->load->view('mh/redirect.php',array('msg'=>$msg,'ret_url'=>$ret_url));
 	}
 	
-	
+	private function init_login(){
+		switch(LOGIN_TYPE){
+			case 'cookie':
+				$v = $this->input->cookie(LOGIN_NAME);
+				break;
+		}
+
+		if(isset($v)){
+			$this->m_row = $v;
+		}
+	}
 	public function set_login($m_row){
 		unset($m_row['m_pass']);
 		switch(LOGIN_TYPE){
@@ -59,21 +71,12 @@ class Common extends MX_Controller {
 		$this->input->set_cookie($data);
 	}
 	public function get_login($key=NULL){
-		switch(LOGIN_TYPE){
-			case 'cookie':
-				$r = $this->get_login_at_cookie($key);
-				break;
-		}
-		$r = unserialize($r);
 		if(isset($key)){
-			return isset($r[$key])?$r[$key]:NULL;
+			return isset($this->m_row[$key])?$this->m_row[$key]:null;
 		}
-		return $r;
+		return $this->m_row;
 	}
-	public function get_login_at_cookie($key=NULL){
-		return $this->input->cookie(LOGIN_NAME);
-		
-	}
+
 	
 }
 

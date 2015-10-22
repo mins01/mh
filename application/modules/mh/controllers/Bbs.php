@@ -3,6 +3,7 @@
 class Bbs extends MX_Controller {
 	private $bbs_conf = array();
 	private $bm_row = array();
+	private $m_row = array();
 	private $skin_path = '';
 	public function __construct($bbs_conf=array())
 	{
@@ -11,9 +12,12 @@ class Bbs extends MX_Controller {
 		$this->load->model('bbs_master_model','bm_m');
 		$this->load->model('bbs_model','bbs_m');
 		$this->load->module('mh/layout');
+		$this->load->module('mh/common');
 		
 		$this->bbs_conf = $bbs_conf;
 		
+		$this->m_row = $this->common->get_login();
+		$this->logedin = $this->common->logedin;
 
 		$this->action();
 	}
@@ -104,7 +108,7 @@ class Bbs extends MX_Controller {
 		if(!$with_read){
 			$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$this->bbs_conf['mode']),true));
 			$this->config->set_item('layout_hide',false);
-			$this->config->set_item('layout_title','liat : '.$this->bm_row['bm_title']);
+			$this->config->set_item('layout_title','list : '.$this->bm_row['bm_title']);
 		}
 		$this->load->view($this->skin_path.'/list',array(
 		'b_rows' => $b_rows,
@@ -169,6 +173,7 @@ class Bbs extends MX_Controller {
 	}
 	public function mode_write(){
 		$b_row = $this->bbs_m->generate_empty_b_row();
+		$b_row['b_name']=$this->common->get_login('m_nick');
 		$this->_mode_form($b_row);
 	}
 
@@ -185,12 +190,18 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',''.$this->bbs_conf['mode'].' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
 		
+		
+		
 		$this->load->view($this->skin_path.'/form',array(
 		'b_row' => $b_row,
 		'bm_row' => $this->bm_row,
 		'get'=>$get,
 		'bbs_conf'=>$this->bbs_conf,
+		'mode'=>$this->bbs_conf['mode'],
 		'process'=>$this->bbs_conf['mode'],
+		'm_row' => $this->m_row,
+		'logedin' => $this->logedin,
+		'input_b_name'=>!isset($b_row['b_insert_date']) && !$this->logedin, //이름을 입력 받아야하는가?
 		));
 	}
 
@@ -222,6 +233,8 @@ class Bbs extends MX_Controller {
 		'get'=>$get,
 		'bbs_conf'=>$this->bbs_conf,
 		'process'=>$this->bbs_conf['mode'],
+		'm_row' => $this->m_row,
+		'logedin' => $this->logedin,
 		));
 	}
 	

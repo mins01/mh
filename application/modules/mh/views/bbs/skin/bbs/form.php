@@ -11,6 +11,24 @@
 		<input type="text" required class="form-control" id="b_title" name="b_title" placeholder="글제목" value="<?=html_escape($b_row['b_title'])?>">
 	</div>
 	<ul class="list-group">
+		
+		<li class="list-group-item form-inline">
+			<div class="input-group">
+				<div class="input-group-addon">작성자</div>
+					<? if($input_b_name): ?>
+					<input type="text" class="form-control" required  name="b_name" aria-label="작성자" placeholder="작성자" style="min-width:80px" maxlength="40" value="<?=html_escape($b_row['b_name'])?>">
+					<? else: ?>
+					<input type="text" class="form-control" readonly  name="b_name" aria-label="작성자" placeholder="작성자" style="min-width:80px" maxlength="40" value="<?=html_escape($b_row['b_name'])?>">
+					<? endif; ?>
+			</div>
+			<? if(!$logedin):?>
+			<div class="input-group">
+				<div class="input-group-addon">비밀번호</div>
+				<input type="password" class="form-control" required name="b_pass" aria-label="비밀번호" placeholder="비밀번호" style="min-width:80px" value="" maxlength="40">
+			</div>
+			<? endif; ?>
+		</li>
+		
 		<li class="list-group-item form-inline">
 			
 				<div class="input-group">
