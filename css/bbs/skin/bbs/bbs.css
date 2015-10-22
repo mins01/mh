@@ -1,0 +1,21 @@
+.bbs-dpeth .bbs-title a::before{
+	content:'';width:0.5em;height:0.5em;
+	border: 1px solid #abc;
+	border-width: 0 0 1px 1px;
+	box-sizing: border-box;
+	display:inline-block;
+	margin:0 5px 0.3em 0;
+	}
+.bbs-dpeth-0 .bbs-title a::before{content:none;}
+.bbs-dpeth-1 .bbs-title a{padding-left:1em;}
+.bbs-dpeth-2 .bbs-title a{padding-left:2em;}
+.bbs-dpeth-3 .bbs-title a{padding-left:3em;}
+.bbs-dpeth-4 .bbs-title a{padding-left:4em;}
+.bbs-dpeth-5 .bbs-title a{padding-left:5em;}
+.bbs-dpeth-6 .bbs-title a{padding-left:6em;}
+.bbs-dpeth-7 .bbs-title a{padding-left:7em;}
+.bbs-dpeth-8 .bbs-title a{padding-left:8em;}
+.bbs-dpeth-9 .bbs-title a{padding-left:9em;}
+.bbs-dpeth-10 .bbs-title a{padding-left:10em;}
+
+.bbs-mode-read .bbs-title{word-break: break-all;}
