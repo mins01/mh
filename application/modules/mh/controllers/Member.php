@@ -51,7 +51,7 @@ class Member extends MX_Controller {
 		}
 		
 		
-		$this->form_validation->set_rules('m_id', '아이디', 'required|min_length[1]|max_length[12]');
+		$this->form_validation->set_rules('m_id', '아이디', 'required|min_length[1]|max_length[100]');
 		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[1]|max_length[40]');
 		if ($this->form_validation->run() == FALSE){
 			$this->config->set_item('layout_hide',false);

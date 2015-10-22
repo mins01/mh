@@ -52,23 +52,21 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<?=base_url()?>"><img height="20" src="/img/logo.gif"></a>
+				<a class="navbar-brand" href="<?=base_url()?>">HOME</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
+				<ul class="nav navbar-nav navbar-left">
 					<? foreach($menu_tree['child'] as $mr): 
 						$class = $mr['mn_uri']==$menu['mn_uri']?'class="active"':'';
 					?>
 					<li <?=$class?>><a href="<?=html_escape($mr['url'])?>"><?=html_escape($mr['mn_text'])?></a></li>
 					<? endforeach; ?>
 				</ul>
-				<ul class="nav navbar-nav navbar-right">
+				<ul class="nav navbar-nav pull-right">
 					<? if(!$logedin):?>
-					<li><button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'join'?>','_self')">회원가입</button></li>
-					<li><button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'login'?>','_self')">로그인</button></li>
+					<li class="text-right"><button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'join'?>','_self')">회원가입</button> <button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'login'?>','_self')">로그인</button></li>
 					<? else: ?>
-					<li><p class="navbar-text glyphicon glyphicon-user"> <?=html_escape($login_label)?></p></li>
-					<li><button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'logout'?>','_self')">로그아웃</button></li>
+					<li><span class="navbar-text glyphicon glyphicon-user"> <?=html_escape($login_label)?>님</span> <button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'logout'?>','_self')">로그아웃</button></li>
 					<? endif;?>
 				</ul>
 			</div><!--/.nav-collapse -->
