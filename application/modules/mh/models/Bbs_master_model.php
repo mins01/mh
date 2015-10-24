@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-//== °Ô½ÃÆÇ ¸¶½ºÅÍ °ü¸® ¸ðµ¨
+//== ê²Œì‹œíŒ ë§ˆìŠ¤í„° ê´€ë¦¬ ëª¨ë¸
 
 class Bbs_master_model extends CI_Model {
 	public function __construct()

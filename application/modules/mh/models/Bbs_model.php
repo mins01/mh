@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//-- °Ô½ÃÆÇ ¸ğµ¨
+//-- ê²Œì‹œíŒ ëª¨ë¸
 
 class Bbs_model extends CI_Model {
 	public $bm_row = array();
@@ -16,27 +16,27 @@ class Bbs_model extends CI_Model {
 	
 	public function set_bm_row($bm_row){
 		$this->bm_row = $bm_row;
-		//-- Å×ÀÌºí
+		//-- í…Œì´ë¸”
 		if(!isset($this->bm_row['bm_table'])){
-			$this->error = '°Ô½ÃÆÇ Å×ÀÌºí Á¤º¸°¡ ¾ø½À´Ï´Ù.';
+			$this->error = 'ê²Œì‹œíŒ í…Œì´ë¸” ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.';
 			return false;
 		}
 		$this->tbl_bbs_data = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_data';
 	}
-	//-- ¸ñ·Ï°ú Ä«¿îÆÃ¿ë
+	//-- ëª©ë¡ê³¼ ì¹´ìš´íŒ…ìš©
 	private function _apply_list_where($get){
 		$this->db->from($this->tbl_bbs_data);
 		
-		//-- °Ô½ÃÆÇ ¾ÆÀÌµğ
+		//-- ê²Œì‹œíŒ ì•„ì´ë””
 		if(!isset($this->bm_row['b_id'])){
-			$this->error = '°Ô½ÃÆÇ ¾ÆÀÌµğ°¡ ¾ø½À´Ï´Ù.';
+			$this->error = 'ê²Œì‹œíŒ ì•„ì´ë””ê°€ ì—†ìŠµë‹ˆë‹¤.';
 			return false;
 		}
 		$this->db->where('b_id',$this->bm_row['b_id']);
-		//-- ÇÊ¼ö whereÀı
+		//-- í•„ìˆ˜ whereì ˆ
 		$this->db->where('b_isdel','0');
 		
-		//-- °Ë»ö¾î
+		//-- ê²€ìƒ‰ì–´
 		if(isset($get['q'][0])){
 			switch($get['tq']){
 				case 'title':$this->db->like('b_title',$get['q'], 'both');break;
@@ -48,7 +48,7 @@ class Bbs_model extends CI_Model {
 
 	}
 	
-	//ÆäÀÌÁö °ªÀ¸·Î limit¿Í offset °è»ê
+	//í˜ì´ì§€ ê°’ìœ¼ë¡œ limitì™€ offset ê³„ì‚°
 	public function get_limit_offset($page){
 		if(!isset($page) || !is_numeric($page) || $page < 0){
 				$page = 1;
@@ -59,14 +59,14 @@ class Bbs_model extends CI_Model {
 		return array($limit,$offset);
 	}
 	
-	//¸ñ·Ï¿ë
+	//ëª©ë¡ìš©
 	public function select_for_list($get){
 		
 		if(!$this->_apply_list_where($get)){
 			return false;
 		}
 
-		//-- Á¤·Ä
+		//-- ì •ë ¬
 		switch($this->bm_row['bm_list_type']){
 			case '0':$this->db->order_by('b_gidx,b_gpos');break;
 			case '1':$this->db->order_by('b_idx desc');break;
@@ -88,7 +88,7 @@ class Bbs_model extends CI_Model {
 	private function extends_b_row(& $b_row){
 		$b_row['depth']= min(strlen($b_row['b_gpos'])/2,10);
 	}
-	//-- ºó °Ô½Ã¹° ¸¸µé±â
+	//-- ë¹ˆ ê²Œì‹œë¬¼ ë§Œë“¤ê¸°
 	public function generate_empty_b_row(){
 		// $sql="DESC {$this->tbl_bbs_data}";
 		// $rows = $this->db->query($sql)->result_array();
@@ -124,20 +124,20 @@ class Bbs_model extends CI_Model {
 		);
 		return $b_row;
 	}
-	//-- °Ô½Ã¹° ÇÏ³ª b_idx·Î °¡Á®¿À±â
+	//-- ê²Œì‹œë¬¼ í•˜ë‚˜ b_idxë¡œ ê°€ì ¸ì˜¤ê¸°
 	public function select_by_b_idx($b_idx){
 		$this->db->from($this->tbl_bbs_data);
 		
-		//-- °Ô½ÃÆÇ ¾ÆÀÌµğ
+		//-- ê²Œì‹œíŒ ì•„ì´ë””
 		if(!isset($this->bm_row['b_id'])){
-			$this->error = '°Ô½ÃÆÇ ¾ÆÀÌµğ°¡ ¾ø½À´Ï´Ù.';
+			$this->error = 'ê²Œì‹œíŒ ì•„ì´ë””ê°€ ì—†ìŠµë‹ˆë‹¤.';
 			return false;
 		}
 		$this->db->where('b_id',$this->bm_row['b_id']);
-		//-- ÇÊ¼ö whereÀı
+		//-- í•„ìˆ˜ whereì ˆ
 		return $this->db->where('b_isdel','0')->where('b_idx',$b_idx)->get()->row_array();
 	}
-	//-- ¸ñ·Ï °¹¼ö
+	//-- ëª©ë¡ ê°¯ìˆ˜
 	public function count($get){
 		if(!$this->_apply_list_where($get)){
 			return false;
@@ -145,12 +145,12 @@ class Bbs_model extends CI_Model {
 
 		return $this->db->count_all_results();
 	}
-	//-- ½ÃÀÛ ¹øÈ£ °è»ê
+	//-- ì‹œì‘ ë²ˆí˜¸ ê³„ì‚°
 	public function get_start_num($cnt,$get){
 		list($limit,$offset) = $this->get_limit_offset($get['page']);
 		return $cnt - $offset;
 	}
-	//-- ±Û ¼öÁ¤
+	//-- ê¸€ ìˆ˜ì •
 	public function update_b_row($b_idx,$sets){
 		unset($sets['b_idx'],$sets['b_id']);
 		$this->db->from($this->tbl_bbs_data)
@@ -159,7 +159,7 @@ class Bbs_model extends CI_Model {
 		->set($sets)->set('b_update_date','now()',false)->update();
 		return $this->db->affected_rows();
 	}
-	//-- ±Û ÀÛ¼º
+	//-- ê¸€ ì‘ì„±
 	public function insert_b_row($sets){
 		unset($sets['b_idx']);
 		$sets['b_id'] = $this->bm_row['b_id'];
@@ -173,11 +173,11 @@ class Bbs_model extends CI_Model {
 		}
 		return $b_idx;
 	}
-	//-- ±Û »èÁ¦
+	//-- ê¸€ ì‚­ì œ
 	public function delete_b_row($b_idx){
 		return $this->update_b_row($b_idx,array('b_isdel'=>1));
 	}
-	//-- ´äº¯ ±Û ÀÛ¼º
+	//-- ë‹µë³€ ê¸€ ì‘ì„±
 	public function insert_answer_b_row($b_idx,$sets){
 		unset($sets['b_idx']);
 		$sets['b_id'] = $this->bm_row['b_id'];
