@@ -66,7 +66,7 @@
 					<? if(!$logedin):?>
 					<li class="text-right"><button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'join'?>','_self')">회원가입</button> <button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'login'?>','_self')">로그인</button></li>
 					<? else: ?>
-					<li><span class="navbar-text glyphicon glyphicon-user"> <?=html_escape($login_label)?>님</span> <button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'logout'?>','_self')">로그아웃</button></li>
+					<li><span class="navbar-text glyphicon glyphicon-user"> <a href="<?=base_url().'user_info'?>"><?=html_escape($login_label)?></a>님</span> <button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'logout'?>','_self')">로그아웃</button></li>
 					<? endif;?>
 				</ul>
 			</div><!--/.nav-collapse -->

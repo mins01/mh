@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//-- °Ô½ÃÆÇ ¸ğµ¨
+//-- ê²Œì‹œíŒ ëª¨ë¸
 
 class Member_model extends CI_Model {
-
+	public $msg = '';
 	public $tbl_member = '';
 	public function __construct()
 	{
@@ -14,7 +14,7 @@ class Member_model extends CI_Model {
 		$this->tbl_member = 'mh_member';
 
 		if(!defined('HASH_KEY')){
-			show_error('¾ÏÈ£¿ë Å°°¡ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù!');
+			show_error('ì•”í˜¸ìš© í‚¤ê°€ ì„¤ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤!');
 			exit;
 		}
 		$this->hash_key = HASH_KEY;
@@ -22,6 +22,10 @@ class Member_model extends CI_Model {
 	
 	public function hash($str){
 		return hash('sha256',$this->hash_key.$str);
+	}
+	public function check_m_pass_with_m_idx($m_idx,$m_pass){
+		$m_row = $this->select_by_m_idx($m_idx);
+		return ($m_row['m_pass']==$m_pass || $m_row['m_pass']==$this->hash($m_pass));
 	}
 	public function select_by_m_id($m_id){
 		return $this->db->from($this->tbl_member)
@@ -35,6 +39,9 @@ class Member_model extends CI_Model {
 			->where('m_isdel',0)
 			->get()->row_array();
 	}
+	public function join($row){
+		return $this->insert_row($row);
+	}
 	public function insert_row($row){
 		$set = array(
 			'm_id'=>$row['m_id'],
@@ -44,4 +51,49 @@ class Member_model extends CI_Model {
 		$this->db->from($this->tbl_member)->set($set)->insert();
 		return $this->db->insert_id();
 	}
+	public function is_duplicate_m_nick($m_nick,$m_idx=null){
+		$this->db->from($this->tbl_member)
+			->where('m_nick',$m_nick);
+		if($m_idx){
+			$this->db->where('m_idx !=',(int)$m_idx);
+		}
+		
+		return !!$this->db->count_all_results();
+	}
+	public function update_row($m_idx,$sets){
+		$this->db->from($this->tbl_member)
+			->where('m_idx',$m_idx)
+			->where('m_isdel',0)
+			->set($sets)->update();
+		return $this->db->affected_rows();
+	}
+	public function modify($m_idx,$sets){
+		if(!isset($m_idx)){
+			$this->msg = 'í•„ìˆ˜ê°’ì´ ì—†ìŠµë‹ˆë‹¤';
+			return false;
+		}
+		$this->update_row($m_idx,$sets);
+		return true;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

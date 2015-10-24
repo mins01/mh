@@ -9,8 +9,8 @@ class Bbs extends MX_Controller {
 	{
 		//var_dump(func_get_args());
 		//var_dump($conf);
-		$this->load->model('bbs_master_model','bm_m');
-		$this->load->model('bbs_model','bbs_m');
+		$this->load->model('mh/bbs_master_model','bm_m');
+		$this->load->model('mh/bbs_model','bbs_m');
 		$this->load->module('mh/layout');
 		$this->load->module('mh/common');
 		

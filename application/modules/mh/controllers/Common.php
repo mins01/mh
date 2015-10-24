@@ -24,7 +24,17 @@ class Common extends MX_Controller {
 	}
 	
 	public function redirect($msg,$ret_url){
+		$this->config->set_item('layout_hide',false);
+		$this->config->set_item('layout_title',$msg);
 		$this->load->view('mh/redirect.php',array('msg'=>$msg,'ret_url'=>$ret_url));
+	}
+	public function required_login(){
+		if(!$this->logedin){
+			$ret_url = SITE_URI_PREFIX.'login';
+			$this->redirect('로그인이 필요합니다.',$ret_url);
+			return false;
+		}
+		return true;
 	}
 	
 	private function init_login(){
@@ -35,7 +45,7 @@ class Common extends MX_Controller {
 		}
 
 		if(isset($v)){
-			$this->m_row = $v;
+			$this->m_row = unserialize($v);
 		}
 	}
 	public function set_login($m_row){

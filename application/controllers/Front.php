@@ -61,6 +61,10 @@ class Front extends MX_Controller {
 		$this->load->module('mh/member');
 		$this->member->login();
 	}
+	public function user_info(){
+		$this->load->module('mh/member');
+		$this->member->modify();
+	}
 	public function logout(){
 		$this->load->module('mh/member');
 		$this->member->logout();

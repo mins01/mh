@@ -7,16 +7,13 @@ class Member extends MX_Controller {
 		//var_dump(func_get_args());
 		//var_dump($conf);
 		$this->load->model('bbs_master_model','bm_m');
-		$this->load->model('member_model','member_m');
+		$this->load->model('mh/member_model','member_m');
 		$this->load->module('mh/common');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
 	}
 	
 	public function login(){
-		
-		
-		
 		$process = $this->input->post_get('process');
 		if($process && $process=='login'){
 			return $this->login_process();
@@ -61,9 +58,6 @@ class Member extends MX_Controller {
 			return $this->load->view('mh/member/login',$data);
 		}	
 		
-
-		
-
 		$m_row = $this->member_m->select_by_m_id($m_id);
 		
 		if(!$m_row){
@@ -75,6 +69,12 @@ class Member extends MX_Controller {
 		//-- 로그인 처리
 		$this->common->set_login($m_row);
 		return $this->login_process_end(false,'로그인에 성공하였습니다.',$ret_url);
+	}
+	
+	private function relogin($m_idx){
+		//-- 로그인 처리
+		$m_row = $this->member_m->select_by_m_idx($m_idx);
+		return $this->common->set_login($m_row);
 	}
 	
 	public function login_process_end($error,$msg,$ret_url=null){
@@ -111,7 +111,7 @@ class Member extends MX_Controller {
 		);		
 		
 		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]|is_unique[mh_member.m_id]');
-		$this->form_validation->set_rules('m_nick', '별명', 'required|min_length[2]|max_length[40]|is_unique[mh_member.m_nick]');
+		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]|is_unique[mh_member.m_nick]');
 		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[4]|max_length[40]|matches[m_pass_re]');
 		$this->form_validation->set_rules('m_pass_re', '비밀번호 확인', 'required|min_length[4]|max_length[40]');
 		if ($this->form_validation->run() == FALSE){
@@ -128,7 +128,7 @@ class Member extends MX_Controller {
 	public function join_process(){
 		$this->config->set_item('layout_hide',true);
 		$this->config->set_item('layout_title','회원가입 처리');
-		$m_idx = $this->member_m->insert_row($this->input->post());
+		$m_idx = $this->member_m->join($this->input->post());
 		
 		$m_row = $this->member_m->select_by_m_idx($m_idx);
 		if(!$m_row){
@@ -145,6 +145,69 @@ class Member extends MX_Controller {
 		return $this->login_process_end(true,'회원 가입 완료',$ret_url);
 	}
 
+	public function modify(){
+		if(!$this->common->required_login()){
+			return false;
+		}
+		$this->config->set_item('layout_hide',false);
+		$this->config->set_item('layout_title','회원정보수정');
+		
+		$ret_url = $this->input->post('ret_url');
+		if(!$ret_url){
+			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
+		}
+
+		$data = array(
+			'ret_url' => $ret_url,
+			'm_row' =>$this->common->get_login(),
+		);
+		
+		
+		$process = $this->input->post('process');
+		if($process=='modify'){
+			$this->modify_process();
+		}else{
+			if($this->required_password()){
+				$this->load->view('mh/member/modify',$data);
+			}
+		}
+	}
+
+	private function modify_process(){
+		$m_idx = $this->common->get_login('m_idx');
+		if($this->member_m->is_duplicate_m_nick($this->input->post('m_nick'),$m_idx)){
+			$this->common->redirect('이미 사용중인 닉네임입니다.','');
+		}
+		$sets = array(
+		'm_nick'=>$this->input->post('m_nick'),
+		);
+		if(!$this->member_m->modify($m_idx,$sets)){
+			$this->common->redirect($this->member_m->msg,'');
+		}
+		$this->db->last_query();
+		$this->relogin($m_idx);
+		$this->common->redirect('정보를 수정하였습니다.','');
+	}
+	
+	public function required_password(){
+		$data = array('error_msg'=>'');
+		$error = false;
+		$m_idx = $this->common->get_login('m_idx');
+		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[4]|max_length[40]');
+		if ($this->form_validation->run() == FALSE){
+			$error = true;
+		}else if(!$this->member_m->check_m_pass_with_m_idx($m_idx,$this->input->post('m_pass'))){
+			$error = true;
+			$data['error_msg'] = '<div class="text-danger">비밀번호를 확인해주세요.</div>';
+		}
+		if($error){
+			$this->config->set_item('layout_hide',false);
+			$this->load->view('mh/member/required_password',$data);
+			return false;
+		}
+		return true;
+	}
+	
 }
 
 
