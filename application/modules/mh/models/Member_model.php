@@ -39,6 +39,14 @@ class Member_model extends CI_Model {
 			->where('m_isdel',0)
 			->get()->row_array();
 	}
+	public function set_m_login_date($m_idx){
+		$this->db->from($this->tbl_member)
+			->where('m_idx',$m_idx)
+			->where('m_isdel',0)
+			->set('m_login_date','now()',false)
+			->update();
+		return $this->db->affected_rows();
+	}
 	public function join($row){
 		return $this->insert_row($row);
 	}
@@ -64,7 +72,9 @@ class Member_model extends CI_Model {
 		$this->db->from($this->tbl_member)
 			->where('m_idx',$m_idx)
 			->where('m_isdel',0)
-			->set($sets)->update();
+			->set($sets)
+			->set('m_update_date','now()',false)
+			->update();
 		return $this->db->affected_rows();
 	}
 	public function modify($m_idx,$sets){

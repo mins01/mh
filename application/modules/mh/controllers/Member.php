@@ -68,13 +68,16 @@ class Member extends MX_Controller {
 		}
 		//-- 로그인 처리
 		$this->common->set_login($m_row);
+		$this->member_m->set_m_login_date($m_row['m_idx']);
 		return $this->login_process_end(false,'로그인에 성공하였습니다.',$ret_url);
 	}
 	
 	private function relogin($m_idx){
 		//-- 로그인 처리
 		$m_row = $this->member_m->select_by_m_idx($m_idx);
-		return $this->common->set_login($m_row);
+		$r = $this->common->set_login($m_row);
+		$this->member_m->set_m_login_date($m_idx);
+		return $r;
 	}
 	
 	public function login_process_end($error,$msg,$ret_url=null){
@@ -136,6 +139,7 @@ class Member extends MX_Controller {
 		}
 		//-- 로그인 처리
 		$this->common->set_login($m_row);
+		$this->member_m->set_m_login_date($m_row['m_idx']);
 		
 		$ret_url = $this->input->post('ret_url');
 		if(!$ret_url){
