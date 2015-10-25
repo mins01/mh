@@ -73,6 +73,15 @@ class Front extends MX_Controller {
 		$this->load->module('mh/member');
 		$this->member->join();
 	}
+	
+	public function search_id(){
+		$this->load->module('mh/member');
+		$this->member->search_id();
+	}
+	public function search_pw(){
+		$this->load->module('mh/member');
+		$this->member->search_pw();
+	}
 
 
 }

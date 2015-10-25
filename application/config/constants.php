@@ -104,6 +104,8 @@ define('LOGIN_PATH',SITE_URI_PREFIX);
 define('LOGIN_PREFIX','');
 define('LOGIN_SECURE',false);
 
+define('ENCRYPTION_KEY_PREFIX','MH_');
+
 
 
 

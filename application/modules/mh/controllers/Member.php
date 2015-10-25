@@ -211,7 +211,92 @@ class Member extends MX_Controller {
 		}
 		return true;
 	}
+	public function search_id(){
+		$this->config->set_item('layout_hide',false);
+		$this->config->set_item('layout_title','아이디 찾기');
 	
+		$data = array('error_msg'=>'');
+		$error = false;
+		
+		$this->form_validation->set_rules('m_id_part', '아이디 부분', 'required|min_length[4]|max_length[40]');
+		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]');
+		
+		if ($this->form_validation->run() == FALSE){
+			$this->config->set_item('layout_hide',false);
+			return $this->load->view('mh/member/search_id',$data);
+		}
+
+		$process = $this->input->post('process');
+		if($process=='search_id'){
+			$this->search_id_process();
+		}else{
+			show_error('이상접근');
+		}
+	}
+	
+	private function search_id_process(){
+		$m_nick = $this->input->post('m_nick');
+		$m_id_part = $this->input->post('m_id_part');
+		$m_id = $this->member_m->search_m_id($m_nick,$m_id_part);
+		//echo $this->db->last_query();
+		$data = array(
+			'm_id'=>$m_id,
+		);
+		
+		$this->load->view('mh/member/search_id_process',$data);
+		//$this->load->view('mh/member/search_id',$data);
+	}
+	
+	public function search_pw(){
+		$this->config->set_item('layout_hide',false);
+		$this->config->set_item('layout_title','비밀번호 찾기');
+	
+		$data = array('error_msg'=>'');
+		$error = false;
+		
+		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]');
+		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]');
+		
+		if ($this->form_validation->run() == FALSE){
+			$this->config->set_item('layout_hide',false);
+			return $this->load->view('mh/member/search_pw',$data);
+		}
+
+		$process = $this->input->post('process');
+		if($process=='search_pw'){
+			$this->search_pw_process();
+		}else if($process=='search_pw_send_mail'){
+			$this->search_pw_send_mail();
+		}else{
+			show_error('이상접근');
+		}
+	}
+	private function search_pw_process(){
+		$m_nick = $this->input->post('m_nick');
+		$m_id = $this->input->post('m_id');
+		$m_id = $this->member_m->search_m_id($m_nick,$m_id);
+		//echo $this->db->last_query();
+		$data = array(
+			'm_id'=>$m_id,
+			'm_nick'=>$m_nick,
+		);
+		
+		$this->load->view('mh/member/search_pw_process',$data);
+		//$this->load->view('mh/member/search_id',$data);
+	}
+	private function search_pw_send_mail(){
+		$m_nick = $this->input->post('m_nick');
+		$m_id = $this->input->post('m_id');
+		$m_id = $this->member_m->search_m_id($m_nick,$m_id);
+		//echo $this->db->last_query();
+		$data = array(
+			'm_id'=>$m_id,
+			'm_nick'=>$m_nick,
+		);
+		
+		$this->load->view('mh/member/search_pw_process',$data);
+		//$this->load->view('mh/member/search_id',$data);
+	}
 }
 
 

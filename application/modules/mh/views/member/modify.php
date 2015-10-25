@@ -23,7 +23,6 @@
 			<div class="col-sm-10">
 				<input type="text" name="m_nick" id="m_nick" maxlength="40" value="<?=html_escape($m_row['m_nick'])?>" class="form-control" required placeholder="닉네임">
 				<?php echo form_error('m_nick'); ?>
-				<?php echo form_error('username'); ?>
 			</div>
 		</div>
 		<hr>

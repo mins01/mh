@@ -85,6 +85,16 @@ class Member_model extends CI_Model {
 		$this->update_row($m_idx,$sets);
 		return true;
 	}
+	
+	public function search_m_id($m_nick,$m_id_part){
+		$row = $this->db->from($this->tbl_member)
+			->where('m_nick',$m_nick)
+			->like('m_id',$m_id_part)
+			->where('m_isdel',0)
+			->select('m_id')
+			->get()->row_array();
+		return isset($row['m_id'])?$row['m_id']:null;
+	}
 }
 
 

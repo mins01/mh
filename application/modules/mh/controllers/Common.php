@@ -4,12 +4,22 @@ class Common extends MX_Controller {
 
 	public $logedin = false;
 	private $m_row = array();
+	private $enc_key = '';
 
 	public function __construct($bbs_conf=array())
 	{
 		// Call the CI_Model constructor
 		parent::__construct();
 		$this->load->helper('cookie');
+		
+		$this->load->library('encrypt');
+		//$this->encrypt->set_cipher(MCRYPT_RIJNDAEL_128);
+		$this->encrypt->set_cipher(MCRYPT_RIJNDAEL_256);
+		//MCRYPT_RIJNDAEL_128(key:16byte),MCRYPT_RIJNDAEL_192(key:24byte),MCRYPT_RIJNDAEL_256(key:32byte)
+		$this->encrypt->set_mode(MCRYPT_MODE_CBC);//MCRYPT_MODE_CBC , MCRYPT_MODE_CFB
+		//$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,16);
+		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
+		
 		
 		$this->load->model('menu_model','menu_m');
 		$this->menu_m->load_db();
@@ -45,14 +55,14 @@ class Common extends MX_Controller {
 		}
 
 		if(isset($v)){
-			$this->m_row = unserialize($v);
+			$this->m_row = $this->dec_str($v);
 		}
 	}
 	public function set_login($m_row){
 		unset($m_row['m_pass']);
 		switch(LOGIN_TYPE){
 			case 'cookie':
-				$this->set_login_at_cookie(serialize($m_row));
+				$this->set_login_at_cookie($this->enc_str($m_row));
 				break;
 		}
 	}
@@ -62,6 +72,15 @@ class Common extends MX_Controller {
 				$this->set_login_at_cookie('',-100);
 				break;
 		}
+	}
+	
+	public function enc_str($plain_text){
+		return @$this->encrypt->encode(@serialize( $plain_text),$this->enc_key);
+		//return (@serialize( $plain_text));
+	}
+	public function dec_str($ciphertext){
+		return @unserialize(@$this->encrypt->decode($ciphertext,$this->enc_key));
+		//return @unserialize(($ciphertext));
 	}
 	
 	//-- 로그인 쿠키 설정
