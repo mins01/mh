@@ -285,18 +285,51 @@ class Member extends MX_Controller {
 		//$this->load->view('mh/member/search_id',$data);
 	}
 	private function search_pw_send_mail(){
+		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]');
+		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]');
+		
+		if ($this->form_validation->run() == FALSE){
+			$this->config->set_item('layout_hide',false);
+			show_error('잘못된 접근');
+		}
+		
+		
 		$m_nick = $this->input->post('m_nick');
 		$m_id = $this->input->post('m_id');
-		$m_id = $this->member_m->search_m_id($m_nick,$m_id);
+		$m_row = $this->member_m->select_by_m_id($m_id);
+		
+		if($m_row['m_nick']!=$m_nick){
+			show_error('잘못된 접근.');
+		}
 		//echo $this->db->last_query();
 		$data = array(
 			'm_id'=>$m_id,
 			'm_nick'=>$m_nick,
 		);
+
+		$m_key_arr = array(
+			'm_idx'=>$m_row['m_idx'],
+			'm_pass_md5'=>md5($m_row['m_pass']),
+			'm_update_date'=>$m_row['m_update_date'],
+		);
+		$m_key = $this->common->enc_str($m_key_arr);
+		//echo $m_key,'<br>';
+		$url = base_url('reset_pw').'?m_key='.urlencode($m_key);
 		
-		$this->load->view('mh/member/search_pw_process',$data);
+		$message = file_get_contents(_FORM_DIR.'/mail/reset_pw.html');
+		$binds = array(
+			'href'=>$url,
+		);
+		$result = $this->common->send_mail($m_id,'비밀번호 변경 안내 메일',$message,$binds);
+		
+		$data['result'] = $result;
+		//var_dump($this->email);
+		
+		$this->load->view('mh/member/search_pw_send_mail',$data);
 		//$this->load->view('mh/member/search_id',$data);
 	}
+	
+	
 }
 
 

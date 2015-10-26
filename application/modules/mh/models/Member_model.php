@@ -95,6 +95,7 @@ class Member_model extends CI_Model {
 			->get()->row_array();
 		return isset($row['m_id'])?$row['m_id']:null;
 	}
+	
 }
 
 

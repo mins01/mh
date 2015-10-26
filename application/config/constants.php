@@ -88,6 +88,8 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 //== mh 설정
+define('SITE_NAME','MH-테스트');
+define('SITE_MAIL','mins01.lycos.co.kr@gmail.com');
 define('SITE_URI_PREFIX', '/mh/'); // URI 앞부분 경로 (CI에서 제어 안하는 부분)
 define('ADMIN_URI_PREFIX', '_admin'); // 관리자 URI 기본 경로
 define('DB_PREFIX', 'mh_'); // DB 접두사
@@ -105,6 +107,8 @@ define('LOGIN_PREFIX','');
 define('LOGIN_SECURE',false);
 
 define('ENCRYPTION_KEY_PREFIX','MH_');
+define('_FORM_DIR',dirname(__FILE__).'/../../_form');
+
 
 
 

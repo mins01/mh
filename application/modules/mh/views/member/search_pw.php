@@ -27,9 +27,13 @@
 		</div>
 		<hr>
 		<div class="text-right">
-			<div class="btn-group" role="group" aria-label="">
+			<div class="btn-group  pull-right" role="group" aria-label="">
 				<button  class="btn btn-primary glyphicon glyphicon-ok-circle"> 찾기</button>
 			</div>
+			<div class="btn-group pull-left" role="group" aria-label="">
+				<button type="button" onclick="window.open('<?=base_url().'search_id'?>','_self')" class="btn btn-info glyphicon glyphicon-link"> 아이디 찾기</button>
+			</div>
+			<div class="clearfix"></div>
 		</div>
 	</div>
 	

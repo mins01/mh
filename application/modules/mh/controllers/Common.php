@@ -105,6 +105,29 @@ class Common extends MX_Controller {
 		}
 		return $this->m_row;
 	}
+	
+	public function send_mail($to,$subject,$message,$binds){
+		$keys = array_keys($binds);
+		foreach($keys as & $v){
+			$v = '{{'.$v.'}}';
+		}
+		$message = str_replace($keys,$binds,$message);
+		
+		$this->load->library('email');
+		$this->config->load('mail'); // 프론트 사이트 설정
+		$mail_conf = $this->config->item('mail');
+
+		$this->email->initialize($mail_conf);
+		$this->email->set_newline("\r\n");
+		
+		$this->email->from($mail_conf['smtp_user'], $mail_conf['smtp_from_name']);
+		$this->email->to($to);
+		
+		$this->email->subject($subject);
+		$this->email->message($message);
+		
+		return $this->email->send();
+	}
 
 	
 }

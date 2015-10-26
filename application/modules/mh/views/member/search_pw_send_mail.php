@@ -4,14 +4,13 @@
 ?>
 
 <form class="form-horizontal" action="?" method="post">
-<input type="hidden" name="process" value="search_pw_send_mail">
 <div class="panel panel-primary center-block" style="min-width:200px;max-width:600px;" >
 	<div class="panel-heading">
-		<h3 class="panel-title text-center bbs-title">아이디 찾기 결과</h3>
+		<h3 class="panel-title text-center bbs-title">비밀번호 변경 안내 메일 발송.</h3>
 	</div>
 	<div class="panel-body" >
 		<div class="form-group">
-			<label for="m_id" class="col-sm-3 control-label">아이디</label>
+			<label for="m_id" class="col-sm-3 control-label">메일</label>
 			<div class="col-sm-9">
 			<? if(isset($m_id)): 
 			list($id,$emd) = explode('@',$m_id);
@@ -32,9 +31,15 @@
 		<input type="hidden" name="m_id" value="<?=html_escape($m_id)?>">
 		<input type="hidden" name="m_nick" value="<?=html_escape($m_nick)?>">
 		<div class="form-group">
-			<label for="m_id" class="col-sm-3 control-label">변경</label>
+			<label for="m_id" class="col-sm-3 control-label">동작</label>
 			<div class="col-sm-9">
-				<button type="submit" class="btn btn-primary glyphicon glyphicon-ok-circle"> 비밀번호 변경 메일 보내기</button>
+				<p class="form-control-static">비밀번호 변경 안내 메일 발송.</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="m_id" class="col-sm-3 control-label">발송결과</label>
+			<div class="col-sm-9">
+				<p class="form-control-static">발송 <?=$result?'성공':'실패'?></p>
 			</div>
 		</div>
 		<? endif; ?>
