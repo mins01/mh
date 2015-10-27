@@ -2,12 +2,11 @@
 //$m_row,$ret_url
 //print_r($m_row);
 ?>
-
 <form class="form-horizontal" action="?" method="post">
 <input type="hidden" name="process" value="search_pw_send_mail">
 <div class="panel panel-primary center-block" style="min-width:200px;max-width:600px;" >
 	<div class="panel-heading">
-		<h3 class="panel-title text-center bbs-title">아이디 찾기 결과</h3>
+		<h3 class="panel-title text-center bbs-title">비밀번호 대상 찾기 결과</h3>
 	</div>
 	<div class="panel-body" >
 		<div class="form-group">

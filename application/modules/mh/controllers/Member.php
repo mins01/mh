@@ -314,11 +314,12 @@ class Member extends MX_Controller {
 		);
 		$m_key = $this->common->enc_str($m_key_arr);
 		//echo $m_key,'<br>';
-		$url = base_url('reset_pw').'?m_key='.urlencode($m_key);
+		$reset_pw_url = base_url('reset_pw').'?m_key='.urlencode($m_key);
+		$data['reset_pw_url'] = $reset_pw_url;
 		
 		$message = file_get_contents(_FORM_DIR.'/mail/reset_pw.html');
 		$binds = array(
-			'href'=>$url,
+			'href'=>$reset_pw_url,
 		);
 		$result = $this->common->send_mail($m_id,'비밀번호 변경 안내 메일',$message,$binds);
 		
@@ -328,7 +329,65 @@ class Member extends MX_Controller {
 		$this->load->view('mh/member/search_pw_send_mail',$data);
 		//$this->load->view('mh/member/search_id',$data);
 	}
+	public function reset_pw(){
+		$this->config->set_item('layout_hide',false);
+		$this->config->set_item('layout_title','비밀번호 재설정');
 	
+		$data = array('error_msg'=>'');
+		$error = false;
+		$m_key = $this->input->post_get('m_key',true);
+		$data['m_key'] = $m_key;
+		if(!$m_key){
+			show_error('잘못된 접근입니다.');
+		}
+		$tmp = $this->common->dec_str($m_key);
+		if(!isset($tmp['m_idx']) || !isset($tmp['m_pass_md5']) || !isset($tmp['m_update_date'])){
+			show_error('잘못된 접근입니다..');
+		}
+		$m_row = $this->member_m->select_by_m_idx($tmp['m_idx']);
+
+		if(!isset($m_row['m_idx']) || !isset($m_row['m_update_date'])){
+			show_error('잘못된 접근입니다...');
+		}
+		if($tmp['m_pass_md5'] != md5($m_row['m_pass']) || $m_row['m_update_date'] != $tmp['m_update_date']){
+			show_error('잘못된 접근입니다....');
+		}
+		
+		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]');
+		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[4]|max_length[40]|matches[m_pass_re]');
+		$this->form_validation->set_rules('m_pass_re', '비밀번호 확인', 'required|min_length[4]|max_length[40]');
+		
+		if ($this->form_validation->run() == FALSE){
+			$this->config->set_item('layout_hide',false);
+			return $this->load->view('mh/member/reset_pw',$data);
+		}
+
+		$process = $this->input->post('process');
+		if($process=='reset_pw'){
+			$this->reset_pw_process($m_row);
+		}else{
+			show_error('이상접근');
+		}
+	}
+	public function reset_pw_process($m_row){
+		$this->config->set_item('layout_hide',false);
+		$this->config->set_item('layout_title','비밀번호 재설정');
+		$m_id = $this->input->post('m_id');
+		$m_pass = $this->input->post('m_pass');
+		$m_pass_re = $this->input->post('m_pass_re');
+		
+		if($m_id != $m_row['m_id']){
+			$this->config->set_item('layout_hide',true);
+			return $this->common->history_back('잘못된 아이디입니다');
+		}
+		$sets = array(
+			'm_pass'=>$m_pass,
+		);
+		$this->member_m->update_row($m_row['m_idx'],$sets);
+		$data = array();
+		return $this->load->view('mh/member/reset_pw_ok',$data);
+		
+	}
 	
 }
 

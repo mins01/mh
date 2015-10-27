@@ -34,9 +34,13 @@ class Common extends MX_Controller {
 	}
 	
 	public function redirect($msg,$ret_url){
-		$this->config->set_item('layout_hide',false);
+		//$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',$msg);
 		$this->load->view('mh/redirect.php',array('msg'=>$msg,'ret_url'=>$ret_url));
+	}
+	public function history_back($msg){
+		$ret_url = -1;
+		$this->redirect($msg,$ret_url);
 	}
 	public function required_login(){
 		if(!$this->logedin){
@@ -120,7 +124,7 @@ class Common extends MX_Controller {
 		$this->email->initialize($mail_conf);
 		$this->email->set_newline("\r\n");
 		
-		$this->email->from($mail_conf['smtp_user'], $mail_conf['smtp_from_name']);
+		$this->email->from(SITE_ADMIN_MAIL);
 		$this->email->to($to);
 		
 		$this->email->subject($subject);

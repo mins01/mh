@@ -69,6 +69,9 @@ class Member_model extends CI_Model {
 		return !!$this->db->count_all_results();
 	}
 	public function update_row($m_idx,$sets){
+		if(isset($sets['m_pass'])){
+			$sets['m_pass'] = $this->hash($sets['m_pass']);
+		}
 		$this->db->from($this->tbl_member)
 			->where('m_idx',$m_idx)
 			->where('m_isdel',0)

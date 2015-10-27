@@ -82,6 +82,10 @@ class Front extends MX_Controller {
 		$this->load->module('mh/member');
 		$this->member->search_pw();
 	}
+	public function reset_pw(){
+		$this->load->module('mh/member');
+		$this->member->reset_pw();
+	}
 
 
 }

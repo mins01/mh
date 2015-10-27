@@ -6,6 +6,11 @@ var ret_url = "<?=$ret_url?>";
 if(msg.length>0){
 	alert(msg);
 }
-window.location.replace(ret_url);
+
+if(ret_url == -1){
+	history.back();
+}else{
+	window.location.replace(ret_url);
+}
 -->
 </script>

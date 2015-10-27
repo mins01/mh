@@ -1,6 +1,7 @@
 <?
 //$m_row,$ret_url
 //print_r($m_row);
+//echo $reset_pw_url; //디버깅용
 ?>
 
 <form class="form-horizontal" action="?" method="post">
