@@ -13,7 +13,9 @@ class Bbs_model extends CI_Model {
 		parent::__construct();
 		
 	}
-	
+	public function hash($str){
+		return md5($str);
+	}
 	public function set_bm_row($bm_row){
 		$this->bm_row = $bm_row;
 		//-- 테이블
@@ -163,6 +165,9 @@ class Bbs_model extends CI_Model {
 	public function insert_b_row($sets){
 		unset($sets['b_idx']);
 		$sets['b_id'] = $this->bm_row['b_id'];
+		if(isset($sets['b_pass'][0])){
+			$sets['b_pass'] = $this->hash($sets['b_pass']);
+		}
 		$this->db->from($this->tbl_bbs_data)
 		->set($sets)
 		->set('b_insert_date','now()',false)
@@ -181,6 +186,9 @@ class Bbs_model extends CI_Model {
 	public function insert_answer_b_row($b_idx,$sets){
 		unset($sets['b_idx']);
 		$sets['b_id'] = $this->bm_row['b_id'];
+		if(isset($sets['b_pass'][0])){
+			$sets['b_pass'] = $this->hash($sets['b_pass']);
+		}
 		$v_b_idx = $this->db->escape((int)$b_idx);
 		$sql_b_gidx = "(SELECT b_gidx from {$this->tbl_bbs_data} bbsd1 WHERE bbsd1.b_idx = {$v_b_idx})";
 		$sql_b_gpos =

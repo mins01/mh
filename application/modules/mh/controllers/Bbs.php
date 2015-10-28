@@ -153,8 +153,34 @@ class Bbs extends MX_Controller {
 		if(!$b_row){
 			show_error('게시물이 없습니다');
 		}
+		
+		$b_pass = $this->input->post('b_pass');
+		if($this->required_password($b_row,$b_pass)){
+			return;
+		}
+		
 
 		$this->_mode_form($b_row);
+	}
+	private function required_password($b_row,$b_pass,$title='비밀번호 확인',$sub_title=''){
+		if(isset($b_row['m_idx'][0]) && $b_row['m_idx'] != $this->common->get_login('m_idx') || !isset($b_row['m_idx'][0])){
+			//echo $this->bbs_m->hash($b_pass).'::'. $b_row['b_pass'];
+			$data = array(
+			'error_msg'=>'',
+			'title'=>$title,
+			'sub_title'=>$sub_title,
+			);
+			if(!$b_pass){
+				$data['error_msg'] = '';
+				$this->load->view($this->skin_path.'/required_password',$data);
+				return true;
+			}else if( $this->bbs_m->hash($b_pass) != $b_row['b_pass']){
+				$data['error_msg'] = '비밀번호를 확인해주세요.';
+				$this->load->view($this->skin_path.'/required_password',$data);
+				return true;
+			}
+		}
+		return false;
 	}
 	public function mode_answer(){
 		$b_idx = $this->uri->segment(3);
@@ -165,6 +191,9 @@ class Bbs extends MX_Controller {
 		if(!$b_row){
 			show_error('게시물이 없습니다');
 		}
+		$b_row['m_idx'] = null;
+		$b_row['b_name'] = null;
+		$b_row['b_insert_date'] = null;
 		$b_row['b_title'] = preg_replace('/^(RE\:)*/','',$b_row['b_title']);
 		$b_row['b_title'] = 'RE:'.$b_row['b_title'];
 		$b_row['b_text'] = $b_row['b_text']."\n=-----------------=\n";
@@ -183,6 +212,7 @@ class Bbs extends MX_Controller {
 			return $this->_mode_process();
 		}
 		$get = $this->input->get();
+		$post = $this->input->post();
 
 		$this->extends_b_row($b_row,$get);
 
@@ -190,6 +220,12 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',''.$this->bbs_conf['mode'].' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
 		
+		if(isset($post['b_pass'])){
+			$b_row['b_pass'] = $post['b_pass'];
+		}else{
+			$b_row['b_pass'] = '';
+			
+		}
 		
 		
 		$this->load->view($this->skin_path.'/form',array(
@@ -202,6 +238,7 @@ class Bbs extends MX_Controller {
 		'm_row' => $this->m_row,
 		'logedin' => $this->logedin,
 		'input_b_name'=>!isset($b_row['b_insert_date']) && !$this->logedin, //이름을 입력 받아야하는가?
+		'input_b_pass'=>!$this->logedin, //비밀번호를 입력 받아야하는가?
 		));
 	}
 
@@ -215,17 +252,28 @@ class Bbs extends MX_Controller {
 			show_error('게시물이 없습니다');
 		}
 		
-		//print_r($conf);
-		if($this->input->post('process')){
-			return $this->_mode_process();
-		}
-		$get = $this->input->get();
 
+		$get = $this->input->get();
+		$post = $this->input->post();
+		
 		$this->extends_b_row($b_row,$get);
 
 		$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$this->bbs_conf['mode']),true));
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',''.$this->bbs_conf['mode'].' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
+		
+		$b_pass = $this->input->post('b_pass');
+		if($this->required_password($b_row,$b_pass,'삭제하시겠습니까?',$b_row['b_title'])){
+			return;
+		}
+		
+		$b_row['b_pass'] = $b_pass;
+		
+		//print_r($conf);
+		if($this->input->post('process')){
+			return $this->_mode_process();
+		}
+		$error_msg = '';
 		
 		$this->load->view($this->skin_path.'/delete',array(
 		'b_row' => $b_row,
@@ -235,9 +283,15 @@ class Bbs extends MX_Controller {
 		'process'=>$this->bbs_conf['mode'],
 		'm_row' => $this->m_row,
 		'logedin' => $this->logedin,
+		'error_msg' => $error_msg,
 		));
 	}
-	
+	private function extends_b_row_for_m_row(&$b_row){
+		if($this->common->logedin){
+			$b_row['m_idx'] = $this->common->get_login('m_idx');
+			$b_row['b_name'] = $this->common->get_login('m_nick');
+		}
+	}
 	private function _mode_process(){
 		$process = $this->input->post('process');
 		$get = $this->input->get();
@@ -253,19 +307,22 @@ class Bbs extends MX_Controller {
 		$r = 0;
 		switch($process){
 			case 'edit':
-			$r = $this->bbs_m->update_b_row($b_idx,$post);
+				unset($post['b_pass']);
+				$r = $this->bbs_m->update_b_row($b_idx,$post);
 			break;
 			case 'write':
-			$r = $this->bbs_m->insert_b_row($post);
-			$b_idx = $r;
+				$this->extends_b_row_for_m_row($post);
+				$r = $this->bbs_m->insert_b_row($post);
+				$b_idx = $r;
 			break;
 			case 'answer':
-			$r = $this->bbs_m->insert_answer_b_row($b_idx,$post);
-			$b_idx = $r;
+				$this->extends_b_row_for_m_row($post);
+				$r = $this->bbs_m->insert_answer_b_row($b_idx,$post);
+				$b_idx = $r;
 			break;
 			case 'delete':
-			$r = $this->bbs_m->delete_b_row($b_idx);
-			$b_idx = $r;
+				$r = $this->bbs_m->delete_b_row($b_idx);
+				$b_idx = $r;
 			break;
 		}
 
