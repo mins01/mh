@@ -137,11 +137,13 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','read : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
 		
+		$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$b_idx);
 		$this->load->view($this->skin_path.'/read',array(
 		'b_row' => $b_row,
 		'bm_row' => $this->bm_row,
 		'get'=>$get,
 		'bbs_conf'=>$this->bbs_conf,
+		'html_comment'=>$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url),true),
 		));
 	}
 	public function mode_edit(){

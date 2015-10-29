@@ -42,7 +42,6 @@
 	<div class="panel-body" style="min-height:200px">
 		<?=nl2br(html_escape($b_row['b_text']))?>
 	</div>
-	
 	<div class="panel-footer text-right">
 	
 		<a href="<?=html_escape($bbs_conf['list_url'])?>" class="btn btn-primary glyphicon glyphicon-list"> 목록</a>
@@ -55,3 +54,4 @@
 	
 	</div>
 </div>
+<?=$html_comment?>
