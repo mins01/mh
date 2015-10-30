@@ -26,13 +26,17 @@ class Bbs_comment extends MX_Controller {
 	public function index(){
 		$b_id = $this->uri->segment(2);
 		$b_idx = $this->uri->segment(3);
-		$mode = $this->uri->segment(4);
-		$page = $this->uri->segment(5,'1');
 		
-		$this->action($b_id,$b_idx,$mode,$page);
+		
+		$this->action($b_id,$b_idx);
 	}
 
-	public function action($b_id,$b_idx,$mode,$page){
+	public function action($b_id,$b_idx){
+		$mode = $this->input->post_get('mode');
+		if(!isset($mode)){
+			$mode = 'list';
+		}
+		//var_dump($_POST);
 		//echo $this->uri->segment(1);
 
 		$this->bm_row = $this->bm_m->get_bm_row($b_id);
@@ -60,10 +64,17 @@ class Bbs_comment extends MX_Controller {
 		}
 		//echo $this->bbs_conf['menu_url'];
 		
-		$this->{'mode_'.$mode}($b_id,$b_idx,$page);
-
+		
+		if(method_exists($this,'mode_'.$mode)){
+			$this->{'mode_'.$mode}($b_idx);
+		}else{
+			$this->mode_error($b_id,$b_idx,'지원하지 않는 모드입니다.');
+		}
 	}
 	public function print_json($json){
+		$json['m_row'] = array(
+			'm_nick'=>$this->common->get_login('m_nick'),
+		);
 		if(defined('JSON_UNESCAPED_UNICODE')){
 			echo json_encode($json,JSON_UNESCAPED_UNICODE);
 		}else{
@@ -71,20 +82,49 @@ class Bbs_comment extends MX_Controller {
 		}
 		return;
 	}
-
-	public function mode_list($b_id,$b_idx,$page){
-		//print_r($conf);
+	public function data_list($b_idx,$get){
+		$get['b_idx']=$b_idx;
+		return $this->bbs_c_m->select_for_list($get);
+	}
+	public function mode_list($b_idx){
+		$page = $this->input->post_get('page','1');
 		$get = $this->input->get();
 		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
 		if(!isset($get['tq'])){ $get['tq'] = ''; }
 		if(!isset($get['q'])){ $get['q'] = ''; }
 		$get['page']=$page;
 		$get['b_idx']=$b_idx;
-		$bc_rows = $this->bbs_c_m->select_for_list($get);
-		//echo $this->db->last_query();
-		//print_r($bc_rows);
 		$json = array(
-			'bc_rows'=>$bc_rows,
+			'bc_rows'=>$this->data_list($b_idx,$get),
+		);
+		$this->db->last_query();
+		$this->print_json($json);
+		return;
+	}
+	public function mode_error($b_idx,$error=''){
+		$json = array(
+			'bc_rows'=>array(),
+			'error'=>$error
+		);
+		$this->print_json($json);
+		return;
+	}
+	public function mode_write($b_idx){
+		$page = $this->input->post_get('page','1');
+		$post = $this->input->post();
+		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
+		if(!isset($get['tq'])){ $get['tq'] = ''; }
+		if(!isset($get['q'])){ $get['q'] = ''; }
+		$post['b_idx']=$b_idx;
+		unset($post['mode']);
+		
+		//$get['page']=$page;
+		$post['b_idx']=$b_idx;
+		$post['m_idx'] = $this->common->get_login('m_idx');
+		$post['bc_name'] = $this->common->get_login('m_nick');
+		$json = array(
+			'bc_idx' => $this->bbs_c_m->insert_bc_row($post),
+			'bc_rows' => $this->data_list($b_idx,$post),
 		);
 		$this->print_json($json);
 		return;

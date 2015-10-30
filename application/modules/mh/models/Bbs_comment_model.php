@@ -62,12 +62,14 @@ class Bbs_comment_model extends CI_Model {
 			return false;
 		}
 
-		$this->db->order_by('bc_gidx,bc_gpos');
+		//$this->db->order_by('bc_gidx,bc_gpos');
+		$this->db->order_by('bc_idx');
 		
-		list($limit,$offset) = $this->get_limit_offset($get['page']);
-		$this->db->limit($limit,$offset);
+		//list($limit,$offset) = $this->get_limit_offset($get['page']);
+		//$this->db->limit($limit,$offset);
 
 		$bc_rows = $this->db->get()->result_array();
+		//echo $this->db->last_query();
 		$this->extends_bc_rows($bc_rows);
 		return $bc_rows;
 	}
@@ -144,30 +146,30 @@ class Bbs_comment_model extends CI_Model {
 		return $cnt - $offset;
 	}
 	//-- 글 수정
-	public function update_b_row($b_idx,$sets){
-		unset($sets['b_idx'],$sets['b_id']);
+	public function update_bc_row($bc_idx,$sets){
+		unset($sets['bc_idx']);
 		$this->db->from($this->tbl_bbs_comment)
-		->where('b_idx',$b_idx)
-		->where('b_isdel',0)
-		->set($sets)->set('b_update_date','now()',false)->update();
+		->where('bc_idx',$bc_idx)
+		->where('bc_isdel',0)
+		->set($sets)->set('bc_update_date','now()',false)->update();
 		return $this->db->affected_rows();
 	}
 	//-- 글 작성
-	public function insert_b_row($sets){
-		unset($sets['b_idx']);
-		$sets['b_id'] = $this->bm_row['b_id'];
-		if(isset($sets['b_pass'][0])){
-			$sets['b_pass'] = $this->hash($sets['b_pass']);
+	public function insert_bc_row($sets){
+		unset($sets['bc_idx']);
+		if(isset($sets['bc_pass'][0])){
+			$sets['bc_pass'] = $this->hash($sets['bc_pass']);
 		}
 		$this->db->from($this->tbl_bbs_comment)
 		->set($sets)
-		->set('b_insert_date','now()',false)
-		->set('b_update_date','now()',false)->insert();
-		$b_idx = $this->db->insert_id();
-		if($b_idx){
-			$this->update_b_row($b_idx,array('b_gidx'=>-1*$b_idx/100,'b_pidx'=>$b_idx));
+		->set('bc_insert_date','now()',false)
+		->set('bc_update_date','now()',false)->insert();
+		$bc_idx = $this->db->insert_id();
+		if($bc_idx){
+			$this->update_bc_row($bc_idx,array('bc_gidx'=>-1*$bc_idx/100,'bc_pidx'=>$bc_idx));
 		}
-		return $b_idx;
+		
+		return $bc_idx;
 	}
 	//-- 글 삭제
 	public function delete_b_row($b_idx){
