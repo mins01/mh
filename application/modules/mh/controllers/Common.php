@@ -63,6 +63,7 @@ class Common extends MX_Controller {
 		}
 	}
 	public function set_login($m_row){
+		$m_row['is_admin'] = false;//관리자 유무
 		unset($m_row['m_pass']);
 		switch(LOGIN_TYPE){
 			case 'cookie':

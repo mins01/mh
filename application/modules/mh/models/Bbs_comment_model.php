@@ -62,8 +62,8 @@ class Bbs_comment_model extends CI_Model {
 			return false;
 		}
 
-		//$this->db->order_by('bc_gidx,bc_gpos');
-		$this->db->order_by('bc_idx');
+		$this->db->order_by('bc_gidx ,bc_gpos');
+		//$this->db->order_by('bc_idx');
 		
 		//list($limit,$offset) = $this->get_limit_offset($get['page']);
 		//$this->db->limit($limit,$offset);
@@ -81,7 +81,7 @@ class Bbs_comment_model extends CI_Model {
 		}
 	}
 	private function extends_bc_row(& $bc_row){
-		$b_row['depth']= min(strlen($bc_row['bc_gpos'])/2,10);
+		$bc_row['depth'] = min(strlen($bc_row['bc_gpos'])/2,10);
 	}
 	//-- 빈 게시물 만들기
 	public function generate_empty_b_row(){
@@ -147,9 +147,13 @@ class Bbs_comment_model extends CI_Model {
 	}
 	//-- 글 수정
 	public function update_bc_row($bc_idx,$sets){
+		return $this->update_bc_row_as_where(array('bc_idx'=>$bc_idx),$sets);
+	}
+	//-- 글 수정
+	public function update_bc_row_as_where($where,$sets){
 		unset($sets['bc_idx']);
 		$this->db->from($this->tbl_bbs_comment)
-		->where('bc_idx',$bc_idx)
+		->where($where)
 		->where('bc_isdel',0)
 		->set($sets)->set('bc_update_date','now()',false)->update();
 		return $this->db->affected_rows();
@@ -166,28 +170,29 @@ class Bbs_comment_model extends CI_Model {
 		->set('bc_update_date','now()',false)->insert();
 		$bc_idx = $this->db->insert_id();
 		if($bc_idx){
-			$this->update_bc_row($bc_idx,array('bc_gidx'=>-1*$bc_idx/100,'bc_pidx'=>$bc_idx));
+			//$this->update_bc_row($bc_idx,array('bc_gidx'=>-1*$bc_idx/100,'bc_pidx'=>$bc_idx));
+			$this->update_bc_row($bc_idx,array('bc_gidx'=>1*$bc_idx/100,'bc_pidx'=>$bc_idx));
 		}
 		
 		return $bc_idx;
 	}
 	//-- 글 삭제
-	public function delete_b_row($b_idx){
-		return $this->update_b_row($b_idx,array('b_isdel'=>1));
+	public function delete_bc_row($bc_idx){
+		return $this->delete_bc_row_as_where(array('bc_idx'=>$bc_idx));
+	}
+	//-- 글 삭제
+	public function delete_bc_row_as_where($where){
+		return $this->update_bc_row_as_where($where,array('bc_isdel'=>1));
 	}
 	//-- 답변 글 작성
-	public function insert_answer_b_row($b_idx,$sets){
-		unset($sets['b_idx']);
-		$sets['b_id'] = $this->bm_row['b_id'];
-		if(isset($sets['b_pass'][0])){
-			$sets['b_pass'] = $this->hash($sets['b_pass']);
-		}
-		$v_b_idx = $this->db->escape((int)$b_idx);
-		$sql_b_gidx = "(SELECT b_gidx from {$this->tbl_bbs_comment} bbsd1 WHERE bbsd1.b_idx = {$v_b_idx})";
-		$sql_b_gpos =
+	public function insert_answer_bc_row($bc_idx,$sets){
+		unset($sets['bc_idx']);
+		$v_bc_idx = $this->db->escape((int)$bc_idx);
+		$sql_bc_gidx = "(SELECT bc_gidx from {$this->tbl_bbs_comment} bbsd1 WHERE bbsd1.bc_idx = {$v_bc_idx})";
+		$sql_bc_gpos =
 "
 CONCAT(
-(SELECT bbsd1.b_gpos FROM {$this->tbl_bbs_comment}  bbsd1 WHERE bbsd1.b_idx = {$v_b_idx})
+(SELECT bbsd1.bc_gpos FROM {$this->tbl_bbs_comment}  bbsd1 WHERE bbsd1.bc_idx = {$v_bc_idx})
 ,
 LPAD(
 CONV(
@@ -199,11 +204,11 @@ CONV(
 SUBSTR(
 
 (SELECT 
-bbsd2.b_gpos
+bbsd2.bc_gpos
 FROM {$this->tbl_bbs_comment}  bbsd1
-JOIN {$this->tbl_bbs_comment}  bbsd2 ON(bbsd2.b_gpos LIKE CONCAT(bbsd1.b_gpos,'__') AND bbsd2.b_gidx = bbsd1.b_gidx) 
-WHERE bbsd1.b_idx = {$v_b_idx}
-ORDER BY b_gpos DESC LIMIT 1)
+JOIN {$this->tbl_bbs_comment}  bbsd2 ON(bbsd2.bc_gpos LIKE CONCAT(bbsd1.bc_gpos,'__') AND bbsd2.bc_gidx = bbsd1.bc_gidx) 
+WHERE bbsd1.bc_idx = {$v_bc_idx}
+ORDER BY bc_gpos DESC LIMIT 1)
 
 ,-2,2) 
 ,36,10)
@@ -219,15 +224,15 @@ AS SIGNED )+1
 		
 		$this->db->from($this->tbl_bbs_comment)
 		->set($sets)
-		->set('b_gidx',$sql_b_gidx,false)
-		->set('b_gpos',$sql_b_gpos,false)
-		->set('b_pidx',$b_idx)
-		->set('b_insert_date','now()',false)
-		->set('b_update_date','now()',false)->insert();
+		->set('bc_gidx',$sql_bc_gidx,false)
+		->set('bc_gpos',$sql_bc_gpos,false)
+		->set('bc_pidx',$bc_idx)
+		->set('bc_insert_date','now()',false)
+		->set('bc_update_date','now()',false)->insert();
 
-		$b_idx = $this->db->insert_id();
+		$bc_idx = $this->db->insert_id();
 		
 
-		return $b_idx;
+		return $bc_idx;
 	}
 }

@@ -74,6 +74,7 @@ class Bbs_comment extends MX_Controller {
 	public function print_json($json){
 		$json['m_row'] = array(
 			'm_nick'=>$this->common->get_login('m_nick'),
+			'm_idx'=>$this->common->get_login('m_idx'),
 		);
 		if(defined('JSON_UNESCAPED_UNICODE')){
 			echo json_encode($json,JSON_UNESCAPED_UNICODE);
@@ -89,9 +90,6 @@ class Bbs_comment extends MX_Controller {
 	public function mode_list($b_idx){
 		$page = $this->input->post_get('page','1');
 		$get = $this->input->get();
-		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
-		if(!isset($get['tq'])){ $get['tq'] = ''; }
-		if(!isset($get['q'])){ $get['q'] = ''; }
 		$get['page']=$page;
 		$get['b_idx']=$b_idx;
 		$json = array(
@@ -112,9 +110,6 @@ class Bbs_comment extends MX_Controller {
 	public function mode_write($b_idx){
 		$page = $this->input->post_get('page','1');
 		$post = $this->input->post();
-		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
-		if(!isset($get['tq'])){ $get['tq'] = ''; }
-		if(!isset($get['q'])){ $get['q'] = ''; }
 		$post['b_idx']=$b_idx;
 		unset($post['mode']);
 		
@@ -124,6 +119,63 @@ class Bbs_comment extends MX_Controller {
 		$post['bc_name'] = $this->common->get_login('m_nick');
 		$json = array(
 			'bc_idx' => $this->bbs_c_m->insert_bc_row($post),
+			'bc_rows' => $this->data_list($b_idx,$post),
+		);
+		$this->print_json($json);
+		return;
+	}
+	public function mode_edit($b_idx){
+		$page = $this->input->post_get('page','1');
+		$post = $this->input->post();
+		$post['b_idx']=$b_idx;
+		unset($post['mode']);
+		
+		$where = array();
+		$post['b_idx']=$b_idx;
+		$bc_idx = $post['bc_idx'];unset($post['bc_idx']);
+		$where['bc_idx'] = $bc_idx;
+		if(!$this->common->get_login('is_admin')) $where['m_idx'] = $this->common->get_login('m_idx');
+		$r = $this->bbs_c_m->update_bc_row_as_where($where,$post);
+		$json = array(
+			'bc_idx' => $bc_idx,
+			'bc_rows' => $this->data_list($b_idx,$post),
+		);
+		$this->print_json($json);
+		return;
+	}
+	public function mode_delete($b_idx){
+		$page = $this->input->post_get('page','1');
+		$post = $this->input->post();
+		$post['b_idx']=$b_idx;
+		unset($post['mode']);
+		
+		
+		$post['b_idx']=$b_idx;
+		$bc_idx = $post['bc_idx'];unset($post['bc_idx']);
+		$where['bc_idx'] = $bc_idx;
+		if(!$this->common->get_login('is_admin')) $where['m_idx'] = $this->common->get_login('m_idx');
+		$r = $this->bbs_c_m->delete_bc_row_as_where($where,$post);
+		$json = array(
+			'bc_idx' => '',
+			'bc_rows' => $this->data_list($b_idx,$post),
+		);
+		$this->print_json($json);
+		return;
+	}
+	public function mode_answer($b_idx){
+		$page = $this->input->post_get('page','1');
+		$post = $this->input->post();
+		$post['b_idx']=$b_idx;
+		unset($post['mode']);
+		
+		
+		$post['b_idx']=$b_idx;
+		$post['m_idx'] = $this->common->get_login('m_idx');
+		$post['bc_name'] = $this->common->get_login('m_nick');
+		$bc_idx = $post['bc_idx'];unset($post['bc_idx']);		
+		$bc_idx = $this->bbs_c_m->insert_answer_bc_row($bc_idx,$post);
+		$json = array(
+			'bc_idx' => $bc_idx,
 			'bc_rows' => $this->data_list($b_idx,$post),
 		);
 		$this->print_json($json);

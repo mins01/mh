@@ -19,3 +19,29 @@
 .bbs-dpeth-10 .bbs-title a{padding-left:10em;}
 
 .bbs-mode-read .bbs-title{word-break: break-all;}
+
+.bbs_c .wform-answer{padding-left:5%;}
+
+.bbs_c .bc_depth dt::before{
+content: '';
+width: 0.5em;
+height: 0.5em;
+border: 1px solid #abc;
+border-width: 0 0 1px 1px;
+box-sizing: border-box;
+display: inline-block;
+margin: 0 5px 0.3em 0;
+margin-left:-1em;
+}
+.bbs_c .bc_depth-0{margin-left:0%;}
+.bbs_c .bc_depth-0 dt::before{content: none;}
+.bbs_c .bc_depth-1{margin-left:2%;}
+.bbs_c .bc_depth-2{margin-left:4%;}
+.bbs_c .bc_depth-3{margin-left:6%;}
+.bbs_c .bc_depth-4{margin-left:8%;}
+.bbs_c .bc_depth-5{margin-left:10%;}
+.bbs_c .bc_depth-6{margin-left:12%;}
+.bbs_c .bc_depth-7{margin-left:14%;}
+.bbs_c .bc_depth-8{margin-left:16%;}
+.bbs_c .bc_depth-9{margin-left:18%;}
+.bbs_c .bc_depth-10{margin-left:20%;}
