@@ -24,7 +24,7 @@
 			<? if($input_b_pass):?>
 			<div class="input-group">
 				<div class="input-group-addon">비밀번호</div>
-				<input type="password" class="form-control" required name="b_pass" aria-label="비밀번호" placeholder="비밀번호" style="min-width:80px" value="<?=html_escape($b_row['b_pass'])?>" maxlength="40">
+				<input type="password" class="form-control" required name="b_pass" aria-label="비밀번호" placeholder="비밀번호" style="min-width:80px" value="<?=html_escape($b_row['b_pass'])?>" maxlength="40" <?=isset($b_row['b_pass'][0])?'readonly="readonly"':''?> >
 			</div>
 			<? endif; ?>
 		</li>

@@ -5,6 +5,8 @@ class Bbs extends MX_Controller {
 	private $bm_row = array();
 	private $m_row = array();
 	private $skin_path = '';
+	private $base_url = '';
+	private $logedin = null;
 	public function __construct($bbs_conf=array())
 	{
 		//var_dump(func_get_args());
@@ -14,35 +16,57 @@ class Bbs extends MX_Controller {
 		$this->load->module('mh/layout');
 		$this->load->module('mh/common');
 		
-		$this->bbs_conf = $bbs_conf;
+		//$this->bbs_conf = $bbs_conf;
 		
 		$this->m_row = $this->common->get_login();
-		$this->logedin = $this->common->logedin;
+		$this->logedin = & $this->common->logedin;
 
-		$this->action();
+		//$this->action();
+	}
+	public function set_base_url($base_url){
+		$this->base_url = $base_url;
+	}
+	// /bbs로 접근할 경우, 맨 처음은 b_id가 된다.
+	public function index(){
+		$b_id = $this->uri->segment(2);
+		if(!isset($b_id)){
+			show_error('게시판 아이디가 없습니다.');
+		}
+		$mode = $this->uri->segment(3,'list');//option
+		$b_idx = $this->uri->segment(4);//option
+		$this->set_base_url(base_url('bbs/'.$b_id));
+		$this->action($b_id,$mode,$b_idx);
+	}
+	// front 컨트롤에서 접근할 경우.
+	public function index_as_front($conf){
+		$base_url = $conf['base_url'];
+		$b_id = $conf['menu']['mn_key1'];
+		$mode = $this->uri->segment(2,'list');
+		$b_idx = $this->uri->segment(3);
+		if(!isset($b_id)){
+			show_error('게시판 아이디가 없습니다.');
+		}
+		$this->set_base_url($base_url);
+		$this->action($b_id,$mode,$b_idx);
 	}
 
-	public function action(){
+	public function action($b_id,$mode,$b_idx){
 		//-- 게시판 마스터 정보 가져오기
-		if(!isset($this->bbs_conf['menu']['b_id'])){
+		if(!isset($b_id)){
 			show_error('게시판 정보가 잘못되었습니다.');
 		}
-		$this->bm_row = $this->bm_m->get_bm_row($this->bbs_conf['menu']['b_id']);
+		$this->bm_row = $this->bm_m->get_bm_row($b_id);
 		if($this->bm_row['bm_open']!='1'){
 			show_error('사용 불가능한 게시판 입니다.');
 		}
 		//print_r($conf['bm_row']);
-		$this->bbs_m->set_bm_row($this->bm_row);
+		$this->bbs_m->set_bm_row($this->bm_row); //여기서 모델에 사용할 게시판 아이디가 고정됨
 		$this->skin_path = 'mh/bbs/skin/'.$this->bm_row['bm_skin'];
 
-		$mode = $this->uri->segment(2,'list');
-		$b_idx = $this->uri->segment(3,''); //b_idx
 		$this->bbs_conf['page'] = (int)$this->input->get('page',1);
 		if(!is_int($this->bbs_conf['page']) || $this->bbs_conf['page'] <= 0){
 			$this->bbs_conf['page'] = 1;
 		}
-		//$this->bbs_conf['page']=$this->uri->segment(3,'1');
-		//$mode = $this->input->get_post('mode',true);
 		if(!isset($mode)){
 			$mode = 'list';
 		}
@@ -51,33 +75,42 @@ class Bbs extends MX_Controller {
 		if(!method_exists($this,'mode_'.$mode)){
 			show_error('잘못된 모드입니다.');
 		}
-		//echo $this->bbs_conf['menu_url'];
+		//echo $this->base_url;
 		
-		$this->bbs_conf['list_url'] = $this->bbs_conf['menu_url'] . "/list?".http_build_query($this->input->get());
-		$this->bbs_conf['write_url'] = $this->bbs_conf['menu_url'] . "/write?".http_build_query($this->input->get());
+		$this->bbs_conf['list_url'] = $this->base_url . "/list?".http_build_query($this->input->get());
+		$this->bbs_conf['write_url'] = $this->base_url . "/write?".http_build_query($this->input->get());
 		$this->bbs_conf['mode'] = $mode;
 		
-		$this->{'mode_'.$mode}();
+		
+		$this->{'mode_'.$mode}($b_idx);
+		
 
 	}
 
 	private function pagination($get,$total_rows){
 		$max_page = ceil($total_rows/$this->bm_row['bm_page_limit']);
-		$uri = $this->bbs_conf['menu_url'] . "/list";
+		$uri = $this->base_url . "/list";
 		return generate_paging($get,$max_page,$uri);
 	}
 	private function extends_b_row(& $b_row,$get){
-		$b_row['read_url'] = $this->bbs_conf['menu_url'] . '/read/'.$b_row['b_idx'].'?'.http_build_query($get);
+		$b_row['is_editable'] = !isset($b_row['m_idx'][0]) || $this->common->get_login('is_admin') || $b_row['m_idx'] == $this->common->get_login('m_idx');
+		$b_row['is_writeable'] = true;
+		$b_row['is_readable'] = true;
+		$b_row['is_answerable'] = true;
+		$b_row['is_deleteable'] = !isset($b_row['m_idx'][0]) || $this->common->get_login('is_admin') || $b_row['m_idx'] == $this->common->get_login('m_idx');
 		
-		$b_row['answer_url'] = $this->bbs_conf['menu_url'] . '/answer/'.$b_row['b_idx'].'?'.http_build_query($get);
 		
-		$b_row['edit_url'] = $this->bbs_conf['menu_url'] . '/edit/'.$b_row['b_idx'].'?'.http_build_query($get);
+		$b_row['read_url'] = $this->base_url . '/read/'.$b_row['b_idx'].'?'.http_build_query($get);
 		
-		$b_row['delete_url'] = $this->bbs_conf['menu_url'] . '/delete/'.$b_row['b_idx'].'?'.http_build_query($get);
+		$b_row['answer_url'] = $this->base_url . '/answer/'.$b_row['b_idx'].'?'.http_build_query($get);
+		
+		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_row['b_idx'].'?'.http_build_query($get);
+		
+		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx'].'?'.http_build_query($get);
 		
 		unset($get['b_idx']);
 		
-		$b_row['write_url'] = $this->bbs_conf['menu_url'] . '/write?'.http_build_query($get);
+		$b_row['write_url'] = $this->base_url . '/write?'.http_build_query($get);
 	}
 	private function extends_b_rows(&$b_rows,$get){
 		foreach($b_rows as & $r){
@@ -85,8 +118,7 @@ class Bbs extends MX_Controller {
 		}
 	}
 
-	public function mode_list($with_read=false){
-		//print_r($conf);
+	public function mode_list($b_idx=null,$with_read=false){
 		$get = $this->input->get();
 		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
 		if(!isset($get['tq'])){ $get['tq'] = ''; }
@@ -94,12 +126,14 @@ class Bbs extends MX_Controller {
 		$get['page']=$this->bbs_conf['page'];
 		$b_rows = $this->bbs_m->select_for_list($get);
 		$this->extends_b_rows($b_rows,$get);
+		$b_n_rows = $this->bbs_m->select_for_notice_list($get);
+		$this->extends_b_rows($b_n_rows,$get);
 		$count = $this->bbs_m->count($get);
 		$start_num = $this->bbs_m->get_start_num($count,$get);
 		
 		$tmp = $this->input->get();
 		$tmp['page'] ='page';
-		$def_url = $this->bbs_conf['menu_url'] . "/list?".str_replace('page=page','page={{page}}',http_build_query($tmp));
+		$def_url = $this->base_url . "/list?".str_replace('page=page','page={{page}}',http_build_query($tmp));
 		$pagination = $this->load->view($this->skin_path.'/pagination',array(
 		'max_page' => ceil($count/$this->bm_row['bm_page_limit']),
 		'page'=>$this->bbs_conf['page'],
@@ -112,6 +146,7 @@ class Bbs extends MX_Controller {
 		}
 		$this->load->view($this->skin_path.'/list',array(
 		'b_rows' => $b_rows,
+		'b_n_rows'=>$b_n_rows,
 		'bm_row' => $this->bm_row,
 		'count' => $count,
 		'max_page' => ceil($count/$this->bm_row['bm_page_limit']),
@@ -119,19 +154,23 @@ class Bbs extends MX_Controller {
 		'get'=>$get,
 		'pagination' => $pagination,
 		'bbs_conf'=>$this->bbs_conf,
+		'b_idx'=>$b_idx,
 		));
 	}
 	
-	public function mode_read(){
-		//print_r($conf);
-		$get = $this->input->get();
-		$b_idx = $this->uri->segment(3);
-		
-		$b_row = $this->bbs_m->select_by_b_idx($b_idx);
+	public function mode_read($b_idx){
 		if(!$b_idx){
+			show_error('게시물 아이디가 없습니다');
+		}
+		$get = $this->input->get();
+		$b_row = $this->bbs_m->select_by_b_idx($b_idx);
+		if(!$b_row){
 			show_error('데이터가 없습니다');
 		}
 		$this->extends_b_row($b_row,$get);
+		if(!$b_row['is_readable']){
+			show_error('권한이 없습니다.');
+		}
 
 		$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$this->bbs_conf['mode']),true));
 		$this->config->set_item('layout_hide',false);
@@ -145,9 +184,12 @@ class Bbs extends MX_Controller {
 		'bbs_conf'=>$this->bbs_conf,
 		'html_comment'=>$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url),true),
 		));
+		
+		if($this->bm_row['bm_read_with_list']=='1'){
+			$this->mode_list($b_idx,true);
+		}
 	}
-	public function mode_edit(){
-		$b_idx = $this->uri->segment(3);
+	public function mode_edit($b_idx){
 		if(!$b_idx){
 			show_error('게시물 아이디가 없습니다');
 		}
@@ -155,6 +197,7 @@ class Bbs extends MX_Controller {
 		if(!$b_row){
 			show_error('게시물이 없습니다');
 		}
+		$this->extends_b_row($b_row,$this->input->get());
 		
 		$b_pass = $this->input->post('b_pass');
 		if($this->required_password($b_row,$b_pass)){
@@ -162,7 +205,7 @@ class Bbs extends MX_Controller {
 		}
 		
 
-		$this->_mode_form($b_row);
+		$this->_mode_form($b_row,'edit');
 	}
 	private function required_password($b_row,$b_pass,$title='비밀번호 확인',$sub_title=''){
 		if(isset($b_row['m_idx'][0]) && $b_row['m_idx'] != $this->common->get_login('m_idx') || !isset($b_row['m_idx'][0])){
@@ -184,8 +227,7 @@ class Bbs extends MX_Controller {
 		}
 		return false;
 	}
-	public function mode_answer(){
-		$b_idx = $this->uri->segment(3);
+	public function mode_answer($b_idx){
 		if(!$b_idx){
 			show_error('게시물 아이디가 없습니다');
 		}
@@ -194,39 +236,49 @@ class Bbs extends MX_Controller {
 			show_error('게시물이 없습니다');
 		}
 		$b_row['m_idx'] = null;
-		$b_row['b_name'] = null;
+		$b_row['b_name'] = $this->common->get_login('m_nick');
 		$b_row['b_insert_date'] = null;
 		$b_row['b_title'] = preg_replace('/^(RE\:)*/','',$b_row['b_title']);
 		$b_row['b_title'] = 'RE:'.$b_row['b_title'];
 		$b_row['b_text'] = $b_row['b_text']."\n=-----------------=\n";
-
-		$this->_mode_form($b_row);
+		$this->extends_b_row($b_row,$this->input->get());
+		
+		$this->_mode_form($b_row,'answer');
 	}
 	public function mode_write(){
 		$b_row = $this->bbs_m->generate_empty_b_row();
 		$b_row['b_name']=$this->common->get_login('m_nick');
-		$this->_mode_form($b_row);
+		$this->extends_b_row($b_row,$this->input->get());
+		
+		$this->_mode_form($b_row,'write');
 	}
 
-	private function _mode_form($b_row){
+	private function _mode_form($b_row,$mode){
 		//print_r($conf);
+		
+		if(!$b_row['is_'.$mode.'able']){
+			show_error('권한이 없습니다.');
+		}
+		
 		if($this->input->post('process')){
-			return $this->_mode_process();
+			return $this->_mode_process($b_row);
 		}
 		$get = $this->input->get();
 		$post = $this->input->post();
 
 		$this->extends_b_row($b_row,$get);
 
-		$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$this->bbs_conf['mode']),true));
+		$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$mode),true));
 		$this->config->set_item('layout_hide',false);
-		$this->config->set_item('layout_title',''.$this->bbs_conf['mode'].' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
+		$this->config->set_item('layout_title',''.$mode.' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
 		
 		if(isset($post['b_pass'])){
 			$b_row['b_pass'] = $post['b_pass'];
 		}else{
 			$b_row['b_pass'] = '';
-			
+		}
+		if($mode =='write' || $mode =='answer'){
+			$b_row['b_pass'] = '';
 		}
 		
 		
@@ -235,17 +287,16 @@ class Bbs extends MX_Controller {
 		'bm_row' => $this->bm_row,
 		'get'=>$get,
 		'bbs_conf'=>$this->bbs_conf,
-		'mode'=>$this->bbs_conf['mode'],
-		'process'=>$this->bbs_conf['mode'],
+		'mode'=>$mode,
+		'process'=>$mode,
 		'm_row' => $this->m_row,
 		'logedin' => $this->logedin,
 		'input_b_name'=>!isset($b_row['b_insert_date']) && !$this->logedin, //이름을 입력 받아야하는가?
-		'input_b_pass'=>!$this->logedin, //비밀번호를 입력 받아야하는가?
+		'input_b_pass'=>isset($b_row['b_pass'][0]) || !$this->logedin, //비밀번호를 입력 받아야하는가?
 		));
 	}
 
-	public function mode_delete(){
-		$b_idx = $this->uri->segment(3);
+	public function mode_delete($b_idx){
 		if(!$b_idx){
 			show_error('게시물 아이디가 없습니다');
 		}
@@ -273,7 +324,7 @@ class Bbs extends MX_Controller {
 		
 		//print_r($conf);
 		if($this->input->post('process')){
-			return $this->_mode_process();
+			return $this->_mode_process($b_row);
 		}
 		$error_msg = '';
 		
@@ -294,13 +345,16 @@ class Bbs extends MX_Controller {
 			$b_row['b_name'] = $this->common->get_login('m_nick');
 		}
 	}
-	private function _mode_process(){
+	private function _mode_process($b_row){
 		$process = $this->input->post('process');
 		$get = $this->input->get();
-		$b_idx = $this->uri->segment(3,0);
+		$b_idx = $b_row['b_idx'];
 		$post = $this->input->post();
 		unset($post['process']);
 		
+		if(!$b_row['is_'.$process.'able']){
+			show_error('권한이 없습니다.');
+		}
 		
 		$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$this->bbs_conf['mode']),true));
 		$this->config->set_item('layout_hide',false);
@@ -313,9 +367,11 @@ class Bbs extends MX_Controller {
 				$r = $this->bbs_m->update_b_row($b_idx,$post);
 			break;
 			case 'write':
+
 				$this->extends_b_row_for_m_row($post);
 				$r = $this->bbs_m->insert_b_row($post);
 				$b_idx = $r;
+
 			break;
 			case 'answer':
 				$this->extends_b_row_for_m_row($post);

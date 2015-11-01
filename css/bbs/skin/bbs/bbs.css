@@ -1,3 +1,5 @@
+.bbs-notice{font-weight:bold;}
+
 .bbs-dpeth .bbs-title a::before{
 	content:'';width:0.5em;height:0.5em;
 	border: 1px solid #abc;
@@ -21,6 +23,10 @@
 .bbs-mode-read .bbs-title{word-break: break-all;}
 
 .bbs_c .wform-answer{padding-left:5%;}
+
+.bbs_c .bc_comment{
+	word-wrap: break-word;
+}
 
 .bbs_c .bc_depth dt::before{
 content: '';

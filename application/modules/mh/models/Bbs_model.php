@@ -81,6 +81,20 @@ class Bbs_model extends CI_Model {
 		return $b_rows;
 	}
 	
+	//공지 목록용
+	public function select_for_notice_list($get=array()){
+		
+		if(!$this->_apply_list_where(array())){
+			return false;
+		}
+		$this->db->order_by('b_notice desc');
+		$this->db->where('b_notice>',0); //공지만
+	
+		$b_rows = $this->db->get()->result_array();
+		$this->extends_b_rows($b_rows);
+		return $b_rows;
+	}
+	
 	private function extends_b_rows(& $b_rows){
 		
 		foreach($b_rows as & $r){
@@ -154,9 +168,12 @@ class Bbs_model extends CI_Model {
 	}
 	//-- 글 수정
 	public function update_b_row($b_idx,$sets){
+		return $this->update_b_row_as_where(array('b_idx'=>$b_idx),$sets);
+	}
+	public function update_b_row_as_where($where,$sets){
 		unset($sets['b_idx'],$sets['b_id']);
 		$this->db->from($this->tbl_bbs_data)
-		->where('b_idx',$b_idx)
+		->where($where)
 		->where('b_isdel',0)
 		->set($sets)->set('b_update_date','now()',false)->update();
 		return $this->db->affected_rows();
@@ -181,6 +198,9 @@ class Bbs_model extends CI_Model {
 	//-- 글 삭제
 	public function delete_b_row($b_idx){
 		return $this->update_b_row($b_idx,array('b_isdel'=>1));
+	}
+	public function delete_b_row_as_where($where){
+		return $this->update_b_row_as_where($where,array('b_isdel'=>1));
 	}
 	//-- 답변 글 작성
 	public function insert_answer_b_row($b_idx,$sets){

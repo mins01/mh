@@ -58,6 +58,8 @@ $route['default_controller'] = 'front/index';
 //$route[ADMIN_URI_PREFIX] = 'mh/admin/index';
 //$route[ADMIN_URI_PREFIX.'/(.*)'] = 'mh/admin/index';
 //$route['(.*)/(:any)'] = 'front/$2';
+$route['bbs'] = 'mh/bbs/index';
+$route['bbs/(.*)'] = 'mh/bbs/index';
 $route['bbs_comment/(.*)'] = 'mh/bbs_comment/index';
 $route['(.*)'] = 'front/$1';
 

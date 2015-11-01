@@ -48,11 +48,13 @@ class Front extends MX_Controller {
 		
 		$conf = array(
 			'menu'=>$menu,
-			'menu_url'=>base_url().$menu['mn_uri'],
+			'base_url'=>base_url().$menu['mn_uri'],
 		);
 		$this->load->module('mh/'.$menu['mn_module'],$conf);
 		if(!class_exists($menu['mn_module'],false)){
 			show_error('모듈이 없습니다.',404);
+		}else{
+			$this->{$menu['mn_module']}->index_as_front($conf);
 		}
 		return true;
 	}

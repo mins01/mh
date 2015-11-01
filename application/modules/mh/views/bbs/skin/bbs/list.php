@@ -1,5 +1,5 @@
 <?
-//$bm_row,$b_rows
+//$bm_row,$b_rows,$b_n_rows
 //$start_num,$count
 
 ?>
@@ -45,11 +45,23 @@
 				<th class="text-center" width="80">작성자</th>
 				<th class="text-center hidden-xs hidden-sm"  width="120">등록일</th>
 			</tr>
+		<? foreach($b_n_rows as $r):
+		//print_r($r);
+		?>
+			<tr class="bbs-notice info <?=$b_idx==$r['b_idx']?'warning':''?> ">
+				<td class="text-center hidden-xs">공지</td>
+				<td class="bbs-title text-overflow-ellipsis"><a href="<?=html_escape($r['read_url'])?>"><?=html_escape($r['b_title'])?></a>
+				</td>
+				<td class="text-center"><?=html_escape($r['b_name'])?></td>
+				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($r['b_insert_date'])))?></td>
+
+			</tr>
+		<? endforeach; ?>
 		<? foreach($b_rows as $r):
 		//print_r($r);
 		?>
-			<tr class="bbs-dpeth bbs-dpeth-<?=$r['depth']?>">
-				<td class="text-center hidden-xs"><?=$start_num--?> (<?=$r['b_idx']?>)</td>
+			<tr class="bbs-dpeth bbs-dpeth-<?=$r['depth']?> <?=$b_idx==$r['b_idx']?'warning':''?> ">
+				<td class="text-center hidden-xs"><?=$start_num--?></td>
 				<td class="bbs-title text-overflow-ellipsis"><a href="<?=html_escape($r['read_url'])?>"><?=html_escape($r['b_title'])?></a>
 				</td>
 				<td class="text-center"><?=html_escape($r['b_name'])?></td>
