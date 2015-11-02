@@ -11,5 +11,3 @@ $config['layout']= array(
 $config['db']= array(
 'prefix'=>'',//현재 사용안함.
 );
-
-date_default_timezone_set('Asia/Seoul'); 

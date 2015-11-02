@@ -109,6 +109,7 @@ define('LOGIN_SECURE',false);
 define('ENCRYPTION_KEY_PREFIX','MH_');
 define('_FORM_DIR',dirname(__FILE__).'/../../_form');
 
+date_default_timezone_set('Asia/Seoul'); 
 
 
 
