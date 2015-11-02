@@ -23,7 +23,7 @@ class Front extends MX_Controller {
 		{
 				return call_user_func_array(array($this, $method), $params);
 		}
-		$this->index();
+		$this->index($method,$params);
 		
 	}
 	public function get_menu($uri){
@@ -33,28 +33,25 @@ class Front extends MX_Controller {
  * 분배 위치
  * @return null
  */
-	public function index(){
+	public function index($menu_uri,$params=array()){
 		$data = array();
-		//echo $uri = $this->uri->uri_string();
-		//echo $this->uri->ruri_string()
-		$menu_seg = $this->uri->segment(1,'');
-		$menu = $this->get_menu($menu_seg);
+
+		$menu = $this->get_menu($menu_uri);
 		if(!isset($menu)){
 			show_error('메뉴가 없습니다.',404);
 			//show_404();
 			return false;
 		}
 		$this->config->set_item('menu', $menu); 
-		
 		$conf = array(
 			'menu'=>$menu,
-			'base_url'=>base_url().$menu['mn_uri'],
+			'base_url'=>base_url($menu['mn_uri']),
 		);
 		$this->load->module('mh/'.$menu['mn_module'],$conf);
 		if(!class_exists($menu['mn_module'],false)){
 			show_error('모듈이 없습니다.',404);
 		}else{
-			$this->{$menu['mn_module']}->index_as_front($conf);
+			$this->{$menu['mn_module']}->index_as_front($conf,$params);
 		}
 		return true;
 	}

@@ -43,17 +43,22 @@
 		<?=nl2br(html_escape($b_row['b_text']))?>
 	</div>
 	<div class="panel-footer text-right">
-	
+		
+		<? if($permission['list']): ?>
 		<a href="<?=html_escape($bbs_conf['list_url'])?>" class="btn btn-sm btn-primary glyphicon glyphicon-list"> 목록</a>
+		<? endif; ?>
+		<? if($permission['answer']): ?>
 		<a href="<?=html_escape($b_row['answer_url'])?>"  class="btn btn-sm btn-info glyphicon glyphicon-pencil"> 답변</a>
-		<? if($b_row['is_editable']): ?>
+		<? endif; ?>
 		<div class="btn-group" role="group" aria-label="">
 			
-
+			<? if($permission['edit']): ?>
 			<a href="<?=html_escape($b_row['edit_url'])?>"  class="btn btn-sm btn-warning glyphicon glyphicon-pencil"> 수정</a>
+			<? endif; ?>
+			<? if($permission['delete']): ?>
 			<a href="<?=html_escape($b_row['delete_url'])?>"  class="btn btn-sm btn-danger glyphicon glyphicon-remove"> 삭제</a>
+			<? endif; ?>
 		</div>
-		<? endif; ?>
 		
 	
 	

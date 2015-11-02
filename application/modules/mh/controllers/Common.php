@@ -63,7 +63,9 @@ class Common extends MX_Controller {
 		}
 	}
 	public function set_login($m_row){
-		$m_row['is_admin'] = false;//관리자 유무
+		$m_row['m_level'] = (int)$m_row['m_level'];
+		$m_row['is_admin'] = @$m_row['m_level']==99;//관리자 유무
+		
 		unset($m_row['m_pass']);
 		switch(LOGIN_TYPE){
 			case 'cookie':
@@ -106,6 +108,10 @@ class Common extends MX_Controller {
 	}
 	public function get_login($key=NULL){
 		if(isset($key)){
+			if($key=='m_level'){
+				if(!isset($this->m_row[$key]))return 0;
+				else return $this->m_row[$key];
+			}
 			return isset($this->m_row[$key])?$this->m_row[$key]:null;
 		}
 		return $this->m_row;

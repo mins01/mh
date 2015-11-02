@@ -33,7 +33,9 @@
 				</form>
 			</div>
 			<div class="col-lg-2 col-sm-2 text-right">
+				<? if($permission['write']): ?>
 				<a href="<?=html_escape($bbs_conf['write_url'])?>" class="btn btn-success glyphicon glyphicon-pencil"> 작성</a>
+				<? endif; ?>
 			</div>
 		</div>
 	</div>
@@ -99,7 +101,9 @@
 				</form>
 			</div>
 			<div class="col-lg-2 col-sm-2 text-right">
+				<? if($permission['write']): ?>
 				<a href="<?=html_escape($bbs_conf['write_url'])?>" class="btn btn-success glyphicon glyphicon-pencil"> 작성</a>
+				<? endif; ?>
 			</div>
 		</div>
 	</div>
