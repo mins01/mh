@@ -24,3 +24,20 @@ body {
 	margin: 0;
 }
 .contents{ min-height:200px;}
+
+
+.btn-group[data-toggle="buttons"] .btn.active
+,.btn-group[data-toggle="buttons"] .btn:active{
+	-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.3);
+	box-shadow: inset 0 3px 5px rgba(0,0,0,.3);
+}
+.btn-group[data-toggle="buttons"] .btn::before
+,.btn-group[data-toggle="buttons"] .btn::before{
+	content: "◎ ";
+	visibility:hidden;
+}
+.btn-group[data-toggle="buttons"] .btn.active::before
+,.btn-group[data-toggle="buttons"] .btn:active::before{
+	visibility:visible;
+	
+}

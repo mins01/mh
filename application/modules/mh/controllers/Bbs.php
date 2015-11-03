@@ -9,19 +9,18 @@ class Bbs extends MX_Controller {
 	private $logedin = null;
 	public function __construct()
 	{
-		//var_dump(func_get_args());
-		//var_dump($conf);
+				$this->load->helper('form');
+		
 		$this->load->model('mh/bbs_master_model','bm_m');
 		$this->load->model('mh/bbs_model','bbs_m');
 		$this->load->module('mh/layout');
 		$this->load->module('mh/common');
 		
-		//$this->bbs_conf = $bbs_conf;
-		
 		$this->m_row = $this->common->get_login();
 		$this->logedin = & $this->common->logedin;
+		$this->config->load('bbs');
+		$this->bbs_conf = $this->config->item('bbs');
 
-		//$this->action();
 	}
 	
 	public function _remap($method, $params = array())
@@ -102,9 +101,11 @@ class Bbs extends MX_Controller {
 	}
 	
 	private function get_permission_lists($m_idx=''){
-		$is_mine = $m_idx == $this->common->get_login('m_idx');
+		
+		$is_mine = !empty($m_idx) && $m_idx == $this->common->get_login('m_idx');
 		$m_level = $this->common->get_login('m_level');
 		$is_guest_b_row = !isset($m_idx[0]);
+		$is_admin = $this->bm_row['bm_lv_admin']<=$m_level;
 		
 		if(!isset($m_level)) $m_level = 0;
 		return array(
@@ -114,6 +115,8 @@ class Bbs extends MX_Controller {
 			'edit'=>$this->bm_row['bm_lv_edit']<=$m_level &&($is_guest_b_row || $is_mine),
 			'answer'=>$this->bm_row['bm_lv_answer']<=$m_level,
 			'delete'=>$this->bm_row['bm_lv_delete']<=$m_level &&($is_guest_b_row || $is_mine),
+			'admin'=>$is_admin,
+			'mine'=>$is_mine,
 		);
 	}
 	private function extends_b_row(& $b_row,$get){
@@ -151,6 +154,7 @@ class Bbs extends MX_Controller {
 		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
 		if(!isset($get['tq'])){ $get['tq'] = ''; }
 		if(!isset($get['q'])){ $get['q'] = ''; }
+		if(!isset($get['ct'])){ $get['ct'] = ''; }
 		$get['page']=$this->bbs_conf['page'];
 		$b_rows = $this->bbs_m->select_for_list($get);
 		$this->extends_b_rows($b_rows,$get);
@@ -225,6 +229,13 @@ class Bbs extends MX_Controller {
 		if(!$permission['read']){
 			show_error('권한이 없습니다.');
 		}
+		if($b_row['b_secret']=='1' && !$permission['mine']){
+			$b_pass = $this->input->post('b_pass');
+			if(!$this->required_password($b_row,$b_pass,'비밀번호 확인')){
+				return;
+			}
+		}
+
 
 		$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$this->bbs_conf['mode']),true));
 		$this->config->set_item('layout_hide',false);
@@ -303,6 +314,8 @@ class Bbs extends MX_Controller {
 		if($this->input->post('process')){
 			return $this->_mode_process($b_row);
 		}
+
+		
 		$get = $this->input->get();
 		$post = $this->input->post();
 
@@ -399,7 +412,8 @@ class Bbs extends MX_Controller {
 		$post = $this->input->post();
 		unset($post['process']);
 		
-		if(!$b_row['is_'.$process.'able']){
+		$permission = $this->get_permission_lists($b_row['m_idx']);
+		if(!$permission[$process]){
 			show_error('권한이 없습니다.');
 		}
 		

@@ -31,45 +31,30 @@
 		
 		<li class="list-group-item form-inline">
 			
-				<div class="input-group">
-					<div class="input-group-addon">링크</div>
-					<input type="text" class="form-control"  name="b_link" aria-label="링크" placeholder="http://mins01.com/mh/" style="min-width:200px" value="<?=html_escape($b_row['b_link'])?>">
-				</div>
-			<select name="b_category" class="selectpicker show-tick" style="width:8em" data-width="100px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리">
-
-				<option value="" <?=$b_row['b_category']==''?'selected':''?>>없음</option>
-				<option value="카테고리" <?=$b_row['b_category']=='카테고리'?'selected':''?>>카테고리</option>
-
-			</select>
-			<select name="b_html" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="글형식 설정" title="글형식"  data-header="글형식 설정">
-
-				<option value="t" <?=$b_row['b_html']=='t'?'selected':''?> >Text</option>
-				<option value="t" <?=$b_row['b_html']=='p'?'selected':''?> >Pre</option>
-				<option value="t" <?=$b_row['b_html']=='h'?'selected':''?> >html</option>
-				<option value="r" <?=$b_row['b_html']=='r'?'selected':''?> >rawHtml</option>
-
-			</select>
-			
+			<div class="input-group">
+				<div class="input-group-addon">링크</div>
+				<input type="text" class="form-control"  name="b_link" aria-label="링크" placeholder="http://mins01.com/mh/" style="min-width:200px" value="<?=html_escape($b_row['b_link'])?>">
+			</div>
+			<? if($bm_row['bm_use_category']=='1'): ?>
+			<?=form_dropdown('b_category', $bm_row['categorys'], $b_row['b_category'], 'class="selectpicker show-tick" style="width:8em" data-width="100px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리"')?>
+			<? endif; ?>
+			<? if($bm_row['bm_use_secret']=='1'): ?>
 			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-success  <?=!$b_row['b_secret']?'active':''?>">
-					<input type="radio" name="b_secret" value="0" autocomplete="off" <?=!$b_row['b_secret']?'checked':''?>>공개글
+				<label class="btn btn-success  <?=!$b_row['b_secret']?'active':''?>"><input type="radio" name="b_secret" value="0" autocomplete="off" <?=!$b_row['b_secret']?'checked':''?>>공개글
 				</label>
-				<label class="btn btn-warning <?=$b_row['b_secret']=='1'?'active':''?>">
-					<input type="radio" name="b_secret" value="1" autocomplete="off" <?=$b_row['b_secret']=='1'?'checked':''?>>비밀글
+				<label class="btn btn-warning <?=$b_row['b_secret']=='1'?'active':''?>"><input type="radio" name="b_secret" value="1" autocomplete="off" <?=$b_row['b_secret']=='1'?'checked':''?>>비밀글
 				</label>
 			</div>
+			<? endif; ?>
 			
-			<select name="b_notice" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="공지글 설정" title="공지글" data-header="공지글 설정">
-				
-				<option value="0" <?=$b_row['b_notice']=='0'?'selected':''?>>일반글</option>
-				<?
-					for($i=1,$m=10;$i<$m;$i++):
-				?>
-				<option value="<?=$i?>" <?=$b_row['b_notice']==$i?'selected':''?>>Lv.<?=$i?></option>
-				<?
-					endfor;
-				?>
-			</select>
+			<?=form_dropdown('b_html', $permission['admin']?$bbs_conf['b_htmls_for_admin']:$bbs_conf['b_htmls'], $b_row['b_html'], ' class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="글형식" title="글형식"  data-header="글형식"')?>
+			
+			<?
+			if($permission['admin']){
+			echo form_dropdown('b_notice', $bbs_conf['b_notices'], $b_row['b_notice'], 'class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="공지설정" title="공지글" data-header="공지글 설정"');
+			}
+			?>
+
 		</li>
 	</ul>
 	<div class="panel-body" style="min-height:200px">

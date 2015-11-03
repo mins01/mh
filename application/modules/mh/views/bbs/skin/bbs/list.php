@@ -19,6 +19,9 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-btn">
+								<? if($bm_row['bm_use_category']=='1'): ?>
+								<?=form_dropdown('ct', $bm_row['categorys'], isset($get['ct'])?$get['ct']:'', 'class="selectpicker show-tick" style="width:8em" data-width="80px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리"')?>
+								<? endif; ?>
 								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
 								<option value="title" <?=$get['tq']=='title'?'selected':''?>>제목</option>
 								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>
@@ -64,7 +67,9 @@
 		?>
 			<tr class="bbs-dpeth bbs-dpeth-<?=$r['depth']?> <?=$b_idx==$r['b_idx']?'warning':''?> ">
 				<td class="text-center hidden-xs"><?=$start_num--?></td>
-				<td class="bbs-title text-overflow-ellipsis"><a href="<?=html_escape($r['read_url'])?>"><?=html_escape($r['b_title'])?></a>
+				<td class="bbs-title text-overflow-ellipsis">
+				<? if(isset($r['b_category'])): ?><span class="label label-primary"><?=html_escape($r['b_category'])?></span><? endif; ?>
+				<a href="<?=html_escape($r['read_url'])?>"><?=html_escape($r['b_title'])?></a>
 				</td>
 				<td class="text-center"><?=html_escape($r['b_name'])?></td>
 				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($r['b_insert_date'])))?></td>
@@ -73,6 +78,11 @@
 		<? endforeach; ?>
 		</table>
 	</div>
+	<? if(count($b_rows)==0): ?>
+		<div class="panel-body">
+		<div class="alert alert-danger text-center" role="alert">게시물이 없습니다.</div>
+		</div>
+	<? endif; ?>
 	<div class="panel-footer">
 		<nav class="text-center">
 			<?=$pagination?>
@@ -87,6 +97,9 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-btn">
+								<? if($bm_row['bm_use_category']=='1'): ?>
+								<?=form_dropdown('ct', $bm_row['categorys'], isset($get['ct'])?$get['ct']:'', 'class="selectpicker show-tick" style="width:8em" data-width="80px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리"')?>
+								<? endif; ?>
 								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
 								<option value="title" <?=$get['tq']=='title'?'selected':''?>>제목</option>
 								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>

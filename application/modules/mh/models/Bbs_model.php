@@ -45,7 +45,10 @@ class Bbs_model extends CI_Model {
 				case 'text':$this->db->like('b_title',$get['q'], 'both');break;
 			}
 		}
-		
+		//-- 카테고리
+		if(isset($get['ct'][0])){
+			$this->db->where('b_category',$get['ct']);
+		}
 		return true;
 
 	}

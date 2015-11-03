@@ -7,8 +7,13 @@
 <div class="panel panel-primary center-block" style="min-width:200px;max-width:600px;" >
 	<div class="panel-heading">
 		<h3 class="panel-title text-center bbs-title"><?=html_escape($title)?></h3>
+		
 	</div>
 	<div class="panel-body" >
+		<? if(isset($sub_title[0])): ?>
+		<h3 class="panel-title text-center bbs-title"><?=html_escape($sub_title)?></h3>
+		<hr>
+		<? endif; ?>
 		<div class="form-group">
 			<label for="b_pass" class="col-sm-2 control-label">비밀번호</label>
 			<div class="col-sm-10">
