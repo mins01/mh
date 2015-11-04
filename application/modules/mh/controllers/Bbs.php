@@ -172,7 +172,7 @@ class Bbs extends MX_Controller {
 		'def_url'=>$def_url
 		),true);
 		if(!$with_read){
-			$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$this->bbs_conf['mode']),true));
+			$this->config->set_item('layout_head_contents',$this->get_head_contents('list'));
 			$this->config->set_item('layout_hide',false);
 			$this->config->set_item('layout_title','list : '.$this->bm_row['bm_title']);
 		}
@@ -214,7 +214,9 @@ class Bbs extends MX_Controller {
 		}
 		return true;
 	}
-	
+	public function get_head_contents($mode){
+		return $this->load->view( $this->skin_path.'/head_contents',array('mode'=>$mode,'bm_row'=>$this->bm_row),true);
+	}
 	public function mode_read($b_idx){
 		if(!$b_idx){
 			show_error('게시물 아이디가 없습니다');
@@ -237,7 +239,7 @@ class Bbs extends MX_Controller {
 		}
 
 
-		$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$this->bbs_conf['mode']),true));
+		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','read : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
 		
@@ -321,7 +323,7 @@ class Bbs extends MX_Controller {
 
 		$this->extends_b_row($b_row,$get);
 
-		$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$mode),true));
+		$this->config->set_item('layout_head_contents',$this->get_head_contents($mode));
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',''.$mode.' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
 		
@@ -370,7 +372,7 @@ class Bbs extends MX_Controller {
 			show_error('권한이 없습니다.');
 		}
 
-		$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$this->bbs_conf['mode']),true));
+		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',''.$this->bbs_conf['mode'].' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
 		
@@ -417,7 +419,7 @@ class Bbs extends MX_Controller {
 			show_error('권한이 없습니다.');
 		}
 		
-		$this->config->set_item('layout_head_contents',$this->load->view( $this->skin_path.'/head_contents',array('mode'=>$this->bbs_conf['mode']),true));
+		$this->config->set_item('layout_head_contents',$this->get_head_contents($process));
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',''.$this->bbs_conf['mode'].' : process : '.$this->bm_row['bm_title']);
 		
