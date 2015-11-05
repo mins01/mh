@@ -1,14 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Member extends MX_Controller {
+class Staff extends MX_Controller {
 	
 	public function __construct()
 	{
 		//var_dump(func_get_args());
 		//var_dump($conf);
-		//$this->load->model('bbs_master_model','bm_m');
-		$this->load->model('mh/member_model','member_m');
-		$this->load->module('mh/common');
+		$this->load->model('mh_admin/staff_model','staff_m');
+		//$this->load->module('mh/common');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
 	}
@@ -31,52 +30,52 @@ class Member extends MX_Controller {
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','로그인');
 		
-		$this->load->view('mh/member/login',$data);
+		$this->load->view('mh_admin/staff/login',$data);
 	}
 	
 	public function login_process(){
 		
 		$this->config->set_item('layout_hide',true);
 		$this->config->set_item('layout_title','로그인 처리');
-		
-		$m_id = $this->input->post('m_id');
-		$m_pass = $this->input->post('m_pass');
-		$enc_m_pass = $this->member_m->hash($m_pass);
+
+		$adm_id = $this->input->post('adm_id');
+		$adm_pass = $this->input->post('adm_pass');
+		$enc_m_pass = $this->staff_m->hash($adm_pass);
 		$ret_url = $this->input->post('ret_url');
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
 		}
 		
 		
-		$this->form_validation->set_rules('m_id', '아이디', 'required|min_length[1]|max_length[100]');
-		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[1]|max_length[40]');
+		$this->form_validation->set_rules('adm_id', '아이디', 'required|min_length[1]|max_length[100]');
+		$this->form_validation->set_rules('adm_pass', '비밀번호', 'required|min_length[1]|max_length[40]');
 		if ($this->form_validation->run() == FALSE){
 			$this->config->set_item('layout_hide',false);
 			$data = array(
 				'ret_url' => $ret_url,
 			);
-			return $this->load->view('mh/member/login',$data);
+			return $this->load->view('mh_admin/staff/login',$data);
 		}	
 		
-		$m_row = $this->member_m->select_by_m_id($m_id);
+		$adm_row = $this->staff_m->select_by_m_id($adm_id);
 		
-		if(!$m_row){
+		if(!$adm_row){
 			return $this->login_process_end(true,'해당 회원 정보가 없습니다.');
 		}
-		if($m_row['m_pass'] != $m_pass && $m_row['m_pass'] != $enc_m_pass){
+		if($adm_row['adm_pass'] != $adm_pass && $adm_row['adm_pass'] != $enc_m_pass){
 			return $this->login_process_end(true,'해당 회원 정보를 찾을 수 없습니다.');
 		}
 		//-- 로그인 처리
-		$this->common->set_login($m_row);
-		$this->member_m->set_m_login_date($m_row['m_idx']);
+		$this->common->set_login($adm_row);
+		$this->staff_m->set_m_login_date($adm_row['adm_idx']);
 		return $this->login_process_end(false,'로그인에 성공하였습니다.',$ret_url);
 	}
 	
-	private function relogin($m_idx){
+	private function relogin($adm_idx){
 		//-- 로그인 처리
-		$m_row = $this->member_m->select_by_m_idx($m_idx);
-		$r = $this->common->set_login($m_row);
-		$this->member_m->set_m_login_date($m_idx);
+		$adm_row = $this->staff_m->select_by_m_idx($adm_idx);
+		$r = $this->common->set_login($adm_row);
+		$this->staff_m->set_m_login_date($adm_idx);
 		return $r;
 	}
 	
@@ -131,15 +130,15 @@ class Member extends MX_Controller {
 	public function join_process(){
 		$this->config->set_item('layout_hide',true);
 		$this->config->set_item('layout_title','회원가입 처리');
-		$m_idx = $this->member_m->join($this->input->post());
+		$adm_idx = $this->staff_m->join($this->input->post());
 		
-		$m_row = $this->member_m->select_by_m_idx($m_idx);
-		if(!$m_row){
+		$adm_row = $this->staff_m->select_by_m_idx($adm_idx);
+		if(!$adm_row){
 			return $this->login_process_end(true,'해당 회원 정보가 없습니다.');
 		}
 		//-- 로그인 처리
-		$this->common->set_login($m_row);
-		$this->member_m->set_m_login_date($m_row['m_idx']);
+		$this->common->set_login($adm_row);
+		$this->staff_m->set_m_login_date($adm_row['m_idx']);
 		
 		$ret_url = $this->input->post('ret_url');
 		if(!$ret_url){
@@ -178,29 +177,29 @@ class Member extends MX_Controller {
 	}
 
 	private function modify_process(){
-		$m_idx = $this->common->get_login('m_idx');
-		if($this->member_m->is_duplicate_m_nick($this->input->post('m_nick'),$m_idx)){
+		$adm_idx = $this->common->get_login('m_idx');
+		if($this->staff_m->is_duplicate_m_nick($this->input->post('m_nick'),$adm_idx)){
 			$this->common->redirect('이미 사용중인 닉네임입니다.','');
 		}
 		$sets = array(
 		'm_nick'=>$this->input->post('m_nick'),
 		);
-		if(!$this->member_m->modify($m_idx,$sets)){
-			$this->common->redirect($this->member_m->msg,'');
+		if(!$this->staff_m->modify($adm_idx,$sets)){
+			$this->common->redirect($this->staff_m->msg,'');
 		}
 		$this->db->last_query();
-		$this->relogin($m_idx);
+		$this->relogin($adm_idx);
 		$this->common->redirect('정보를 수정하였습니다.','');
 	}
 	
 	public function required_password(){
 		$data = array('error_msg'=>'');
 		$error = false;
-		$m_idx = $this->common->get_login('m_idx');
+		$adm_idx = $this->common->get_login('m_idx');
 		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[4]|max_length[40]');
 		if ($this->form_validation->run() == FALSE){
 			$error = true;
-		}else if(!$this->member_m->check_m_pass_with_m_idx($m_idx,$this->input->post('m_pass'))){
+		}else if(!$this->staff_m->check_m_pass_with_m_idx($adm_idx,$this->input->post('m_pass'))){
 			$error = true;
 			$data['error_msg'] = '<div class="text-danger">비밀번호를 확인해주세요.</div>';
 		}
@@ -235,12 +234,12 @@ class Member extends MX_Controller {
 	}
 	
 	private function search_id_process(){
-		$m_nick = $this->input->post('m_nick');
-		$m_id_part = $this->input->post('m_id_part');
-		$m_id = $this->member_m->search_m_id($m_nick,$m_id_part);
+		$adm_nick = $this->input->post('m_nick');
+		$adm_id_part = $this->input->post('m_id_part');
+		$adm_id = $this->staff_m->search_m_id($adm_nick,$adm_id_part);
 		//echo $this->db->last_query();
 		$data = array(
-			'm_id'=>$m_id,
+			'm_id'=>$adm_id,
 		);
 		
 		$this->load->view('mh/member/search_id_process',$data);
@@ -272,13 +271,13 @@ class Member extends MX_Controller {
 		}
 	}
 	private function search_pw_process(){
-		$m_nick = $this->input->post('m_nick');
-		$m_id = $this->input->post('m_id');
-		$m_id = $this->member_m->search_m_id($m_nick,$m_id);
+		$adm_nick = $this->input->post('m_nick');
+		$adm_id = $this->input->post('m_id');
+		$adm_id = $this->staff_m->search_m_id($adm_nick,$adm_id);
 		//echo $this->db->last_query();
 		$data = array(
-			'm_id'=>$m_id,
-			'm_nick'=>$m_nick,
+			'm_id'=>$adm_id,
+			'm_nick'=>$adm_nick,
 		);
 		
 		$this->load->view('mh/member/search_pw_process',$data);
@@ -294,34 +293,34 @@ class Member extends MX_Controller {
 		}
 		
 		
-		$m_nick = $this->input->post('m_nick');
-		$m_id = $this->input->post('m_id');
-		$m_row = $this->member_m->select_by_m_id($m_id);
+		$adm_nick = $this->input->post('m_nick');
+		$adm_id = $this->input->post('m_id');
+		$adm_row = $this->staff_m->select_by_m_id($adm_id);
 		
-		if($m_row['m_nick']!=$m_nick){
+		if($adm_row['m_nick']!=$adm_nick){
 			show_error('잘못된 접근.');
 		}
 		//echo $this->db->last_query();
 		$data = array(
-			'm_id'=>$m_id,
-			'm_nick'=>$m_nick,
+			'm_id'=>$adm_id,
+			'm_nick'=>$adm_nick,
 		);
 
-		$m_key_arr = array(
-			'm_idx'=>$m_row['m_idx'],
-			'm_pass_md5'=>md5($m_row['m_pass']),
-			'm_update_date'=>$m_row['m_update_date'],
+		$adm_key_arr = array(
+			'm_idx'=>$adm_row['m_idx'],
+			'm_pass_md5'=>md5($adm_row['m_pass']),
+			'm_update_date'=>$adm_row['m_update_date'],
 		);
-		$m_key = $this->common->enc_str($m_key_arr);
-		//echo $m_key,'<br>';
-		$reset_pw_url = base_url('reset_pw').'?m_key='.urlencode($m_key);
+		$adm_key = $this->common->enc_str($adm_key_arr);
+		//echo $adm_key,'<br>';
+		$reset_pw_url = base_url('reset_pw').'?m_key='.urlencode($adm_key);
 		$data['reset_pw_url'] = $reset_pw_url;
 		
 		$message = file_get_contents(_FORM_DIR.'/mail/reset_pw.html');
 		$binds = array(
 			'href'=>$reset_pw_url,
 		);
-		$result = $this->common->send_mail($m_id,'비밀번호 변경 안내 메일',$message,$binds);
+		$result = $this->common->send_mail($adm_id,'비밀번호 변경 안내 메일',$message,$binds);
 		
 		$data['result'] = $result;
 		//var_dump($this->email);
@@ -335,21 +334,21 @@ class Member extends MX_Controller {
 	
 		$data = array('error_msg'=>'');
 		$error = false;
-		$m_key = $this->input->post_get('m_key',true);
-		$data['m_key'] = $m_key;
-		if(!$m_key){
+		$adm_key = $this->input->post_get('m_key',true);
+		$data['m_key'] = $adm_key;
+		if(!$adm_key){
 			show_error('잘못된 접근입니다.');
 		}
-		$tmp = $this->common->dec_str($m_key);
+		$tmp = $this->common->dec_str($adm_key);
 		if(!isset($tmp['m_idx']) || !isset($tmp['m_pass_md5']) || !isset($tmp['m_update_date'])){
 			show_error('잘못된 접근입니다..');
 		}
-		$m_row = $this->member_m->select_by_m_idx($tmp['m_idx']);
+		$adm_row = $this->staff_m->select_by_m_idx($tmp['m_idx']);
 
-		if(!isset($m_row['m_idx']) || !isset($m_row['m_update_date'])){
+		if(!isset($adm_row['m_idx']) || !isset($adm_row['m_update_date'])){
 			show_error('잘못된 접근입니다...');
 		}
-		if($tmp['m_pass_md5'] != md5($m_row['m_pass']) || $m_row['m_update_date'] != $tmp['m_update_date']){
+		if($tmp['m_pass_md5'] != md5($adm_row['m_pass']) || $adm_row['m_update_date'] != $tmp['m_update_date']){
 			show_error('잘못된 접근입니다....');
 		}
 		
@@ -364,26 +363,26 @@ class Member extends MX_Controller {
 
 		$process = $this->input->post('process');
 		if($process=='reset_pw'){
-			$this->reset_pw_process($m_row);
+			$this->reset_pw_process($adm_row);
 		}else{
 			show_error('이상접근');
 		}
 	}
-	public function reset_pw_process($m_row){
+	public function reset_pw_process($adm_row){
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','비밀번호 재설정');
-		$m_id = $this->input->post('m_id');
-		$m_pass = $this->input->post('m_pass');
-		$m_pass_re = $this->input->post('m_pass_re');
+		$adm_id = $this->input->post('m_id');
+		$adm_pass = $this->input->post('m_pass');
+		$adm_pass_re = $this->input->post('m_pass_re');
 		
-		if($m_id != $m_row['m_id']){
+		if($adm_id != $adm_row['m_id']){
 			$this->config->set_item('layout_hide',true);
 			return $this->common->history_back('잘못된 아이디입니다');
 		}
 		$sets = array(
-			'm_pass'=>$m_pass,
+			'm_pass'=>$adm_pass,
 		);
-		$this->member_m->update_row($m_row['m_idx'],$sets);
+		$this->staff_m->update_row($adm_row['m_idx'],$sets);
 		$data = array();
 		return $this->load->view('mh/member/reset_pw_ok',$data);
 		

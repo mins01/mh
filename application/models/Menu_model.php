@@ -14,8 +14,8 @@ class Menu_model extends CI_Model {
 		
 	}
 	
-	public function load_db(){
-		$this->menu_rows = $this->_get_menu_rows();
+	public function load_db($tbl_nm='menu'){
+		$this->menu_rows = $this->_get_menu_rows($tbl_nm);
 		$this->menu_tree = $this->_mapping_menu_tree($this->menu_rows);
 	}
 	
@@ -26,10 +26,10 @@ class Menu_model extends CI_Model {
 		return $this->menu_tree;
 	}
 	
-	private function _get_menu_rows(){
+	private function _get_menu_rows($tbl_nm='menu'){
 		$rows = array();
 		$row = array();
-		$q = $this->db->from(DB_PREFIX.'menu')->where('mn_is_use',1)
+		$q = $this->db->from(DB_PREFIX.$tbl_nm)->where('mn_is_use',1)
 		->order_by('mn_parent_uri')->order_by('mn_sort')
 		->get();
 		foreach ($q->result_array() as $row)
@@ -61,6 +61,7 @@ class Menu_model extends CI_Model {
 		$menu_tree = null;
 		foreach($menu_rows as & $r){
 			if($r['mn_uri']=='' && $r['mn_parent_uri']==''){
+				$r['child']=array();
 				$menu_tree = & $r;
 			}
 			if($r['mn_uri'] == $r['mn_parent_uri']){

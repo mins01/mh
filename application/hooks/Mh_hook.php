@@ -16,7 +16,8 @@ class Mh_hook{
 		if($layout_disable){
 		}else{
 			
-			$this->CI->load->module('mh/layout');
+			//$this->CI->load->module('mh/layout');
+			//$this->CI->load->module('mh_admin/layout');
 			$this->CI->output->set_output(
 				$this->CI->layout->layout_head().
 				$this->CI->output->get_output().

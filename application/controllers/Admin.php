@@ -1,25 +1,20 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Front extends MX_Controller {
+class Admin extends MX_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-		// $this->load->module('www/common');
-		// $this->load->model('product_model','product_m');
-		// $this->load->model('tag_model','tag_m');
-		// $this->load->model('bbs_model','bbs_m');
-
-		//$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
-		//$this->load->driver('cache');
-		
 		$this->config->load('conf_front'); // 프론트 사이트 설정
-		$this->load->module('mh/layout');
-		$this->load->module('mh/common');
+		$this->config->load('conf_admin'); // 관리자 사이트 설정
+		$this->load->module('mh_admin/common');
+		$this->load->module('mh_admin/layout');
 	}
 
 	public function _remap($method, $params = array())
 	{
+		$this->config->set_item('base_url',base_url($this->uri->segment(1)));
+
 		$menu_uri = $method=='index'?'':$method;
 		if (method_exists($this, $method))
 		{
@@ -36,6 +31,10 @@ class Front extends MX_Controller {
  * @return null
  */
 	public function index($menu_uri,$params=array()){
+		if(!$this->common->required_login()){
+			return false;
+		}
+		
 		$data = array();
 
 		$menu = $this->get_menu($menu_uri);
@@ -49,7 +48,7 @@ class Front extends MX_Controller {
 			'menu'=>$menu,
 			'base_url'=>base_url($menu['mn_uri']),
 		);
-		$this->load->module('mh/'.$menu['mn_module'],$conf);
+		$this->load->module('mh_admin/'.$menu['mn_module'],$conf);
 		if(!class_exists($menu['mn_module'],false)){
 			show_error('모듈이 없습니다.',404);
 		}else{
@@ -59,34 +58,35 @@ class Front extends MX_Controller {
 	}
 	
 	public function login(){
-		$this->load->module('mh/member');
-		$this->member->login();
+		$this->load->module('mh_admin/staff');
+		$this->staff->login();
+		$this->config->set_item('layout_hide',true);
 	}
 	public function user_info(){
-		$this->load->module('mh/member');
-		$this->member->modify();
+		$this->load->module('mh/staff');
+		$this->staff->modify();
 	}
 	public function logout(){
-		$this->load->module('mh/member');
-		$this->member->logout();
+		$this->load->module('mh_admin/staff');
+		$this->staff->logout();
 	}
-	public function join(){
-		$this->load->module('mh/member');
-		$this->member->join();
-	}
+	// public function join(){
+		// $this->load->module('mh/staff');
+		// $this->staff->join();
+	// }
 	
-	public function search_id(){
-		$this->load->module('mh/member');
-		$this->member->search_id();
-	}
-	public function search_pw(){
-		$this->load->module('mh/member');
-		$this->member->search_pw();
-	}
-	public function reset_pw(){
-		$this->load->module('mh/member');
-		$this->member->reset_pw();
-	}
+	// public function search_id(){
+		// $this->load->module('mh/staff');
+		// $this->staff->search_id();
+	// }
+	// public function search_pw(){
+		// $this->load->module('mh/staff');
+		// $this->staff->search_pw();
+	// }
+	// public function reset_pw(){
+		// $this->load->module('mh/staff');
+		// $this->staff->reset_pw();
+	// }
 
 
 }
