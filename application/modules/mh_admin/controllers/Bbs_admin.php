@@ -1,20 +1,21 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Bbs extends MX_Controller {
+class Bbs_admin extends MX_Controller {
 	private $bbs_conf = array();
 	private $bm_row = array();
 	private $m_row = array();
 	private $skin_path = '';
 	private $base_url = '';
 	private $logedin = null;
+	private $limit = 20;
 	public function __construct()
 	{
 				$this->load->helper('form');
 		
 		$this->load->model('mh/bbs_master_model','bm_m');
 		$this->load->model('mh/bbs_model','bbs_m');
-		$this->load->module('mh/layout');
-		$this->load->module('mh/common');
+		$this->load->module('mh_admin/layout');
+		$this->load->module('mh_admin/common');
 		
 		$this->m_row = $this->common->get_login();
 		$this->logedin = & $this->common->logedin;
@@ -33,42 +34,26 @@ class Bbs extends MX_Controller {
 	}
 	// /bbs로 접근할 경우, 맨 처음은 b_id가 된다.
 	public function index($param){
-		$b_id = isset($param[0][0])?$param[0]:'';
-		$mode = isset($param[1][0])?$param[1]:'list';
-		$b_idx = isset($param[2][0])?$param[2]:'';
-		if(!isset($b_id[0])){
-			show_error('게시판 아이디가 없습니다.');
-		}
-		$mode = $this->uri->segment(3,'list');//option
-		$b_idx = $this->uri->segment(4);//option
-		$this->set_base_url(base_url('bbs/'.$b_id));
-		$this->action($b_id,$mode,$b_idx);
+		$mode = isset($param[0][0])?$param[0]:'list';
+		$b_id = isset($param[1][0])?$param[1]:'';
+		//$mode = $this->uri->segment(3,'list');//option
+		
+		$this->set_base_url(ADMIN_URI_PREFIX.'bbs_admin');
+		$this->action($mode,$b_id);
 	}
 	// front 컨트롤에서 접근할 경우.
 	public function index_as_front($conf,$param){
 		$base_url = $conf['base_url'];
 		$b_id = $conf['menu']['mn_key1'];
 		$mode = isset($param[0][0])?$param[0]:'list';
-		$b_idx = isset($param[1][0])?$param[1]:'list';
-		if(!isset($b_id[0])){
-			show_error('게시판 아이디가 없습니다.');
-		}
-		$this->set_base_url($base_url);
-		$this->action($b_id,$mode,$b_idx);
+		//$this->set_base_url($base_url);
+		$this->action($mode,$b_id);
 	}
 
-	public function action($b_id,$mode,$b_idx){
+	public function action($mode,$b_id){
 		//-- 게시판 마스터 정보 가져오기
-		if(!isset($b_id)){
-			show_error('게시판 정보가 잘못되었습니다.');
-		}
-		$this->bm_row = $this->bm_m->get_bm_row($b_id);
-		if($this->bm_row['bm_open']!='1'){
-			show_error('사용 불가능한 게시판 입니다.');
-		}
-		//print_r($conf['bm_row']);
-		$this->bbs_m->set_bm_row($this->bm_row); //여기서 모델에 사용할 게시판 아이디가 고정됨
-		$this->skin_path = 'mh/bbs/skin/'.$this->bm_row['bm_skin'];
+
+		$this->skin_path = 'mh_admin/bbs_admin';
 
 		$this->bbs_conf['page'] = (int)$this->input->get('page',1);
 		if(!is_int($this->bbs_conf['page']) || $this->bbs_conf['page'] <= 0){
@@ -89,57 +74,51 @@ class Bbs extends MX_Controller {
 		$this->bbs_conf['mode'] = $mode;
 		
 		
-		$this->{'mode_'.$mode}($b_idx);
-		
+		$this->{'mode_'.$mode}($b_id);
 
 	}
 
 	private function pagination($get,$total_rows){
-		$max_page = ceil($total_rows/$this->bm_row['bm_page_limit']);
+		$max_page = ceil($total_rows/$this->limit);
 		$uri = $this->base_url . "/list";
 		return generate_paging($get,$max_page,$uri);
 	}
 	
 	private function get_permission_lists($m_idx=''){
-		
-		$is_mine = !empty($m_idx) && $m_idx == $this->common->get_login('m_idx');
-		$m_level = $this->common->get_login('m_level');
-		$is_guest_b_row = !isset($m_idx[0]);
-		$is_admin = $this->bm_row['bm_lv_admin']<=$m_level;
+		$adm_level = $this->common->get_login('adm_level');
+		$is_admin = 1<=$adm_level;
 		
 		if(!isset($m_level)) $m_level = 0;
 		return array(
-			'list'=>$this->bm_row['bm_lv_list']<=$m_level,
-			'read'=>$this->bm_row['bm_lv_read']<=$m_level,
-			'write'=>$this->bm_row['bm_lv_write']<=$m_level,
-			'edit'=>$this->bm_row['bm_lv_edit']<=$m_level &&($is_guest_b_row || $is_mine),
-			'answer'=>$this->bm_row['bm_lv_answer']<=$m_level,
-			'delete'=>$this->bm_row['bm_lv_delete']<=$m_level &&($is_guest_b_row || $is_mine),
+			'list'=>$is_admin,
+			'read'=>$is_admin,
+			'write'=>$is_admin,
+			'edit'=>$is_admin,
+			'answer'=>$is_admin,
+			'delete'=>$is_admin,
 			'admin'=>$is_admin,
-			'mine'=>$is_mine,
+			'mine'=>$is_admin,
 		);
 	}
-	private function extends_b_row(& $b_row,$get){
+	private function extends_bm_row(& $bm_row,$get){
+				
+		$bm_row['read_url'] = $this->base_url . '/read/'.$bm_row['b_id'].'?'.http_build_query($get);
 		
-		$b_row['read_url'] = $this->base_url . '/read/'.$b_row['b_idx'].'?'.http_build_query($get);
+		$bm_row['answer_url'] = $this->base_url . '/answer/'.$bm_row['b_id'].'?'.http_build_query($get);
 		
-		$b_row['answer_url'] = $this->base_url . '/answer/'.$b_row['b_idx'].'?'.http_build_query($get);
+		$bm_row['edit_url'] = $this->base_url . '/edit/'.$bm_row['b_id'].'?'.http_build_query($get);
 		
-		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_row['b_idx'].'?'.http_build_query($get);
+		$bm_row['delete_url'] = $this->base_url . '/delete/'.$bm_row['b_id'].'?'.http_build_query($get);
 		
-		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx'].'?'.http_build_query($get);
-		
-		unset($get['b_idx']);
-		
-		$b_row['write_url'] = $this->base_url . '/write?'.http_build_query($get);
+		$bm_row['write_url'] = $this->base_url . '/write?'.http_build_query($get);
 	}
-	private function extends_b_rows(&$b_rows,$get){
-		foreach($b_rows as & $r){
-			$this->extends_b_row($r,$get);
+	private function extends_bm_rows(&$bm_rows,$get){
+		foreach($bm_rows as & $r){
+			$this->extends_bm_row($r,$get);
 		}
 	}
 
-	public function mode_list($b_idx=null,$with_read=false){
+	public function mode_list($b_id=null){
 		
 		$permission = $this->get_permission_lists();
 		if(!$permission['list']){
@@ -156,37 +135,36 @@ class Bbs extends MX_Controller {
 		if(!isset($get['q'])){ $get['q'] = ''; }
 		if(!isset($get['ct'])){ $get['ct'] = ''; }
 		$get['page']=$this->bbs_conf['page'];
-		$b_rows = $this->bbs_m->select_for_list($get);
-		$this->extends_b_rows($b_rows,$get);
-		$b_n_rows = $this->bbs_m->select_for_notice_list($get);
-		$this->extends_b_rows($b_n_rows,$get);
-		$count = $this->bbs_m->count($get);
-		$start_num = $this->bbs_m->get_start_num($count,$get);
+		
+		$bm_rows = $this->bm_m->select_for_list($get);
+		//var_dump($bm_rows);
+		$this->extends_bm_rows($bm_rows,$get);
+		$count = $this->bm_m->count($get);
+		$start_num = $this->bm_m->get_start_num($count,$get);
 		
 		$tmp = $this->input->get();
 		$tmp['page'] ='page';
 		$def_url = $this->base_url . "/list?".str_replace('page=page','page={{page}}',http_build_query($tmp));
+
 		$pagination = $this->load->view($this->skin_path.'/pagination',array(
-		'max_page' => ceil($count/$this->bm_row['bm_page_limit']),
+		'max_page' => ceil($count/$this->limit),
 		'page'=>$this->bbs_conf['page'],
 		'def_url'=>$def_url
 		),true);
-		if(!$with_read){
-			$this->config->set_item('layout_head_contents',$this->get_head_contents('list'));
-			$this->config->set_item('layout_hide',false);
-			$this->config->set_item('layout_title','list : '.$this->bm_row['bm_title']);
-		}
+		
+		$this->config->set_item('layout_head_contents',$this->get_head_contents('list'));
+		$this->config->set_item('layout_hide',false);
+		$this->config->set_item('layout_title','list : 게시판관리자');
+	
 		$this->load->view($this->skin_path.'/list',array(
-		'b_rows' => $b_rows,
-		'b_n_rows'=>$b_n_rows,
-		'bm_row' => $this->bm_row,
+		'bm_rows' => $bm_rows,
 		'count' => $count,
-		'max_page' => ceil($count/$this->bm_row['bm_page_limit']),
+		'max_page' => ceil($count/$this->limit),
 		'start_num' => $start_num,
 		'get'=>$get,
 		'pagination' => $pagination,
 		'bbs_conf'=>$this->bbs_conf,
-		'b_idx'=>$b_idx,
+		'b_id'=>$b_id,
 		'permission'=>$permission,
 		));
 	}
@@ -217,6 +195,7 @@ class Bbs extends MX_Controller {
 	public function get_head_contents($mode){
 		return $this->load->view( $this->skin_path.'/head_contents',array('mode'=>$mode,'bm_row'=>$this->bm_row),true);
 	}
+	//-- 이건 사용안됨.
 	public function mode_read($b_idx){
 		if(!$b_idx){
 			show_error('게시물 아이디가 없습니다');
@@ -257,18 +236,18 @@ class Bbs extends MX_Controller {
 			$this->mode_list($b_idx,true);
 		}
 	}
-	public function mode_edit($b_idx){
-		if(!$b_idx){
-			show_error('게시물 아이디가 없습니다');
+	public function mode_edit($b_id){
+		if(!$b_id){
+			show_error('게시판 아이디가 없습니다');
 		}
-		$b_row = $this->bbs_m->select_by_b_idx($b_idx);
-		if(!$b_row){
-			show_error('게시물이 없습니다');
+		$bm_row = $this->bm_m->select_by_b_id($b_id);
+		if(!$bm_row){
+			show_error('게시판 없습니다');
 		}
-		$this->extends_b_row($b_row,$this->input->get());
+		$this->extends_bm_row($bm_row,$this->input->get());
 		
 
-		$this->_mode_form($b_row,'edit');
+		$this->_mode_form($bm_row,'edit');
 	}
 
 	public function mode_answer($b_idx){
@@ -297,57 +276,38 @@ class Bbs extends MX_Controller {
 		$this->_mode_form($b_row,'write');
 	}
 
-	private function _mode_form($b_row,$mode){
+	private function _mode_form($bm_row,$mode){
 		//print_r($conf);
 		
-		$permission = $this->get_permission_lists($b_row['m_idx']);
+		$permission = $this->get_permission_lists();
 		if(!$permission[$mode]){
 			show_error('권한이 없습니다.');
 		}
 		//print_r($permission);
 		
-		if($mode =='edit'){
-			$b_pass = $this->input->post('b_pass');
-			if(!$this->required_password($b_row,$b_pass)){
-				return;
-			}
-		}
-		
 		if($this->input->post('process')){
-			return $this->_mode_process($b_row);
+			return $this->_mode_process($bm_row);
 		}
 
 		
 		$get = $this->input->get();
 		$post = $this->input->post();
 
-		$this->extends_b_row($b_row,$get);
+		$this->extends_bm_row($bm_row,$get);
 
 		$this->config->set_item('layout_head_contents',$this->get_head_contents($mode));
 		$this->config->set_item('layout_hide',false);
-		$this->config->set_item('layout_title',''.$mode.' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
-		
-		if(isset($post['b_pass'])){
-			$b_row['b_pass'] = $post['b_pass'];
-		}else{
-			$b_row['b_pass'] = '';
-		}
-		if($mode =='write' || $mode =='answer'){
-			$b_row['b_pass'] = '';
-		}
+		$this->config->set_item('layout_title',''.$mode.' : '.$bm_row['bm_title'].' : 게시판관리자');
 		
 		
 		$this->load->view($this->skin_path.'/form',array(
-		'b_row' => $b_row,
-		'bm_row' => $this->bm_row,
+		'bm_row' => $bm_row,
 		'get'=>$get,
 		'bbs_conf'=>$this->bbs_conf,
 		'mode'=>$mode,
 		'process'=>$mode,
 		'm_row' => $this->m_row,
 		'logedin' => $this->logedin,
-		'input_b_name'=>!isset($b_row['b_insert_date']) && !$this->logedin, //이름을 입력 받아야하는가?
-		'input_b_pass'=>isset($b_row['b_pass'][0]) || !$this->logedin, //비밀번호를 입력 받아야하는가?
 		'permission'=>$permission,
 		));
 	}

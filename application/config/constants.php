@@ -91,7 +91,8 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 define('SITE_NAME','MH-테스트');
 define('SITE_ADMIN_MAIL','mins01.lycos.co.kr@gmail.com');
 define('SITE_URI_PREFIX', '/mh/'); // URI 앞부분 경로 (CI에서 제어 안하는 부분)
-define('ADMIN_URI_PREFIX', SITE_URI_PREFIX.'_admin/'); // 관리자 URI 기본 경로
+define('ADMIN_PREFIX', '_admin'); // 관리자 URI 기본 경로
+define('ADMIN_URI_PREFIX', SITE_URI_PREFIX.ADMIN_PREFIX.'/'); // 관리자 URI 기본 경로
 define('DB_PREFIX', 'mh_'); // DB 접두사
 define('HASH_KEY','mh'); //해시용 추가 문자열. 한번 설정 후 바꾸면 안됩니다!
 
@@ -102,7 +103,7 @@ define('LOGIN_NAME','SESS_MH');
 define('LOGIN_TYPE','cookie');
 define('LOGIN_EXPIRE',60*60*24*365);
 define('LOGIN_DOAMIN',$_SERVER['HTTP_HOST']);
-define('LOGIN_PATH',SITE_URI_PREFIX);
+define('LOGIN_PATH',substr(SITE_URI_PREFIX,0,-1));
 define('LOGIN_PREFIX','');
 define('LOGIN_SECURE',false);
 
@@ -110,7 +111,7 @@ define('ADMIN_LOGIN_NAME',md5('SESS_MH_ADMIN'));
 define('ADMIN_LOGIN_TYPE','cookie');
 define('ADMIN_LOGIN_EXPIRE',60*60*24*365);
 define('ADMIN_LOGIN_DOAMIN',$_SERVER['HTTP_HOST']);
-define('ADMIN_LOGIN_PATH',ADMIN_URI_PREFIX);
+define('ADMIN_LOGIN_PATH',substr(ADMIN_URI_PREFIX,0,-1));
 define('ADMIN_LOGIN_PREFIX','');
 define('ADMIN_LOGIN_SECURE',false);
 
