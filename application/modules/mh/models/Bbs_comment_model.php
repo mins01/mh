@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Bbs_comment_model extends CI_Model {
 	public $bm_row = array();
 	public $error = '';
-	private $tbl_bbs_comment = '';
+	private $tbl = '';
 	public function __construct()
 	{
 		// Call the CI_Model constructor
@@ -23,11 +23,11 @@ class Bbs_comment_model extends CI_Model {
 			$this->error = '게시판 테이블 정보가 없습니다.';
 			return false;
 		}
-		$this->tbl_bbs_comment = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_comment';
+		$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_comment';
 	}
 	//-- 목록과 카운팅용
 	private function _apply_list_where($get){
-		$this->db->from($this->tbl_bbs_comment);
+		$this->db->from($this->tbl);
 		
 		//-- 게시판 아이디
 		if(!isset($get['b_idx'])){
@@ -85,7 +85,7 @@ class Bbs_comment_model extends CI_Model {
 	}
 	//-- 빈 게시물 만들기
 	public function generate_empty_b_row(){
-		// $sql="DESC {$this->tbl_bbs_comment}";
+		// $sql="DESC {$this->tbl}";
 		// $rows = $this->db->query($sql)->result_array();
 		// foreach($rows as $r){
 		// echo "'{$r['Field']}'=>'',\n";
@@ -121,7 +121,7 @@ class Bbs_comment_model extends CI_Model {
 	}
 	//-- 게시물 하나 b_idx로 가져오기
 	public function select_by_b_idx($b_idx){
-		$this->db->from($this->tbl_bbs_comment);
+		$this->db->from($this->tbl);
 		
 		//-- 게시판 아이디
 		if(!isset($this->bm_row['b_id'])){
@@ -152,7 +152,7 @@ class Bbs_comment_model extends CI_Model {
 	//-- 글 수정
 	public function update_bc_row_as_where($where,$sets){
 		unset($sets['bc_idx']);
-		$this->db->from($this->tbl_bbs_comment)
+		$this->db->from($this->tbl)
 		->where($where)
 		->where('bc_isdel',0)
 		->set($sets)->set('bc_update_date','now()',false)->update();
@@ -164,7 +164,7 @@ class Bbs_comment_model extends CI_Model {
 		if(isset($sets['bc_pass'][0])){
 			$sets['bc_pass'] = $this->hash($sets['bc_pass']);
 		}
-		$this->db->from($this->tbl_bbs_comment)
+		$this->db->from($this->tbl)
 		->set($sets)
 		->set('bc_insert_date','now()',false)
 		->set('bc_update_date','now()',false)->insert();
@@ -188,11 +188,11 @@ class Bbs_comment_model extends CI_Model {
 	public function insert_answer_bc_row($bc_idx,$sets){
 		unset($sets['bc_idx']);
 		$v_bc_idx = $this->db->escape((int)$bc_idx);
-		$sql_bc_gidx = "(SELECT bc_gidx from {$this->tbl_bbs_comment} bbsd1 WHERE bbsd1.bc_idx = {$v_bc_idx})";
+		$sql_bc_gidx = "(SELECT bc_gidx from {$this->tbl} bbsd1 WHERE bbsd1.bc_idx = {$v_bc_idx})";
 		$sql_bc_gpos =
 "
 CONCAT(
-(SELECT bbsd1.bc_gpos FROM {$this->tbl_bbs_comment}  bbsd1 WHERE bbsd1.bc_idx = {$v_bc_idx})
+(SELECT bbsd1.bc_gpos FROM {$this->tbl}  bbsd1 WHERE bbsd1.bc_idx = {$v_bc_idx})
 ,
 LPAD(
 CONV(
@@ -205,8 +205,8 @@ SUBSTR(
 
 (SELECT 
 bbsd2.bc_gpos
-FROM {$this->tbl_bbs_comment}  bbsd1
-JOIN {$this->tbl_bbs_comment}  bbsd2 ON(bbsd2.bc_gpos LIKE CONCAT(bbsd1.bc_gpos,'__') AND bbsd2.bc_gidx = bbsd1.bc_gidx) 
+FROM {$this->tbl}  bbsd1
+JOIN {$this->tbl}  bbsd2 ON(bbsd2.bc_gpos LIKE CONCAT(bbsd1.bc_gpos,'__') AND bbsd2.bc_gidx = bbsd1.bc_gidx) 
 WHERE bbsd1.bc_idx = {$v_bc_idx}
 ORDER BY bc_gpos DESC LIMIT 1)
 
@@ -222,7 +222,7 @@ AS SIGNED )+1
 ";
 		
 		
-		$this->db->from($this->tbl_bbs_comment)
+		$this->db->from($this->tbl)
 		->set($sets)
 		->set('bc_gidx',$sql_bc_gidx,false)
 		->set('bc_gpos',$sql_bc_gpos,false)

@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //== 게시판 마스터 관리 모델
 
 class Bbs_master_model extends CI_Model {
-	private $tbl = '';
+	public $tbl = '';
 	public function __construct()
 	{
 		// Call the CI_Model constructor
@@ -79,5 +79,106 @@ class Bbs_master_model extends CI_Model {
 
 		return $this->db->count_all_results();
 	}
-
+	//-- 글 수정
+	public function update_bm_row($b_id,$sets){
+		return $this->update_bm_row_as_where(array('b_id'=>$b_id),$sets);
+	}
+	public function update_bm_row_as_where($where,$sets){
+		unset($sets['b_id']);
+		$this->db->from($this->tbl)
+		->where($where)
+		->set($sets)->set('bm_update_date','now()',false)->update();
+		return $this->db->affected_rows();
+	}
+	//-- 빈 게시물 만들기
+	public function generate_empty_bm_row(){
+		// $sql="DESC {$this->tbl_bbs_data}";
+		// $rows = $this->db->query($sql)->result_array();
+		// foreach($rows as $r){
+		// echo "'{$r['Field']}'=>'',\n";
+		// }
+		// print_r($rows);
+		$bm_row = array(
+			'b_id'=>'',
+			'bm_table'=>'',
+			'bm_title'=>'',
+			'bm_insert_date'=>'',
+			'bm_update_date'=>'',
+			'bm_open'=>'1',
+			'bm_skin'=>'bbs',
+			'bm_page_limit'=>'10',
+			'bm_title_length'=>'',
+			'bm_category'=>'',
+			'bm_use_category'=>'',
+			'bm_list_type'=>'',
+			'bm_use_file'=>'',
+			'bm_file_limit'=>'',
+			'bm_use_thumbnail'=>'',
+			'bm_use_secret'=>'',
+			'bm_new'=>'86400',
+			'bm_read_with_list'=>'',
+			'bm_lv_list'=>'',
+			'bm_lv_read'=>'',
+			'bm_lv_write'=>'',
+			'bm_lv_answer'=>'',
+			'bm_lv_edit'=>'',
+			'bm_lv_delete'=>'',
+			'bm_lv_down'=>'',
+			'bm_lv_admin'=>'',
+			'bm_use_reply'=>'',
+			'bm_lv_rlist'=>'',
+			'bm_lv_rwrite'=>'',
+			'bm_lv_redit'=>'',
+			'bm_lv_rdelete'=>'',
+			'bm_lv_ranswer'=>'',
+		);
+		return $bm_row;
+	}
+	public function count_bm_row_by_b_id($b_id){
+		$cnt = $this->db->from($this->tbl)
+		->where('b_id',$b_id)
+		->count_all_results();
+		return $cnt;
+	}
+	//-- 글 작성
+	public function insert_bm_row($sets){
+		if(!isset($sets['b_id'])){
+			return false;
+		}
+		$this->db->from($this->tbl)
+		->set($sets)
+		->set('bm_insert_date','now()',false)
+		->set('bm_update_date','now()',false)->insert();
+		return $sets['b_id'];
+	}
+	public function lists_of_skins(){
+		$path=APPPATH.'/modules/mh/views/bbs/skin/';
+		$arr = array();
+		$d = dir($path);
+		while (false !== ($entry = $d->read())) {
+			if($entry=='.' || $entry=='..'){continue;}
+			if(is_dir($path.$entry)){
+				$arr[] = $entry;
+			}
+		}
+		$d->close();
+		sort($arr);
+		return array_combine ( $arr , $arr );
+	}
+	public function lists_of_tables(){
+		//$sql = "SHOW TABLES LIKE '".DB_PREFIX."bbs_%_data'";
+		$pt = DB_PREFIX.'bbs_(.*)_data';
+		$rows = $this->db->list_tables();
+		$arr = array();
+		$matches = array();
+		foreach($rows as $r){
+			if(preg_match("/{$pt}/",$r,$matches)){
+				$arr[] = $matches[1];
+			}
+			
+		}
+		return array_combine ( $arr , $arr );
+	}
+	
+	
 }

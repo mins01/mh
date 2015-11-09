@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Bbs_model extends CI_Model {
 	public $bm_row = array();
 	public $error = '';
-	private $tbl_bbs_data = '';
+	private $tbl = '';
 	public function __construct()
 	{
 		// Call the CI_Model constructor
@@ -23,11 +23,11 @@ class Bbs_model extends CI_Model {
 			$this->error = '게시판 테이블 정보가 없습니다.';
 			return false;
 		}
-		$this->tbl_bbs_data = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_data';
+		$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_data';
 	}
 	//-- 목록과 카운팅용
 	private function _apply_list_where($get){
-		$this->db->from($this->tbl_bbs_data);
+		$this->db->from($this->tbl);
 		
 		//-- 게시판 아이디
 		if(!isset($this->bm_row['b_id'])){
@@ -109,7 +109,7 @@ class Bbs_model extends CI_Model {
 	}
 	//-- 빈 게시물 만들기
 	public function generate_empty_b_row(){
-		// $sql="DESC {$this->tbl_bbs_data}";
+		// $sql="DESC {$this->tbl}";
 		// $rows = $this->db->query($sql)->result_array();
 		// foreach($rows as $r){
 		// echo "'{$r['Field']}'=>'',\n";
@@ -145,7 +145,7 @@ class Bbs_model extends CI_Model {
 	}
 	//-- 게시물 하나 b_idx로 가져오기
 	public function select_by_b_idx($b_idx){
-		$this->db->from($this->tbl_bbs_data);
+		$this->db->from($this->tbl);
 		
 		//-- 게시판 아이디
 		if(!isset($this->bm_row['b_id'])){
@@ -175,7 +175,7 @@ class Bbs_model extends CI_Model {
 	}
 	public function update_b_row_as_where($where,$sets){
 		unset($sets['b_idx'],$sets['b_id']);
-		$this->db->from($this->tbl_bbs_data)
+		$this->db->from($this->tbl)
 		->where($where)
 		->where('b_isdel',0)
 		->set($sets)->set('b_update_date','now()',false)->update();
@@ -188,7 +188,7 @@ class Bbs_model extends CI_Model {
 		if(isset($sets['b_pass'][0])){
 			$sets['b_pass'] = $this->hash($sets['b_pass']);
 		}
-		$this->db->from($this->tbl_bbs_data)
+		$this->db->from($this->tbl)
 		->set($sets)
 		->set('b_insert_date','now()',false)
 		->set('b_update_date','now()',false)->insert();
@@ -213,11 +213,11 @@ class Bbs_model extends CI_Model {
 			$sets['b_pass'] = $this->hash($sets['b_pass']);
 		}
 		$v_b_idx = $this->db->escape((int)$b_idx);
-		$sql_b_gidx = "(SELECT b_gidx from {$this->tbl_bbs_data} bbsd1 WHERE bbsd1.b_idx = {$v_b_idx})";
+		$sql_b_gidx = "(SELECT b_gidx from {$this->tbl} bbsd1 WHERE bbsd1.b_idx = {$v_b_idx})";
 		$sql_b_gpos =
 "
 CONCAT(
-(SELECT bbsd1.b_gpos FROM {$this->tbl_bbs_data}  bbsd1 WHERE bbsd1.b_idx = {$v_b_idx})
+(SELECT bbsd1.b_gpos FROM {$this->tbl}  bbsd1 WHERE bbsd1.b_idx = {$v_b_idx})
 ,
 LPAD(
 CONV(
@@ -230,8 +230,8 @@ SUBSTR(
 
 (SELECT 
 bbsd2.b_gpos
-FROM {$this->tbl_bbs_data}  bbsd1
-JOIN {$this->tbl_bbs_data}  bbsd2 ON(bbsd2.b_gpos LIKE CONCAT(bbsd1.b_gpos,'__') AND bbsd2.b_gidx = bbsd1.b_gidx) 
+FROM {$this->tbl}  bbsd1
+JOIN {$this->tbl}  bbsd2 ON(bbsd2.b_gpos LIKE CONCAT(bbsd1.b_gpos,'__') AND bbsd2.b_gidx = bbsd1.b_gidx) 
 WHERE bbsd1.b_idx = {$v_b_idx}
 ORDER BY b_gpos DESC LIMIT 1)
 
@@ -247,7 +247,7 @@ AS SIGNED )+1
 ";
 		
 		
-		$this->db->from($this->tbl_bbs_data)
+		$this->db->from($this->tbl)
 		->set($sets)
 		->set('b_gidx',$sql_b_gidx,false)
 		->set('b_gpos',$sql_b_gpos,false)

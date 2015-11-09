@@ -22,7 +22,8 @@
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
 								<div class="col-xs-9">
-									<input type="text" required <?=isset($bm_row[$t_col][0])?'readonly':''?> class="form-control" required name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="40" value="<?=html_escape($bm_row[$t_col])?>">
+									<input type="text" required <?=isset($bm_row['bm_insert_date'][0])?'readonly':''?> class="form-control" required name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="40" value="<?=html_escape($bm_row[$t_col])?>">
+									<?php echo form_error('b_id'); ?>
 								</div>
 							</div>
 						</div>
@@ -34,9 +35,23 @@
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
 								<div class="col-xs-9">
-									<input type="text" required <?=isset($bm_row[$t_col][0])?'readonly':''?> class="form-control" required name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="40" value="<?=html_escape($bm_row[$t_col])?>">
+									
+										<? if(isset($bm_row['bm_insert_date'][0])): ?>
+											<input type="text" disabled class="form-control" required name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="40" value="<?=html_escape($bm_row[$t_col])?>">
+										<? else: ?>
+										<div class="input-group">
+											<span class="input-group-addon">
+												<?=DB_PREFIX.'bbs_'?>
+											</span>
+											<?=form_dropdown($t_col, $tables, $bm_row[$t_col], ' class="selectpicker form-control show-tick" style="width:4em" data-width="100%" aria-label="'.$t_label.'" title="'.$t_label.'"  data-header="'.$t_label.'"')?>
+											<span class="input-group-addon">
+												_data
+											</span>
+										</div><!-- /input-group -->
+										<div class="text-danger">주의 : 최초 설정시 변경 불가!</div>
+										<? endif;?>
+									
 								</div>
-							</div>
 						</div>
 					</div>
 					
@@ -64,9 +79,9 @@
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
 								<div class="col-xs-9">
 									<div class="btn-group" data-toggle="buttons">
-										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="bm_open" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
+										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
 										</label>
-										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="bm_open" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
+										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
 										</label>
 									</div>
 								</div>
@@ -83,7 +98,7 @@
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
 								<div class="col-xs-9">
-									<input type="text" required class="form-control" required name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="40" value="<?=html_escape($bm_row[$t_col])?>">
+								<?=form_dropdown($t_col, $skins, $bm_row[$t_col], ' class="selectpicker show-tick" style="width:4em" data-width="120px" aria-label="'.$t_label.'" title="'.$t_label.'"  data-header="'.$t_label.'"')?>
 								</div>
 							</div>
 						</div>
@@ -113,9 +128,9 @@
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
 								<div class="col-xs-9">
 									<div class="btn-group" data-toggle="buttons">
-										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="bm_open" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
+										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
 										</label>
-										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="bm_open" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
+										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
 										</label>
 									</div>
 								</div>
@@ -129,7 +144,7 @@
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
 								<div class="col-xs-9">
-									<input type="text" required class="form-control" required name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="40" value="<?=html_escape($bm_row[$t_col])?>">
+									<input type="text" class="form-control" name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="40" value="<?=html_escape($bm_row[$t_col])?>">
 								</div>
 							</div>
 						</div>
@@ -144,9 +159,9 @@
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
 								<div class="col-xs-9">
 									<div class="btn-group" data-toggle="buttons">
-										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="bm_open" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
+										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
 										</label>
-										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="bm_open" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
+										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
 										</label>
 									</div>
 								</div>
@@ -169,7 +184,7 @@
 			</ul>
 			<div class="panel-footer text-right">
 			<button type="submit" class="btn btn-primary glyphicon glyphicon-ok"> 확인</button>
-			<button type="button" onclick="history.back()" class="btn btn-danger glyphicon glyphicon-remove"> 취소</button>
+			<a type="button" href="<?=$bbs_conf['list_url']?>"  class="btn btn-danger glyphicon glyphicon-remove"> 목록</a>
 			</div>
 		</div>
 		</form>

@@ -269,14 +269,15 @@ class Bbs_admin extends MX_Controller {
 		$this->_mode_form($b_row,'answer');
 	}
 	public function mode_write(){
-		$b_row = $this->bbs_m->generate_empty_b_row();
-		$b_row['b_name']=$this->common->get_login('m_nick');
-		$this->extends_b_row($b_row,$this->input->get());
+		$bm_row = $this->bm_m->generate_empty_bm_row();
+		$this->extends_bm_row($bm_row,$this->input->get());
 		
-		$this->_mode_form($b_row,'write');
+		$this->_mode_form($bm_row,'write');
 	}
 
 	private function _mode_form($bm_row,$mode){
+		$this->load->library('form_validation');
+		$this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
 		//print_r($conf);
 		
 		$permission = $this->get_permission_lists();
@@ -286,9 +287,19 @@ class Bbs_admin extends MX_Controller {
 		//print_r($permission);
 		
 		if($this->input->post('process')){
-			return $this->_mode_process($bm_row);
+			
+			if($this->input->post('process')=='write'){
+				$this->form_validation->set_rules('b_id', '게시판아이디', 'required|min_length[2]|max_length[100]|is_unique['.$this->bm_m->tbl.'.b_id]');
+				if ($this->form_validation->run() == FALSE){
+					$bm_row = array_merge($bm_row,$this->input->post());
+				}else{
+					return $this->_mode_process($bm_row);
+				}
+			}else{
+				return $this->_mode_process($bm_row);
+			}
 		}
-
+		
 		
 		$get = $this->input->get();
 		$post = $this->input->post();
@@ -309,6 +320,8 @@ class Bbs_admin extends MX_Controller {
 		'm_row' => $this->m_row,
 		'logedin' => $this->logedin,
 		'permission'=>$permission,
+		'skins' => $this->bm_m->lists_of_skins(),
+		'tables'=>$this->bm_m->lists_of_tables(),
 		));
 	}
 
@@ -361,69 +374,63 @@ class Bbs_admin extends MX_Controller {
 		'permission'=>$permission,
 		));
 	}
-	private function extends_b_row_for_m_row(&$b_row){
-		if($this->common->logedin){
-			$b_row['m_idx'] = $this->common->get_login('m_idx');
-			$b_row['b_name'] = $this->common->get_login('m_nick');
-		}
-	}
-	private function _mode_process($b_row){
+	
+	private function _mode_process($bm_row){
+		$msg = '처리완료.';
 		$process = $this->input->post('process');
 		$get = $this->input->get();
-		$b_idx = $b_row['b_idx'];
+		$b_id = $bm_row['b_id'];
 		$post = $this->input->post();
 		unset($post['process']);
 		
-		$permission = $this->get_permission_lists($b_row['m_idx']);
+		$permission = $this->get_permission_lists();
 		if(!$permission[$process]){
 			show_error('권한이 없습니다.');
 		}
 		
 		$this->config->set_item('layout_head_contents',$this->get_head_contents($process));
 		$this->config->set_item('layout_hide',false);
-		$this->config->set_item('layout_title',''.$this->bbs_conf['mode'].' : process : '.$this->bm_row['bm_title']);
+		$this->config->set_item('layout_title',''.$this->bbs_conf['mode'].' : process : 게시판관리자');
 		
 		$r = 0;
 		switch($process){
 			case 'edit':
-				unset($post['b_pass']);
-				$r = $this->bbs_m->update_b_row($b_idx,$post);
+				$r = $this->bm_m->update_bm_row($b_id,$post);
 			break;
 			case 'write':
-
-				$this->extends_b_row_for_m_row($post);
-				$r = $this->bbs_m->insert_b_row($post);
-				$b_idx = $r;
-
-			break;
-			case 'answer':
-				$this->extends_b_row_for_m_row($post);
-				$r = $this->bbs_m->insert_answer_b_row($b_idx,$post);
-				$b_idx = $r;
+				$b_id = $this->input->post('b_id');
+				if(!isset($b_id)){
+					$b_id = null;
+					$msg = '필수 값이 없습니다.';
+				}else if($this->bm_m->count_bm_row_by_b_id($b_id)>0){
+					$b_id = null;
+					$msg = '중복된 게시판 아이디입니다.';
+				}else{
+					$b_id = $this->bm_m->insert_bm_row($post);
+				}
 			break;
 			case 'delete':
-				$r = $this->bbs_m->delete_b_row($b_idx);
-				$b_idx = $r;
+				//$r = $this->bm_m->delete_b_row($b_idx);
+				//$b_id = $r;
+				$b_id = null;
 			break;
 		}
 
-		$b_row = array('b_idx'=>$b_idx);
-		$this->extends_b_row($b_row,$get);
+		$bm_row = array('b_id'=>$b_id);
+		$this->extends_bm_row($bm_row,$get);
 		
-		if($process =='delete'){
+		if(!isset($b_id)){
 			$ret_url = $this->bbs_conf['list_url'];
 		}else{
-			$ret_url = $b_row['read_url'];
+			$ret_url = $bm_row['edit_url'];
 		}
 		
 		$this->load->view($this->skin_path.'/process',array(
-		//'b_row' => $b_row,
-		'bm_row' => $this->bm_row,
 		'get'=>$get,
 		'bbs_conf'=>$this->bbs_conf,
-		'process'=>$this->bbs_conf['mode'],
+		'process'=>$process,
 		'ret_url'=>$ret_url,
-		'msg'=>'처리완료.',
+		'msg'=>$msg,
 		));
 
 	}
