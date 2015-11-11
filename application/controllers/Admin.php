@@ -9,11 +9,12 @@ class Admin extends MX_Controller {
 		$this->config->load('conf_admin'); // 관리자 사이트 설정
 		$this->load->module('mh_admin/common');
 		$this->load->module('mh_admin/layout');
+		$this->load->model('mh/menu_model','menu_m');
 	}
 
 	public function _remap($method, $params = array())
 	{
-		$this->config->set_item('base_url',base_url($this->uri->segment(1)));
+		//$this->config->set_item('base_url',base_url($this->uri->segment(1)));
 
 		$menu_uri = $method=='index'?'':$method;
 		if (method_exists($this, $method))
@@ -24,7 +25,10 @@ class Admin extends MX_Controller {
 		
 	}
 	public function get_menu($uri){
-		return $this->config->item($uri,'menu_rows');
+		return $this->menu_m->get_current_menu($uri);
+	}
+	public function get_segment($menu,$url){
+		$mn_url = $menu['url'];
 	}
 /**
  * 분배 위치
@@ -46,8 +50,10 @@ class Admin extends MX_Controller {
 		$this->config->set_item('menu', $menu); 
 		$conf = array(
 			'menu'=>$menu,
-			'base_url'=>base_url($menu['mn_uri']),
+			'base_url'=>ADMIN_URI_PREFIX.$menu['mn_uri'],
 		);
+		// print_r($menu);
+		// echo $this->get_segment($conf['base_url'],$params);
 		$this->load->module('mh_admin/'.$menu['mn_module'],$conf);
 		if(!class_exists($menu['mn_module'],false)){
 			show_error('모듈이 없습니다.',404);
@@ -56,6 +62,7 @@ class Admin extends MX_Controller {
 		}
 		return true;
 	}
+
 	
 	public function login(){
 		$this->load->module('mh_admin/staff');

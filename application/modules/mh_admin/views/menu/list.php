@@ -5,7 +5,7 @@
 ?>
 
 <nav class="text-right">
-	게시판 : <?=$count?> (<?=$max_page?> page)
+	게시물 : <?=$count?> (<?=$max_page?> page)
 </nav>
 
 <div class="panel panel-default bbs-mode-list">

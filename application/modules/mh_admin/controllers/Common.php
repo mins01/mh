@@ -21,10 +21,11 @@ class Common extends MX_Controller {
 		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
 		
 		
-		$this->load->model('menu_model','menu_m');
-		$this->menu_m->load_db('admin_menu');
+		$this->load->model('mh/menu_model','menu_m');
+		$this->menu_m->load_db('admin_menu',ADMIN_URI_PREFIX);
 		$this->config->set_item('menu_rows', $this->menu_m->get_menu_rows());
 		$this->config->set_item('menu_tree', $this->menu_m->get_menu_tree());
+		//$this->config->set_item('current_menu', $this->menu_m->get_current_menu($_SERVER['REQUEST_URI']));
 
 		$this->init_login();
 		$t = $this->get_login('adm_id');

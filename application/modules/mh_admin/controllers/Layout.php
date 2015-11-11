@@ -16,6 +16,7 @@ class Layout extends MX_Controller {
 	public function get_conf_from_config(){
 		$conf = array();
 		$conf['menu_tree'] = $this->config->item('menu_tree');
+		$conf['menu_rows'] = $this->config->item('menu_rows');
 		$conf['menu'] = $this->config->item('menu');
 		$conf['head_contents'] = $this->config->item('layout_head_contents');
 		$conf['tail_contents'] = $this->config->item('layout_tail_contents');

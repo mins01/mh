@@ -29,7 +29,7 @@ class Front extends MX_Controller {
 		
 	}
 	public function get_menu($uri){
-		return $this->config->item($uri,'menu_rows');
+		return $this->menu_m->get_current_menu($uri);
 	}
 /**
  * 분배 위치

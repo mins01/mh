@@ -21,7 +21,7 @@ class Common extends MX_Controller {
 		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
 		
 		
-		$this->load->model('menu_model','menu_m');
+		$this->load->model('mh/menu_model','menu_m');
 		$this->menu_m->load_db();
 		$this->config->set_item('menu_rows', $this->menu_m->get_menu_rows());
 		$this->config->set_item('menu_tree', $this->menu_m->get_menu_tree());

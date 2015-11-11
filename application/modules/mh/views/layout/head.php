@@ -59,7 +59,7 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-left">
 					<? foreach($menu_tree['child'] as $mr): 
-						$class = $mr['mn_uri']==$menu['mn_uri']?'class="active"':'';
+						$class = $mr['active']?'class="active"':'';
 					?>
 					<li <?=$class?>><a href="<?=html_escape($mr['url'])?>"><?=html_escape($mr['mn_text'])?></a></li>
 					<? endforeach; ?>

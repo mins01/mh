@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Bbs_admin extends MX_Controller {
+class Menu_admin extends MX_Controller {
 	private $bbs_conf = array();
 	private $bm_row = array();
 	private $m_row = array();
@@ -12,8 +12,7 @@ class Bbs_admin extends MX_Controller {
 	{
 				$this->load->helper('form');
 		
-		$this->load->model('mh/bbs_master_model','bm_m');
-		$this->load->model('mh/bbs_model','bbs_m');
+		$this->load->model('mh/menu_model','bbs_m');
 		$this->load->module('mh_admin/layout');
 		$this->load->module('mh_admin/common');
 		
@@ -100,7 +99,7 @@ class Bbs_admin extends MX_Controller {
 			'mine'=>$is_admin,
 		);
 	}
-	private function extends_bm_row(& $bm_row,$get){
+	private function extends_menu_row(& $bm_row,$get){
 				
 		$bm_row['read_url'] = $this->base_url . '/read/'.$bm_row['b_id'].'?'.http_build_query($get);
 		
@@ -112,9 +111,9 @@ class Bbs_admin extends MX_Controller {
 		
 		$bm_row['write_url'] = $this->base_url . '/write?'.http_build_query($get);
 	}
-	private function extends_bm_rows(&$bm_rows,$get){
+	private function extends_menu_rows(&$bm_rows,$get){
 		foreach($bm_rows as & $r){
-			$this->extends_bm_row($r,$get);
+			$this->extends_menu_rows($r,$get);
 		}
 	}
 
@@ -136,11 +135,11 @@ class Bbs_admin extends MX_Controller {
 		if(!isset($get['ct'])){ $get['ct'] = ''; }
 		$get['page']=$this->bbs_conf['page'];
 		
-		$bm_rows = $this->bm_m->select_for_list($get);
+		$menu_rows = $this->menu_m->select_for_list($get);
 		//var_dump($bm_rows);
-		$this->extends_bm_rows($bm_rows,$get);
-		$count = $this->bm_m->count($get);
-		$start_num = $this->bm_m->get_start_num($count,$get);
+		$this->extends_menu_rows($bm_rows,$get);
+		$count = $this->menu_m->count($get);
+		$start_num = $this->menu_m->get_start_num($count,$get);
 		
 		$tmp = $this->input->get();
 		$tmp['page'] ='page';

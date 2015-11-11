@@ -34,6 +34,7 @@
 	
 	<link rel="stylesheet" href="<?=SITE_URI_PREFIX?>css/bootstrap/bootstrap-select.min.css">
 	<link rel="stylesheet" href="<?=SITE_URI_PREFIX?>css/mh.css">
+	<link rel="stylesheet" href="<?=SITE_URI_PREFIX?>css/mh_admin.css">
 	
 	<script src="<?=SITE_URI_PREFIX?>js/bootstrap/bootstrap-select.min.js"></script>
 	<script src="<?=SITE_URI_PREFIX?>js/mh_lib.js"></script>
@@ -46,7 +47,7 @@
 <body>
 <? if(!$hide):?>
 	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
+		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 				<span class="sr-only">Toggle navigation</span>
@@ -59,7 +60,7 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-left">
 					<? foreach($menu_tree['child'] as $mr): 
-						$class = $mr['mn_uri']==$menu['mn_uri']?'class="active"':'';
+						$class = $mr['active']?'class="active"':'';
 					?>
 					<li <?=$class?>><a href="<?=html_escape($mr['url'])?>"><?=html_escape($mr['mn_text'])?></a></li>
 					<? endforeach; ?>
@@ -76,4 +77,33 @@
 	</nav>
 	
 	<div class="container-fluid contents">
+		<div class="row">
+			<nav class="col-lg-2 col-md-3">
+				<div class="list-group">
+				<? 
+					if(isset($menu['breadcrumbs'][1])):
+					$tmenu = $menu_rows[$menu['breadcrumbs'][1]];//1단계 메뉴 기준으로 출력한다.
+					foreach($tmenu['child'] as $k=>$mr): 
+					$class = $mr['active']?'active':'';
+				?>
+					
+						<a class="list-group-item  <?=$class?>" href="<?=ADMIN_URI_PREFIX?><?=html_escape($mr['mn_uri'])?>"><?=html_escape($mr['mn_text'])?></a>
+					
+				<? 
+					endforeach; 
+					endif;
+				?>
+				</div>
+			</nav>
+
+		
+			
+			<div class="col-lg-10 col-md-9">
+	
+	
+	
+	
+	
+	
+	
 <? endif; ?>
