@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Menu_admin extends MX_Controller {
+class Bbs_manager extends MX_Controller {
 	private $bbs_conf = array();
 	private $bm_row = array();
 	private $m_row = array();
@@ -12,7 +12,8 @@ class Menu_admin extends MX_Controller {
 	{
 				$this->load->helper('form');
 		
-		$this->load->model('mh/menu_model','bbs_m');
+		$this->load->model('mh/bbs_master_model','bm_m');
+		$this->load->model('mh/bbs_model','bbs_m');
 		$this->load->module('mh_admin/layout');
 		$this->load->module('mh_admin/common');
 		
@@ -37,7 +38,7 @@ class Menu_admin extends MX_Controller {
 		$b_id = isset($param[1][0])?$param[1]:'';
 		//$mode = $this->uri->segment(3,'list');//option
 		
-		$this->set_base_url(ADMIN_URI_PREFIX.'bbs_admin');
+		$this->set_base_url(ADMIN_URI_PREFIX.'bbs_manager');
 		$this->action($mode,$b_id);
 	}
 	// front 컨트롤에서 접근할 경우.
@@ -52,7 +53,7 @@ class Menu_admin extends MX_Controller {
 	public function action($mode,$b_id){
 		//-- 게시판 마스터 정보 가져오기
 
-		$this->skin_path = 'mh_admin/bbs_admin';
+		$this->skin_path = 'mh_admin/bbs_manager';
 
 		$this->bbs_conf['page'] = (int)$this->input->get('page',1);
 		if(!is_int($this->bbs_conf['page']) || $this->bbs_conf['page'] <= 0){
@@ -99,7 +100,7 @@ class Menu_admin extends MX_Controller {
 			'mine'=>$is_admin,
 		);
 	}
-	private function extends_menu_row(& $bm_row,$get){
+	private function extends_bm_row(& $bm_row,$get){
 				
 		$bm_row['read_url'] = $this->base_url . '/read/'.$bm_row['b_id'].'?'.http_build_query($get);
 		
@@ -111,9 +112,9 @@ class Menu_admin extends MX_Controller {
 		
 		$bm_row['write_url'] = $this->base_url . '/write?'.http_build_query($get);
 	}
-	private function extends_menu_rows(&$bm_rows,$get){
+	private function extends_bm_rows(&$bm_rows,$get){
 		foreach($bm_rows as & $r){
-			$this->extends_menu_rows($r,$get);
+			$this->extends_bm_row($r,$get);
 		}
 	}
 
@@ -135,11 +136,11 @@ class Menu_admin extends MX_Controller {
 		if(!isset($get['ct'])){ $get['ct'] = ''; }
 		$get['page']=$this->bbs_conf['page'];
 		
-		$menu_rows = $this->menu_m->select_for_list($get);
+		$bm_rows = $this->bm_m->select_for_list($get);
 		//var_dump($bm_rows);
-		$this->extends_menu_rows($bm_rows,$get);
-		$count = $this->menu_m->count($get);
-		$start_num = $this->menu_m->get_start_num($count,$get);
+		$this->extends_bm_rows($bm_rows,$get);
+		$count = $this->bm_m->count($get);
+		$start_num = $this->bm_m->get_start_num($count,$get);
 		
 		$tmp = $this->input->get();
 		$tmp['page'] ='page';

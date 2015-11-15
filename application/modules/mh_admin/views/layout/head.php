@@ -87,7 +87,7 @@
 					$class = $mr['active']?'active':'';
 				?>
 					
-						<a class="list-group-item  <?=$class?>" href="<?=ADMIN_URI_PREFIX?><?=html_escape($mr['mn_uri'])?>"><?=html_escape($mr['mn_text'])?></a>
+						<a class="list-group-item  <?=$class?>" href="<?=ADMIN_URI_PREFIX?><?=html_escape($mr['mn_url'])?>"><?=html_escape($mr['mn_text'])?></a>
 					
 				<? 
 					endforeach; 
