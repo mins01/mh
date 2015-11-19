@@ -3,3 +3,6 @@ body {
 }
 
 .container-fluid{max-width:none;}
+
+.menu-tree li{font-weight:normal}
+.menu-tree .active{font-weight:bold}

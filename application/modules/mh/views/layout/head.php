@@ -58,7 +58,7 @@
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-left">
-					<? foreach($menu_tree['child'] as $mr): 
+					<? foreach($menu_tree[0]['child'] as $mr): 
 						$class = $mr['active']?'class="active"':'';
 					?>
 					<li <?=$class?>><a href="<?=html_escape($mr['url'])?>"><?=html_escape($mr['mn_text'])?></a></li>
@@ -77,4 +77,3 @@
 	
 	<div class="container-fluid contents">
 <? endif; ?>
-<?=SITE_URI_PREFIX?>

@@ -7,16 +7,21 @@ class Menu_model extends CI_Model {
 	public $menu_rows = null;
 	public $menu_root = null;
 	public $menu_depth = array();
-	
+	public $tbl_nm='menu';
+	public $pre_uri='';
 	public function __construct()
 	{
 		// Call the CI_Model constructor
 		parent::__construct();
 		
 	}
-	
+	public function set_init_conf($tbl_nm='menu',$pre_uri=''){
+		$this->tbl_nm = $tbl_nm;
+		$this->pre_uri = $pre_uri;
+	}
 	public function load_db($tbl_nm='menu',$pre_uri=''){
-		$this->menu_rows = $this->_get_menu_rows($tbl_nm,$pre_uri);
+		$this->set_init_conf($tbl_nm,$pre_uri);
+		$this->menu_rows = $this->_get_menu_rows();
 		$this->menu_tree = $this->_mapping_menu_tree($this->menu_rows);
 	}
 	
@@ -32,9 +37,9 @@ class Menu_model extends CI_Model {
 		foreach($this->menu_rows as & $r){
 			if($r['mn_uri'] == $uri){
 				$r['active']=true;
-				foreach($r['breadcrumbs'] as $mn_idx){
-					if(isset($this->menu_rows[$mn_idx])){
-						$this->menu_rows[$mn_idx]['active']=true;
+				foreach($r['breadcrumbs'] as $mn_id){
+					if(isset($this->menu_rows[$mn_id])){
+						$this->menu_rows[$mn_id]['active']=true;
 					}
 					
 				}
@@ -44,24 +49,24 @@ class Menu_model extends CI_Model {
 		return null;
 	}
 	
-	private function _get_menu_rows($tbl_nm='menu',$pre_uri=''){
+	private function _get_menu_rows(){
 		$rows = array();
 		$row = array();
-		$q = $this->db->from(DB_PREFIX.$tbl_nm)->where('mn_is_use',1)
-		->order_by('mn_parent_idx')->order_by('mn_sort')
+		$q = $this->db->from(DB_PREFIX.$this->tbl_nm)->where('mn_is_use',1)
+		->order_by('mn_parent_id')->order_by('mn_sort')
 		->get();
 		
 		foreach ($q->result_array() as $row)
 		{
-			$rows[$row['mn_idx']] = $row;
+			$rows[$row['mn_id']] = $row;
 		}
-		$this->extends_menu_rows($rows,$pre_uri);
+		$this->extends_menu_rows($rows);
 		// echo $this->db->last_query();
 		return $rows;
 	}
-	private function extends_menu_rows(& $rows,$pre_uri){
+	private function extends_menu_rows(& $rows){
 		foreach($rows as & $r){
-			$r['url']=str_replace('//','/',$pre_uri.$r['mn_url']);
+			$r['url']=str_replace('//','/',$this->pre_uri.$r['mn_url']);
 			$r['active']=false;
 			$r['child']=array();
 			$r['breadcrumbs']=array();
@@ -80,11 +85,11 @@ class Menu_model extends CI_Model {
 			$tr = $r;
 			$t = array();
 			while(isset($tr)){
-				$t[] = $tr['mn_idx'];
-				if($tr['mn_idx']=='0' && $tr['mn_parent_idx']=='0'){
+				$t[] = $tr['mn_id'];
+				if($tr['mn_id'] == $tr['mn_parent_id']){
 					$tr = null;
-				}else if(isset($rows[$tr['mn_parent_idx']])){
-					$tr = $rows[$tr['mn_parent_idx']];
+				}else if(isset($rows[$tr['mn_parent_id']])){
+					$tr = $rows[$tr['mn_parent_id']];
 				}else{
 					$tr = null;
 				}
@@ -96,20 +101,20 @@ class Menu_model extends CI_Model {
 	}
 	
 	public function _mapping_menu_tree(& $menu_rows){
-		$menu_tree = null;
+		$menu_tree = array();
 		foreach($menu_rows as & $r){
-			if($r['mn_idx']=='0' && $r['mn_parent_idx']=='0'){
+			if($r['mn_id'] == $r['mn_parent_id']){
 				$r['child']=array();
-				$menu_tree = & $r;
+				$menu_tree[] = & $r;
 			}
-			if($r['mn_idx'] == $r['mn_parent_idx']){
+			if($r['mn_id'] == $r['mn_parent_id']){
 				
 			}else{
-				if(isset($menu_rows[$r['mn_parent_idx']])){
-					if(!isset($menu_rows[$r['mn_parent_idx']]['child'])){
-						$menu_rows[$r['mn_parent_idx']]['child'] = array();
+				if(isset($menu_rows[$r['mn_parent_id']])){
+					if(!isset($menu_rows[$r['mn_parent_id']]['child'])){
+						$menu_rows[$r['mn_parent_id']]['child'] = array();
 					}
-					$menu_rows[$r['mn_parent_idx']]['child'][] = & $r;
+					$menu_rows[$r['mn_parent_id']]['child'][] = & $r;
 					
 				}
 			}
@@ -120,18 +125,37 @@ class Menu_model extends CI_Model {
 	public function select($tbl_nm='menu',$pre_uri=''){
 		$rows = array();
 		$row = array();
-		$q = $this->db->from(DB_PREFIX.$tbl_nm)
-		->order_by('mn_parent_idx')->order_by('mn_sort')
+		$q = $this->db->from(DB_PREFIX.$this->tbl_nm)
+		->order_by('mn_parent_id')->order_by('mn_sort')
 		->get();
 		
 		foreach ($q->result_array() as $row)
 		{
-			$rows[$row['mn_idx']] = $row;
+			$rows[$row['mn_id']] = $row;
 		}
-		$this->extends_menu_rows($rows,$pre_uri);
+		$this->extends_menu_rows($rows);
 		// echo $this->db->last_query();
 		return $rows;
 	}
 	
+	public function insert($sets){
+		$this->db->from(DB_PREFIX.$this->tbl_nm)
+		->set($sets)
+		->set('mn_insert_date','now()',false)
+		->set('mn_update_date','now()',false)
+		->insert();
+		return $this->db->affected_rows();
+	}
+	public function update($wheres,$sets){
+		$this->db->from(DB_PREFIX.$this->tbl_nm)
+		->set($sets)
+		->set('mn_update_date','now()',false)
+		->where($wheres)
+		->update();
+		return $this->db->affected_rows();
+	}
+	public function count($wheres){
+		return $this->db->from(DB_PREFIX.$this->tbl_nm)->where($wheres)->count_all_results();
+	}
 
 }

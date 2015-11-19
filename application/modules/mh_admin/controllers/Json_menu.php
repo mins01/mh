@@ -10,7 +10,8 @@ class Json_menu extends MX_Controller {
 	private $limit = 20;
 	public function __construct()
 	{
-		$this->load->model('mh/menu_model','menu_m');
+		$this->load->model('mh/menu_model','menu_m_f');
+		$this->menu_m_f->set_init_conf('menu','');
 		$this->load->module('mh_admin/layout');
 		$this->load->module('mh_admin/common');
 
@@ -54,13 +55,81 @@ class Json_menu extends MX_Controller {
 		
 	}
 
-	public function tree(){
-		//$this->menu_m->load_db();
+	public function echo_json($obj){
+		echo json_encode($obj);
+	}
+	public function lists(){
+		//$this->menu_m_f->load_db();
 		$json = array();
-		//$json['mn_tree'] = array();
-		//$json['mn_tree'][0] = $this->menu_m->menu_tree;
-		$json['mn_rows'] = $this->menu_m->select();
-		echo json_encode($json);
+		$json['mn_rows'] = $this->menu_m_f->select();
+		return $this->echo_json($json);
+	}
+	private function insert(){
+		$mn_id = $this->input->post('mn_id');
+		if(!isset($mn_id[0])){
+			$json = array(
+				'msg' => 'mn_id가 없습니다.',
+			);
+			return $this->echo_json($json);
+		}
+		$cnt = $this->menu_m_f->count(array('mn_id'=>$mn_id));
+		if($cnt!=0){
+			$json = array(
+				'msg' => '이미 등록된 아이디입니다.',
+			);
+			return $this->echo_json($json);
+		}
+		$post = $this->input->post();
+		$sets = array(
+			'mn_id'=>$mn_id,
+			'mn_uri'=>$this->input->post('mn_uri'),
+			'mn_url'=>$this->input->post('mn_url'),
+			'mn_text'=>$this->input->post('mn_text'),
+			'mn_sort'=>$this->input->post('mn_sort'),
+			'mn_parent_id'=>$this->input->post('mn_parent_id'),
+		);
+		$this->menu_m_f->insert($sets);
+		$json = array(
+			'mn_rows' => $this->menu_m_f->select(),
+			'mn_id'=>$mn_id,
+			'msg' => "{$mn_id}를 등록하였습니다.",
+		);
+		return $this->echo_json($json);
+	}
+	private function update(){
+		$mn_id = $this->input->post('mn_id');
+		if(!isset($mn_id[0])){
+			$json = array(
+				'msg' => 'mn_id가 없습니다.',
+			);
+			return $this->echo_json($json);
+		}
+		$cnt = $this->menu_m_f->count(array('mn_id'=>$mn_id));
+		if($cnt==0){
+			$json = array(
+				'msg' => '등록되지 않은 아이디입니다.',
+			);
+			return $this->echo_json($json);
+		}
+		$post = $this->input->post();
+		$sets = array(
+			//'mn_id'=>$mn_id,
+			'mn_uri'=>$this->input->post('mn_uri'),
+			'mn_url'=>$this->input->post('mn_url'),
+			'mn_text'=>$this->input->post('mn_text'),
+			'mn_sort'=>$this->input->post('mn_sort'),
+			'mn_parent_id'=>$this->input->post('mn_parent_id'),
+		);
+		$wheres = array(
+			'mn_id'=>$mn_id,
+		);
+		$this->menu_m_f->update($wheres,$sets);
+		$json = array(
+			'mn_rows' => $this->menu_m_f->select(),
+			'mn_id'=>$mn_id,
+			'msg' => "{$mn_id}을 수정하였습니다.",
+		);
+		return $this->echo_json($json);
 	}
 
 }
