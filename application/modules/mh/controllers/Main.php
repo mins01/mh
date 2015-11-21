@@ -10,7 +10,7 @@ class Main extends MX_Controller {
 		// front 컨트롤에서 접근할 경우.
 	public function index_as_front($conf,$param){
 		$base_url = $conf['base_url'];
-		$view = $conf['menu']['mn_key1'];
+		$view = $conf['menu']['mn_arg1'];
 		$this->action($conf,$param);
 	}
 	

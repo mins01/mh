@@ -52,8 +52,8 @@ class Menu_model extends CI_Model {
 	private function _get_menu_rows(){
 		$rows = array();
 		$row = array();
-		$q = $this->db->from(DB_PREFIX.$this->tbl_nm)->where('mn_is_use',1)
-		->order_by('mn_parent_id')->order_by('mn_sort')
+		$q = $this->db->from(DB_PREFIX.$this->tbl_nm)->where('mn_use',1)
+		->order_by('mn_sort,mn_parent_id')
 		->get();
 		
 		foreach ($q->result_array() as $row)
@@ -126,7 +126,7 @@ class Menu_model extends CI_Model {
 		$rows = array();
 		$row = array();
 		$q = $this->db->from(DB_PREFIX.$this->tbl_nm)
-		->order_by('mn_parent_id')->order_by('mn_sort')
+		->order_by('mn_sort,mn_parent_id')
 		->get();
 		
 		foreach ($q->result_array() as $row)
@@ -152,6 +152,12 @@ class Menu_model extends CI_Model {
 		->set('mn_update_date','now()',false)
 		->where($wheres)
 		->update();
+		return $this->db->affected_rows();
+	}
+	public function delete($wheres){
+		$this->db->from(DB_PREFIX.$this->tbl_nm)
+		->where($wheres)
+		->delete();
 		return $this->db->affected_rows();
 	}
 	public function count($wheres){

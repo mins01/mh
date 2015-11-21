@@ -60,9 +60,10 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-left">
 					<? foreach($menu_tree[0]['child'] as $mr): 
+						if($mr['mn_hide']!='0'){continue;}
 						$class = $mr['active']?'class="active"':'';
 					?>
-					<li <?=$class?>><a href="<?=html_escape($mr['url'])?>"><?=html_escape($mr['mn_text'])?></a></li>
+					<li <?=$class?>><a href="<?=html_escape($mr['url'])?>" <?=$mr['mn_attr']?>><?=html_escape($mr['mn_text'])?></a></li>
 					<? endforeach; ?>
 				</ul>
 				<ul class="nav navbar-nav pull-right">
@@ -84,10 +85,11 @@
 					if(isset($menu['breadcrumbs'][1])):
 					$tmenu = $menu_rows[$menu['breadcrumbs'][1]];//1단계 메뉴 기준으로 출력한다.
 					foreach($tmenu['child'] as $k=>$mr): 
-					$class = $mr['active']?'active':'';
+						if($mr['mn_hide']!='0'){continue;}
+						$class = $mr['active']?'active':'';
 				?>
 					
-						<a class="list-group-item  <?=$class?>" href="<?=ADMIN_URI_PREFIX?><?=html_escape($mr['mn_url'])?>"><?=html_escape($mr['mn_text'])?></a>
+						<a class="list-group-item  <?=$class?>" href="<?=html_escape($mr['url'])?>" <?=$mr['mn_attr']?>><?=html_escape($mr['mn_text'])?></a>
 					
 				<? 
 					endforeach; 

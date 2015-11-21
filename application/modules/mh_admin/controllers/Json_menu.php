@@ -39,7 +39,7 @@ class Json_menu extends MX_Controller {
 		//$mode = $this->uri->segment(3,'list');//option
 		
 		$this->set_base_url(ADMIN_URI_PREFIX.'bbs_admin');
-		$this->action($mode,$mn_id);
+		$this->action($mode);
 	}
 	// front 컨트롤에서 접근할 경우.
 	public function index_as_front($conf,$param){
@@ -47,10 +47,10 @@ class Json_menu extends MX_Controller {
 		$mn_id = isset($param[1][0])?$param[1]:'';
 		$mode = isset($param[0][0])?$param[0]:'tree';
 		$this->set_base_url($base_url);
-		$this->action($mode,$mn_id);
+		$this->action($mode);
 	}
 
-	public function action($mode,$b_id){
+	public function action($mode){
 		$this->{$mode}();
 		
 	}
@@ -63,6 +63,30 @@ class Json_menu extends MX_Controller {
 		$json = array();
 		$json['mn_rows'] = $this->menu_m_f->select();
 		return $this->echo_json($json);
+	}
+	public function get_field_post(){
+		$fs = array(
+			'mn_id','mn_uri','mn_url','mn_text','mn_sort','mn_parent_id',
+			'mn_module','mn_arg1','mn_arg2','mn_arg3',
+			'mn_use','mn_hide','mn_lock',
+		);
+		if($this->input->post('mn_lock')=='1'){
+			$fs = array(
+				'mn_id','mn_uri','mn_url','mn_text','mn_sort','mn_parent_id',
+				//'mn_module','mn_arg1','mn_arg2','mn_arg3',
+				//'mn_use','mn_hide',
+				'mn_lock',
+			);
+		}
+		$rt = array();
+		foreach($fs as $k){
+			$v = $this->input->post($k);
+			if(isset($v)){
+				$rt[$k] = $this->input->post($k);
+			}
+			
+		}
+		return $rt;
 	}
 	private function insert(){
 		$mn_id = $this->input->post('mn_id');
@@ -80,14 +104,9 @@ class Json_menu extends MX_Controller {
 			return $this->echo_json($json);
 		}
 		$post = $this->input->post();
-		$sets = array(
-			'mn_id'=>$mn_id,
-			'mn_uri'=>$this->input->post('mn_uri'),
-			'mn_url'=>$this->input->post('mn_url'),
-			'mn_text'=>$this->input->post('mn_text'),
-			'mn_sort'=>$this->input->post('mn_sort'),
-			'mn_parent_id'=>$this->input->post('mn_parent_id'),
-		);
+		$sets = $this->get_field_post();
+		$sets['mn_id']=$mn_id;
+		
 		$this->menu_m_f->insert($sets);
 		$json = array(
 			'mn_rows' => $this->menu_m_f->select(),
@@ -112,14 +131,8 @@ class Json_menu extends MX_Controller {
 			return $this->echo_json($json);
 		}
 		$post = $this->input->post();
-		$sets = array(
-			//'mn_id'=>$mn_id,
-			'mn_uri'=>$this->input->post('mn_uri'),
-			'mn_url'=>$this->input->post('mn_url'),
-			'mn_text'=>$this->input->post('mn_text'),
-			'mn_sort'=>$this->input->post('mn_sort'),
-			'mn_parent_id'=>$this->input->post('mn_parent_id'),
-		);
+		$sets = $this->get_field_post();
+		unset($sets['mn_id']);
 		$wheres = array(
 			'mn_id'=>$mn_id,
 		);
@@ -131,7 +144,56 @@ class Json_menu extends MX_Controller {
 		);
 		return $this->echo_json($json);
 	}
-
+	private function delete(){
+		$mn_id = $this->input->post('mn_id');
+		if(!isset($mn_id[0])){
+			$json = array(
+				'msg' => 'mn_id가 없습니다.',
+			);
+			return $this->echo_json($json);
+		}
+		$cnt = $this->menu_m_f->count(array('mn_id'=>$mn_id));
+		if($cnt==0){
+			$json = array(
+				'msg' => '등록되지 않은 아이디입니다.',
+			);
+			return $this->echo_json($json);
+		}
+		$wheres = array(
+			'mn_id'=>$mn_id,
+		);
+		$this->menu_m_f->delete($wheres);
+		$json = array(
+			'mn_rows' => $this->menu_m_f->select(),
+			'mn_id'=>$mn_id,
+			'msg' => "{$mn_id}을 삭제하였습니다.",
+		);
+		return $this->echo_json($json);
+	}
+	public function module_lists(){
+		$path=APPPATH.'/modules/mh/controllers/';
+		$arr = array();
+		$d = dir($path);
+		while (false !== ($entry = $d->read())) {
+			if($entry=='.' || $entry=='..'){continue;}
+			if(is_file($path.$entry)){
+				$arr[] = strtolower(str_ireplace('.php','',$entry));
+			}
+		}
+		$d->close();
+		sort($arr);
+		//print_r($path);
+		return $arr;
+	}
+	public function first(){
+		$this->load->model('mh/bbs_master_model','bm_m');
+		$json = array(
+			'bbs_lists'=>$this->bm_m->select_for_list_for_menu(),
+			'mn_rows' => $this->menu_m_f->select(),
+			'module_lists'=>$this->module_lists(),
+		);
+		return $this->echo_json($json);
+	}
 }
 
 

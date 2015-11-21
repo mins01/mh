@@ -47,7 +47,7 @@ class Bbs extends MX_Controller {
 	// front 컨트롤에서 접근할 경우.
 	public function index_as_front($conf,$param){
 		$base_url = $conf['base_url'];
-		$b_id = $conf['menu']['mn_key1'];
+		$b_id = $conf['menu']['mn_arg1'];
 		$mode = isset($param[0][0])?$param[0]:'list';
 		$b_idx = isset($param[1][0])?$param[1]:'list';
 		if(!isset($b_id[0])){

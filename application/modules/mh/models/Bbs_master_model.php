@@ -55,6 +55,20 @@ class Bbs_master_model extends CI_Model {
 
 	}
 	
+	public function select_for_list_for_menu(){
+		if(!$this->_apply_list_where(array())){
+			return false;
+		}
+		$this->db->order_by('b_id');
+		$bm_rows = $this->db->get()->result_array();
+		//echo $this->db->last_query();
+		//$this->extends_bm_rows($bm_rows);
+		foreach($bm_rows as $r){
+			$rt[$r['b_id']] = $r['bm_title'];
+		}
+		return $rt;
+	}
+	
 	//목록용
 	public function select_for_list($get){
 		if(!$this->_apply_list_where($get)){

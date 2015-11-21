@@ -13,15 +13,15 @@ class Page extends MX_Controller {
 		// front 컨트롤에서 접근할 경우.
 	public function index_as_front($conf,$param){
 		$base_url = $conf['base_url'];
-		$view = $conf['menu']['mn_key1'];
-		$this->action($conf,$param);
+		$view = $conf['menu']['mn_arg1'];
+		$this->action($conf,$view);
 	}
 	
-	public function action($conf,$param){
+	public function action($conf,$view){
 		$this->config->set_item('layout_head_contents','<script>console.log("xxx");</script>');
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','');
-		$this->load->view($conf['menu']['mn_key1'],array('conf'=>$conf));
+		$this->load->view($view,array('conf'=>$conf));
 	}
 	
 
