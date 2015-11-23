@@ -28,8 +28,10 @@ class Front extends MX_Controller {
 		$this->index($menu_uri,$params);
 		
 	}
-	public function get_menu($uri){
-		return $this->menu_m->get_current_menu($uri);
+	public function get_current_menu($uri){
+		$current_menu = $this->menu_m->get_current_menu($uri);
+		$this->config->set_item('current_menu', $current_menu);
+		return $current_menu;
 	}
 /**
  * 분배 위치
@@ -38,7 +40,7 @@ class Front extends MX_Controller {
 	public function index($menu_uri,$params=array()){
 		$data = array();
 
-		$menu = $this->get_menu($menu_uri);
+		$menu = $this->get_current_menu($menu_uri);
 		if(!isset($menu)){
 			show_error('메뉴가 없습니다.',404);
 			//show_404();

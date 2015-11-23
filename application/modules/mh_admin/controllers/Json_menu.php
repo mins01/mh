@@ -8,6 +8,9 @@ class Json_menu extends MX_Controller {
 	private $base_url = '';
 	private $logedin = null;
 	private $limit = 20;
+	public $modules_path = '/modules/mh/controllers/';
+	public $page_path = '/modules/mh/views/page/';
+	public $page_prefix = 'mh/page/';
 	public function __construct()
 	{
 		$this->load->model('mh/menu_model','menu_m_f');
@@ -56,6 +59,7 @@ class Json_menu extends MX_Controller {
 	}
 
 	public function echo_json($obj){
+		header('Content-Type: application/json');
 		echo json_encode($obj);
 	}
 	public function lists(){
@@ -68,7 +72,7 @@ class Json_menu extends MX_Controller {
 		$fs = array(
 			'mn_id','mn_uri','mn_url','mn_text','mn_sort','mn_parent_id',
 			'mn_module','mn_arg1','mn_arg2','mn_arg3',
-			'mn_use','mn_hide','mn_lock',
+			'mn_use','mn_hide','mn_lock','mn_head_contents','mn_top_html',
 		);
 		if($this->input->post('mn_lock')=='1'){
 			$fs = array(
@@ -171,7 +175,7 @@ class Json_menu extends MX_Controller {
 		return $this->echo_json($json);
 	}
 	public function module_lists(){
-		$path=APPPATH.'/modules/mh/controllers/';
+		$path=APPPATH.$this->modules_path;
 		$arr = array();
 		$d = dir($path);
 		while (false !== ($entry = $d->read())) {
@@ -185,12 +189,31 @@ class Json_menu extends MX_Controller {
 		//print_r($path);
 		return $arr;
 	}
+	// page 모듈용
+	public function page_lists(){ 
+		$path=APPPATH.$this->page_path;
+		$arr = array();
+		$d = dir($path);
+		while (false !== ($entry = $d->read())) {
+			if($entry=='.' || $entry=='..'){continue;}
+			if(is_file($path.$entry)){
+				$v = str_ireplace('.php','',$entry);
+				$k = $this->page_prefix.$v;
+				$arr[$k] = $v;
+			}
+		}
+		$d->close();
+		asort($arr);
+		//print_r($path);
+		return $arr;
+	}
 	public function first(){
 		$this->load->model('mh/bbs_master_model','bm_m');
 		$json = array(
 			'bbs_lists'=>$this->bm_m->select_for_list_for_menu(),
 			'mn_rows' => $this->menu_m_f->select(),
 			'module_lists'=>$this->module_lists(),
+			'page_lists'=>$this->page_lists(),
 		);
 		return $this->echo_json($json);
 	}

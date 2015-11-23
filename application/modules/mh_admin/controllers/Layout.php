@@ -29,6 +29,12 @@ class Layout extends MX_Controller {
 		if(!isset($conf['tail_contents'])) $conf['tail_contents'] = '';
 		if(!isset($conf['hide'])) $conf['hide'] = false;
 		if(!isset($conf['title'])) $conf['title'] = '';
+		$conf['top_html'] = '';
+		$current_menu = $this->config->item('current_menu');
+		if(isset($current_menu)){
+			$conf['head_contents'].="\n".$current_menu['mn_head_contents'];
+			$conf['top_html'] = $current_menu['mn_top_html'];
+		}
 		
 		return $conf;
 	}

@@ -8,6 +8,9 @@ class Json_admin_menu extends Json_menu {
 	private $base_url = '';
 	private $logedin = null;
 	private $limit = 20;
+	public $modules_path = '/modules/mh_admin/controllers/';
+	public $page_path = '/modules/mh_admin/views/page/';
+	public $page_prefix = 'mh_admin/page/';
 	public function __construct()
 	{
 		$this->load->model('mh/menu_model','menu_m_f');
@@ -19,9 +22,8 @@ class Json_admin_menu extends Json_menu {
 		
 		$this->m_row = $this->common->get_login();
 		$this->logedin = & $this->common->logedin;
-		$this->config->load('bbs');
-		$this->bbs_conf = $this->config->item('bbs');
-
+		//$this->config->load('bbs');
+		//$this->bbs_conf = $this->config->item('bbs');
 	}
 	
 	public function _remap($method, $params = array())
@@ -29,7 +31,7 @@ class Json_admin_menu extends Json_menu {
 		$this->index($params);
 	}
 	
-	public function module_lists(){
+	public function module_lists1(){
 		$path=APPPATH.'/modules/mh_admin/controllers/';
 		$arr = array();
 		$d = dir($path);
@@ -50,6 +52,7 @@ class Json_admin_menu extends Json_menu {
 			//'bbs_lists'=>$this->bm_m->select_for_list_for_menu(),
 			'mn_rows' => $this->menu_m_f->select(),
 			'module_lists'=>$this->module_lists(),
+			'page_lists'=>$this->page_lists(),
 		);
 		return $this->echo_json($json);
 	}

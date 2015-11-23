@@ -83,25 +83,31 @@
 				<div class="list-group">
 				<? 
 					if(isset($menu['breadcrumbs'][1])):
-					$tmenu = $menu_rows[$menu['breadcrumbs'][1]];//1단계 메뉴 기준으로 출력한다.
-					foreach($tmenu['child'] as $k=>$mr): 
-						if($mr['mn_hide']!='0'){continue;}
-						$class = $mr['active']?'active':'';
+						$tmenu = $menu_rows[$menu['breadcrumbs'][1]];//1단계 메뉴 기준으로 출력한다.
+						foreach($tmenu['child'] as $k=>$mr): 
+							if($mr['mn_hide']!='0'){continue;}
+							$class = $mr['active']?'active':'';
 				?>
 					
 						<a class="list-group-item  <?=$class?>" href="<?=html_escape($mr['url'])?>" <?=$mr['mn_attr']?>><?=html_escape($mr['mn_text'])?></a>
 					
 				<? 
-					endforeach; 
+						endforeach;
+					endif;
+				?>
+				
+				<?
+					if(!isset($tmenu['child'][0])):
+					?><a class="list-group-item active" href="" >NO SUBMENU</a><?
 					endif;
 				?>
 				</div>
 			</nav>
 
-		
+			
 			
 			<div class="col-lg-10 col-md-9">
-	
+				<h3 class="text-right"><?=$top_html?></h3>
 	
 	
 	

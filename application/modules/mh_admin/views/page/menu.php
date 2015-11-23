@@ -3,7 +3,7 @@
 //$start_num,$count
 $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 ?>
-<h2>메뉴설정</h2>
+<h4>메뉴설정</h4>
 <div ng-app="menuApp" class="row" ng-controller="treeCtrl as treeCtrl" ng-init="treeCtrl.init('<?=$json_url?>')">
 	<script type="text/ng-template" id="field_renderer.html">
 		<span class="menu-label">
@@ -23,7 +23,10 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 		</div>
 	</div>
 	<div class="col-md-8">
-		<form name="formInfo" class="form-horizontal" ng-submit="form_submit()" >
+		<div  ng-show="selected_obj == null" >
+			<h2>메뉴를 선택해주시기 바랍니다.</h2>
+		</div>
+		<form name="formInfo" class="form-horizontal" ng-submit="form_submit()" ng-show="selected_obj != null" >
 			<div class="form-group">
 					<label class="col-sm-2 control-label">메뉴아이디</label>
 					<div class="col-sm-4">
@@ -34,7 +37,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 					<label class="col-sm-2 control-label">부모메뉴</label>
 					<div class="col-sm-4">
 						<select class="form-control" name="mn_parent_id"  placeholder="mn_parent_id" ng-model="selected_obj.mn_parent_id" required ng-minlength="1" ng-maxlength="10">
-							<option  value="" >#NONE#</option>
+							<!-- <option  value="" >#NONE#</option> -->
 							<option  ng-repeat="(k,v) in mn_parent_id_lists" value="{{k}}" >[{{k}}] {{v}}</option>
 						</select>
 						
@@ -99,11 +102,22 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 				<label class="col-sm-2 control-label">모듈인자1</label>
 				<div class="col-sm-4">
 					<input type="text" maxlength="20" class="form-control" placeholder="mn_arg1" ng-model="selected_obj.mn_arg1" 
-					ng-hide="selected_obj.mn_module=='bbs'" ng-disabled="selected_obj.mn_lock=='1'"
+					ng-hide="['bbs','page'].indexOf(selected_obj.mn_module)>-1 " 
+					ng-disabled="selected_obj.mn_lock=='1'"
 					>
-					<select class="form-control" placeholder="mn_arg1" ng-model="selected_obj.mn_arg1" ng-disabled="selected_obj.mn_module!='bbs'" ng-hide="selected_obj.mn_module!='bbs'"  >
-						<option value="" >#NONE#</option>
+					<select class="form-control" placeholder="mn_arg1" 
+					ng-model="selected_obj.mn_arg1" 
+					ng-disabled="selected_obj.mn_module!='bbs' || selected_obj.mn_lock=='1'" 
+					ng-hide="selected_obj.mn_module!='bbs'"  >
+						<option value="" >#게시판 아이디#</option>
 						<option ng-repeat="(k, v) in bbs_lists" value="{{k}}" >[{{k}}] {{v}}</option>
+					</select>
+					<select class="form-control" placeholder="mn_arg1" 
+					ng-model="selected_obj.mn_arg1" 
+					ng-disabled="selected_obj.mn_module!='page' || selected_obj.mn_lock=='1'" 
+					ng-hide="selected_obj.mn_module!='page'"  >
+						<option value="" >#페이지 파일#</option>
+						<option ng-repeat="(k, v) in page_lists" value="{{k}}" >{{v}}</option>
 					</select>
 				</div>
 			</div>
@@ -115,6 +129,17 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 				<label class="col-sm-2 control-label">모듈인자3</label>
 				<div class="col-sm-4">
 					<input type="text" maxlength="20" class="form-control" placeholder="mn_arg3" ng-model="selected_obj.mn_arg3" ng-disabled="selected_obj.mn_lock=='1'">
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<label class="col-sm-12 ">&lt;head&gt; 속 추가내용</label>
+				<div class="col-sm-12">
+					<textarea type="text" maxlength="50000" class="form-control" placeholder="mn_head_contents" ng-model="selected_obj.mn_head_contents" ng-disabled="selected_obj.mn_lock=='1'"></textarea>
+				</div>
+				<label class="col-sm-12 ">상단 HTML</label>
+				<div class="col-sm-12">
+					<textarea type="text" maxlength="50000" class="form-control" placeholder="mn_top_html" ng-model="selected_obj.mn_top_html" ng-disabled="selected_obj.mn_lock=='1'"></textarea>
 				</div>
 			</div>
 			<hr>
@@ -159,7 +184,7 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 	}
 	//$scope.temp = '1';
 	$scope.module_lists = [];
-	$scope.selected_obj = {};
+	$scope.selected_obj = null;
 	$scope.mn_tree = [
 		{'mn_uri':'','mn_text':'Root','child':
 		[
@@ -201,7 +226,7 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 		}
 		$scope.mn_parent_id_lists = {};
 		$scope.mn_parent_id_lists_push($scope.mn_tree);
-		console.log($scope.mn_parent_id_lists,$scope.mn_rows);
+		//console.log($scope.mn_parent_id_lists,$scope.mn_rows);
 	}
 	$scope.mn_parent_id_lists_push = function(menus){
 		for(var i=0,m=menus.length;i<m;i++){
@@ -227,6 +252,9 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 		}
 		if(data.bbs_lists){
 			$scope.bbs_lists = data.bbs_lists;
+		}
+		if(data.page_lists){
+			$scope.page_lists = data.page_lists;
 		}
 		if(data.mn_id){
 			if($scope.mn_rows[data.mn_id]){

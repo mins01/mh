@@ -77,4 +77,5 @@
 	</nav>
 	
 	<div class="container-fluid contents">
+	<?=$top_html?>
 <? endif; ?>

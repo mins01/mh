@@ -16,18 +16,25 @@ class Layout extends MX_Controller {
 	public function get_conf_from_config(){
 		$conf = array();
 		$conf['menu_tree'] = $this->config->item('menu_tree');
+		$conf['menu_rows'] = $this->config->item('menu_rows');
 		$conf['menu'] = $this->config->item('menu');
 		$conf['head_contents'] = $this->config->item('layout_head_contents');
 		$conf['tail_contents'] = $this->config->item('layout_tail_contents');
 		$conf['hide'] = $this->config->item('layout_hide');
 		$conf['title'] = $this->config->item('layout_title');
 		$conf['logedin'] = $this->config->item('layout_logedin');
-		$conf['login_label'] = $this->common->get_login('m_nick');
+		$conf['login_label'] = $this->common->get_login('adm_nick');
 
 		if(!isset($conf['head_contents'])) $conf['head_contents'] = '';
 		if(!isset($conf['tail_contents'])) $conf['tail_contents'] = '';
 		if(!isset($conf['hide'])) $conf['hide'] = false;
 		if(!isset($conf['title'])) $conf['title'] = '';
+		$conf['top_html'] = '';
+		$current_menu = $this->config->item('current_menu');
+		if(isset($current_menu)){
+			$conf['head_contents'].="\n".$current_menu['mn_head_contents'];
+			$conf['top_html'] = $current_menu['mn_top_html'];
+		}
 		
 		return $conf;
 	}
