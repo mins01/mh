@@ -104,7 +104,7 @@ class Menu_model extends CI_Model {
 		$menu_tree = array();
 		foreach($menu_rows as & $r){
 			if($r['mn_id'] == $r['mn_parent_id']){
-				$r['child']=array();
+				if(!isset($r['child'])) $r['child']=array();
 				$menu_tree[] = & $r;
 			}
 			if($r['mn_id'] == $r['mn_parent_id']){
