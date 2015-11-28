@@ -8,6 +8,29 @@
 	게시물 : <?=$count?> (<?=$max_page?> page)
 </nav>
 
+<div class="bbs-mode-list">
+	<div class="row">
+	<? 
+	foreach($b_rows as $r):
+	//print_r($r);
+	?>
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+			<div class="panel panel-default center-block" style="max-width:300px">
+				<div class="panel-heading text-center  text-overflow-ellipsis"
+				 ><a href="<?=html_escape($r['read_url'])?>" title="<?=html_escape($r['b_title'])?>"><?=html_escape($r['b_title'])?></a></div>
+				<div class="panel-body text-center">
+					Panel content
+				</div>
+			</div>
+		</div>
+	<?
+	endforeach;
+	?>
+	</div>
+</div>
+
+
+
 <div class="panel panel-default bbs-mode-list">
 	<!-- Default panel contents -->
 	<div class="panel-heading">

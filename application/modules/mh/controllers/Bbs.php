@@ -13,6 +13,8 @@ class Bbs extends MX_Controller {
 		
 		$this->load->model('mh/bbs_master_model','bm_m');
 		$this->load->model('mh/bbs_model','bbs_m');
+		$this->load->model('mh/bbs_file_model','bf_m');
+		
 		$this->load->module('mh/layout');
 		$this->load->module('mh/common');
 		
@@ -68,6 +70,7 @@ class Bbs extends MX_Controller {
 		}
 		//print_r($conf['bm_row']);
 		$this->bbs_m->set_bm_row($this->bm_row); //여기서 모델에 사용할 게시판 아이디가 고정됨
+		$this->bf_m->set_bm_row($this->bm_row);
 		$this->skin_path = 'mh/bbs/skin/'.$this->bm_row['bm_skin'];
 
 		$this->bbs_conf['page'] = (int)$this->input->get('page',1);
@@ -237,6 +240,18 @@ class Bbs extends MX_Controller {
 				return;
 			}
 		}
+		if($this->bm_row['bm_use_file']=='1'){
+			$view_form_file = $this->load->view($this->skin_path.'/form_file',array(
+				'mode'=>'read',
+				'get'=>$get,
+				'bm_row' => $this->bm_row,
+				'bbs_conf'=>$this->bbs_conf,
+				'permission'=>$permission,
+				'bf_rows'=>$this->bf_m->select_for_list($b_row['b_idx']),
+			),true);
+		}else{
+			$view_form_file = '';
+		}
 
 
 		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
@@ -245,12 +260,14 @@ class Bbs extends MX_Controller {
 		
 		$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$b_idx);
 		$this->load->view($this->skin_path.'/read',array(
-		'b_row' => $b_row,
-		'bm_row' => $this->bm_row,
-		'get'=>$get,
-		'bbs_conf'=>$this->bbs_conf,
-		'html_comment'=>$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url),true),
-		'permission'=>$permission,
+			'mode'=>'read',
+			'b_row' => $b_row,
+			'bm_row' => $this->bm_row,
+			'get'=>$get,
+			'bbs_conf'=>$this->bbs_conf,
+			'html_comment'=>$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url),true),
+			'permission'=>$permission,
+			'view_form_file'=>$view_form_file,
 		));
 		
 		if($this->bm_row['bm_read_with_list']=='1'){
@@ -336,6 +353,20 @@ class Bbs extends MX_Controller {
 			$b_row['b_pass'] = '';
 		}
 		
+		if($this->bm_row['bm_use_file']=='1'){
+			$view_form_file = $this->load->view($this->skin_path.'/form_file',array(
+				'mode'=>$mode,
+				'get'=>$get,
+				'bm_row' => $this->bm_row,
+				'bbs_conf'=>$this->bbs_conf,
+				'permission'=>$permission,
+				'bf_rows'=>($mode=='edit')?$this->bf_m->select_for_list($b_row['b_idx']):array(),
+			),true);
+		}else{
+			$view_form_file = '';
+		}
+		
+		
 		
 		$this->load->view($this->skin_path.'/form',array(
 		'b_row' => $b_row,
@@ -349,6 +380,7 @@ class Bbs extends MX_Controller {
 		'input_b_name'=>!isset($b_row['b_insert_date']) && !$this->logedin, //이름을 입력 받아야하는가?
 		'input_b_pass'=>isset($b_row['b_pass'][0]) || !$this->logedin, //비밀번호를 입력 받아야하는가?
 		'permission'=>$permission,
+		'view_form_file'=>$view_form_file,
 		));
 	}
 

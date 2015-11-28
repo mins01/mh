@@ -21,23 +21,28 @@
 			</div>
 		</li>
 		<li class="list-group-item form-inline">
-		<? if(isset($b_row['b_link'][0])): ?>
-			<a class="label label-info glyphicon glyphicon-link" href="<?=html_escape($b_row['b_link'])?>" target="_blank">링크</a>
-		<? endif; ?>
-		<? if(isset($b_row['b_category'][0])): ?>
-			<span class="label label-primary"><?=html_escape($b_row['b_category'])?></span>
-		<? endif; ?>
-		<? if($b_row['b_secret']=='1'): ?>
-			<span class="label label-danger">비밀글</span>
-		<? endif; ?>
-		<? if($b_row['b_notice']>0): ?>
-			<span class="label label-danger">공지글 Lv.<?=$b_row['b_notice']?></span>
-		<? endif; ?>
-		<span class="pull-right">
-			<span class="label label-info ">작성일 : <?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></span>
-		</span>
-		<span class="clearfix"></span>
+			<? if(isset($b_row['b_link'][0])): ?>
+				<a class="label label-info glyphicon glyphicon-link" href="<?=html_escape($b_row['b_link'])?>" target="_blank">링크</a>
+			<? endif; ?>
+			<? if(isset($b_row['b_category'][0])): ?>
+				<span class="label label-primary"><?=html_escape($b_row['b_category'])?></span>
+			<? endif; ?>
+			<? if($b_row['b_secret']=='1'): ?>
+				<span class="label label-danger">비밀글</span>
+			<? endif; ?>
+			<? if($b_row['b_notice']>0): ?>
+				<span class="label label-danger">공지글 Lv.<?=$b_row['b_notice']?></span>
+			<? endif; ?>
+			<span class="pull-right">
+				<span class="label label-info ">작성일 : <?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></span>
+			</span>
+			<span class="clearfix"></span>
 		</li>
+		<? if(isset($view_form_file[0])): ?>
+		<li class="list-group-item form-inline bbs-mode-read-file">
+			<?=$view_form_file?>
+		</li>
+		<? endif; ?>
 	</ul>
 	<div class="panel-body" style="min-height:200px">
 		<?=nl2br(html_escape($b_row['b_text']))?>

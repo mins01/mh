@@ -180,6 +180,37 @@
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<? 
+									$t_label='첨부파일사용';
+									$t_col = 'bm_use_file';
+								?>
+								<label class="col-xs-3 control-label"><?=($t_label)?></label>
+								<div class="col-xs-9">
+									<div class="btn-group" data-toggle="buttons">
+										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
+										</label>
+										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<? 
+									$t_label='첨부파일수';
+									$t_col = 'bm_file_limit';
+								?>
+								<label class="col-xs-3 control-label"><?=($t_label)?></label>
+								<div class="col-xs-9">
+									<input type="number" required class="form-control" required name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="40" value="<?=html_escape($bm_row[$t_col])?>">
+								</div>
+							</div>
+						</div>
+					</div>
 				</li>
 			</ul>
 			<div class="panel-footer text-right">
