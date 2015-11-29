@@ -186,6 +186,7 @@ class Bbs_file_model extends CI_Model {
 			$this->msg = 'UPLOAD FAIL';
 			return false;
 		}
+		chmod($save_file,0777);
 		return $this->insert_bf_row($vals);
 	}
 }
