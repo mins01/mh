@@ -7,6 +7,16 @@ class Bbs_model extends CI_Model {
 	public $bm_row = array();
 	public $error = '';
 	private $tbl = '';
+	private $fields= array(
+		'b_idx','b_id','b_gidx','b_gpos','b_pidx',
+		//'b_insert_date','b_update_date',
+		//'b_isdel',
+		'm_idx','b_name','b_pass',
+		//'b_ip',
+		'b_notice','b_secret','b_html','b_link','b_category',
+		'b_title','b_text',
+		'b_etc_0','b_etc_1','b_etc_2','b_etc_3','b_etc_4',
+	);
 	public function __construct()
 	{
 		// Call the CI_Model constructor
@@ -24,6 +34,16 @@ class Bbs_model extends CI_Model {
 			return false;
 		}
 		$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_data';
+	}
+	//-- post에서 필요 값만 가져옴. (insert,update 할때 꼭 체크)
+	//b_ip 등은 자동으로 값을 채워준다.
+	public function filter_vals(& $post){
+		foreach($post as $k => $v){
+			if(!in_array($k,$this->fields)){
+				unset($post[$k]);
+			}
+		}
+		$post['b_ip'] = $this->input->server('REMOTE_ADDR');
 	}
 	//-- 목록과 카운팅용
 	private function _apply_list_where($get){
@@ -175,6 +195,7 @@ class Bbs_model extends CI_Model {
 	}
 	public function update_b_row_as_where($where,$sets){
 		unset($sets['b_idx'],$sets['b_id']);
+		$this->filter_vals($sets);
 		$this->db->from($this->tbl)
 		->where($where)
 		->where('b_isdel',0)
@@ -188,6 +209,9 @@ class Bbs_model extends CI_Model {
 		if(isset($sets['b_pass'][0])){
 			$sets['b_pass'] = $this->hash($sets['b_pass']);
 		}
+		
+		$this->filter_vals($sets);
+		
 		$this->db->from($this->tbl)
 		->set($sets)
 		->set('b_insert_date','now()',false)
@@ -212,6 +236,8 @@ class Bbs_model extends CI_Model {
 		if(isset($sets['b_pass'][0])){
 			$sets['b_pass'] = $this->hash($sets['b_pass']);
 		}
+		$this->filter_vals($sets);
+		
 		$v_b_idx = $this->db->escape((int)$b_idx);
 		$sql_b_gidx = "(SELECT b_gidx from {$this->tbl} bbsd1 WHERE bbsd1.b_idx = {$v_b_idx})";
 		$sql_b_gpos =

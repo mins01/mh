@@ -460,21 +460,36 @@ class Bbs extends MX_Controller {
 			case 'edit':
 				unset($post['b_pass']);
 				$r = $this->bbs_m->update_b_row($b_idx,$post);
+				if($this->bm_row['bm_use_file']=='1'){
+					if(isset($_FILES['upf'])) $bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
+					if($this->input->post('delf')){
+						$delf_r = $this->bf_m->delete_bf_rows_by_b_idx_bf_idxs($b_idx,$this->input->post('delf'));
+						//print_r($delf_r);
+					}
+				}
 			break;
 			case 'write':
 
 				$this->extends_b_row_for_m_row($post);
-				$r = $this->bbs_m->insert_b_row($post);
-				$b_idx = $r;
-
+				$b_idx = $r = $this->bbs_m->insert_b_row($post);
+				if($b_idx){
+					if($this->bm_row['bm_use_file']=='1'){
+						if(isset($_FILES['upf'])) $bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
+					}
+				}
 			break;
 			case 'answer':
 				$this->extends_b_row_for_m_row($post);
-				$r = $this->bbs_m->insert_answer_b_row($b_idx,$post);
-				$b_idx = $r;
+				$b_idx = $r = $this->bbs_m->insert_answer_b_row($b_idx,$post);
+				if($b_idx){
+					if($this->bm_row['bm_use_file']=='1'){
+						if(isset($_FILES['upf'])) $bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
+					}
+				}
 			break;
 			case 'delete':
 				$r = $this->bbs_m->delete_b_row($b_idx);
+				$delf_r = $this->bf_m->delete_bf_rows_by_b_idx($b_idx);
 				$b_idx = $r;
 			break;
 		}

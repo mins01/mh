@@ -1,0 +1,36 @@
+#map_canvas { height: 100% }
+
+/*
+#navi{ position:absolute; left:0; top:0; width:100%; z-index:10; height:2px; overflow:visible; background-color:transparent;}
+*/
+#navi{ width:100%; z-index:10; overflow:visible; background-color:transparent;}
+#navi, 
+#navi input{font-size:12px;}
+
+
+#search{ margin:0 auto; max-width:500px; min-width:200px; width:100%; text-align:center; background-color:#fff;border:1px solid gray; padding:2px; border-top-width:0;}
+#search form{padding:0; margin:0;}		
+#search table{padding:0; margin:0;}
+#search td{padding:0; margin:0;}
+
+#search input.textbox{ border-width:0; padding:0; margin:0; height:100%;}
+#search td.textbox{ border:1px solid gray;}
+#search input.button{ border:1px outset gray; width:35px;}
+
+/*
+#info{ float:right; margin:20px 5px 0 0; background-color:#fff; width:100px; border:1px solid gray; padding:2px;}
+*/
+/*
+#info{font-size:12px;; position:absolute; right:0px; bottom:0px; margin:0px 5px 20px 0; background-color:#fff; width:100px; border:1px solid gray; padding:2px; z-index:10;}
+*/
+#info{font-size:12px;margin:5px; background-color:#fff; width:100px; border:1px solid gray; padding:2px; z-index:10;}#info, 
+#info input{font-size:12px;}		
+#btn_center{ border:1px outset gray; width:80%; }
+
+.box_shadow{box-shadow: 2px 2px 5px #ccc;}
+.hide{display:none;}
+
+#tbl_menu{ border-collapse:collapse; table-layout:fixed; margin-bottom:2px;}
+#tbl_menu th{ border:2px solid black; cursor:pointer; padding:0; margin:0;}
+#tbl_menu th.selected{ border-style:inset; background-color:red;}
+#tbl_menu input{background-color:transparent; border:2px outset gray;display:block; width:100%; padding:0; margin:0;cursor:pointer; }

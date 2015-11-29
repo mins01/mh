@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//== layout에서 사용할 설정!
+//== BBS에서 사용할 설정!
 
-$config['bbs']= array(
+$config['bbs'] = array(
 	'b_notices'=>array(
 		'0'=>'일반글',
 		'1'=>'LV.1',
@@ -27,4 +27,6 @@ $config['bbs']= array(
 		'h'=>'HTML',
 		'r'=>'RealHTML',
 	),
+	//파일 저장 위치
+	'file_dir'=>realpath(APPPATH.'/../_file/bbs/'),
 );

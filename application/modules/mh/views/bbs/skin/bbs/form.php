@@ -5,7 +5,7 @@
 ?>
 
 <div>
-	<form action="" name="form_bbs" method="post" onsubmit="return check_form_bbs(this);"  >
+	<form action="" name="form_bbs" method="post" onsubmit="return check_form_bbs(this);"  enctype="multipart/form-data"  >
 	<input type="hidden" name="process" value="<?=html_escape($process)?>">
 	<div class="panel panel-default form-horizontal bbs-mode-form">
 		<div class="panel-heading">

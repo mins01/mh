@@ -18,7 +18,7 @@ foreach($bf_rows as $r):
 			</div>
 			<? if($mode=='edit'): ?>
 			<div class="panel-footer text-center">
-				<label><input type="checkbox" name="file_isdel[]" value="<?=$r['bf_idx']?>" > <span class="glyphicon glyphicon-floppy-remove"></span> 삭제</label> /
+				<label><input type="checkbox" name="delf[]" value="<?=$r['bf_idx']?>" > <span class="glyphicon glyphicon-floppy-remove"></span> 삭제</label> /
 				<button type="button" class="btn btn-info btn-xs">대표이미지설정</button>
 			</div>
 			<? endif; ?>
@@ -27,6 +27,11 @@ foreach($bf_rows as $r):
 <?
 endforeach;
 ?>
+<? if($mode=='read' && count($bf_rows)==0): ?>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4  mode-read-file-item">
+	첨부된 파일이 없습니다.
+	</div>
+<? endif; ?>
 <? 
 	if(preg_match('/^(edit|answer|write)$/',$mode)): 
 		for($i=0,$m=$bm_row['bm_file_limit']-count($bf_rows);$i<$m;$i++): 
@@ -41,7 +46,7 @@ endforeach;
 			</div>
 			<div class="panel-footer text-center">
 				<span class="btn-block btn btn-primary btn-file ">
-					<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" multiple onchange="bbs_form_file_item_oncahngeUpload(event)">
+					<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" multiple onchange="bbs_form_file_item_oncahngeUpload(event)">
 				</span>
 			</div>
 		</div>

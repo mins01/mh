@@ -51,3 +51,30 @@ margin-left:-1em;
 .bbs_c .bc_depth-8{margin-left:16%;}
 .bbs_c .bc_depth-9{margin-left:18%;}
 .bbs_c .bc_depth-10{margin-left:20%;}
+
+/* 첨부파일 버튼으로 만들기 */
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+/* 첨부파일 미리보기용 */
+.img-preview{   
+	max-height: 200px;
+  overflow: auto;}
+.img-preview img{max-width:95%}
