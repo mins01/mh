@@ -141,6 +141,28 @@ class Bbs extends MX_Controller {
 			$this->extends_b_row($r,$get);
 		}
 	}
+	private function extends_bf_row(& $bf_row,$b_row){
+		
+		$bf_row['down_url'] = $this->base_url . '/down/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']); //강제로 다운로드 시킨다.
+		$bf_row['view_url'] = $bf_row['down_url'].'&inline=1'; //브라우저에서 보인다면 보여준다.
+	}
+	private function extends_bf_rows(&$bf_rows,$b_row){
+		foreach($bf_rows as & $r){
+			$this->extends_bf_row($r,$b_row);
+		}
+	}
+	
+	private function get_bf_rows_by_b_row($b_row){
+		$bf_rows = $this->bf_m->select_for_list($b_row['b_idx']);
+		$this->extends_bf_rows(&$bf_rows,$b_row);
+		return $bf_rows;
+	}
+	
+	private function get_bf_row_by_b_row($b_row){
+		$bf_rows = $this->bf_m->select_for_list($b_row['b_idx']);
+		$this->extends_bf_rows(&$bf_rows,$b_row);
+		return $bf_rows;
+	}
 
 	public function mode_list($b_idx=null,$with_read=false){
 		
@@ -247,7 +269,7 @@ class Bbs extends MX_Controller {
 				'bm_row' => $this->bm_row,
 				'bbs_conf'=>$this->bbs_conf,
 				'permission'=>$permission,
-				'bf_rows'=>$this->bf_m->select_for_list($b_row['b_idx']),
+				'bf_rows'=>$this->get_bf_rows_by_b_row($b_row),
 			),true);
 		}else{
 			$view_form_file = '';
@@ -273,6 +295,47 @@ class Bbs extends MX_Controller {
 		if($this->bm_row['bm_read_with_list']=='1'){
 			$this->mode_list($b_idx,true);
 		}
+	}
+	public function mode_down($b_idx){
+		if(!$b_idx){
+			show_error('게시물 아이디가 없습니다');
+		}
+		$get = $this->input->get();
+		$b_row = $this->bbs_m->select_by_b_idx($b_idx);
+		if(!$b_row){
+			show_error('데이터가 없습니다');
+		}
+		$this->extends_b_row($b_row,$get);
+		$permission = $this->get_permission_lists($b_row['m_idx']);
+		if(!$permission['read']){
+			show_error('권한이 없습니다.');
+		}
+		if($b_row['b_secret']=='1' && !$permission['mine']){
+			$b_pass = $this->input->post('b_pass');
+			if(!$this->required_password($b_row,$b_pass,'비밀번호 확인')){
+				return;
+			}
+		}
+		
+		$inline = !!$this->input->post_get('inline');
+		$resume = !!$this->input->post_get('resume');
+		
+		$bf_idx = $this->input->post_get('bf_idx');
+		$bf_row = $this->bf_m->select_by_bf_idx($bf_idx);
+		//print_r($bf_row);
+		if(!isset($bf_row['bf_idx'])){
+			show_error('파일 데이터가 없습니다.');
+		}
+		
+		while(ob_get_level()>0 && ob_end_clean()){//출력 버퍼 삭제하고 종료.(모든 버퍼를 삭제한다.
+		}
+		
+		if($this->bf_m->download_by_bf_row($bf_row,$inline,$resume)){
+			exit();// 여기서 강제로 종료!
+		}else{
+			show_error($this->bf_m->msg);
+		}
+
 	}
 	public function mode_edit($b_idx){
 		if(!$b_idx){
@@ -360,7 +423,7 @@ class Bbs extends MX_Controller {
 				'bm_row' => $this->bm_row,
 				'bbs_conf'=>$this->bbs_conf,
 				'permission'=>$permission,
-				'bf_rows'=>($mode=='edit')?$this->bf_m->select_for_list($b_row['b_idx']):array(),
+				'bf_rows'=>($mode=='edit')?$this->get_bf_rows_by_b_row($b_row):array(),
 			),true);
 		}else{
 			$view_form_file = '';

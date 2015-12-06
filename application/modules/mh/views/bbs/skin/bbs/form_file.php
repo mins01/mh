@@ -11,10 +11,15 @@ foreach($bf_rows as $r):
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4  mode-read-file-item">
 		<div class="panel panel-default center-block" style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
-				<a title="<?=html_escape($r['bf_name'])?>"><?=html_escape($r['bf_name'])?></a>
+				<a title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['down_url'])?>"><?=html_escape($r['bf_name'])?></a>
 			</div>
 			<div class="panel-body text-center">
-				Panel content
+				<? if($r['is_image']): ?>
+				<a  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img src="<?=html_escape($r['view_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
+				title="<?=html_escape($r['bf_name'])?>"></a>
+				<? else: ?>
+				<span class="text-danger">미리보기 지원되지 않는 파일</span>
+				<? endif;?>
 			</div>
 			<? if($mode=='edit'): ?>
 			<div class="panel-footer text-center">
@@ -68,12 +73,12 @@ endforeach;
 					var file = ta.files[i];
 					var num = i;
 					if(file.type.indexOf('image')===-1){ 
-						if(m>1){
-							if(preview.html().length>1){
-								$(preview).append('<hr>');
-							}
-							$(preview).append('<div class="text-danger">파일'+(num+1)+'</div><div>No-Image</div>');
+						
+						if(preview.html().length>1){
+							$(preview).append('<hr>');
 						}
+						$(preview).append('<div class="text-danger">파일'+(num+1)+'</div><div>No-Image</div>');
+						
 						
 						continue;
 					}
