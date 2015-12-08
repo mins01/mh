@@ -28,5 +28,5 @@ $config['bbs'] = array(
 		'r'=>'RealHTML',
 	),
 	//파일 저장 위치
-	'file_dir'=>realpath(APPPATH.'/../_file/bbs/'),
+	'file_dir'=>realpath(APPPATH.'/../_files/bbs/'),
 );

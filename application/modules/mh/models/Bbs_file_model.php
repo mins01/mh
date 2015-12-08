@@ -135,6 +135,20 @@ class Bbs_file_model extends CI_Model {
 		}
 		return true;
 	}
+	//-- 하나의 이미지 첨부파일을 대표 이미지로 설정
+	public function set_represent_by_b_idx($b_idx){
+		$this->db->from($this->tbl)->where('bf_isdel',0)->where('b_idx',$b_idx)->set('bf_represent',0)->update();
+		$this->db->from($this->tbl)->where('bf_isdel',0)->where('b_idx',$b_idx)->set('bf_represent',1)->like('bf_type','image','after')->limit(1)->update();
+		return true;
+	}
+	//-- 지정 첨부파일을 대표 이미지로 설정.
+	public function set_represent_by_b_idx_bf_idx($b_idx,$bf_idx){
+		$this->db->from($this->tbl)->where('bf_isdel',0)->where('b_idx',$b_idx)->set('bf_represent',0)->update();
+		$this->db->from($this->tbl)->where('bf_isdel',0)->where('b_idx',$b_idx)->where('bf_idx',$bf_idx)->set('bf_represent',1)->update();
+		return true;
+	}
+	//-- 썸네일 설정
+	//--
 	public function upload_files($b_idx,$files){
 		$rlt = array();
 		for($i=0,$m=count($files['name']);$i<$m;$i++){
@@ -151,6 +165,8 @@ class Bbs_file_model extends CI_Model {
 		}
 		return $rlt;
 	}
+	
+	//-- 업로드
 	public function upload_file($b_idx,$file){
 		$this->msg = '';
 		switch($file['error']){
@@ -219,6 +235,106 @@ class Bbs_file_model extends CI_Model {
 		return $this->insert_bf_row($vals);
 	}
 	
+	//== 이미지 리사이즈 출력
+	public function echo_image_resize($filePath,$new_width=200){
+		header('X-resized: 1');
+		list($width, $height) = getimagesize($filePath);
+		//$new_width = 200;
+		$new_height = floor($height * $new_width/$width);
+		$pif = pathinfo ($filePath);
+		$image = null;
+		switch(strtolower($pif['extension'])){
+			case 'jpg':
+			case 'jpeg':$image = imagecreatefromjpeg($filePath); break;
+			case 'gif':$image = imagecreatefromgif($filePath); break;
+			case 'png':$image = imagecreatefrompng($filePath); break;
+		}
+		
+		if ($image) {
+			// Content type
+			// Get new dimensions
+			$image_p = imagecreatetruecolor($new_width, $new_height);
+			// Resample
+			imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+			// Output
+			imagejpeg($image_p, null, 70);
+			imagedestroy($image_p);
+		}else{
+			header('X-resized : 0');
+			$this->msg = '이미지 생성 오류';
+			return false;
+		}
+		return true;
+	}
+	
+	//= 썸네일 출력
+	public function thumbnail_by_bf_row($bf_row,$inline=false,$resume=true,$debug=0){
+		if(!is_file($bf_row['save_file'])){
+			$this->msg = '서버에 파일이 없습니다.';
+			return false;
+		}
+		
+		
+		list($width, $height) = getimagesize($bf_row['save_file']);
+		if(!$width){
+			$this->msg = '서버에 파일이 없습니다.';
+			return false;
+		}
+
+		
+		//$config = array();
+		//$config['image_library'] = 'gd2';
+		//$config['source_image']	= $bf_row['save_file'];
+		//$config['create_thumb'] = TRUE;
+		// //$config['maintain_ratio'] = TRUE;
+		//$config['master_dim'] = 'width';
+		//$config['width']	= 200;
+		// //$config['height']	= 200;
+		// //$config['thumb_marker']	= '_thumb';
+		//$config['dynamic_output']	= true;	
+		
+		// $this->load->library('image_lib',$config); //사용안함. 이미지 캐싱 처리에 문제.(304처리 불가!)
+		// if(!$this->image_lib->initialize($config)){
+			// echo $this->image_lib->display_errors();
+			// return false;
+		// }
+		header('x-thumbnail : 1');
+		//-- 웹 캐시 설정 		
+		$this->load->library('mheader');
+		$sec = 60*60*24; //하루. 더 길게해도 문제 없다.(파일 수정 기능이 없기 때문에)
+		$etag = date('Hi').ceil(date('s')/$sec);
+
+		$pif = pathinfo ($bf_row['bf_name']);
+		$fileName = 'thumb_'.$pif['filename'].'.jpg'; //jpg로 고정
+		if(!$inline) header("Content-Disposition: attachment; filename=\"{$fileName}\" "); //첨부파일로 처리 : 무조건 다운로드
+		else header("Content-Disposition: inline; filename=\"{$fileName}\" "); //가능하다면 직접 보여줌		
+		header('Content-type: image/jpeg');
+		
+		//$msgs = array();
+		if(false && MHeader::etag($etag)){ //etag는 사용하지 말자.
+		//$msgs[] = 'etag 동작';//실제 출력되지 않는다.(304 발생이 되기 때문에)
+			exit('etag 동작');
+		}else if(MHeader::lastModified($sec)){
+		//$msgs[] = 'lastModified 동작'; //실제 출력되지 않는다.(304 발생이 되기 때문에)
+			exit('lastModified 동작');
+		}
+		MHeader::expires($sec);
+		
+		
+		
+		// if($this->image_lib->resize()){
+			// return true;
+		// }
+		if($this->echo_image_resize($bf_row['save_file'],200)){
+			return true;
+		}else{
+			
+			$this->msg = $this->image_lib->display_errors();
+			return false;
+		}
+		
+	}
+	//= 첨부파일 출력
 	public function download_by_bf_row($bf_row,$inline=false,$resume=true,$debug=0){
 
 		if(!is_file($bf_row['save_file'])){

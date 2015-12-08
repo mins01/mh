@@ -4,6 +4,7 @@
 //print_r($bm_row);
 ?>
 <div class="row">
+<input type="hidden" name="bf_idx" value="" disabled>
 <? 
 foreach($bf_rows as $r):
 //print_r($r);
@@ -11,11 +12,11 @@ foreach($bf_rows as $r):
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4  mode-read-file-item">
 		<div class="panel panel-default center-block" style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
-				<a title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['down_url'])?>"><?=html_escape($r['bf_name'])?></a>
+				<a title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['download_url'])?>"><?=html_escape($r['bf_name'])?></a>
 			</div>
 			<div class="panel-body text-center">
 				<? if($r['is_image']): ?>
-				<a  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img src="<?=html_escape($r['view_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
+				<a  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img src="<?=html_escape($r['thumbnail_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
 				title="<?=html_escape($r['bf_name'])?>"></a>
 				<? else: ?>
 				<span class="text-danger">미리보기 지원되지 않는 파일</span>
@@ -23,15 +24,16 @@ foreach($bf_rows as $r):
 			</div>
 			<? if($mode=='edit'): ?>
 			<div class="panel-footer text-center">
-				<label><input type="checkbox" name="delf[]" value="<?=$r['bf_idx']?>" > <span class="glyphicon glyphicon-floppy-remove"></span> 삭제</label> /
-				<button type="button" class="btn btn-info btn-xs">대표이미지설정</button>
+				<label><input type="checkbox" name="delf[]" value="<?=$r['bf_idx']?>" > <span class="glyphicon glyphicon-floppy-remove"></span> 삭제</label>
+				<? if($r['bf_represent']):?>  / <button type="button" disabled class="btn btn-success btn-xs">대표이미지</button>
+				<? elseif($r['is_image']):?>  / <button type="button" onclick="return set_represent(this.form,<?=$r['bf_idx']?>)" class="btn btn-info btn-xs">대표이미지설정</button><? endif; ?>
 			</div>
 			<? endif; ?>
 		</div>
 	</div>
 <?
 endforeach;
-?>
+?>	
 <? if($mode=='read' && count($bf_rows)==0): ?>
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4  mode-read-file-item">
 	첨부된 파일이 없습니다.
@@ -39,6 +41,8 @@ endforeach;
 <? endif; ?>
 <? 
 	if(preg_match('/^(edit|answer|write)$/',$mode)): 
+?>
+<?
 		for($i=0,$m=$bm_row['bm_file_limit']-count($bf_rows);$i<$m;$i++): 
 ?>
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mode-form-file-item">
@@ -77,7 +81,7 @@ endforeach;
 						if(preview.html().length>1){
 							$(preview).append('<hr>');
 						}
-						$(preview).append('<div class="text-danger">파일'+(num+1)+'</div><div>No-Image</div>');
+						$(preview).append('<div class="text-danger">파일'+(num+1)+'</div><div>'+file.name+'</div>');
 						
 						
 						continue;

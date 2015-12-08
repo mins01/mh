@@ -116,6 +116,7 @@ class Bbs extends MX_Controller {
 			'read'=>$this->bm_row['bm_lv_read']<=$m_level,
 			'write'=>$this->bm_row['bm_lv_write']<=$m_level,
 			'edit'=>$this->bm_row['bm_lv_edit']<=$m_level &&($is_guest_b_row || $is_mine),
+			'set_represent'=>$this->bm_row['bm_lv_edit']<=$m_level &&($is_guest_b_row || $is_mine),
 			'answer'=>$this->bm_row['bm_lv_answer']<=$m_level,
 			'delete'=>$this->bm_row['bm_lv_delete']<=$m_level &&($is_guest_b_row || $is_mine),
 			'admin'=>$is_admin,
@@ -143,8 +144,9 @@ class Bbs extends MX_Controller {
 	}
 	private function extends_bf_row(& $bf_row,$b_row){
 		
-		$bf_row['down_url'] = $this->base_url . '/down/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']); //강제로 다운로드 시킨다.
-		$bf_row['view_url'] = $bf_row['down_url'].'&inline=1'; //브라우저에서 보인다면 보여준다.
+		$bf_row['download_url'] = $this->base_url . '/download/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']); //강제로 다운로드 시킨다.
+		$bf_row['view_url'] = $bf_row['download_url'].'&inline=1'; //브라우저에서 보인다면 보여준다.
+		$bf_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
 	}
 	private function extends_bf_rows(&$bf_rows,$b_row){
 		foreach($bf_rows as & $r){
@@ -296,7 +298,7 @@ class Bbs extends MX_Controller {
 			$this->mode_list($b_idx,true);
 		}
 	}
-	public function mode_down($b_idx){
+	private function _mode_download($b_idx,$is_thumbnail=false){
 		if(!$b_idx){
 			show_error('게시물 아이디가 없습니다');
 		}
@@ -330,12 +332,28 @@ class Bbs extends MX_Controller {
 		while(ob_get_level()>0 && ob_end_clean()){//출력 버퍼 삭제하고 종료.(모든 버퍼를 삭제한다.
 		}
 		
+		if($is_thumbnail ){
+			if($bf_row['is_image'] && $this->bf_m->thumbnail_by_bf_row($bf_row,$inline,$resume)){
+				exit();// 여기서 강제로 종료!
+			}else{
+				show_error($this->bf_m->msg);
+			}
+			//else if($this->bf_m->download_by_bf_row($bf_row,$inline,$resume)){
+			//	exit();
+			//}
+		}
 		if($this->bf_m->download_by_bf_row($bf_row,$inline,$resume)){
 			exit();// 여기서 강제로 종료!
 		}else{
 			show_error($this->bf_m->msg);
 		}
 
+	}
+	public function mode_download($b_idx){
+		$this->_mode_download($b_idx,false);
+	}
+	public function mode_thumbnail($b_idx){
+		$this->_mode_download($b_idx,true);
 	}
 	public function mode_edit($b_idx){
 		if(!$b_idx){
@@ -537,7 +555,10 @@ class Bbs extends MX_Controller {
 				$b_idx = $r = $this->bbs_m->insert_b_row($post);
 				if($b_idx){
 					if($this->bm_row['bm_use_file']=='1'){
-						if(isset($_FILES['upf'])) $bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
+						if(isset($_FILES['upf'])) {
+							$bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
+							$this->bf_m->set_represent_by_b_idx($b_idx);
+						}
 					}
 				}
 			break;
@@ -554,6 +575,12 @@ class Bbs extends MX_Controller {
 				$r = $this->bbs_m->delete_b_row($b_idx);
 				$delf_r = $this->bf_m->delete_bf_rows_by_b_idx($b_idx);
 				$b_idx = $r;
+			break;
+			case 'set_represent':
+				$delf_r = $this->bf_m->set_represent_by_b_idx_bf_idx($b_idx,$this->input->post('bf_idx'));
+			break;
+			default:
+			show_error('허용되지 않는 요청');
 			break;
 		}
 
