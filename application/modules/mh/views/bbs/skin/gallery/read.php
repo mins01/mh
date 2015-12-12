@@ -6,12 +6,24 @@
 
 
 <div class="panel panel-default <?=$b_row['b_notice']>0?'bbs-notice':''?> bbs-mode-read">
-	<div class="panel-heading">
-		<h3 class="panel-title text-center bbs-title"><?=html_escape($b_row['b_title'])?>
-		<sup class="pull-right"><span class="label label-success">New</span>
-		<span class="label label-info">12</span></sup>
+	<div class="panel-heading plotting_label_parent">
+		<h3 class="panel-title text-center bbs-title "><?=html_escape($b_row['b_title'])?>
 		<div class="clearfix"></div>
 		</h3>
+		
+		<div class="plotting_label">
+			<? if(($b_row['is_new'])): ?>
+				<span class="is_new label label-default" title="새글">new</span>
+			<? endif; ?>
+			<? if(!empty($b_row['bf_cnt'])): ?>
+				<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
+			<? endif; ?>
+			
+			<? if(!empty($b_row['bc_cnt'])): ?>
+				<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
+			<? endif; ?>
+		</div>
+		
 	</div>
 	<ul class="list-group">
 		<li class="list-group-item form-inline">

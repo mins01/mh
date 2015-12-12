@@ -139,7 +139,7 @@ class Bbs_master_model extends CI_Model {
 			'bm_lv_delete'=>'',
 			'bm_lv_down'=>'',
 			'bm_lv_admin'=>'',
-			'bm_use_reply'=>'',
+			'bm_use_comment'=>'',
 			'bm_lv_rlist'=>'',
 			'bm_lv_rwrite'=>'',
 			'bm_lv_redit'=>'',

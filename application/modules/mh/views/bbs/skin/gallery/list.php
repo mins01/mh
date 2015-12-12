@@ -1,7 +1,7 @@
 <?
 //$bm_row,$b_rows,$b_n_rows
 //$start_num,$count
-
+//print_r($b_rows);
 ?>
 
 <div class="panel panel-default bbs-mode-list">
@@ -16,16 +16,38 @@
 	<div class="panel-body">
 		<div class="row">
 		<? 
-		foreach($b_rows as $r):
+		foreach($b_rows as $b_row):
 		//print_r($r);
 		?>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-				<div class="panel panel-default center-block" style="max-width:300px">
+				<div class="panel panel-default center-block" style="max-width:300px;">
 					<div class="panel-heading text-center  text-overflow-ellipsis"
-					 ><a href="<?=html_escape($r['read_url'])?>" title="<?=html_escape($r['b_title'])?>"><?=html_escape($r['b_title'])?></a></div>
-					<div class="panel-body text-center">
-						Panel content
+					 ><a href="<?=html_escape($b_row['read_url'])?>" title="<?=html_escape($b_row['b_title'])?>"><?=html_escape($b_row['b_title'])?></a></div>
+					<div class="panel-body thumbnail-div plotting_label_parent" >
+						<a href="<?=html_escape($b_row['read_url'])?>">
+							<div class="text-center thumbnail-box img-rounded" >
+								<? if(isset($b_row['thumbnail_url'][0])): ?>
+									<img class="img-rounded" src="<?=html_escape($b_row['thumbnail_url'])?>">
+								<? else: ?>
+									<div class="no-thumbnail"></div>
+								<? endif; ?>
+							</div>
+						</a>
+						<div class="plotting_label">
+							<? if(($b_row['is_new'])): ?>
+								<span class="is_new label label-default" title="새글">new</span>
+							<? endif; ?>
+							<? if(!empty($b_row['bf_cnt'])): ?>
+								<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
+							<? endif; ?>
+							
+							<? if(!empty($b_row['bc_cnt'])): ?>
+								<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
+							<? endif; ?>
+						</div>
+						
 					</div>
+					
 				</div>
 			</div>
 		<?
@@ -63,7 +85,7 @@
 							</div>
 							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
 							<span class="input-group-btn">
-								<button type="submit" class="btn btn-default">검색</button>
+								<button type="submit" class="btn btn-info">검색</button>
 							</span>
 						</div><!-- /input-group -->
 					</div>

@@ -26,6 +26,9 @@ class Bbs_model extends CI_Model {
 	public function hash($str){
 		return md5($str);
 	}
+	public function tblname($tblname,$alias=''){
+		return DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_'.$tblname.(isset($alias[0])?' as '.$alias:'');
+	}
 	public function set_bm_row($bm_row){
 		$this->bm_row = $bm_row;
 		//-- 테이블
@@ -33,7 +36,8 @@ class Bbs_model extends CI_Model {
 			$this->error = '게시판 테이블 정보가 없습니다.';
 			return false;
 		}
-		$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_data';
+		//$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_data';
+		$this->tbl = $this->tblname('data');
 	}
 	//-- post에서 필요 값만 가져옴. (insert,update 할때 꼭 체크)
 	//b_ip 등은 자동으로 값을 채워준다.
@@ -45,9 +49,46 @@ class Bbs_model extends CI_Model {
 		}
 		$post['b_ip'] = $this->input->server('REMOTE_ADDR');
 	}
+	//-- bm_row에 따른 값에 따라서 목록 쿼리 부분을 변경시킨다.
+	public function _apply_list_bm_row($bm_row,$select=''){
+		// select 부분 설정.
+		if(!isset($select[0])){
+			$select = 'b.b_idx,b_id,b_gidx,b_gpos,b_pidx,b_insert_date,b_update_date,b_isdel
+			,b.m_idx
+			,b_name,b_ip,b_notice,b_secret,b_html,b_link,b_category,b_title
+			,b_etc_0,b_etc_1,b_etc_2,b_etc_3,b_etc_4';
+		}
+		// switch($bm_row['bm_list_type']){
+			// case '0': //일반 게시물
+
+			// break;
+			// case '1': //전체 본문 포함 게시물
+				// $select.=',b_text';
+			// break;
+			// case '2': //부분 본문 포함 게시물
+				// $select.=',substr(b_text,1,100) b_text';
+			// break;
+		// }
+		// 첨부파일 사용중인가?
+		if($bm_row['bm_use_file']=='1'){
+			$select.=',(select count(*) from '.$this->tblname('file','bf2').' where bf2.b_idx=b.b_idx and bf_isdel=0) as bf_cnt';
+		}
+		// 리플 사용중인가?
+		if($bm_row['bm_use_comment']=='1'){
+			$select.=',(select count(*) from '.$this->tblname('comment','bc2').' where bc2.b_idx=b.b_idx and bc_isdel=0) as bc_cnt';
+		}
+		// 조인 부분
+		if($bm_row['bm_use_thumbnail']=='1'){
+			$this->db->join($this->tblname('file','bf'),'bf.b_idx=b.b_idx and bf_isdel=0 and bf_represent = 1','left');
+			$select.=',bf.bf_idx,bf.bf_name,bf.bf_save,bf.bf_size,bf.bf_type,bf.bf_represent';
+		}
+		//-- 마지막 처리
+		$this->db->select($select);
+	}	
+	
 	//-- 목록과 카운팅용
 	private function _apply_list_where($get){
-		$this->db->from($this->tbl);
+		$this->db->from($this->tbl.' as b');
 		
 		//-- 게시판 아이디
 		if(!isset($this->bm_row['b_id'])){
@@ -84,17 +125,18 @@ class Bbs_model extends CI_Model {
 		return array($limit,$offset);
 	}
 	
-	//목록용
+	//일반 목록용
 	public function select_for_list($get){
 		
 		if(!$this->_apply_list_where($get)){
 			return false;
 		}
+		$this->_apply_list_bm_row($this->bm_row);
 
 		//-- 정렬
 		switch($this->bm_row['bm_list_type']){
 			case '0':$this->db->order_by('b_gidx,b_gpos');break;
-			case '1':$this->db->order_by('b_idx desc');break;
+			case '1':$this->db->order_by('b.b_idx desc');break;
 		}
 		list($limit,$offset) = $this->get_limit_offset($get['page']);
 		$this->db->limit($limit,$offset);
@@ -165,16 +207,16 @@ class Bbs_model extends CI_Model {
 	}
 	//-- 게시물 하나 b_idx로 가져오기
 	public function select_by_b_idx($b_idx){
-		$this->db->from($this->tbl);
-		
+		$this->db->from($this->tblname('data','b'));
 		//-- 게시판 아이디
 		if(!isset($this->bm_row['b_id'])){
 			$this->error = '게시판 아이디가 없습니다.';
 			return false;
 		}
+		$this->_apply_list_bm_row($this->bm_row,'b.*');
 		$this->db->where('b_id',$this->bm_row['b_id']);
 		//-- 필수 where절
-		return $this->db->where('b_isdel','0')->where('b_idx',$b_idx)->get()->row_array();
+		return $this->db->where('b_isdel','0')->where('b.b_idx',$b_idx)->get()->row_array();
 	}
 	//-- 목록 갯수
 	public function count($get){

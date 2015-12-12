@@ -133,6 +133,16 @@ class Bbs extends MX_Controller {
 		
 		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx'].'?'.http_build_query($get);
 		
+		if(!empty($b_row['bf_idx'])){
+			$b_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($b_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
+		}
+		
+		if(isset($b_row['b_insert_date'][0]) && time()-strtotime($b_row['b_insert_date'])<$this->bm_row['bm_new']){
+			$b_row['is_new'] = true;
+		}else{
+			$b_row['is_new'] = false;
+		}
+		
 		unset($get['b_idx']);
 		
 		$b_row['write_url'] = $this->base_url . '/write?'.http_build_query($get);
@@ -154,7 +164,7 @@ class Bbs extends MX_Controller {
 		}
 	}
 	
-	private function get_bf_rows_by_b_row($b_row){
+	private function get_bf_rows_by_b_row(&$b_row){
 		$bf_rows = $this->bf_m->select_for_list($b_row['b_idx']);
 		$this->extends_bf_rows(&$bf_rows,$b_row);
 		return $bf_rows;

@@ -29,7 +29,7 @@
 							</div>
 							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
 							<span class="input-group-btn">
-								<button type="submit" class="btn btn-default">검색</button>
+								<button type="submit" class="btn btn-info">검색</button>
 							</span>
 						</div><!-- /input-group -->
 					</div>
@@ -50,29 +50,43 @@
 				<th class="text-center" width="80">작성자</th>
 				<th class="text-center hidden-xs hidden-sm"  width="120">등록일</th>
 			</tr>
-		<? foreach($b_n_rows as $r):
+		<? foreach($b_n_rows as $b_row):
 		//print_r($r);
 		?>
-			<tr class="bbs-notice info <?=$b_idx==$r['b_idx']?'warning':''?> ">
+			<tr class="bbs-notice info <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 				<td class="text-center hidden-xs">공지</td>
-				<td class="bbs-title text-overflow-ellipsis"><a href="<?=html_escape($r['read_url'])?>"><?=html_escape($r['b_title'])?></a>
+				<td class="bbs-title text-overflow-ellipsis"><a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
 				</td>
-				<td class="text-center"><?=html_escape($r['b_name'])?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($r['b_insert_date'])))?></td>
+				<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
+				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
 
 			</tr>
 		<? endforeach; ?>
-		<? foreach($b_rows as $r):
+		<? foreach($b_rows as $b_row):
 		//print_r($r);
 		?>
-			<tr class="bbs-dpeth bbs-dpeth-<?=$r['depth']?> <?=$b_idx==$r['b_idx']?'warning':''?> ">
+			<tr class="bbs-dpeth bbs-dpeth-<?=$b_row['depth']?> <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 				<td class="text-center hidden-xs"><?=$start_num--?></td>
-				<td class="bbs-title text-overflow-ellipsis">
-				<? if(isset($r['b_category'])): ?><span class="label label-primary"><?=html_escape($r['b_category'])?></span><? endif; ?>
-				<a href="<?=html_escape($r['read_url'])?>"><?=html_escape($r['b_title'])?></a>
+				<td class="bbs-title text-overflow-ellipsis plotting_label_parent">
+					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
+					<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
+					
+					<div class="plotting_label">
+						<? if(($b_row['is_new'])): ?>
+							<span class="is_new label label-default" title="새글">new</span>
+						<? endif; ?>
+						<? if(!empty($b_row['bf_cnt'])): ?>
+							<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
+						<? endif; ?>
+						
+						<? if(!empty($b_row['bc_cnt'])): ?>
+							<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
+						<? endif; ?>
+					</div>
+				
 				</td>
-				<td class="text-center"><?=html_escape($r['b_name'])?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($r['b_insert_date'])))?></td>
+				<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
+				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
 
 			</tr>
 		<? endforeach; ?>
@@ -107,7 +121,7 @@
 							</div>
 							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
 							<span class="input-group-btn">
-								<button type="submit" class="btn btn-default">검색</button>
+								<button type="submit" class="btn btn-info">검색</button>
 							</span>
 						</div><!-- /input-group -->
 					</div>

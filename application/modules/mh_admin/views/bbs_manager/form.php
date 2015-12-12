@@ -118,11 +118,82 @@
 							</div>
 						</div>
 					</div>
+
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
 								<? 
-									$t_label='카테고리<br>사용여부';
+									$t_label='목록타입';
+									$t_col = 'bm_list_type';
+								?>
+								<label class="col-xs-3 control-label"><?=($t_label)?></label>
+								<div class="col-xs-9">
+								<?=form_dropdown($t_col, $list_types, $bm_row[$t_col], ' class="selectpicker show-tick" style="width:4em" data-width="120px" aria-label="'.$t_label.'" title="'.$t_label.'"  data-header="'.$t_label.'"')?>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<? 
+									$t_label='썸네일?';
+									$t_col = 'bm_use_thumbnail';
+								?>
+								<label class="col-xs-3 control-label"><?=($t_label)?></label>
+								<div class="col-xs-9">
+									<div class="btn-group" data-toggle="buttons">
+										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
+										</label>
+										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<? 
+									$t_label='코멘트?';
+									$t_col = 'bm_use_comment';
+								?>
+								<label class="col-xs-3 control-label"><?=($t_label)?></label>
+								<div class="col-xs-9">
+									<div class="btn-group" data-toggle="buttons">
+										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
+										</label>
+										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<? 
+									$t_label='썸네일?';
+									$t_col = 'bm_use_thumbnail';
+								?>
+								<label class="col-xs-3 control-label"><?=($t_label)?></label>
+								<div class="col-xs-9">
+									<div class="btn-group" data-toggle="buttons">
+										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
+										</label>
+										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<? 
+									$t_label='카테고리?';
 									$t_col = 'bm_use_category';
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
@@ -153,7 +224,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<? 
-									$t_label='비밀글<br>사용여부';
+									$t_label='비밀글?';
 									$t_col = 'bm_use_secret';
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
@@ -184,7 +255,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<? 
-									$t_label='첨부파일사용';
+									$t_label='첨부파일?';
 									$t_col = 'bm_use_file';
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
