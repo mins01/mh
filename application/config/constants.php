@@ -99,7 +99,12 @@ define('HASH_KEY','mh'); //해시용 추가 문자열. 한번 설정 후 바꾸�
 define('IS_DEV', preg_match('/^[^\/]*dev[^\/]*\./',$_SERVER['HTTP_HOST']));
 define('IS_ADMIN', preg_match('|^'.SITE_URI_PREFIX.ADMIN_URI_PREFIX.'|',$_SERVER['REQUEST_URI']));
 
-define('LOGIN_NAME','SESS_MH');
+if(IS_DEV){
+	define('LOGIN_NAME','SESD_MH');
+}else{
+	define('LOGIN_NAME','SESS_MH');
+}
+
 define('LOGIN_TYPE','cookie');
 define('LOGIN_EXPIRE',60*60*24*365);
 define('LOGIN_DOAMIN',$_SERVER['HTTP_HOST']);

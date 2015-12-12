@@ -3,9 +3,9 @@
 //$start_num,$count
 
 ?>
-<div >
-	<div >
-	<form action="" name="form_bbs" method="post" onsubmit="return check_form_bbs(this);"  >
+
+<div>
+	<form action="" name="form_bbs" method="post" onsubmit="return check_form_bbs(this);"  enctype="multipart/form-data"  >
 	<input type="hidden" name="process" value="<?=html_escape($process)?>">
 	<div class="panel panel-default form-horizontal bbs-mode-form">
 		<div class="panel-heading">
@@ -57,6 +57,13 @@
 				?>
 
 			</li>
+			
+			<? if(isset($view_form_file[0])): ?>
+			<li class="list-group-item form-inline bbs-mode-read-file">
+				<?=$view_form_file?>
+			</li>
+			<? endif; ?>
+			
 		</ul>
 		<div class="panel-body" style="min-height:200px">
 			<textarea class="form-control" name="b_text" rows="3"  placeholder="글내용" style="min-height:180px"><?=html_escape($b_row['b_text'])?></textarea>
@@ -67,8 +74,8 @@
 		</div>
 	</div>
 	</form>
-	</div>
 </div>
+
 
 
 
