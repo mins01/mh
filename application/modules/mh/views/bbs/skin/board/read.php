@@ -37,13 +37,13 @@
 				<a class="label label-info glyphicon glyphicon-link" href="<?=html_escape($b_row['b_link'])?>" target="_blank">링크</a>
 			<? endif; ?>
 			<? if(isset($b_row['b_category'][0])): ?>
-				<span class="label label-primary"><?=html_escape($b_row['b_category'])?></span>
+				<span class="label label-primary">카테고리:<?=html_escape($b_row['b_category'])?></span>
 			<? endif; ?>
 			<? if($b_row['b_secret']=='1'): ?>
 				<span class="label label-danger">비밀글</span>
 			<? endif; ?>
 			<? if($b_row['b_notice']>0): ?>
-				<span class="label label-danger">공지글 Lv.<?=$b_row['b_notice']?></span>
+				<span class="label label-danger">공지글</span>
 			<? endif; ?>
 			<span class="pull-right">
 				<span class="label label-info ">작성일 : <?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></span>

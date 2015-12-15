@@ -85,7 +85,7 @@ margin-left:-1em;
 .plotting_label_parent{position:relative;}
 .plotting_label{position:absolute;top:5px; right:5px;}
 .plotting_label .label{cursor:default;}
-.plotting_label .bf_cnt{background-color:#369;}
+.plotting_label .bf_cnt{background-color:#933;}
 .plotting_label .bc_cnt{background-color:#396;}
 .plotting_label .is_new{background-color:#E8A437;}
 
@@ -107,14 +107,14 @@ margin-left:-1em;
 	height:100%; background-color:#333; 
 	display: table;
 	width: 100%;
-	content:"No-Thumnail"; color:#fff;
+	color:#fff;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	margin: 0;
 }
 .thumbnail-box div.no-thumbnail::before{
-	content:"No Thumnail"; color:#fff;
+	content:"No-Thumbnail"; color:#fff;
 	height:100%; display:table-cell;
 	vertical-align: middle;
 	

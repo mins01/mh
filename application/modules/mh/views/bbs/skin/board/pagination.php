@@ -49,12 +49,12 @@ if($page<$max_page){
 			$aria_hidden = 'aria-hidden="true"'; 
 			$tag = 'span'; 
 		}
-		$text = '처음';
+		$text = '&#8666;';
 		$aria_label = 'First';
 		?>
 		<li <?=$tmp_class?>>
-			<<?=$tag?> href="<?=html_escape($url)?>" aria-label="<?=html_escape($aria_label)?>">
-				<span <?=$aria_hidden?>><?=html_escape($text)?></span>
+			<<?=$tag?> title="<?=html_escape($aria_label)?>" href="<?=html_escape($url)?>" aria-label="<?=html_escape($aria_label)?>">
+				<span <?=$aria_hidden?>><?=($text)?></span>
 			</<?=$tag?>>
 		</li>
 		<? 
@@ -72,7 +72,7 @@ if($page<$max_page){
 		$aria_label = 'Previous';
 		?>
 		<li <?=$tmp_class?>>
-			<<?=$tag?> href="<?=html_escape($url)?>" aria-label="<?=html_escape($aria_label)?>">
+			<<?=$tag?> title="<?=html_escape($aria_label)?>" href="<?=html_escape($url)?>" aria-label="<?=html_escape($aria_label)?>">
 				<span <?=$aria_hidden?>><?=($text)?></span>
 			</<?=$tag?>>
 		</li>
@@ -81,8 +81,9 @@ if($page<$max_page){
 			$tmp_class = $page==$i?'class="active"':'';
 			$sr_only = $page==$i?'<span class="sr-only">(current)</span>':'';
 			$url = str_replace('{{page}}',$i,$def_url);
+			$aria_label = $i.' page';
 		?>
-				<li <?=$tmp_class?>><a href="<?=html_escape($url)?>"><?=($i),$sr_only?></a></li>
+				<li <?=$tmp_class?>><a title="<?=html_escape($aria_label)?>"  href="<?=html_escape($url)?>" aria-label="<?=html_escape($aria_label)?>"><?=($i),$sr_only?></a></li>
 		<?
 		endfor; 
 		?>
@@ -102,7 +103,7 @@ if($page<$max_page){
 		$aria_label = 'Next';
 		?>
 		<li <?=$tmp_class?>>
-			<<?=$tag?> href="<?=html_escape($url)?>" aria-label="<?=html_escape($aria_label)?>">
+			<<?=$tag?> title="<?=html_escape($aria_label)?>" href="<?=html_escape($url)?>" aria-label="<?=html_escape($aria_label)?>">
 				<span <?=$aria_hidden?>><?=($text)?></span>
 			</<?=$tag?>>
 		</li>
@@ -118,12 +119,12 @@ if($page<$max_page){
 			$aria_hidden = 'aria-hidden="true"'; 
 			$tag = 'span'; 
 		}
-		$text = '끝';
+		$text = '&#8667;';
 		$aria_label = 'Last';
 		?>
 		<li <?=$tmp_class?>>
-			<<?=$tag?> href="<?=html_escape($url)?>" aria-label="<?=html_escape($aria_label)?>">
-				<span <?=$aria_hidden?>><?=html_escape($text)?></span>
+			<<?=$tag?> title="<?=html_escape($aria_label)?>" href="<?=html_escape($url)?>" aria-label="<?=html_escape($aria_label)?>">
+				<span <?=$aria_hidden?>><?=($text)?></span>
 			</<?=$tag?>>
 		</li>
 	

@@ -55,7 +55,23 @@
 		?>
 			<tr class="bbs-notice info <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 				<td class="text-center hidden-xs">공지</td>
-				<td class="bbs-title text-overflow-ellipsis"><a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
+				<td class="bbs-title text-overflow-ellipsis plotting_label_parent">
+					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
+					<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
+					
+					<div class="plotting_label">
+						<? if(($b_row['is_new'])): ?>
+							<span class="is_new label label-default" title="새글">new</span>
+						<? endif; ?>
+						<? if(!empty($b_row['bf_cnt'])): ?>
+							<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
+						<? endif; ?>
+						
+						<? if(!empty($b_row['bc_cnt'])): ?>
+							<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
+						<? endif; ?>
+					</div>
+				
 				</td>
 				<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
 				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
