@@ -120,4 +120,11 @@ margin-left:-1em;
 	
 }
 
+/* bootstrap-datepicker bugfix*/
+.input-daterange .input-group-addon:first-child{
+	border-width: 1px;
+}
+.skin-form .input-daterange{
+	width:auto;
+}
 
