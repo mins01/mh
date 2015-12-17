@@ -31,14 +31,13 @@
 			</li>
 			<li class="list-group-item form-inline">
 				<div class="input-group input-daterange">
-					<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-					<input type="text" class="form-control"  name="b_etc_0" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="min-width:8em" value="<?=html_escape($b_row['b_etc_0'])?>">
+					<input type="text" class="form-control"  name="b_etc_0" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="min-width:6em" value="<?=html_escape($b_row['b_etc_0'])?>">
 					<div class="input-group-addon">-</div>
-					<input type="text" class="form-control"  name="b_etc_1" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="min-width:8em" value="<?=html_escape($b_row['b_etc_1'])?>">
+					<input type="text" class="form-control"  name="b_etc_1" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="min-width:6em" value="<?=html_escape($b_row['b_etc_1'])?>">
 				</div>
 				<div class="input-group">
 					<div class="input-group-addon">링크</div>
-					<input type="text" class="form-control"  name="b_link" aria-label="링크" placeholder="http://mins01.com/mh/" style="min-width:200px" value="<?=html_escape($b_row['b_link'])?>">
+					<input type="text" class="form-control"  name="b_link" aria-label="링크" placeholder="http://mins01.com/mh/" style="min-width:80px" value="<?=html_escape($b_row['b_link'])?>">
 				</div>
 				<? if($bm_row['bm_use_category']!='0'): ?>
 				<?=form_dropdown('b_category', $bm_row['categorys'], $b_row['b_category'], 'class="selectpicker show-tick" style="width:8em" data-width="100px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리" ')?>

@@ -135,8 +135,8 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<? 
-									$t_label='썸네일?';
-									$t_col = 'bm_use_thumbnail';
+									$t_label='읽기에서 목록?';
+									$t_col = 'bm_read_with_list';
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
 								<div class="col-xs-9">

@@ -146,6 +146,82 @@ class Bbs_model extends CI_Model {
 		return $b_rows;
 	}
 	
+	//달력 목록용
+	public function select_for_calendar($get){
+		if(!$this->_apply_list_where($get)){
+			return false;
+		}
+		if(!isset($get['date_ed']) || !isset($get['date_st'])){
+			return false;
+		}
+		
+		$this->_apply_list_bm_row($this->bm_row);
+
+		
+		$this->db->where('b_etc_0 <=',$get['date_ed'])->where('b_etc_1 >=',$get['date_st']);
+		$this->db->order_by('b.b_etc_0,b.b_etc_1');
+		//list($limit,$offset) = $this->get_limit_offset($get['page']);
+		//$this->db->limit($limit,$offset);
+
+		$b_rows = $this->db->get()->result_array();
+		$this->extends_b_rows($b_rows);
+		return $b_rows;
+	}
+	public function exnteds_b_rows_for_calendar(& $b_rows,$date_st,$date_ed){
+		$b_rowss = array();
+		$b_rowss['maxlength'] = 0;
+		$orders = array();
+		$time_st = strtotime($date_st);
+		$time_ed = strtotime($date_ed);
+		$w_st = date('w',$time_st);
+		$time_st = $time_st-$w_st*86400;
+		while($time_st<=$time_ed){
+			$t_a = date('Y-m-d',$time_st);
+			$t_b = date('Y-m-d',$time_st+86400*6);
+			$time_st+=86400*7;
+			//$b_rowss[$t_a]= array();
+			foreach($b_rows as & $b_row){
+				if($b_row['b_etc_1']>=$t_a && $b_row['b_etc_0']<=$t_b){
+					//순서 찾기
+					if(!isset($orders[$b_row['b_idx']])){
+						if(count($orders)==0){
+							$orders[$b_row['b_idx']] = 0;
+						}else{
+							$t = max($orders)+1;;
+							for($i=0,$m=max($orders);$i<$m;$i++){
+								if(!in_array($i,$orders)){
+									$t = $i;
+									break;
+								}
+							}
+							$orders[$b_row['b_idx']] = $t;
+						}
+						$b_rowss['maxlength'] = max($b_rowss['maxlength'],count($orders));
+					}
+					
+					
+					if($t_a<$b_row['b_etc_0']){
+						$v_dt_st = $b_row['b_etc_0'];
+					}else{
+						$v_dt_st = $t_a;
+					}
+					
+					if(!isset($b_rowss[$v_dt_st])){
+						$b_rowss[$v_dt_st] = array();
+					}
+					$v_dt_ed = min($t_b,$b_row['b_etc_1']);
+					$v_len = floor((strtotime($v_dt_ed)-strtotime($v_dt_st))/86400)+1;
+					
+					$b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']]);
+				}else{
+					unset($orders[$b_row['b_idx']]);
+				}
+			}
+		}
+		
+		return $b_rowss;
+	}
+	
 	//공지 목록용
 	public function select_for_notice_list($get=array()){
 		

@@ -1,0 +1,115 @@
+@charset "UTF-8";
+
+.table-calender{width:100%;table-layout:fixed;border-collapse:collapse}
+.table-calender th{ background-color:#abc;}
+.table-calender td{}
+.table-calender thead{}
+
+.table-calender thead th{text-align:center;}
+.table-calender .day-hide{visibility:hidden; padding:0; font-size:0;overflow:hidden;}
+.table-calender .day-td{
+	padding:0;
+	width:14%;
+}
+.table-calender .day{
+	position:relative;
+	height:100%;
+	padding:0;
+	overflow:visible;
+	min-height:7.5em;
+}
+.day > .day-bg{
+	position:relative;
+	z-index:1;
+	border-right:1px solid #abc;
+	min-height:7.2em;
+}
+[data-b_rowss_maxlength="6"] .day-bg{height:8.4em;}
+[data-b_rowss_maxlength="7"] .day-bg{height:9.6em;}
+[data-b_rowss_maxlength="8"] .day-bg{height:10.8em;}
+[data-b_rowss_maxlength="9"] .day-bg{height:12em;}
+
+
+.day-w-6 .day-bg{
+	border-right-width:0px
+}
+.day > .plan{
+	z-index:2;
+	background-color:#ccc;
+	position:absolute;top:0px;left:0px;
+	line-height:1.0em;
+	height:1.05em;
+	text-align:center;
+	border-radius: 3px;
+	/*box-shadow: 0px 1px 0px 0px rgba(200,200,255,0.5);*/
+
+}
+.day > .plan a{display:block;
+overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin: 0;
+}
+.day > .plan-on{
+	box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.4);
+}
+
+.plan[data-plan-len="1"]{width:100%;}
+.plan[data-plan-len="2"]{width:200%;}
+.plan[data-plan-len="3"]{width:300%;}
+.plan[data-plan-len="4"]{width:400%;}
+.plan[data-plan-len="5"]{width:500%;}
+.plan[data-plan-len="6"]{width:600%;}
+.plan[data-plan-len="7"]{width:700%;}
+
+.plan[data-plan-order="0"]{top:1.2em;}
+.plan[data-plan-order="1"]{top:2.4em;}
+.plan[data-plan-order="2"]{top:3.6em;}
+.plan[data-plan-order="3"]{top:4.8em;}
+.plan[data-plan-order="4"]{top:6.0em;}
+.plan[data-plan-order="5"]{top:7.2em;}
+.plan[data-plan-order="6"]{top:8.4em;}
+.plan[data-plan-order="7"]{top:9.6em;}
+.plan[data-plan-order="8"]{top:10.8em;}
+.plan[data-plan-order="9"]{top:12em;}
+.plan[data-plan-order="10"]{top:13.2em;}
+.plan[data-plan-order="11"]{top:14.4em;}
+
+
+.day > .day-label{
+	position:absolute;top:1px;right:2px;
+	display:block;
+	font-size:0.6em;
+	font-weight:bold;
+	border-radius: 3px;
+	background-color:#eee;
+	padding:0 2px;
+	box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.1);
+
+}
+
+
+.day-w-0 .day-label{color:#FFF;background-color:#933;}
+.day-w-6 .day-label{color:#FFF;background-color:#339;}
+.day-w-1 .day-label{}
+.day-w-2 .day-label{}
+.day-w-3 .day-label{}
+.day-w-4 .day-label{}
+.day-w-5 .day-label{}
+
+.day-m-01,
+.day-m-03,
+.day-m-05,
+.day-m-07,
+.day-m-09,
+.day-m-11
+{}
+.day-m-02,
+.day-m-04,
+.day-m-06,
+.day-m-08,
+.day-m-10,
+.day-m-12
+{background-color:#efefef;}
+
+

@@ -2,110 +2,103 @@
 //$bm_row,$b_rows,$b_n_rows
 //$start_num,$count
 //print_r($b_rows);
+
+//$b_rowss
+//$b_rowss['maxlength']
+
+$v_time_st = $time_st;
+$v_date_st = $date_st;
+$v_time_ed = $time_ed;
+$v_date_ed = $date_ed;
+
+
+
 ?>
+<?=$v_date_st?> ~ <?=$v_date_ed?>
 
 <div class="panel panel-default bbs-mode-list">
 
 	<!-- Default panel contents -->
 	<div class="panel-heading">
 		<nav class="text-right">
-			게시물 : <?=$count?> (<?=$max_page?> page)
+			일정 : <?=$count?>
 		</nav>
 	</div>
-	<? if(count($b_n_rows)>0): ?>
 	<div class="table-responsive">
-		<table class="table table-condensed" style="table-layout:fixed">
-			<col width="80">
-			<col >
-			<col width="80">
-			<col width="120">
-		<? foreach($b_n_rows as $b_row):
-		//print_r($r);
-		?>
-			<tr class="bbs-notice info <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
-				<td class="text-center hidden-xs">공지</td>
-				<td class="bbs-title text-overflow-ellipsis plotting_label_parent">
-					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
-					<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
+		<table class="table  table-condensed  table-striped table-calender" style="table-layout:fixed" data-b_rowss_maxlength="<?=$b_rowss['maxlength']?>">
+			<colgroup>
+				<col style="auto">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="auto">
+			</colgroup>
+			<thead>
+				<tr>
+					<th class="day-hide day-th day-th-w-hide">-</th>
+					<th class="day-th day-th-w-0">일</th>
+					<th class="day-th day-th-w-1">월</th>
+					<th class="day-th day-th-w-2">화</th>
+					<th class="day-th day-th-w-3">수</th>
+					<th class="day-th day-th-w-4">목</th>
+					<th class="day-th day-th-w-5">금</th>
+					<th class="day-th day-th-w-6">토</th>
+					<th class="day-hide day-th day-th-w-hide">-</th>
+				</tr>
+			</thead>
+			<tbody>
+				<? 
+				$limit_i=100;
+				$c_time = $v_time_st;
+				while($c_time < $v_time_ed && $limit_i--):
+				?>
+				<tr>
+					<td class="day-hide day-w-hide"></td>
+					<?
+					for($i=0,$m=7;$i<$m;$i++):
+						$c_date = date('Y-m-d',$c_time);
+						$c_m = date('m',$c_time);
+						$c_date_label = date('m-d',$c_time);
+						$c_time+=86400;
+					?>
+					<td class="day-td day-w-<?=$i?> day-m-<?=$c_m?>" data-date="<?=$c_date?>">
+						<div class="day">
+							<div class=" day-bg"></div>
+							<div class="day-label"><?=$c_date_label?></div>
+							<? 
+							if(isset($b_rowss[$c_date])):
+								foreach($b_rowss[$c_date] as $plan): 
+								$b_row=$plan['b_row'];
+							?>
+								<div class="plan" 
+								data-b_idx="<?=$b_row['b_idx']?>"
+								data-plan-len="<?=$plan['len']?>"
+								data-plan-order="<?=$plan['order']?>"
+								><a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a></div>
+							<? 
+								endforeach;
+							endif; 
+							?>
+						</div>
+					</td>
+					<? 
 					
-					<div class="plotting_label">
-						<? if(($b_row['is_new'])): ?>
-							<span class="is_new label label-default" title="새글">new</span>
-						<? endif; ?>
-						<? if(!empty($b_row['bf_cnt'])): ?>
-							<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
-						<? endif; ?>
-						
-						<? if(!empty($b_row['bc_cnt'])): ?>
-							<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
-						<? endif; ?>
-					</div>
-				
-				</td>
-				<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
-
-			</tr>
-		<? endforeach; ?>
+					endfor;
+					?>
+					<td class="day-hide day-w-hide"></td>
+				</tr>
+				<? 
+				endwhile;
+				?>
+			</tbody>
+			
 		</table>
 	</div>
-	<? endif; ?>
-	
-	<!-- Default panel contents -->
-	<div class="panel-body">
-		<div class="row">
-		<? 
-		foreach($b_rows as $b_row):
-		//print_r($r);
-		?>
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-				<div class="panel panel-default center-block" style="max-width:300px;">
-					<div class="panel-heading text-center  text-overflow-ellipsis plotting_label_parent"
-					 ><? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span> <? endif; ?><a href="<?=html_escape($b_row['read_url'])?>" title="<?=html_escape($b_row['b_title'])?>"><?=html_escape($b_row['b_title'])?></a></div>
-					<div class="panel-body thumbnail-div plotting_label_parent" >
-						<a href="<?=html_escape($b_row['read_url'])?>">
-							<div class="text-center thumbnail-box img-rounded" >
-								<? if(isset($b_row['thumbnail_url'][0])): ?>
-									<img class="img-rounded" src="<?=html_escape($b_row['thumbnail_url'])?>">
-								<? else: ?>
-									<div class="no-thumbnail"></div>
-								<? endif; ?>
-							</div>
-						</a>
-						<div class="plotting_label">
-							<? if(($b_row['is_new'])): ?>
-								<span class="is_new label label-default" title="새글">new</span>
-							<? endif; ?>
-							<? if(!empty($b_row['bf_cnt'])): ?>
-								<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
-							<? endif; ?>
-							
-							<? if(!empty($b_row['bc_cnt'])): ?>
-								<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
-							<? endif; ?>
-						</div>
-						
-					</div>
-					
-				</div>
-			</div>
-		<?
-		endforeach;
-		?>
-		<? if(count($b_rows)==0): ?>
-		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 center-block clearB">
-				<div class="panel panel-default center-block" style="max-width:300px">
-					<div class="panel-heading text-center  text-overflow-ellipsis"
-					 >No-Data</div>
-					<div class="panel-body text-center">
-						No-Data
-					</div>
-				</div>
-			</div>
-		<? endif; ?>
-		</div>
-	</div>
-	<div class="panel-body">
+	<div class="panel-footer">
 		<div class="row">
 			<div class="col-lg-2 col-sm-2 hidden-xs">
 			</div>
@@ -137,11 +130,17 @@
 			</div>
 		</div>
 	</div>
-	<div class="panel-footer">
-		<nav class="text-center">
-			<?=$pagination?>
-		</nav>
-	</div>
-</div>
 
+</div>
+<script>
+$(function(){
+	$('.table-calender').on('mouseover','.plan',function(){
+		var b_idx = $(this).attr('data-b_idx');
+			$('.plan[data-b_idx="'+b_idx+'"]').addClass('plan-on');
+		}).on('mouseout','.plan',function(){
+		var b_idx = $(this).attr('data-b_idx');
+			$('.plan[data-b_idx="'+b_idx+'"]').removeClass('plan-on');
+		});
+})
+</script>
 

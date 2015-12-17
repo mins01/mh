@@ -175,8 +175,100 @@ class Bbs extends MX_Controller {
 		$this->extends_bf_rows(&$bf_rows,$b_row);
 		return $bf_rows;
 	}
+	
+	public function get_time_st_ed_by_date($v_date){
+		if(!$v_date || strtotime($v_date)===false){
+			$v_date = date('Y-m-d');
+		}
+		$v_time = strtotime($v_date);
+		$v_Y = date('Y',$v_time);
+		$v_m = date('m',$v_time);
+		$v_time_01 = mktime(0,0,0,$v_m,1,$v_Y);
+		$v_time_01_w = date('w',$v_time_01);
 
+		$v_time_st = $v_time_01-86400*$v_time_01_w;
+		$v_date_st = date('Y-m-d',$v_time_st);
+
+		$v_time_02 = mktime(0,0,-1,$v_m+1,1,$v_Y);
+		$v_time_02_w = date('w',$v_time_02);
+
+		$v_time_ed = $v_time_02+86400*(6-$v_time_02_w);
+		$v_date_ed = date('Y-m-d',$v_time_ed);
+		return array($v_date_st,$v_date_ed,$v_time_st,$v_time_ed);
+	}
 	public function mode_list($b_idx=null,$with_read=false){
+		if($this->bm_row['bm_skin']=='calendar'){
+			return $this->mode_list_for_calendar($b_idx,$with_read);
+		}else{
+			return $this->mode_list_for_default($b_idx,$with_read);
+		}
+	}
+	public function mode_list_for_calendar($b_idx=null,$with_read=false){
+		$permission = $this->get_permission_lists();
+		if(!$permission['list']){
+			if($with_read){
+				return;
+			}else{
+				show_error('권한이 없습니다.');
+			}
+		}
+		
+		$get = $this->input->get();
+		$dt = $this->input->get('dt');
+		if(!isset($get['tq'])){ $get['tq'] = null; }
+		if(!isset($get['q'])){ $get['q'] = null; }
+		if(!isset($get['ct'])){ $get['ct'] = null; }
+		if(!isset($get['dt'])){ $get['dt'] = date('Y-m-01'); }
+		//$get['page']=$this->bbs_conf['page'];
+		list($date_st,$date_ed,$time_st,$time_ed) = $this->get_time_st_ed_by_date($get['dt']);
+
+		$b_rows = $this->bbs_m->select_for_calendar(
+			array_merge(
+				$get,array('date_st'=>$date_st,'date_ed'=>$date_ed)
+				)
+		);
+		$b_rowss = $this->bbs_m->exnteds_b_rows_for_calendar($b_rows,$date_st,$date_ed);
+		
+		$this->extends_b_rows($b_rows,$get);
+		$b_n_rows = $this->bbs_m->select_for_notice_list($get);
+		$this->extends_b_rows($b_n_rows,$get);
+		$count = $this->bbs_m->count($get);
+		//$start_num = $this->bbs_m->get_start_num($count,$get);
+		
+		$tmp = $this->input->get();
+		$tmp['page'] ='page';
+		$def_url = $this->base_url . "/list?".str_replace('page=page','page={{page}}',http_build_query($tmp));
+		// $pagination = $this->load->view($this->skin_path.'/pagination',array(
+		// 'max_page' => ceil($count/$this->bm_row['bm_page_limit']),
+		// 'page'=>$this->bbs_conf['page'],
+		// 'def_url'=>$def_url
+		// ),true);
+		if(!$with_read){
+			$this->config->set_item('layout_head_contents',$this->get_head_contents('list'));
+			$this->config->set_item('layout_hide',false);
+			$this->config->set_item('layout_title','calendar : '.$this->bm_row['bm_title']);
+		}
+		$this->load->view($this->skin_path.'/list',array(
+		'b_rows' => $b_rows,
+		'b_rowss'=>$b_rowss,
+		'b_n_rows'=>$b_n_rows,
+		'bm_row' => $this->bm_row,
+		'count' => $count,
+		//'max_page' => ceil($count/$this->bm_row['bm_page_limit']),
+		//'start_num' => $start_num,
+		'get'=>$get,
+		//'pagination' => $pagination,
+		'bbs_conf'=>$this->bbs_conf,
+		'b_idx'=>$b_idx,
+		'permission'=>$permission,
+		'date_st'=>$date_st,
+		'date_ed'=>$date_ed,
+		'time_st'=>$time_st,
+		'time_ed'=>$time_ed,
+		
+		));
+	}
+	public function mode_list_for_default($b_idx=null,$with_read=false){
 		
 		$permission = $this->get_permission_lists();
 		if(!$permission['list']){
