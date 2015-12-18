@@ -219,6 +219,7 @@ class Bbs extends MX_Controller {
 		if(!isset($get['q'])){ $get['q'] = null; }
 		if(!isset($get['ct'])){ $get['ct'] = null; }
 		if(!isset($get['dt'])){ $get['dt'] = date('Y-m-01'); }
+		$dt = $get['dt'];
 		//$get['page']=$this->bbs_conf['page'];
 		list($date_st,$date_ed,$time_st,$time_ed) = $this->get_time_st_ed_by_date($get['dt']);
 
@@ -236,13 +237,13 @@ class Bbs extends MX_Controller {
 		//$start_num = $this->bbs_m->get_start_num($count,$get);
 		
 		$tmp = $this->input->get();
-		$tmp['page'] ='page';
-		$def_url = $this->base_url . "/list?".str_replace('page=page','page={{page}}',http_build_query($tmp));
-		// $pagination = $this->load->view($this->skin_path.'/pagination',array(
-		// 'max_page' => ceil($count/$this->bm_row['bm_page_limit']),
-		// 'page'=>$this->bbs_conf['page'],
-		// 'def_url'=>$def_url
-		// ),true);
+		$tmp['dt'] ='dt';
+		$def_url = $this->base_url . "/list?".str_replace('dt=dt','dt={{dt}}',http_build_query($tmp));
+		$pagination = $this->load->view($this->skin_path.'/pagination',array(
+		'dt' =>$get['dt'],
+		'get'=>$get,
+		'def_url'=>$def_url
+		),true);
 		if(!$with_read){
 			$this->config->set_item('layout_head_contents',$this->get_head_contents('list'));
 			$this->config->set_item('layout_hide',false);
@@ -257,7 +258,7 @@ class Bbs extends MX_Controller {
 		//'max_page' => ceil($count/$this->bm_row['bm_page_limit']),
 		//'start_num' => $start_num,
 		'get'=>$get,
-		//'pagination' => $pagination,
+		'pagination' => $pagination,
 		'bbs_conf'=>$this->bbs_conf,
 		'b_idx'=>$b_idx,
 		'permission'=>$permission,
@@ -265,7 +266,7 @@ class Bbs extends MX_Controller {
 		'date_ed'=>$date_ed,
 		'time_st'=>$time_st,
 		'time_ed'=>$time_ed,
-		
+		'base_url'=>$this->base_url,
 		));
 	}
 	public function mode_list_for_default($b_idx=null,$with_read=false){
@@ -685,6 +686,7 @@ class Bbs extends MX_Controller {
 			show_error('허용되지 않는 요청');
 			break;
 		}
+		
 
 		$b_row = array('b_idx'=>$b_idx);
 		$this->extends_b_row($b_row,$get);
@@ -694,6 +696,7 @@ class Bbs extends MX_Controller {
 		}else{
 			$ret_url = $b_row['read_url'];
 		}
+		$this->config->set_item('layout_hide',true);
 		
 		$this->load->view($this->skin_path.'/process',array(
 		//'b_row' => $b_row,
@@ -704,7 +707,7 @@ class Bbs extends MX_Controller {
 		'ret_url'=>$ret_url,
 		'msg'=>'처리완료.',
 		));
-
+		
 	}
 
 }

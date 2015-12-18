@@ -24,10 +24,14 @@
 	border-right:1px solid #abc;
 	min-height:7.2em;
 }
-[data-b_rowss_maxlength="6"] .day-bg{height:8.4em;}
-[data-b_rowss_maxlength="7"] .day-bg{height:9.6em;}
-[data-b_rowss_maxlength="8"] .day-bg{height:10.8em;}
-[data-b_rowss_maxlength="9"] .day-bg{height:12em;}
+.day-bg[data-day-bg-height="6"]{height:10.5em;}
+.day-bg[data-day-bg-height="7"]{height:12em;}
+.day-bg[data-day-bg-height="8"]{height:13.5em;}
+.day-bg[data-day-bg-height="9"]{height:15em;}
+.day-bg[data-day-bg-height="10"]{height:16.5em;}
+.day-bg[data-day-bg-height="11"]{height:18em;}
+.day-bg[data-day-bg-height="12"]{height:19.5em;}
+.day-bg[data-day-bg-height="13"]{height:21em;}
 
 
 .day-w-6 .day-bg{
@@ -37,10 +41,10 @@
 	z-index:2;
 	background-color:#ccc;
 	position:absolute;top:0px;left:0px;
-	line-height:1.0em;
-	height:1.05em;
+	line-height:1.4em;
+	height:1.4em;
 	text-align:center;
-	border-radius: 3px;
+	border-radius: 0.3em;
 	/*box-shadow: 0px 1px 0px 0px rgba(200,200,255,0.5);*/
 
 }
@@ -51,8 +55,24 @@ overflow: hidden;
 	margin: 0;
 }
 .day > .plan-on{
-	box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.4);
+	background-color:#f93;
+	box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.4);
+	z-index:4;
 }
+.day > .plan-on > a{
+	color:#fff;
+}
+.day > .plan-this{
+	background-color:#5e3;
+}
+.day > .plan-this > a{
+	
+}
+.day > .plan-this.plan-on{
+	background-color:#393;
+}
+
+
 
 .plan[data-plan-len="1"]{width:100%;}
 .plan[data-plan-len="2"]{width:200%;}
@@ -62,32 +82,32 @@ overflow: hidden;
 .plan[data-plan-len="6"]{width:600%;}
 .plan[data-plan-len="7"]{width:700%;}
 
-.plan[data-plan-order="0"]{top:1.2em;}
-.plan[data-plan-order="1"]{top:2.4em;}
-.plan[data-plan-order="2"]{top:3.6em;}
-.plan[data-plan-order="3"]{top:4.8em;}
-.plan[data-plan-order="4"]{top:6.0em;}
-.plan[data-plan-order="5"]{top:7.2em;}
-.plan[data-plan-order="6"]{top:8.4em;}
-.plan[data-plan-order="7"]{top:9.6em;}
-.plan[data-plan-order="8"]{top:10.8em;}
-.plan[data-plan-order="9"]{top:12em;}
-.plan[data-plan-order="10"]{top:13.2em;}
-.plan[data-plan-order="11"]{top:14.4em;}
+.plan[data-plan-order="0"]{top:1.5em;}
+.plan[data-plan-order="1"]{top:3em;}
+.plan[data-plan-order="2"]{top:4.5em;}
+.plan[data-plan-order="3"]{top:6em;}
+.plan[data-plan-order="4"]{top:7.5em;}
+.plan[data-plan-order="5"]{top:9em;}
+.plan[data-plan-order="6"]{top:10.5em;}
+.plan[data-plan-order="7"]{top:12em;}
+.plan[data-plan-order="8"]{top:13.5em;}
+.plan[data-plan-order="9"]{top:15em;}
+.plan[data-plan-order="10"]{top:16.5em;}
+.plan[data-plan-order="11"]{top:18em;}
 
 
 .day > .day-label{
 	position:absolute;top:1px;right:2px;
 	display:block;
-	font-size:0.6em;
+	font-size:0.9em;
 	font-weight:bold;
 	border-radius: 3px;
 	background-color:#eee;
-	padding:0 2px;
-	box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.1);
-
+	padding:2px 2px;
+	box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.3);
+	z-index:3;
+	line-height:1em;
 }
-
 
 .day-w-0 .day-label{color:#FFF;background-color:#933;}
 .day-w-6 .day-label{color:#FFF;background-color:#339;}
@@ -111,5 +131,36 @@ overflow: hidden;
 .day-m-10,
 .day-m-12
 {background-color:#efefef;}
+
+.Ym.plotting_label_parent > .plotting_label{
+	top:-0.5em;
+	right:-0.2em;
+
+	font-weight:normal;
+}
+.Ym{
+	padding:1.2em 0 0.2em 0;
+	width:4.2em;
+	margin:3px 1px;
+}
+.Ym > .plotting_label > .Ym-label-Y{
+	top:0;
+	font-weight: normal;
+	font-size: 0.7em;
+	box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.4);
+	text-shadow:rgba(0, 0, 0, 0.2) 0px -1px 0px;
+}
+.Ym > .Ym-label-m{
+	line-height: 1em;
+	font-size: 1.4em;
+}
+.Ym > .Ym-label-m2{
+	line-height: 1em;
+	font-size: 1.4em;
+}
+.Ym > .Ym-label-m-unit{
+	font-size: 0.8em;
+}
+
 
 

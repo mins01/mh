@@ -17,7 +17,7 @@ $v_date_ed = $date_ed;
 <?=$v_date_st?> ~ <?=$v_date_ed?>
 
 <div class="panel panel-default bbs-mode-list">
-
+	<?=$pagination?>
 	<!-- Default panel contents -->
 	<div class="panel-heading">
 		<nav class="text-right">
@@ -25,17 +25,18 @@ $v_date_ed = $date_ed;
 		</nav>
 	</div>
 	<div class="table-responsive">
-		<table class="table  table-condensed  table-striped table-calender" style="table-layout:fixed" data-b_rowss_maxlength="<?=$b_rowss['maxlength']?>">
+		<table class="table  table-condensed  table-striped table-calender" style="table-layout:fixed">
 			<colgroup>
-				<col style="auto">
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="width:14%">
-				<col style="auto">
+			
+				<col style="width:auto">
+				<col style="width:14.285714285714%">
+				<col style="width:14.285714285714%">
+				<col style="width:14.285714285714%">
+				<col style="width:14.285714285714%">
+				<col style="width:14.285714285714%">
+				<col style="width:14.285714285714%">
+				<col style="width:14.285714285714%">
+				<col style="width:0">
 			</colgroup>
 			<thead>
 				<tr>
@@ -59,22 +60,33 @@ $v_date_ed = $date_ed;
 				<tr>
 					<td class="day-hide day-w-hide"></td>
 					<?
+					$tmp_get = $get;
 					for($i=0,$m=7;$i<$m;$i++):
 						$c_date = date('Y-m-d',$c_time);
 						$c_m = date('m',$c_time);
 						$c_date_label = date('m-d',$c_time);
 						$c_time+=86400;
+						$tmp_get['dt']=$c_date;
+						$write_url = $base_url.'/write?'.http_build_query($tmp_get);
 					?>
 					<td class="day-td day-w-<?=$i?> day-m-<?=$c_m?>" data-date="<?=$c_date?>">
 						<div class="day">
-							<div class=" day-bg"></div>
+							<div class=" day-bg" data-day-bg-height="<?=$b_rowss['maxlength']?>"></div>
+							<? if($permission['write']): ?>
+							<a class="day-label" href="<?=html_escape($write_url)?>"><?=$c_date_label?></a>
+							<? else:?>
 							<div class="day-label"><?=$c_date_label?></div>
+							<? endif;?>
 							<? 
 							if(isset($b_rowss[$c_date])):
 								foreach($b_rowss[$c_date] as $plan): 
 								$b_row=$plan['b_row'];
+								$tmp_class = '';
+								if($b_row['b_idx']==$b_idx){
+									$tmp_class.=' plan-this';
+								}
 							?>
-								<div class="plan" 
+								<div class="plan <?=$tmp_class?>" 
 								data-b_idx="<?=$b_row['b_idx']?>"
 								data-plan-len="<?=$plan['len']?>"
 								data-plan-order="<?=$plan['order']?>"
@@ -141,6 +153,11 @@ $(function(){
 		var b_idx = $(this).attr('data-b_idx');
 			$('.plan[data-b_idx="'+b_idx+'"]').removeClass('plan-on');
 		});
+	$('.table-calender').on('dblclick','.day-bg',function(){
+		var href=$(this).parents('td.day-td').find('a.day-label').prop('href');
+		if(href) window.open(href,'_self');
+		
+	});
 })
 </script>
 

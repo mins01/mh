@@ -28,8 +28,8 @@
 	<ul class="list-group">
 		<li class="list-group-item form-inline">
 			<div class="input-group">
-				<span class="input-group-addon" id="basic-addon1">작성자</span>
-				<span class="form-control" id="basic-addon1"><?=html_escape($b_row['b_name'])?></span>
+				<span class="input-group-addon" >작성자</span>
+				<span class="form-control" ><?=html_escape($b_row['b_name'])?></span>
 			</div>
 		</li>
 		<li class="list-group-item form-inline">

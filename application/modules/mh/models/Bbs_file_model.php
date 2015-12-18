@@ -112,12 +112,13 @@ class Bbs_file_model extends CI_Model {
 	}
 	//-- 폴더 강제 삭제
 	public static function delTree($dir) { 
-   $files = array_diff(scandir($dir), array('.','..')); 
-    foreach ($files as $file) { 
-      (is_dir("{$dir}/{$file}")) ? self::delTree("{$dir}/{$file}") : unlink("{$dir}/{$file}"); 
-    } 
-    return rmdir($dir); 
-  }
+		if(!is_dir($dir)){return;}
+		$files = array_diff(scandir($dir), array('.','..')); 
+		foreach ($files as $file) { 
+		(is_dir("{$dir}/{$file}")) ? self::delTree("{$dir}/{$file}") : unlink("{$dir}/{$file}"); 
+		} 
+		return rmdir($dir); 
+	}
 	//b_idx 관련 파일 모두 삭제!
 	public function delete_bf_rows_by_b_idx($b_idx){
 		$this->db->from($this->tbl)->where('bf_isdel',0)->where_in('b_idx',(int)$b_idx)->set('bf_isdel',1)->update();
