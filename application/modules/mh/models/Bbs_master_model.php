@@ -21,6 +21,10 @@ class Bbs_master_model extends CI_Model {
 	public function extends_bm_row(& $bm_row){
 		$t = explode(';',trim($bm_row['bm_category']));
 		$bm_row['categorys'] = array_merge(array(''=>'#없음#'),array_combine ( $t , $t ));
+		$bm_row['tbl_data']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_data';
+		$bm_row['tbl_file']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_file';
+		$bm_row['tbl_comment']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_comment';
+		$bm_row['tbl_hit']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_hit';
 	}
 	public function extends_bm_rows(& $bm_rows){
 		foreach($bm_rows as $k=> &$bm_row){

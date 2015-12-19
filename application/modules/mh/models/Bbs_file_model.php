@@ -415,22 +415,29 @@ class Bbs_file_model extends CI_Model {
 		}
 		return true;
 		
+	}
+	
+	//다운로드 수 증가. (하루 한번 증가 시킴)
+	public function hitup($b_idx,$ip,$m_idx=0){
+		$tbl = $this->bm_row['tbl_hit'];
+		$bh_parent_table ="'file'";
+		$bh_parent_idx = $this->db->escape((int)$b_idx);
+		$bh_m_idx = $this->db->escape((int)$m_idx);
+		$v_ip = $this->db->escape($ip);
+		$bh_ip_number = "inet_aton({$v_ip})";
+		$bh_insert_date ='now()';
+		$bh_update_date ='now()';
+		$bh_hit_cnt = 1;
 		
+		$v_bh_update_date = $this->db->escape(date('Y-m-d 00:00:00'));
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		return true;
+		$sql = "INSERT INTO {$tbl} (bh_parent_table,bh_parent_idx,bh_m_idx,bh_ip_number,bh_insert_date,bh_update_date,bh_hit_cnt)
+		values({$bh_parent_table},{$bh_parent_idx},{$bh_m_idx},{$bh_ip_number},{$bh_insert_date},{$bh_update_date},{$bh_hit_cnt})
+		ON DUPLICATE KEY UPDATE 
+			bh_hit_cnt = IF(bh_update_date < {$v_bh_update_date},bh_hit_cnt+1,bh_hit_cnt), 
+			bh_update_date = IF(bh_update_date < {$v_bh_update_date},now(),bh_update_date)  
+		";
+		$this->db->query($sql);
+		return $this->db->affected_rows();
 	}
 }

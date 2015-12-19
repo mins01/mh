@@ -46,7 +46,8 @@
 				<span class="label label-danger">공지글</span>
 			<? endif; ?>
 			<span class="pull-right">
-				<span class="label label-info ">작성일 : <?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></span>
+				<span class="label label-info ">작성 : <?=html_escape(date('m-d H:i',strtotime($b_row['b_insert_date'])))?></span>
+				<span class="label label-info ">조회 : <?=html_escape(isset($b_row['bh_cnt'][0])?$b_row['bh_cnt']:'0')?></span>
 			</span>
 			<span class="clearfix"></span>
 		</li>

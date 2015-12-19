@@ -27,7 +27,11 @@ class Bbs_model extends CI_Model {
 		return md5($str);
 	}
 	public function tblname($tblname,$alias=''){
-		return DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_'.$tblname.(isset($alias[0])?' as '.$alias:'');
+		//return DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_'.$tblname.(isset($alias[0])?' as '.$alias:'');
+		if(isset($this->bm_row['tbl_'.$tblname])){
+			return $this->bm_row['tbl_'.$tblname].(isset($alias[0])?' as '.$alias:'');
+		}
+		return null;
 	}
 	public function set_bm_row($bm_row){
 		$this->bm_row = $bm_row;
@@ -82,6 +86,9 @@ class Bbs_model extends CI_Model {
 			$this->db->join($this->tblname('file','bf'),'bf.b_idx=b.b_idx and bf_isdel=0 and bf_represent = 1','left');
 			$select.=',bf.bf_idx,bf.bf_name,bf.bf_save,bf.bf_size,bf.bf_type,bf.bf_represent';
 		}
+		// 조회수
+		$select.=",(select IFNULL(SUM(bh_hit_cnt),0) from ".$this->tblname('hit','bh')." where bh.bh_parent_idx=b.b_idx and bh.bh_parent_table='data') as bh_cnt";
+		
 		//-- 마지막 처리
 		$this->db->select($select);
 	}	
@@ -171,6 +178,7 @@ class Bbs_model extends CI_Model {
 		$b_rowss = array();
 		$b_rowss['maxlength'] = 0;
 		$orders = array();
+		$b_etc_1s = array();
 		$time_st = strtotime($date_st);
 		$time_ed = strtotime($date_ed);
 		$w_st = date('w',$time_st);
@@ -182,6 +190,20 @@ class Bbs_model extends CI_Model {
 			//$b_rowss[$t_a]= array();
 			foreach($b_rows as & $b_row){
 				if($b_row['b_etc_1']>=$t_a && $b_row['b_etc_0']<=$t_b){
+					
+					if($t_a<$b_row['b_etc_0']){
+						$v_dt_st = $b_row['b_etc_0'];
+					}else{
+						$v_dt_st = $t_a;
+					}
+					
+					// 기간 지난 것 삭제
+					unset($orders[$b_row['b_idx']]);
+					foreach($orders as $v_b_idx => $v_order){
+						if($b_etc_1s[$v_b_idx]<$v_dt_st){
+							unset($orders[$v_b_idx]);
+						}
+					}
 					//순서 찾기
 					if(!isset($orders[$b_row['b_idx']])){
 						if(count($orders)==0){
@@ -199,13 +221,6 @@ class Bbs_model extends CI_Model {
 						$b_rowss['maxlength'] = max($b_rowss['maxlength'],count($orders));
 					}
 					
-					
-					if($t_a<$b_row['b_etc_0']){
-						$v_dt_st = $b_row['b_etc_0'];
-					}else{
-						$v_dt_st = $t_a;
-					}
-					
 					if(!isset($b_rowss[$v_dt_st])){
 						$b_rowss[$v_dt_st] = array();
 					}
@@ -213,6 +228,7 @@ class Bbs_model extends CI_Model {
 					$v_len = floor((strtotime($v_dt_ed)-strtotime($v_dt_st))/86400)+1;
 					
 					$b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']]);
+					$b_etc_1s[$b_row['b_idx']] = $b_row['b_etc_1'];
 				}else{
 					unset($orders[$b_row['b_idx']]);
 				}
@@ -228,6 +244,8 @@ class Bbs_model extends CI_Model {
 		if(!$this->_apply_list_where(array())){
 			return false;
 		}
+		$this->_apply_list_bm_row($this->bm_row);
+		
 		$this->db->order_by('b_notice desc');
 		$this->db->where('b_notice>',0); //공지만
 	
@@ -403,5 +421,28 @@ AS SIGNED )+1
 		
 
 		return $b_idx;
+	}
+	//조회수 증가. (하루 한번 증가 시킴)
+	public function hitup($b_idx,$ip,$m_idx=0){
+		$tbl = $this->bm_row['tbl_hit'];
+		$bh_parent_table ="'data'";
+		$bh_parent_idx = $this->db->escape((int)$b_idx);
+		$bh_m_idx = $this->db->escape((int)$m_idx);
+		$v_ip = $this->db->escape($ip);
+		$bh_ip_number = "inet_aton({$v_ip})";
+		$bh_insert_date ='now()';
+		$bh_update_date ='now()';
+		$bh_hit_cnt = 1;
+		
+		$v_bh_update_date = $this->db->escape(date('Y-m-d 00:00:00'));
+		
+		$sql = "INSERT INTO {$tbl} (bh_parent_table,bh_parent_idx,bh_m_idx,bh_ip_number,bh_insert_date,bh_update_date,bh_hit_cnt)
+		values({$bh_parent_table},{$bh_parent_idx},{$bh_m_idx},{$bh_ip_number},{$bh_insert_date},{$bh_update_date},{$bh_hit_cnt})
+		ON DUPLICATE KEY UPDATE 
+			bh_hit_cnt = IF(bh_update_date < {$v_bh_update_date},bh_hit_cnt+1,bh_hit_cnt), 
+			bh_update_date = IF(bh_update_date < {$v_bh_update_date},now(),bh_update_date)  
+		";
+		$this->db->query($sql);
+		return $this->db->affected_rows();
 	}
 }

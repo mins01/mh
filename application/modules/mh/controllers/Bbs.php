@@ -239,7 +239,7 @@ class Bbs extends MX_Controller {
 		$tmp = $this->input->get();
 		$tmp['dt'] ='dt';
 		$def_url = $this->base_url . "/list?".str_replace('dt=dt','dt={{dt}}',http_build_query($tmp));
-		$pagination = $this->load->view($this->skin_path.'/pagination',array(
+		$pagination_dt = $this->load->view($this->skin_path.'/pagination_dt',array(
 		'dt' =>$get['dt'],
 		'get'=>$get,
 		'def_url'=>$def_url
@@ -258,7 +258,7 @@ class Bbs extends MX_Controller {
 		//'max_page' => ceil($count/$this->bm_row['bm_page_limit']),
 		//'start_num' => $start_num,
 		'get'=>$get,
-		'pagination' => $pagination,
+		'pagination_dt' => $pagination_dt,
 		'bbs_conf'=>$this->bbs_conf,
 		'b_idx'=>$b_idx,
 		'permission'=>$permission,
@@ -380,6 +380,7 @@ class Bbs extends MX_Controller {
 			$view_form_file = '';
 		}
 
+		$this->bbs_m->hitup($b_row['b_idx'],$_SERVER['REMOTE_ADDR'],$this->common->get_login('m_idx'));
 
 		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
 		$this->config->set_item('layout_hide',false);
@@ -446,6 +447,9 @@ class Bbs extends MX_Controller {
 			//}
 		}
 		if($this->bf_m->download_by_bf_row($bf_row,$inline,$resume)){
+			if(!$inline){//다운로드인 경우 다운로드 수 증가.
+			$this->bf_m->hitup($b_row['b_idx'],$_SERVER['REMOTE_ADDR'],$this->common->get_login('m_idx'));
+			}
 			exit();// 여기서 강제로 종료!
 		}else{
 			show_error($this->bf_m->msg);

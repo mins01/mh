@@ -123,7 +123,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<? 
-									$t_label='목록타입';
+									$t_label='목록타입(정렬)';
 									$t_col = 'bm_list_type';
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>

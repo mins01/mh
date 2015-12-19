@@ -1,7 +1,27 @@
 @charset "UTF-8";
 
 .table-calender{width:100%;table-layout:fixed;border-collapse:collapse}
-.table-calender th{ background-color:#abc;}
+.table-calender th{ 
+padding:0 !important;
+border-bottom-width: 0px !important;
+}
+.day-th>.day-th-label{
+	background-color:#666;
+	margin:3px;
+	border-radius: 0.4em;
+	color:#fff;
+	!box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.4);
+	line-height:1.8em;
+}
+.day-th-w-0>.day-th-label{
+	background-color:#933;
+	color:#fff;
+}
+.day-th-w-6>.day-th-label{
+	background-color:#339;
+	color:#fff;
+}
+
 .table-calender td{}
 .table-calender thead{}
 
@@ -10,20 +30,36 @@
 .table-calender .day-td{
 	padding:0;
 	width:14%;
+	border-top: 1px solid #abc;
 }
+td.day-td.day-td-today{
+
+}
+td.day-td.day-td-today>.day>.day-label{
+	font-size:1.3em;
+	transform: rotate(20deg);
+}
+
 .table-calender .day{
 	position:relative;
 	height:100%;
 	padding:0;
 	overflow:visible;
-	min-height:7.5em;
 }
+
 .day > .day-bg{
 	position:relative;
 	z-index:1;
 	border-right:1px solid #abc;
-	min-height:7.2em;
+	min-height:6em;
 }
+
+.day-bg[data-day-bg-height="0"]{height:6em;}
+.day-bg[data-day-bg-height="1"]{height:6em;}
+.day-bg[data-day-bg-height="2"]{height:6em;}
+.day-bg[data-day-bg-height="3"]{height:6em;}
+.day-bg[data-day-bg-height="4"]{height:7.5em;}
+.day-bg[data-day-bg-height="5"]{height:9em;}
 .day-bg[data-day-bg-height="6"]{height:10.5em;}
 .day-bg[data-day-bg-height="7"]{height:12em;}
 .day-bg[data-day-bg-height="8"]{height:13.5em;}
@@ -32,6 +68,29 @@
 .day-bg[data-day-bg-height="11"]{height:18em;}
 .day-bg[data-day-bg-height="12"]{height:19.5em;}
 .day-bg[data-day-bg-height="13"]{height:21em;}
+.day-bg[data-day-bg-height="14"]{height:22.5em;}
+.day-bg[data-day-bg-height="15"]{height:24em;}
+.day-bg[data-day-bg-height="16"]{height:25.5em;}
+.day-bg[data-day-bg-height="17"]{height:27em;}
+.day-bg[data-day-bg-height="18"]{height:28.5em;}
+.day-bg[data-day-bg-height="19"]{height:30em;}
+.day-bg[data-day-bg-height="20"]{height:31.5em;}
+.day-bg[data-day-bg-height="21"]{height:33em;}
+.day-bg[data-day-bg-height="22"]{height:34.5em;}
+.day-bg[data-day-bg-height="23"]{height:36em;}
+.day-bg[data-day-bg-height="24"]{height:37.5em;}
+.day-bg[data-day-bg-height="25"]{height:39em;}
+.day-bg[data-day-bg-height="26"]{height:40.5em;}
+.day-bg[data-day-bg-height="27"]{height:42em;}
+.day-bg[data-day-bg-height="28"]{height:43.5em;}
+.day-bg[data-day-bg-height="29"]{height:45em;}
+.day-bg[data-day-bg-height="30"]{height:46.5em;}
+.day-bg[data-day-bg-height="31"]{height:48em;}
+.day-bg[data-day-bg-height="32"]{height:49.5em;}
+.day-bg[data-day-bg-height="33"]{height:51em;}
+.day-bg[data-day-bg-height="34"]{height:52.5em;}
+.day-bg[data-day-bg-height="35"]{height:54em;}
+
 
 
 .day-w-6 .day-bg{
@@ -39,37 +98,40 @@
 }
 .day > .plan{
 	z-index:2;
-	background-color:#ccc;
 	position:absolute;top:0px;left:0px;
 	line-height:1.4em;
 	height:1.4em;
-	text-align:center;
-	border-radius: 0.3em;
+	
 	/*box-shadow: 0px 1px 0px 0px rgba(200,200,255,0.5);*/
 
 }
-.day > .plan a{display:block;
-overflow: hidden;
+.day > .plan > a{
+	display:block;
+	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	margin: 0;
+	margin: 0 1px;
+	text-align:center;
+	border-radius: 0.3em;
+	background-color:#e0e0e0;
 }
-.day > .plan-on{
+.day > .plan-on > a{
 	background-color:#f93;
-	box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.4);
+	/*box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.4);*/
 	z-index:4;
 }
 .day > .plan-on > a{
 	color:#fff;
 }
-.day > .plan-this{
-	background-color:#5e3;
+.day > .plan-this > a{
+	background-color:#393;
+	color:#fff;
 }
 .day > .plan-this > a{
 	
 }
-.day > .plan-this.plan-on{
-	background-color:#393;
+.day > .plan-this.plan-on >a{
+	background-color:#5e3;
 }
 
 
@@ -94,6 +156,30 @@ overflow: hidden;
 .plan[data-plan-order="9"]{top:15em;}
 .plan[data-plan-order="10"]{top:16.5em;}
 .plan[data-plan-order="11"]{top:18em;}
+.plan[data-plan-order="12"]{top:19.5em;}
+.plan[data-plan-order="13"]{top:21em;}
+.plan[data-plan-order="14"]{top:22.5em;}
+.plan[data-plan-order="15"]{top:24em;}
+.plan[data-plan-order="16"]{top:25.5em;}
+.plan[data-plan-order="17"]{top:27em;}
+.plan[data-plan-order="18"]{top:28.5em;}
+.plan[data-plan-order="19"]{top:30em;}
+.plan[data-plan-order="20"]{top:31.5em;}
+.plan[data-plan-order="21"]{top:33em;}
+.plan[data-plan-order="22"]{top:34.5em;}
+.plan[data-plan-order="23"]{top:36em;}
+.plan[data-plan-order="24"]{top:37.5em;}
+.plan[data-plan-order="25"]{top:39em;}
+.plan[data-plan-order="26"]{top:40.5em;}
+.plan[data-plan-order="27"]{top:42em;}
+.plan[data-plan-order="28"]{top:43.5em;}
+.plan[data-plan-order="29"]{top:45em;}
+.plan[data-plan-order="30"]{top:46.5em;}
+.plan[data-plan-order="31"]{top:48em;}
+.plan[data-plan-order="32"]{top:49.5em;}
+.plan[data-plan-order="33"]{top:51em;}
+.plan[data-plan-order="34"]{top:52.5em;}
+.plan[data-plan-order="35"]{top:54em;}
 
 
 .day > .day-label{
@@ -109,13 +195,7 @@ overflow: hidden;
 	line-height:1em;
 }
 
-.day-w-0 .day-label{color:#FFF;background-color:#933;}
-.day-w-6 .day-label{color:#FFF;background-color:#339;}
-.day-w-1 .day-label{}
-.day-w-2 .day-label{}
-.day-w-3 .day-label{}
-.day-w-4 .day-label{}
-.day-w-5 .day-label{}
+
 
 .day-m-01,
 .day-m-03,
@@ -123,14 +203,39 @@ overflow: hidden;
 .day-m-07,
 .day-m-09,
 .day-m-11
-{}
+{
+background-color:#ECFCF3;
+background: #feffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #feffff 0%, #d2ebf9 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #feffff 0%,#d2ebf9 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #feffff 0%,#d2ebf9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#d2ebf9',GradientType=0 ); /* IE6-9 */
+
+
+}
 .day-m-02,
 .day-m-04,
 .day-m-06,
 .day-m-08,
 .day-m-10,
 .day-m-12
-{background-color:#efefef;}
+{
+	background-color:#F2F9FD;
+background: #feffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #feffff 0%, #d2f7e1 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #feffff 0%,#d2f7e1 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #feffff 0%,#d2f7e1 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#d2f7e1',GradientType=0 ); /* IE6-9 */
+
+}
+
+.day-w-0>.day> .day-label{color:#FFF;background-color:#933;}
+.day-w-6>.day> .day-label{color:#FFF;background-color:#339;}
+.day-w-1>.day> .day-label{}
+.day-w-2>.day> .day-label{}
+.day-w-3>.day> .day-label{}
+.day-w-4>.day> .day-label{}
+.day-w-5>.day> .day-label{}
 
 .Ym.plotting_label_parent > .plotting_label{
 	top:-0.5em;
