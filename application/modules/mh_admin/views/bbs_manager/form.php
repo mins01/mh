@@ -285,8 +285,12 @@
 				</li>
 			</ul>
 			<div class="panel-footer text-right">
-			<button type="submit" class="btn btn-primary glyphicon glyphicon-ok"> 확인</button>
-			<a type="button" href="<?=$bbs_conf['list_url']?>"  class="btn btn-danger glyphicon glyphicon-remove"> 목록</a>
+			<? if(isset($bm_row['b_id'][0])): ?>
+			<a class="btn btn-info" href="<?=base_url('/bbs/'.$bm_row['b_id'])?>" target="_blank"><span class="glyphicon glyphicon-link"></span> 미리보기</a>
+			<? endif; ?>
+			
+			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> 확인</button>
+			<a type="button" href="<?=$bbs_conf['list_url']?>"  class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> 목록</a>
 			</div>
 		</div>
 		</form>

@@ -30,7 +30,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 			<div class="form-group">
 					<label class="col-sm-2 control-label">메뉴아이디</label>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" name="mn_id" placeholder="{{selected_obj.mn_parent_id}}-?" ng-model="selected_obj.mn_id" required  ng-minlength="1" ng-maxlength="10" ng-readonly="selected_obj.mode!='insert'"
+						<input type="text" class="form-control" name="mn_id" placeholder="{{selected_obj.mn_parent_id}}-?" ng-model="selected_obj.mn_id" required  ng-minlength="1" ng-maxlength="20" maxlength="20" ng-readonly="selected_obj.mode!='insert'"
 						>
 						<div class="error text-danger" ng-show="!formInfo.mn_id.$valid ">{{formInfo.mn_id.$error}}</div>
 					</div>
