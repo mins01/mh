@@ -58,7 +58,7 @@
 		<? endif; ?>
 	</ul>
 	<div class="panel-body" style="min-height:200px">
-		<?=nl2br(html_escape($b_row['b_text']))?>
+		<?=mh_util::cvt_html($b_row['b_text'],$b_row['b_html'])?>
 	</div>
 	<div class="panel-footer text-right">
 		

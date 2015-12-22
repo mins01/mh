@@ -286,7 +286,7 @@ class Bbs_model extends CI_Model {
 			'b_ip'=>$this->input->server('REMOTE_ADDR'),
 			'b_notice'=>'0',
 			'b_secret'=>'0',
-			'b_html'=>'html',
+			'b_html'=>'h',
 			'b_link'=>'',
 			'b_category'=>'',
 			'b_title'=>'',

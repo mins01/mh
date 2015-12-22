@@ -11,7 +11,7 @@ if($mode=='write'||$mode=='answer'){
 ?>
 
 <div class="skin-form">
-	<form action="" name="form_bbs" method="post" onsubmit="return check_form_bbs(this);"  enctype="multipart/form-data"  >
+	<form action="" name="form_bbs" method="post" onsubmit="submitWysiwyg();return check_form_bbs(this);"  enctype="multipart/form-data"  >
 	<input type="hidden" name="process" value="<?=html_escape($process)?>">
 	<div class="panel panel-default form-horizontal bbs-mode-form">
 		<div class="panel-heading">
@@ -75,7 +75,7 @@ if($mode=='write'||$mode=='answer'){
 			
 		</ul>
 		<div class="panel-body" style="min-height:200px">
-			<textarea class="form-control" name="b_text" rows="3"  placeholder="글내용" style="min-height:180px"><?=html_escape($b_row['b_text'])?></textarea>
+			<textarea class="form-control pre-wysiwyg" name="b_text" rows="3"  placeholder="글내용" style="min-height:180px"><?=html_escape($b_row['b_text'])?></textarea>
 		</div>
 		<div class="panel-footer text-right">
 		<button type="submit" class="btn btn-primary glyphicon glyphicon-ok"> 확인</button>

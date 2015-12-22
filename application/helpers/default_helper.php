@@ -78,3 +78,31 @@ function generate_paging($get,$max_page,$uri='',$i_conf=array()){
 		$r_arr[] = '</ul>';
 	return implode("\n",$r_arr);
 }
+
+
+function cvt_text($text,$text_type){
+	switch($text_type){
+		case 't':
+			return nl2br(html_escape($text));
+		break;
+		case 'p':
+			return nl2br($text);
+		break;
+		case 'h':
+			return ($text);
+		break;
+		case 'r':
+			return ($text);
+		break;
+	}
+	return $text;
+}
+
+
+
+
+
+
+
+
+
