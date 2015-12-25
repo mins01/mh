@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//-- 게시판 모델
+//-- 회원 모델
 
 class Member_model extends CI_Model {
 	public $msg = '';
@@ -97,6 +97,43 @@ class Member_model extends CI_Model {
 			->select('m_id')
 			->get()->row_array();
 		return isset($row['m_id'])?$row['m_id']:null;
+	}
+
+	//-- 관리용
+	
+	private function _where_for_lists($dbobj,$sh){
+		$dbobj->where('m_isdel',0);
+		if(isset($sh['wheres'])){
+			$dbobj->where($sh['wheres']);
+		}
+		
+	}
+	public function count_for_lists($sh=array()){
+		$this->db->from($this->tbl_member);
+		$this->_where_for_lists($this->db,$sh);
+		return $this->db->count_all_results();
+	}
+	public function select_for_lists($sh=array()){
+		$this->db->from($this->tbl_member);
+		$this->_where_for_lists($this->db,$sh);
+		
+		$select = 'm_id,m_idx,m_insert_date,m_ip,m_isdel,m_level,m_login_date,m_name,m_nick,m_status,m_update_date';
+		if(isset($sh['select'])){
+			$select = $sh['select'];
+		}
+		
+		if(isset($sh['order_by'])){
+			$this->db->order_by($sh['order_by']);
+		}
+		
+		if(isset($sh['limit'])){
+			if(isset($sh['offset'])){
+					$this->db->limit($sh['limit'],$sh['offset']);
+			}else{
+				$this->db->limit($sh['limit']);
+			}
+		}
+		return $this->db->select($select)->get()->result_array();
 	}
 	
 }

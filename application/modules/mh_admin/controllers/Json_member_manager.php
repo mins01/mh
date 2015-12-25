@@ -1,13 +1,31 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Json_member_manager extends MX_Controller {
-
+	
+	private $bbs_conf = array();
+	private $bm_row = array();
+	private $m_row = array();
+	private $skin_path = '';
+	private $base_url = '';
+	private $logedin = null;
+	private $limit = 20;
+	public $modules_path = '/modules/mh/controllers/';
+	public $page_path = '/modules/mh/views/page/';
+	public $page_prefix = 'mh/page/';
+	
 	public function __construct()
 	{
-		$this->load->model('mh/member_model','member_m');
 		
+		$this->load->model('mh/bbs_master_model','bm_m');
+		
+		
+		$this->load->model('mh/menu_model','menu_m_f');
+		
+		$this->load->model('mh/member_model','member_m');
+		$this->menu_m_f->set_init_conf('menu','');
 		$this->load->module('mh_admin/layout');
 		$this->load->module('mh_admin/common');
+
 		$this->config->set_item('layout_disable',true);
 		
 		$this->m_row = $this->common->get_login();
@@ -25,16 +43,16 @@ class Json_member_manager extends MX_Controller {
 	public function set_base_url($base_url){
 		$this->base_url = $base_url;
 	}
-	// /bbs로 접근할 경우, 맨 처음은 b_id가 된다.
+	//
 	public function index($param){
 		$mode = isset($param[0][0])?$param[0]:'list';
 		$mn_id = isset($param[1][0])?$param[1]:'';
 		//$mode = $this->uri->segment(3,'list');//option
 		
-		$this->set_base_url(ADMIN_URI_PREFIX.'bbs_admin');
+		//$this->set_base_url(ADMIN_URI_PREFIX.'bbs_admin'); 의미 없음
 		$this->action($mode);
 	}
-	// front 컨트롤에서 접근할 경우.
+	//
 	public function index_as_front($conf,$param){
 		$base_url = $conf['base_url'];
 		$mn_id = isset($param[1][0])?$param[1]:'';
@@ -52,12 +70,7 @@ class Json_member_manager extends MX_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($obj);
 	}
-	public function lists(){
-		//$this->menu_m_f->load_db();
-		$json = array();
-		$json['mn_rows'] = $this->menu_m_f->select();
-		return $this->echo_json($json);
-	}
+	
 	public function get_field_post(){
 		$fs = array(
 			'mn_id','mn_uri','mn_url','mn_text','mn_sort','mn_parent_id',
@@ -82,7 +95,7 @@ class Json_member_manager extends MX_Controller {
 		}
 		return $rt;
 	}
-	/*private function insert(){
+	private function insert(){
 		// $mn_id = $this->input->post('mn_id');
 		// if(!isset($mn_id[0])){
 			// $json = array(
@@ -90,26 +103,27 @@ class Json_member_manager extends MX_Controller {
 			// );
 			// return $this->echo_json($json);
 		// }
-		$cnt = $this->menu_m_f->count(array('mn_id'=>$mn_id));
-		if($cnt!=0){
-			$json = array(
-				'msg' => '이미 등록된 아이디입니다.',
-			);
-			return $this->echo_json($json);
-		}
+		// $cnt = $this->menu_m_f->count(array('mn_id'=>$mn_id));
+		// if($cnt!=0){
+			// $json = array(
+				// 'msg' => '이미 등록된 아이디입니다.',
+			// );
+			// return $this->echo_json($json);
+		// }
 		$post = $this->input->post();
 		$sets = $this->get_field_post();
-		$sets['mn_id']=$mn_id;
+		//$sets['mn_id']=$mn_id;
+		unset($sets['mn_id']);
 		
-		$this->menu_m_f->insert($sets);
+		$mn_id = $this->menu_m_f->insert($sets);
 		$json = array(
 			'mn_rows' => $this->menu_m_f->select(),
 			'mn_id'=>$mn_id,
 			'msg' => "{$mn_id}를 등록하였습니다.",
 		);
 		return $this->echo_json($json);
-	}*/
-	/*private function update(){
+	}
+	private function update(){
 		$mn_id = $this->input->post('mn_id');
 		if(!isset($mn_id[0])){
 			$json = array(
@@ -138,8 +152,7 @@ class Json_member_manager extends MX_Controller {
 		);
 		return $this->echo_json($json);
 	}
-	*/
-	/*private function delete(){
+	private function delete(){
 		$mn_id = $this->input->post('mn_id');
 		if(!isset($mn_id[0])){
 			$json = array(
@@ -165,56 +178,36 @@ class Json_member_manager extends MX_Controller {
 		);
 		return $this->echo_json($json);
 	}
-	*/
-	/*
-	public function module_lists(){
-		$path=APPPATH.$this->modules_path;
-		$arr = array();
-		$d = dir($path);
-		while (false !== ($entry = $d->read())) {
-			if($entry=='.' || $entry=='..'){continue;}
-			if(is_file($path.$entry)){
-				$arr[] = strtolower(str_ireplace('.php','',$entry));
-			}
-		}
-		$d->close();
-		sort($arr);
-		//print_r($path);
-		return $arr;
-	}
-	// page 모듈용
-	public function page_lists(){ 
-		$path=APPPATH.$this->page_path;
-		$arr = array();
-		$d = dir($path);
-		while (false !== ($entry = $d->read())) {
-			if($entry=='.' || $entry=='..'){continue;}
-			if(is_file($path.$entry)){
-				$v = str_ireplace('.php','',$entry);
-				$k = $this->page_prefix.$v;
-				$arr[$k] = $v;
-			}
-		}
-		$d->close();
-		asort($arr);
-		//print_r($path);
-		return $arr;
-	}
+	
 	public function first(){
-		$this->load->model('mh/bbs_master_model','bm_m');
+		
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
+		if(!$limit) $limit = 3;
+		if(!$offset) $offset = 0;
 		$json = array(
-			'bbs_lists'=>$this->bm_m->select_for_list_for_menu(),
-			'mn_rows' => $this->menu_m_f->select(),
-			'module_lists'=>$this->module_lists(),
-			'page_lists'=>$this->page_lists(),
+			'm_rows'=>$this->member_m->select_for_lists(array('limit'=>$limit,'order_by'=>'m_idx DESC')),
+			'm_cnt'=>$this->member_m->count_for_lists(array()),
+			'offset'=>$offset,
 		);
 		return $this->echo_json($json);
 	}
-	*/
+	
+	public function lists(){
+		$this->load->model('mh/bbs_master_model','bm_m');
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
+		if(!$limit) $limit = 3;
+		if(!$offset) $offset = 0;
+		$json = array(
+			'm_rows'=>$this->member_m->select_for_lists(
+																		array('limit'=>$limit,
+																					'offset'=>$offset,
+																					'order_by'=>'m_idx DESC')
+																		),
+			'm_cnt'=>$this->member_m->count_for_lists(array()),
+			'offset'=>$offset,
+		);
+		return $this->echo_json($json);
+	}
 }
-
-
-
-
-
-
