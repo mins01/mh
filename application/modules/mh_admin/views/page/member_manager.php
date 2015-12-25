@@ -3,7 +3,7 @@
 //$start_num,$count
 $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 ?>
-<h4>메뉴설정</h4>
+<h4>회원관리</h4>
 <div ng-app="menuApp" class="row" ng-controller="treeCtrl as treeCtrl" ng-init="treeCtrl.init('<?=$json_url?>')">
 	<script type="text/ng-template" id="field_renderer.html">
 		<span class="menu-label">
@@ -30,7 +30,9 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 			<div class="form-group">
 					<label class="col-sm-2 control-label">메뉴아이디</label>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" name="mn_id" placeholder="#AUTO#" ng-model="selected_obj.mn_id"  ng-readonly="1">
+						<input type="text" class="form-control" name="mn_id" placeholder="{{selected_obj.mn_parent_id}}-?" ng-model="selected_obj.mn_id" required  ng-minlength="1" ng-maxlength="20" maxlength="20" ng-readonly="selected_obj.mode!='insert'"
+						>
+						<div class="error text-danger" ng-show="!formInfo.mn_id.$valid ">{{formInfo.mn_id.$error}}</div>
 					</div>
 					<label class="col-sm-2 control-label">부모메뉴</label>
 					<div class="col-sm-4">
@@ -99,7 +101,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 
 				<label class="col-sm-2 control-label">모듈인자1</label>
 				<div class="col-sm-4">
-					<input type="text" maxlength="100" class="form-control" placeholder="mn_arg1" ng-model="selected_obj.mn_arg1" 
+					<input type="text" maxlength="20" class="form-control" placeholder="mn_arg1" ng-model="selected_obj.mn_arg1" 
 					ng-hide="['bbs','page'].indexOf(selected_obj.mn_module)>-1 " 
 					ng-disabled="selected_obj.mn_lock=='1'"
 					>
@@ -122,11 +124,11 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 			<div class="form-group">
 				<label class="col-sm-2 control-label">모듈인자2</label>
 				<div class="col-sm-4">
-					<input type="text" maxlength="100" class="form-control" placeholder="mn_arg2" ng-model="selected_obj.mn_arg2" ng-disabled="selected_obj.mn_lock=='1'">
+					<input type="text" maxlength="20" class="form-control" placeholder="mn_arg2" ng-model="selected_obj.mn_arg2" ng-disabled="selected_obj.mn_lock=='1'">
 				</div>
 				<label class="col-sm-2 control-label">모듈인자3</label>
 				<div class="col-sm-4">
-					<input type="text" maxlength="100" class="form-control" placeholder="mn_arg3" ng-model="selected_obj.mn_arg3" ng-disabled="selected_obj.mn_lock=='1'">
+					<input type="text" maxlength="20" class="form-control" placeholder="mn_arg3" ng-model="selected_obj.mn_arg3" ng-disabled="selected_obj.mn_lock=='1'">
 				</div>
 			</div>
 			<hr>

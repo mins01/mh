@@ -31,21 +31,7 @@ class Json_admin_menu extends Json_menu {
 		$this->index($params);
 	}
 	
-	public function module_lists1(){
-		$path=APPPATH.'/modules/mh_admin/controllers/';
-		$arr = array();
-		$d = dir($path);
-		while (false !== ($entry = $d->read())) {
-			if($entry=='.' || $entry=='..'){continue;}
-			if(is_file($path.$entry)){
-				$arr[] = strtolower(str_ireplace('.php','',$entry));
-			}
-		}
-		$d->close();
-		sort($arr);
-		//print_r($path);
-		return $arr;
-	}
+
 	public function first(){
 		$this->load->model('mh/bbs_master_model','bm_m');
 		$json = array(

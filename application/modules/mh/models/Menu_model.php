@@ -144,7 +144,8 @@ class Menu_model extends CI_Model {
 		->set('mn_insert_date','now()',false)
 		->set('mn_update_date','now()',false)
 		->insert();
-		return $this->db->affected_rows();
+		//return $this->db->affected_rows();
+		return $this->db->insert_id();
 	}
 	public function update($wheres,$sets){
 		$this->db->from(DB_PREFIX.$this->tbl_nm)
