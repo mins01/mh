@@ -148,7 +148,7 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 	$scope.selected_m_row = null
 	$scope.able_change_m_pass = false;
 	$scope.form_v_search={
-		tq:'all',
+		tq:'_all_',
 		q:'',
 		page:1,
 		mode:'list',
@@ -225,36 +225,21 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 	$scope.callback_success = function(data, status, headers, config){
 		$scope.able_change_m_pass = false;
 		//console.log(data);
-		if(data.m_rows){
+		if(data.m_rows!=undefined){
 			$scope.m_rows = data.m_rows;
 		}
-		if(data.m_row){
+		if(data.m_row!=undefined){
 			$scope.selected_m_row = data.m_row;
 		}
-		if(data.m_cnt){
+		if(data.m_cnt!=undefined){
 			$scope.m_cnt = data.m_cnt;
 		}
-		if(data.msg && data.msg.length>0){
+		if(data.msg!=undefined && data.msg.length>0){
 			alert(data.msg);
 		}
 		if(data.offset != undefined){
 			$scope.set_page(Math.ceil(parseInt(data.offset,10)/$scope.limit)+1);
 		}
-		
-		if(data.bbs_lists){
-			$scope.bbs_lists = data.bbs_lists;
-		}
-		if(data.page_lists){
-			$scope.page_lists = data.page_lists;
-		}
-		if(data.mn_id){
-			if($scope.mn_rows[data.mn_id]){
-				$scope.form_update($scope.mn_rows[data.mn_id]);
-			}else{
-				$scope.form_update({});
-			}
-		}
-		
 	}
 	//통신 결과처리:실패
 	$scope.callback_error = function(data, status, headers, config){
