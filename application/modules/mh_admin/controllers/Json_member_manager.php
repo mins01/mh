@@ -73,18 +73,15 @@ class Json_member_manager extends MX_Controller {
 	
 	public function get_field_post(){
 		$fs = array(
-			'mn_id','mn_uri','mn_url','mn_text','mn_sort','mn_parent_id',
-			'mn_module','mn_arg1','mn_arg2','mn_arg3',
-			'mn_use','mn_hide','mn_lock','mn_head_contents','mn_top_html',
+			'm_id','m_idx',
+			//'m_insert_date','m_ip',
+			//'m_isdel',
+			'm_level',
+			'm_pass',
+			//'m_login_date',
+			'm_name','m_nick','m_isout',
+			//'m_update_date',
 		);
-		if($this->input->post('mn_lock')=='1'){
-			$fs = array(
-				'mn_id','mn_uri','mn_url','mn_text','mn_sort','mn_parent_id',
-				//'mn_module','mn_arg1','mn_arg2','mn_arg3',
-				//'mn_use','mn_hide',
-				'mn_lock',
-			);
-		}
 		$rt = array();
 		foreach($fs as $k){
 			$v = $this->input->post($k);
@@ -113,7 +110,7 @@ class Json_member_manager extends MX_Controller {
 		$post = $this->input->post();
 		$sets = $this->get_field_post();
 		//$sets['mn_id']=$mn_id;
-		unset($sets['mn_id']);
+		unset($sets['m_id'],$sets['m_idx']);
 		
 		$mn_id = $this->menu_m_f->insert($sets);
 		$json = array(
@@ -124,32 +121,41 @@ class Json_member_manager extends MX_Controller {
 		return $this->echo_json($json);
 	}
 	private function update(){
-		$mn_id = $this->input->post('mn_id');
-		if(!isset($mn_id[0])){
+		$m_idx = $this->input->post('m_idx');
+		$m_id = $this->input->post('m_id');
+		if(!isset($m_idx[0])){
 			$json = array(
-				'msg' => 'mn_id가 없습니다.',
+				'msg' => 'm_idx가 없습니다.',
 			);
 			return $this->echo_json($json);
 		}
-		$cnt = $this->menu_m_f->count(array('mn_id'=>$mn_id));
+		$cnt = $this->member_m->count(array('m_idx'=>$m_idx));
 		if($cnt==0){
 			$json = array(
-				'msg' => '등록되지 않은 아이디입니다.',
+				'msg' => '등록되지 않은 회원입니다.',
 			);
 			return $this->echo_json($json);
 		}
 		$post = $this->input->post();
 		$sets = $this->get_field_post();
-		unset($sets['mn_id']);
+		unset($sets['m_id'],$sets['m_idx']);
 		$wheres = array(
-			'mn_id'=>$mn_id,
+			'm_idx'=>$m_idx,
 		);
-		$this->menu_m_f->update($wheres,$sets);
-		$json = array(
-			'mn_rows' => $this->menu_m_f->select(),
-			'mn_id'=>$mn_id,
-			'msg' => "{$mn_id}을 수정하였습니다.",
-		);
+		$r = $this->member_m->update($wheres,$sets);
+		if(!$r){
+			$json = array(
+				//'m_row'=>$this->member_m->select_by_m_idx($m_idx),
+				//'m_idx'=>$m_idx,
+				'msg' => $this->member_m->msg,
+			);
+		}else{
+			$json = array(
+				'm_row'=>$this->member_m->select_by_m_idx($m_idx),
+				'm_idx'=>$m_idx,
+				'msg' => "{$m_id}을 수정하였습니다.",
+			);
+		}
 		return $this->echo_json($json);
 	}
 	private function delete(){
@@ -199,14 +205,48 @@ class Json_member_manager extends MX_Controller {
 		$offset = $this->input->get('offset');
 		if(!$limit) $limit = 3;
 		if(!$offset) $offset = 0;
+		
+		$wheres = array();
+		$or_likes = array();
+		$tq = $this->input->get('tq');
+		$q = $this->input->get('q');
+		if($tq && $q ){
+			if($tq=='_all_'){
+				$or_likes['m_id']=$q;
+				$or_likes['m_nick']=$q;
+			}else{
+				$or_likes[$tq]=$q;
+			}
+		}
+		
+		
 		$json = array(
 			'm_rows'=>$this->member_m->select_for_lists(
 																		array('limit'=>$limit,
 																					'offset'=>$offset,
+																					'wheres'=>$wheres,
+																					'or_likes'=>$or_likes,
 																					'order_by'=>'m_idx DESC')
 																		),
-			'm_cnt'=>$this->member_m->count_for_lists(array()),
+			'm_cnt'=>$this->member_m->count_for_lists(array(
+																					//'limit'=>$limit,
+																					//'offset'=>$offset,
+																					'wheres'=>$wheres,
+																					'or_likes'=>$or_likes,
+																					//'order_by'=>'m_idx DESC'
+																					)
+																		),
 			'offset'=>$offset,
+		);
+		
+		return $this->echo_json($json);
+	}
+	
+	public function select_by_m_idx(){
+		$this->load->model('mh/bbs_master_model','bm_m');
+		$m_idx = $this->input->get('m_idx');
+		$json = array(
+			'm_row'=>$this->member_m->select_by_m_idx($m_idx),
 		);
 		return $this->echo_json($json);
 	}

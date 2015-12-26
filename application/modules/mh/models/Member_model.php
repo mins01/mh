@@ -34,9 +34,11 @@ class Member_model extends CI_Model {
 			->get()->row_array();
 	}
 	public function select_by_m_idx($m_idx){
+		$select = 'm_id,m_idx,m_insert_date,m_ip,m_isdel,m_level,m_login_date,m_name,m_nick,m_isout,m_update_date';
 		return $this->db->from($this->tbl_member)
 			->where('m_idx',$m_idx)
 			->where('m_isdel',0)
+			->select($select)
 			->get()->row_array();
 	}
 	public function set_m_login_date($m_idx){
@@ -68,17 +70,29 @@ class Member_model extends CI_Model {
 		
 		return !!$this->db->count_all_results();
 	}
-	public function update_row($m_idx,$sets){
-		if(isset($sets['m_pass'])){
+	public function update($where,$sets){
+		if(isset($sets['m_pass'][0])){
 			$sets['m_pass'] = $this->hash($sets['m_pass']);
 		}
+		if(isset($sets['m_nick'])){
+			if($this->is_duplicate_m_nick($sets['m_nick'],$where['m_idx'])){
+				$this->msg = '중복 m_nick';
+				return false;
+			}
+		}
 		$this->db->from($this->tbl_member)
-			->where('m_idx',$m_idx)
+			->where($where)
 			->where('m_isdel',0)
 			->set($sets)
 			->set('m_update_date','now()',false)
 			->update();
+			//print_r($sets);
+			//echo "// ",$this->db->last_query(),"\n";
 		return $this->db->affected_rows();
+	}
+	public function update_row($m_idx,$sets){
+		$where = array('m_idx'=>$m_idx);
+		return $this->update($where,$sets);
 	}
 	public function modify($m_idx,$sets){
 		if(!isset($m_idx)){
@@ -100,11 +114,21 @@ class Member_model extends CI_Model {
 	}
 
 	//-- 관리용
-	
+	public function count($wheres=array()){
+		return $this->db->from($this->tbl_member)->where('m_isdel',0)->where($wheres)->count_all_results();
+	}
 	private function _where_for_lists($dbobj,$sh){
 		$dbobj->where('m_isdel',0);
 		if(isset($sh['wheres'])){
 			$dbobj->where($sh['wheres']);
+		}
+		if(isset($sh['likes'])){
+			$dbobj->like($sh['likes']);
+		}
+		if(!empty($sh['or_likes'])){
+			$this->db->group_start();
+			$dbobj->or_like($sh['or_likes']);
+			$this->db->group_end();
 		}
 		
 	}
@@ -117,7 +141,7 @@ class Member_model extends CI_Model {
 		$this->db->from($this->tbl_member);
 		$this->_where_for_lists($this->db,$sh);
 		
-		$select = 'm_id,m_idx,m_insert_date,m_ip,m_isdel,m_level,m_login_date,m_name,m_nick,m_status,m_update_date';
+		$select = 'm_id,m_idx,m_insert_date,m_ip,m_isdel,m_level,m_login_date,m_name,m_nick,m_isout,m_update_date';
 		if(isset($sh['select'])){
 			$select = $sh['select'];
 		}
