@@ -1,5 +1,5 @@
 body {
-  padding-top: 55px;
+  padding-top: 0px;
 }
 
 .container-fluid{max-width:none;}
@@ -38,3 +38,8 @@ line-height: 18px;
 
 .menu-tree li::before{content: "┣\e144";}
 .menu-tree li:last-child::before{content: "┗\e144";}
+
+.navbar-header, .navbar-collapse{
+    margin-right: -5px !important;
+    margin-left: -5px !important;
+}

@@ -28,7 +28,7 @@ class Common extends MX_Controller {
 		//$this->config->set_item('current_menu', $this->menu_m->get_current_menu($_SERVER['REQUEST_URI']));
 
 		$this->init_login();
-		$t = $this->get_login('adm_id');
+		$t = $this->get_login('m_id');
 
 		$this->logedin = isset($t[0]);
 		$this->config->set_item('layout_logedin',$this->logedin);
@@ -49,6 +49,7 @@ class Common extends MX_Controller {
 		if(!$this->logedin){
 			$ret_url = ADMIN_URI_PREFIX.'login';
 			$this->redirect('로그인이 필요합니다.',$ret_url);
+			$this->config->set_item('layout_hide',true);
 			return false;
 		}
 		return true;
@@ -66,10 +67,13 @@ class Common extends MX_Controller {
 		}
 	}
 	public function set_login($m_row){
-		$m_row['adm_level'] = (int)$m_row['adm_level'];
-		$m_row['is_admin'] = @$m_row['adm_level']==99;//관리자 유무
+		$m_row['m_level'] = (int)$m_row['m_level'];
+		$m_row['is_admin'] = @$m_row['m_level']==99;//관리자 유무
+		if(!$m_row['is_admin']){ //관리자만 로그인 시킨다.
+			return false;
+		}
 		
-		unset($m_row['adm_pass']);
+		unset($m_row['m_pass']);
 		switch(ADMIN_LOGIN_TYPE){
 			case 'cookie':
 				$this->set_login_at_cookie($this->enc_str($m_row));
@@ -111,7 +115,7 @@ class Common extends MX_Controller {
 	}
 	public function get_login($key=NULL){
 		if(isset($key)){
-			if($key=='adm_level'){
+			if($key=='m_level'){
 				if(!isset($this->m_row[$key]))return 0;
 				else return $this->m_row[$key];
 			}

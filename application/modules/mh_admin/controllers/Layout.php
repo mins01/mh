@@ -23,7 +23,7 @@ class Layout extends MX_Controller {
 		$conf['hide'] = $this->config->item('layout_hide');
 		$conf['title'] = $this->config->item('layout_title');
 		$conf['logedin'] = $this->config->item('layout_logedin');
-		$conf['login_label'] = $this->common->get_login('adm_nick');
+		$conf['login_label'] = $this->common->get_login('m_nick');
 
 		if(!isset($conf['head_contents'])) $conf['head_contents'] = '';
 		if(!isset($conf['tail_contents'])) $conf['tail_contents'] = '';

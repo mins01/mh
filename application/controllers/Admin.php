@@ -13,9 +13,7 @@ class Admin extends MX_Controller {
 	}
 
 	public function _remap($method, $params = array())
-	{
-		//$this->config->set_item('base_url',base_url($this->uri->segment(1)));
-
+	{		
 		$menu_uri = $method=='index'?'':$method;
 		if (method_exists($this, $method))
 		{
@@ -67,18 +65,32 @@ class Admin extends MX_Controller {
 
 	
 	public function login(){
-		$this->load->module('mh_admin/staff');
-		$this->staff->login();
+		$this->load->module('mh/member');
+		$this->member->login();
 		$this->config->set_item('layout_hide',true);
 	}
-	public function user_info(){
-		$this->load->module('mh/staff');
-		$this->staff->modify();
-	}
+	// public function user_info(){
+		// $this->load->module('mh/member');
+		// $this->member->modify();
+	// }
 	public function logout(){
-		$this->load->module('mh_admin/staff');
-		$this->staff->logout();
+		$this->load->module('mh/member');
+		$this->member->logout();
 	}
+	
+	// public function login(){
+		// $this->load->module('mh_admin/staff');
+		// $this->staff->login();
+		// $this->config->set_item('layout_hide',true);
+	// }
+	// public function user_info(){
+		// $this->load->module('mh/staff');
+		// $this->staff->modify();
+	// }
+	// public function logout(){
+		// $this->load->module('mh_admin/staff');
+		// $this->staff->logout();
+	// }
 	// public function join(){
 		// $this->load->module('mh/staff');
 		// $this->staff->join();
