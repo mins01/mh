@@ -65,7 +65,11 @@ class Admin extends MX_Controller {
 
 	
 	public function login(){
-		$this->load->module('mh/member');
+		if($this->common->get_login('m_idx')){
+			$this->common->redirect('',ADMIN_URI_PREFIX);
+			return;
+		}
+		$this->load->module('mh_admin/member');
 		$this->member->login();
 		$this->config->set_item('layout_hide',true);
 	}
@@ -74,7 +78,7 @@ class Admin extends MX_Controller {
 		// $this->member->modify();
 	// }
 	public function logout(){
-		$this->load->module('mh/member');
+		$this->load->module('mh_admin/member');
 		$this->member->logout();
 	}
 	

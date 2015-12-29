@@ -100,7 +100,7 @@
 				
 				<?
 					if(!isset($tmenu['child'][0])):
-					?><a class="list-group-item active" href="" >NO SUBMENU</a><?
+					?><a class="list-group-item active" href="" ><?=html_escape($menu['mn_text'])?></a><?
 					endif;
 				?>
 				</div>

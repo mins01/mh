@@ -85,8 +85,8 @@ class Bbs_manager extends MX_Controller {
 	}
 	
 	private function get_permission_lists($m_idx=''){
-		$adm_level = $this->common->get_login('adm_level');
-		$is_admin = 1<=$adm_level;
+		$m_level = $this->common->get_login('m_level');
+		$is_admin = 1<=$m_level;
 		
 		if(!isset($m_level)) $m_level = 0;
 		return array(
@@ -122,11 +122,7 @@ class Bbs_manager extends MX_Controller {
 		
 		$permission = $this->get_permission_lists();
 		if(!$permission['list']){
-			if($with_read){
-				return;
-			}else{
-				show_error('권한이 없습니다.');
-			}
+			show_error('권한이 없습니다.');
 		}
 		
 		$get = $this->input->get();
