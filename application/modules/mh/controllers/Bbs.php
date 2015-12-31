@@ -166,13 +166,13 @@ class Bbs extends MX_Controller {
 	
 	private function get_bf_rows_by_b_row(&$b_row){
 		$bf_rows = $this->bf_m->select_for_list($b_row['b_idx']);
-		$this->extends_bf_rows(&$bf_rows,$b_row);
+		$this->extends_bf_rows($bf_rows,$b_row);
 		return $bf_rows;
 	}
 	
 	private function get_bf_row_by_b_row($b_row){
 		$bf_rows = $this->bf_m->select_for_list($b_row['b_idx']);
-		$this->extends_bf_rows(&$bf_rows,$b_row);
+		$this->extends_bf_rows($bf_rows,$b_row);
 		return $bf_rows;
 	}
 	
