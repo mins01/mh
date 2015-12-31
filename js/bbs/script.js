@@ -70,7 +70,7 @@ function showWysiwyg(wysiwyg,bool){
 	var r = null;
 	if(wysiwyg.stat != bool){
 		if(bool==1){
-			r = wysiwyg.mk_wysiwyg();
+			r = wysiwyg.mk_wysiwyg('',[],true);
 		}else{
 			r = wysiwyg.remove();
 		}
