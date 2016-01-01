@@ -12,9 +12,6 @@ $base_url = base_url();
 <script type="text/javascript" src="/web_work/js/_M/UI/POPLAYER/_M.UI.POPLAYER.js"></script>
 
 <link href="/web_work/mb_wysiwyg_dom/mb_wysiwyg.css" rel="stylesheet" type="text/css" />
-<link href="/web_work/mb_wysiwyg_dom/fontawesome.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="/web_work/mb_wysiwyg_dom/mb_wysiwyg.js"></script>
-<script type="text/javascript" src="/web_work/mb_wysiwyg_dom/set.toolbar.js"></script>
 
 
 <link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_default.css'))?>" rel="stylesheet">
@@ -25,7 +22,12 @@ $base_url = base_url();
 <? endif; ?>
 
 <? if($mode=='write' || $mode=='edit' || $mode=='answer'): ?>
+
+<link href="/web_work/mb_wysiwyg_dom/fontawesome.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/web_work/mb_wysiwyg_dom/mb_wysiwyg.js"></script>
+<script type="text/javascript" src="/web_work/mb_wysiwyg_dom/set.toolbar.js"></script>
 <script src="<?=html_escape(base_url('js/bbs/script.js'))?>"></script>
+
 <script>
 //--- 위지윅 생성
 $(

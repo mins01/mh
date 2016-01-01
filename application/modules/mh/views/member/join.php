@@ -13,9 +13,9 @@
 	</div>
 	<div class="panel-body" >
 		<div class="form-group">
-			<label for="m_id" class="col-sm-2 control-label">이메일*</label>
+			<label for="m_id" class="col-sm-2 control-label">아이디*</label>
 			<div class="col-sm-10">
-				<input type="email" name="m_id" id="m_id" max-length="40" value="<?=set_value('m_id')?>" class="form-control" required placeholder="이메일">
+				<input type="text" name="m_id" id="m_id" max-length="40" value="<?=set_value('m_id')?>" class="form-control" required placeholder="아이디">
 				<?php echo form_error('m_id'); ?>
 			</div>
 		</div>
@@ -36,6 +36,13 @@
 			<div class="col-sm-10">
 				<input type="text" name="m_nick" id="m_nick" maxlength="40" value="<?=set_value('m_nick')?>" class="form-control" required placeholder="닉네임">
 				<?php echo form_error('m_nick'); ?>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="m_email" class="col-sm-2 control-label">이메일*</label>
+			<div class="col-sm-10">
+				<input type="email" name="m_email" id="m_email" maxlength="200" value="<?=set_value('m_email')?>" class="form-control" required placeholder="이메일">
+				<?php echo form_error('m_email'); ?>
 			</div>
 		</div>
 		<hr>

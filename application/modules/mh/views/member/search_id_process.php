@@ -14,12 +14,17 @@
 			<label for="m_id" class="col-sm-3 control-label">아이디</label>
 			<div class="col-sm-9">
 			<? if(isset($m_id)): 
-			list($id,$emd) = explode('@',$m_id);
-			$l = strlen($id);
-			$l2 = round($l/2);
-			$id1 = substr($id,0,$l2);
-			$id2 = str_repeat('*',strlen(substr($id,$l2)));
-			$t = $id1.$id2.'@'.$emd;
+			//list($id,$emd) = explode('@',$m_id);
+			$l = strlen($m_id);
+			//$l= 4;
+			$st = round($l/2)-round($l/4);
+			$ed = $l-$st;
+			
+			$part0 = substr($m_id,0,$st);
+			//$part1 = substr($m_id,$st,$ed);
+			$part1 = str_repeat('*',$ed-$st);
+			$part2 = substr($m_id,$ed);
+			$t = $part0.$part1.$part2;
 			//$t = preg_replace('/(.)(.)/','*',$m_id);
 			?>
 				<p class="form-control-static"><?=html_escape($t)?></p>

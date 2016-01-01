@@ -113,8 +113,9 @@ class Member extends MX_Controller {
 			'ret_url' => $ret_url,
 		);		
 		
-		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]|is_unique[mh_member.m_id]');
+		$this->form_validation->set_rules('m_id', '아이디', 'required|min_length[4]|max_length[40]|is_unique[mh_member.m_id]');
 		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]|is_unique[mh_member.m_nick]');
+		$this->form_validation->set_rules('m_email', '이메일', 'required|valid_email|min_length[5]|max_length[200]|is_unique[mh_member.m_email]');
 		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[4]|max_length[40]|matches[m_pass_re]');
 		$this->form_validation->set_rules('m_pass_re', '비밀번호 확인', 'required|min_length[4]|max_length[40]');
 		if ($this->form_validation->run() == FALSE){
@@ -181,9 +182,15 @@ class Member extends MX_Controller {
 		$m_idx = $this->common->get_login('m_idx');
 		if($this->member_m->is_duplicate_m_nick($this->input->post('m_nick'),$m_idx)){
 			$this->common->redirect('이미 사용중인 닉네임입니다.','');
+			return;
+		}
+		if($this->member_m->is_duplicate_m_email($this->input->post('m_email'),$m_idx)){
+			$this->common->redirect('이미 사용중인 이메일입니다.','');
+			return;
 		}
 		$sets = array(
 		'm_nick'=>$this->input->post('m_nick'),
+		'm_email'=>$this->input->post('m_email'),
 		);
 		if(!$this->member_m->modify($m_idx,$sets)){
 			$this->common->redirect($this->member_m->msg,'');
@@ -191,6 +198,7 @@ class Member extends MX_Controller {
 		$this->db->last_query();
 		$this->relogin($m_idx);
 		$this->common->redirect('정보를 수정하였습니다.','');
+		return;
 	}
 	
 	public function required_password(){
@@ -254,7 +262,7 @@ class Member extends MX_Controller {
 		$data = array('error_msg'=>'');
 		$error = false;
 		
-		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]');
+		$this->form_validation->set_rules('m_id', '아이디', 'required|min_length[4]|max_length[40]');
 		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]');
 		
 		if ($this->form_validation->run() == FALSE){
@@ -285,7 +293,7 @@ class Member extends MX_Controller {
 		//$this->load->view('mh/member/search_id',$data);
 	}
 	private function search_pw_send_mail(){
-		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]');
+		$this->form_validation->set_rules('m_id', '아이디', 'required|min_length[4]|max_length[40]');
 		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]');
 		
 		if ($this->form_validation->run() == FALSE){
@@ -300,6 +308,9 @@ class Member extends MX_Controller {
 		
 		if($m_row['m_nick']!=$m_nick){
 			show_error('잘못된 접근.');
+		}
+		if(!isset($m_row['m_email'][0])){
+			show_error('이메일이 등록되어있지 않음.');
 		}
 		//echo $this->db->last_query();
 		$data = array(
@@ -321,7 +332,7 @@ class Member extends MX_Controller {
 		$binds = array(
 			'href'=>$reset_pw_url,
 		);
-		$result = $this->common->send_mail($m_id,'비밀번호 변경 안내 메일',$message,$binds);
+		$result = $this->common->send_mail($m_row['m_email'],'비밀번호 변경 안내 메일',$message,$binds);
 		
 		$data['result'] = $result;
 		//var_dump($this->email);

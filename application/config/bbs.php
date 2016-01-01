@@ -28,7 +28,7 @@ $config['bbs'] = array(
 		'r'=>'RealHTML',
 	),
 	//파일 저장 위치
-	'file_dir'=>realpath(APPPATH.'/../_files/bbs/'),
+	'file_dir'=>realpath(APPPATH.'/../../../mh_files/bbs/'),
 	
 	//관리자에서 사용할 값들
 	'list_types'=>array(

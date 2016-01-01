@@ -35,10 +35,11 @@
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
 								<div class="col-xs-9">
-									
+										<? /* ?>
 										<? if(isset($bm_row['bm_insert_date'][0])): ?>
 											<input type="text" disabled class="form-control" required name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="40" value="<?=html_escape($bm_row[$t_col])?>">
 										<? else: ?>
+										<? */ ?>
 										<div class="input-group">
 											<span class="input-group-addon">
 												<?=DB_PREFIX.'bbs_'?>
@@ -48,8 +49,8 @@
 												_data
 											</span>
 										</div><!-- /input-group -->
-										<div class="text-danger">주의 : 최초 설정시 변경 불가!</div>
-										<? endif;?>
+										<div class="text-danger">주의 : 병경시 게시물 이전 안됨!</div>
+										<? //endif;?>
 									
 								</div>
 						</div>
@@ -215,7 +216,7 @@
 								?>
 								<label class="col-xs-3 control-label"><?=($t_label)?></label>
 								<div class="col-xs-9">
-									<input type="text" class="form-control" name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="40" value="<?=html_escape($bm_row[$t_col])?>">
+									<input type="text" class="form-control" name="<?=html_escape($t_col)?>" aria-label="<?=html_escape($t_label)?>" placeholder="<?=html_escape($t_label)?>" style="min-width:80px" maxlength="1000" value="<?=html_escape($bm_row[$t_col])?>">
 								</div>
 							</div>
 						</div>

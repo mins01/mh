@@ -32,21 +32,21 @@ class Bbs_master_model extends CI_Model {
 		}
 	}
 	
-	//페이지 값으로 limit와 offset 계산
-	public function get_limit_offset($page){
+	//페이지 값으로 limit와 offset 계산 (사용안함.)
+	public function get_offset($page,$limit=5){
 		if(!isset($page) || !is_numeric($page) || $page < 0){
 				$page = 1;
 		}
 		$page = (int)$page;
 		//$limit = $this->bm_row['bm_page_limit'];
-		$limit = 5;
+		//$limit = 5;
 		$offset = ($page-1)*$limit;
-		return array($limit,$offset);
+		return $offset;
 	}
 	
 	//-- 시작 번호 계산
-	public function get_start_num($cnt,$get){
-		list($limit,$offset) = $this->get_limit_offset($get['page']);
+	public function get_start_num($cnt,$get,$limit){
+		$offset = get_offset_by_page($get['page'],$limit);
 		return $cnt - $offset;
 	}
 	
@@ -74,14 +74,14 @@ class Bbs_master_model extends CI_Model {
 	}
 	
 	//목록용
-	public function select_for_list($get){
+	public function select_for_list($get,$limit=5,$offset=0){
 		if(!$this->_apply_list_where($get)){
 			return false;
 		}
 
 		$this->db->order_by('b_id');
 		
-		list($limit,$offset) = $this->get_limit_offset($get['page']);
+		//list($limit,$offset) = $this->get_limit_offset($get['page']);
 		$this->db->limit($limit,$offset);
 
 		$bm_rows = $this->db->get()->result_array();

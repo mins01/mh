@@ -64,6 +64,9 @@
 						<? if(($b_row['is_new'])): ?>
 							<span class="is_new label label-default" title="새글">new</span>
 						<? endif; ?>
+						<? if(($b_row['b_secret'])): ?>
+							<span class="b_secret label label-default" title="비밀">S</span>
+						<? endif; ?>
 						<? if(!empty($b_row['bf_cnt'])): ?>
 							<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
 						<? endif; ?>
@@ -92,6 +95,9 @@
 					<div class="plotting_label">
 						<? if(($b_row['is_new'])): ?>
 							<span class="is_new label label-default" title="새글">new</span>
+						<? endif; ?>
+						<? if(($b_row['b_secret'])): ?>
+							<span class="b_secret label label-default" title="비밀">S</span>
 						<? endif; ?>
 						<? if(!empty($b_row['bf_cnt'])): ?>
 							<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>

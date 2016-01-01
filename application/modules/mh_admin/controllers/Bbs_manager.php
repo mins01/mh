@@ -132,11 +132,14 @@ class Bbs_manager extends MX_Controller {
 		if(!isset($get['ct'])){ $get['ct'] = ''; }
 		$get['page']=$this->bbs_conf['page'];
 		
-		$bm_rows = $this->bm_m->select_for_list($get);
+		$limit = $this->limit;
+		$offset = get_offset_by_page($get['page'],$limit);
+		
+		$bm_rows = $this->bm_m->select_for_list($get,$limit,$offset);
 		//var_dump($bm_rows);
 		$this->extends_bm_rows($bm_rows,$get);
 		$count = $this->bm_m->count($get);
-		$start_num = $this->bm_m->get_start_num($count,$get);
+		$start_num = $this->bm_m->get_start_num($count,$get,$limit);
 		
 		$tmp = $this->input->get();
 		$tmp['page'] ='page';

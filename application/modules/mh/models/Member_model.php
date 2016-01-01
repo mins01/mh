@@ -34,7 +34,7 @@ class Member_model extends CI_Model {
 			->get()->row_array();
 	}
 	public function select_by_m_idx($m_idx){
-		$select = 'm_id,m_idx,m_insert_date,m_ip,m_isdel,m_level,m_login_date,m_name,m_nick,m_isout,m_update_date';
+		$select = 'm_id,m_idx,m_pass,m_insert_date,m_ip,m_isdel,m_level,m_login_date,m_email,m_name,m_nick,m_isout,m_update_date';
 		return $this->db->from($this->tbl_member)
 			->where('m_idx',$m_idx)
 			->where('m_isdel',0)
@@ -57,13 +57,23 @@ class Member_model extends CI_Model {
 			'm_id'=>$row['m_id'],
 			'm_pass'=>$this->hash($row['m_pass']),
 			'm_nick'=>$row['m_nick'],
+			'm_email'=>$row['m_email'],
 		);
-		$this->db->from($this->tbl_member)->set($set)->insert();
+		$this->db->from($this->tbl_member)->set($set)->set('m_insert_date','now()',false)->insert();
 		return $this->db->insert_id();
 	}
 	public function is_duplicate_m_nick($m_nick,$m_idx=null){
 		$this->db->from($this->tbl_member)
 			->where('m_nick',$m_nick);
+		if($m_idx){
+			$this->db->where('m_idx !=',(int)$m_idx);
+		}
+		
+		return !!$this->db->count_all_results();
+	}
+	public function is_duplicate_m_email($m_email,$m_idx=null){
+		$this->db->from($this->tbl_member)
+			->where('m_email',$m_email);
 		if($m_idx){
 			$this->db->where('m_idx !=',(int)$m_idx);
 		}

@@ -100,6 +100,18 @@ function cvt_text($text,$text_type){
 
 
 
+//페이지 값으로 offset 계산
+function get_offset_by_page($page,$limit=10){
+	if(!isset($page) || !is_numeric($page) || $page < 0){
+			$page = 1;
+	}
+	$page = (int)$page;
+	//$limit = $this->bm_row['bm_page_limit'];
+	//$limit = 5;
+	$offset = ($page-1)*$limit;
+	return $offset;
+}
+
 
 
 

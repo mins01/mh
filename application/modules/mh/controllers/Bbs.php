@@ -393,7 +393,7 @@ class Bbs extends MX_Controller {
 			'bm_row' => $this->bm_row,
 			'get'=>$get,
 			'bbs_conf'=>$this->bbs_conf,
-			'html_comment'=>$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url),true),
+			'html_comment'=>($this->bm_row['bm_use_comment']=='1')?$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url),true):'',
 			'permission'=>$permission,
 			'view_form_file'=>$view_form_file,
 		));
