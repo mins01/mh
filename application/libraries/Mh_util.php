@@ -17,7 +17,7 @@ class Mh_util{
 				return self::convertXSS(self::stringToPRE($text),$rTag,0);
 			break;
 			case 'r':	//realHTML
-				return $b_text;
+				return $text;
 			break;
 			case 't':	//Text
 			default:
