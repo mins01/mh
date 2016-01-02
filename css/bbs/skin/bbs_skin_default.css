@@ -130,3 +130,16 @@ margin-left:-1em;
 	width:auto;
 }
 
+/* inner tag limit max-width */
+.contents-area{
+	word-break:break-all;word-wrap:break-word;
+}
+.contents-area img,
+.contents-area iframe{max-width:100%;}
+
+/**
+* 반응형 (너무 작은 화면일 경우 제어용)
+*/
+@media (max-width: 768px) {
+	ul{padding-left:1em;}
+}
