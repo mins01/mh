@@ -201,6 +201,63 @@ class Member extends MX_Controller {
 		return;
 	}
 	
+	public function password(){
+		if(!$this->common->required_login()){
+			return false;
+		}
+		$this->config->set_item('layout_hide',false);
+		$this->config->set_item('layout_title','회원 비밀번호 수정');
+		
+		$ret_url = $this->input->post('ret_url');
+		if(!$ret_url){
+			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
+		}
+
+		$data = array(
+			'ret_url' => $ret_url,
+			'm_row' =>$this->common->get_login(),
+		);
+		
+		
+		$process = $this->input->post('process');
+		if($process=='password'){
+			$this->password_process();
+		}else{
+			if($this->required_password()){
+				$this->load->view('mh/member/modify_pass',$data);
+			}
+		}
+	}
+	
+	private function password_process(){
+		$m_idx = $this->common->get_login('m_idx');
+		if(!$m_idx){
+			$this->common->redirect('로그인 후 사용하실 수 있습니다.','');
+			return false;
+		}
+		$m_pass = $this->input->post('m_pass');
+		$m_pass_new = $this->input->post('m_pass_new');
+		$m_pass_new_re = $this->input->post('m_pass_new_re');
+		if($m_pass_new != $m_pass_new_re){
+			$this->common->redirect('사용하실 비밀번호를 다시 확인해주세요.','');
+			return;
+		}
+		$m_row = $this->member_m->select_by_m_idx($m_idx);
+		if($m_row['m_pass']!=$m_pass && $m_row['m_pass']!=$this->member_m->hash($m_pass)){
+			$this->common->redirect('현재 비밀번호를 다시 확인해주세요..','');
+			return;
+		}
+		$sets = array();
+		$sets['m_pass'] = $m_pass_new;
+		if(!$this->member_m->modify($m_idx,$sets)){
+			$this->common->redirect($this->member_m->msg,'');
+		}
+		$this->db->last_query();
+		$this->relogin($m_idx);
+		$this->common->redirect('정보를 수정하였습니다.','');
+		return;
+	}
+	
 	public function required_password(){
 		$data = array('error_msg'=>'');
 		$error = false;

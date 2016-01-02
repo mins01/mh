@@ -59,7 +59,10 @@ class Member_model extends CI_Model {
 			'm_nick'=>$row['m_nick'],
 			'm_email'=>$row['m_email'],
 		);
-		$this->db->from($this->tbl_member)->set($set)->set('m_insert_date','now()',false)->insert();
+		$this->db->from($this->tbl_member)->set($set)
+		->set('m_insert_date','now()',false)
+		->set('m_pass_update_date','now()',false)
+		->insert();
 		return $this->db->insert_id();
 	}
 	public function is_duplicate_m_nick($m_nick,$m_idx=null){
@@ -94,8 +97,11 @@ class Member_model extends CI_Model {
 			->where($where)
 			->where('m_isdel',0)
 			->set($sets)
-			->set('m_update_date','now()',false)
-			->update();
+			->set('m_update_date','now()',false);
+		if(isset($sets['m_pass'])){
+			$this->db->set('m_pass_update_date','now()',false);
+		}	
+		$this->db->update();
 			//print_r($sets);
 			//echo "// ",$this->db->last_query(),"\n";
 		return $this->db->affected_rows();
