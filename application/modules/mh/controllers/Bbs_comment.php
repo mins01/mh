@@ -71,6 +71,27 @@ class Bbs_comment extends MX_Controller {
 			$this->mode_error($b_id,$b_idx,'지원하지 않는 모드입니다.');
 		}
 	}
+	
+	private function get_permission_lists($m_idx=''){
+		
+		$is_mine = !empty($m_idx) && $m_idx == $this->common->get_login('m_idx');
+		$m_level = (int)$this->common->get_login('m_level');
+		$is_guest_b_row = !isset($m_idx[0]);
+		$is_admin = $this->bm_row['bm_lv_admin']<=$m_level;
+		
+		if(!isset($m_level)) $m_level = 0;
+		return array(
+			'list'=>$this->bm_row['bm_bc_lv_list']<=$m_level,
+			//'read'=>$this->bm_row['bm_bc_lv_read']<=$m_level,
+			'write'=>$this->bm_row['bm_bc_lv_write']<=$m_level,
+			'edit'=>$this->bm_row['bm_bc_lv_edit']<=$m_level &&($is_guest_b_row || $is_mine),
+			'answer'=>$this->bm_row['bm_bc_lv_answer']<=$m_level,
+			'delete'=>$this->bm_row['bm_bc_lv_delete']<=$m_level &&($is_guest_b_row || $is_mine),
+			'admin'=>$is_admin,
+			'mine'=>$is_mine,
+		);
+	}
+	
 	public function print_json($json){
 		$json['m_row'] = array(
 			'm_nick'=>$this->common->get_login('m_nick'),
@@ -87,13 +108,29 @@ class Bbs_comment extends MX_Controller {
 		$get['b_idx']=$b_idx;
 		return $this->bbs_c_m->select_for_list($get);
 	}
+	public function check_permission($mode){
+		$permission = $this->get_permission_lists($this->common->get_login('m_idx'));
+		if(!isset($permission[$mode]) || !$permission[$mode]){
+			$this->print_json(array('msg'=>$mode.' 권한이 없습니다.','permission'=>$permission));
+			return false;
+		}
+		return true;
+	}
 	public function mode_list($b_idx){
+		if(!$this->check_permission('list')){
+			return false;
+		}
+		$permission = $this->get_permission_lists($this->common->get_login('m_idx'));
+		unset($permission['admin']);
+		unset($permission['mine']);
+		
 		$page = $this->input->post_get('page','1');
 		$get = $this->input->get();
 		$get['page']=$page;
 		$get['b_idx']=$b_idx;
 		$json = array(
 			'bc_rows'=>$this->data_list($b_idx,$get),
+			'permission'=>$permission,
 		);
 		$this->db->last_query();
 		$this->print_json($json);
@@ -108,6 +145,11 @@ class Bbs_comment extends MX_Controller {
 		return;
 	}
 	public function mode_write($b_idx){
+		if(!$this->check_permission('write')){
+			return false;
+		}
+		
+		
 		$page = $this->input->post_get('page','1');
 		$post = $this->input->post();
 		$post['b_idx']=$b_idx;
@@ -125,6 +167,10 @@ class Bbs_comment extends MX_Controller {
 		return;
 	}
 	public function mode_edit($b_idx){
+		if(!$this->check_permission('edit')){
+			return false;
+		}
+		
 		$page = $this->input->post_get('page','1');
 		$post = $this->input->post();
 		$post['b_idx']=$b_idx;
@@ -144,6 +190,11 @@ class Bbs_comment extends MX_Controller {
 		return;
 	}
 	public function mode_delete($b_idx){
+		if(!$this->check_permission('delete')){
+			return false;
+		}
+		
+		
 		$page = $this->input->post_get('page','1');
 		$post = $this->input->post();
 		$post['b_idx']=$b_idx;
@@ -163,6 +214,10 @@ class Bbs_comment extends MX_Controller {
 		return;
 	}
 	public function mode_answer($b_idx){
+		if(!$this->check_permission('answer')){
+			return false;
+		}
+		
 		$page = $this->input->post_get('page','1');
 		$post = $this->input->post();
 		$post['b_idx']=$b_idx;

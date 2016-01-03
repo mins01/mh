@@ -106,7 +106,7 @@ class Bbs extends MX_Controller {
 	private function get_permission_lists($m_idx=''){
 		
 		$is_mine = !empty($m_idx) && $m_idx == $this->common->get_login('m_idx');
-		$m_level = $this->common->get_login('m_level');
+		$m_level = (int)$this->common->get_login('m_level');
 		$is_guest_b_row = !isset($m_idx[0]);
 		$is_admin = $this->bm_row['bm_lv_admin']<=$m_level;
 		

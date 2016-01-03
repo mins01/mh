@@ -330,7 +330,48 @@
 									<? 
 									endforeach;
 									?>
-									
+								</div>
+							</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+								<? 
+									$t_label='코멘트(댓글) 권한';
+									//$t_col = 'bm_lv_list';
+								?>
+								<label class="col-sm-2 control-label"><?=($t_label)?></label>
+								
+								
+								<div class="col-sm-10">
+									<? 
+									$t_labels = array(
+									'list 레벨',
+									'write 레벨',
+									'edit 레벨',
+									'delete 레벨',
+									'answer 레벨',
+									);
+									$t_cols = array(
+									'bm_bc_lv_list',
+									'bm_bc_lv_write',
+									'bm_bc_lv_edit',
+									'bm_bc_lv_delete',
+									'bm_bc_lv_answer',
+									)
+									?>
+									<? 
+									foreach($t_labels as $k=>$t_label): 
+										$t_col = $t_cols[$k];
+									?>
+									<div class="col-sm-4">
+										<label class="col-xs-6 control-label"><?=($t_label)?></label>
+										<div class="col-xs-6">
+											<?=form_dropdown($t_col, $levels, $bm_row[$t_col], ' class="selectpicker show-tick" style="width:4em" data-width="120px" aria-label="'.$t_label.'" title="'.$t_label.'"  data-header="'.$t_label.'"')?>
+										</div>
+									</div>
+									<? 
+									endforeach;
+									?>
 								</div>
 							</div>
 					</div>

@@ -1,4 +1,4 @@
-function ng_bbs_comment(ngApp,ngController){
+ï»¿function ng_bbs_comment(ngApp,ngController){
 	
 	var bbsComment = angular.module(ngApp, ['ngSanitize']);
 	bbsComment.filter('nl2br', ['$sanitize', function($sanitize) {
@@ -38,28 +38,37 @@ function ng_bbs_comment(ngApp,ngController){
 			$scope.initData();
 		}
 
-		$scope.comment_url = '';//Åë½ÅURL
-		$scope.bc_rows = [{"bc_idx":"-","b_idx":"-","m_idx":"-","bc_name":"","bc_comment":"-","bc_insert_date":"",}]; //Model, Ä¿¸àÆ® ¹è¿­
+		$scope.comment_url = '';//í†µì‹ URL
+		$scope.bc_rows = [{"bc_idx":"-","b_idx":"-","m_idx":"-","bc_name":"","bc_comment":"-","bc_insert_date":"",}]; //Model, ì»¤ë©˜íŠ¸ ë°°ì—´
+		
+		$scope.msg = '';
+		$scope.permission = {list: true, write: false, edit: true, answer: true, "delete": true, };
 		$scope.x = function(){
 			return 'xxx';
 		}
 		
 		
-		//Åë½Å °á°úÃ³¸®:¼º°ø
+		//í†µì‹  ê²°ê³¼ì²˜ë¦¬:ì„±ê³µ
 		$scope.callback_success = function(data, status, headers, config){
 			$scope.bc_rows = data.bc_rows;
 			$scope.m_row = data.m_row;
+			if(data.msg != undefined){
+				$scope.msg = data.msg;
+			}
+			if(data.permission != undefined){
+				$scope.permission = data.permission;
+			}
 			if(data.bc_idx){
 				//setTimeout(function(){ document.location.assign("#cmt_"+data.bc_idx);} , 500);
 				//setTimeout(function(){ angular.element("#cmt_"+data.bc_idx).focus();} , 500);
 			}
 		}
-		//Åë½Å °á°úÃ³¸®:½ÇÆĞ
+		//í†µì‹  ê²°ê³¼ì²˜ë¦¬:ì‹¤íŒ¨
 		$scope.callback_error = function(data, status, headers, config){
 			$scope.bc_rows =[];
 			$scope.m_row = [];
 		}
-		//µ¥ÀÌÅÍÃÊ±âÃ³¸®
+		//ë°ì´í„°ì´ˆê¸°ì²˜ë¦¬
 		$scope.initData = function(){
 			$http({
 				method: 'GET',
@@ -93,21 +102,24 @@ function ng_bbs_comment(ngApp,ngController){
 			$scope.call_ajax(this.form);
 		}
 		$scope.mode_delete= function($index){
+			
 			var d = angular.copy(this.form)
 			d.mode='delete';
 			if(!this.bc_rows[$index]){
 				return false;
 			}
 			d.bc_idx = this.bc_rows[$index].bc_idx;
-			if(!confirm('»èÁ¦ÇÏ½Ã°Ú½À´Ï±î?')){
+			
+			if(!confirm('ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?')){
 				return false;
 			}
+			$scope.set_mode('write','write'); //ê¸€ ì“°ê¸° í¼ì„ ì˜®ê²¨ë‘¬ì•¼í•œë‹¤.
 			
 			$scope.call_ajax(d);
 		}
 		$scope.set_mode=function(mode,$index,nofocus){
 			this.form.mode = mode;
-			if(this.bc_rows[$index]){
+			if(mode!='write' && this.bc_rows[$index]){
 				var bc_idx = this.bc_rows[$index].bc_idx;
 				var id = '#bc_idx_'+bc_idx;
 				if(mode =='answer'){

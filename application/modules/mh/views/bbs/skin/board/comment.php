@@ -14,9 +14,9 @@
 						<span class="nick bc_nick" ng-bind="bc_row.bc_name"></span> 
 						/ <span class="date bc_insert_date" ng-bind="bc_row.bc_insert_date|print_date"></span>
 						<div class="pull-right"  ng-if="m_row.m_idx>0">
-							<button ng-click="set_mode('answer',$index);" type="button" class="btn btn-xs btn-success">답변</button>
-							<button ng-show="m_row.m_idx == bc_row.m_idx" ng-click="set_mode('edit',$index);" type="button" class="btn btn-xs btn-warning">수정</button>
-							<button ng-show="m_row.m_idx == bc_row.m_idx" ng-click="mode_delete($index);" type="button" class="btn btn-xs btn-danger">삭제</button>
+							<button ng-click="set_mode('answer',$index);" ng-show="permission.answer" type="button" class="btn btn-xs btn-success">답변</button>
+							<button ng-show="m_row.m_idx == bc_row.m_idx && permission.edit" ng-click="set_mode('edit',$index);" type="button" class="btn btn-xs btn-warning">수정</button>
+							<button ng-show="m_row.m_idx == bc_row.m_idx && permission.delete" ng-click="mode_delete($index);" type="button" class="btn btn-xs btn-danger">삭제</button>
 						</div>
 						<div class="clearfix"></div>
 					</dt>
@@ -49,7 +49,7 @@
 					<div class="form-group">
 						<textarea 
 						ng-maxlength="60000"
-						ng-disabled="form.mode=='delete'" 
+						ng-disabled="form.mode=='delete' || !permission[form.mode]" 
 						ng-model="form.bc_comment"
 						ng-trim="true"
 						name="bc_comment"  class="form-control" rows="3" placeholder="댓글내용" required></textarea>
@@ -58,6 +58,7 @@
 						</div>
 					</div>
 					<div class="form-group text-right">
+						<span ng-show="msg.length&gt;0" ng-bind="msg">-</span>
 						<button ng-disabled="!wform.$valid" type="submit" class="btn btn-warning">확인</button>
 					</div>
 					</dd>

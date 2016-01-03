@@ -144,11 +144,11 @@ class Bbs_master_model extends CI_Model {
 			'bm_lv_down'=>'',
 			'bm_lv_admin'=>'',
 			'bm_use_comment'=>'',
-			'bm_lv_rlist'=>'',
-			'bm_lv_rwrite'=>'',
-			'bm_lv_redit'=>'',
-			'bm_lv_rdelete'=>'',
-			'bm_lv_ranswer'=>'',
+			'bm_bc_lv_list'=>'',
+			'bm_bc_lv_write'=>'',
+			'bm_bc_lv_edit'=>'',
+			'bm_bc_lv_delete'=>'',
+			'bm_bc_lv_answer'=>'',
 		);
 		return $bm_row;
 	}
