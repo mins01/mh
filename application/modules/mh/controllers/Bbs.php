@@ -118,6 +118,7 @@ class Bbs extends MX_Controller {
 			'edit'=>$this->bm_row['bm_lv_edit']<=$m_level &&($is_guest_b_row || $is_mine),
 			'set_represent'=>$this->bm_row['bm_lv_edit']<=$m_level &&($is_guest_b_row || $is_mine),
 			'answer'=>$this->bm_row['bm_lv_answer']<=$m_level,
+			'down'=>$this->bm_row['bm_lv_down']<=$m_level,
 			'delete'=>$this->bm_row['bm_lv_delete']<=$m_level &&($is_guest_b_row || $is_mine),
 			'admin'=>$is_admin,
 			'mine'=>$is_mine,
@@ -415,6 +416,9 @@ class Bbs extends MX_Controller {
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission['read']){
 			show_error('권한이 없습니다.');
+		}
+		if(!$permission['down']){
+			show_error('내려받기 권한이 없습니다.');
 		}
 		if($b_row['b_secret']=='1' && !$permission['mine']){
 			$b_pass = $this->input->post('b_pass');

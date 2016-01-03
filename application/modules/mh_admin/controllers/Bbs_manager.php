@@ -322,6 +322,7 @@ class Bbs_manager extends MX_Controller {
 		'skins' => $this->bm_m->lists_of_skins(),
 		'tables'=>$this->bm_m->lists_of_tables(),
 		'list_types'=>$this->bbs_conf['list_types'],
+		'levels'=>$this->bbs_conf['levels'],
 		));
 	}
 
