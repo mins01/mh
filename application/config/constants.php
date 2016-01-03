@@ -107,7 +107,7 @@ if(IS_DEV){
 
 define('LOGIN_TYPE','cookie');
 define('LOGIN_EXPIRE',60*60*24*365);
-define('LOGIN_DOAMIN',$_SERVER['HTTP_HOST']);
+define('LOGIN_DOAMIN','.mins01.com');
 define('LOGIN_PATH',substr(SITE_URI_PREFIX,0,-1));
 define('LOGIN_PREFIX','');
 define('LOGIN_SECURE',false);
@@ -115,7 +115,7 @@ define('LOGIN_SECURE',false);
 define('ADMIN_LOGIN_NAME',md5('SESS_MH_ADMIN'));
 define('ADMIN_LOGIN_TYPE','cookie');
 define('ADMIN_LOGIN_EXPIRE',60*60*24*365);
-define('ADMIN_LOGIN_DOAMIN',$_SERVER['HTTP_HOST']);
+define('ADMIN_LOGIN_DOAMIN','.mins01.com');
 define('ADMIN_LOGIN_PATH',substr(ADMIN_URI_PREFIX,0,-1));
 define('ADMIN_LOGIN_PREFIX','');
 define('ADMIN_LOGIN_SECURE',false);
