@@ -208,18 +208,26 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 	}
 	//트리모양으로 만든다.
 	$scope.set_mn_rows =function(mn_rows){
-		$scope.mn_rows = mn_rows;
+		$scope.mn_rows = {}
+		//$scope.mn_rows = mn_rows;
 		$scope.mn_tree = [];
+		for(var i=0,m=mn_rows.length;i<m;i++){
+			$scope.mn_rows['mn-'+mn_rows[i]['mn_id']] = mn_rows[i];
+		}
+		console.log($scope.mn_rows);
+		
 		for(var x in $scope.mn_rows){
 			var mn_row = $scope.mn_rows[x];
+			//console.log(x,mn_row['mn_parent_id'],mn_row['mn_text']);
 			if(mn_row['mn_parent_id'] == mn_row['mn_id']){
 				$scope.mn_tree.push(mn_row);
 				mn_row['mn_parent_id'].child = [];
-			}else if($scope.mn_rows[mn_row['mn_parent_id']]){
-				if(!$scope.mn_rows[mn_row['mn_parent_id']].child){
-					$scope.mn_rows[mn_row['mn_parent_id']].child = [];
+			}else if($scope.mn_rows['mn-'+mn_row['mn_parent_id']]){
+				if(!$scope.mn_rows['mn-'+mn_row['mn_parent_id']].child){
+					$scope.mn_rows['mn-'+mn_row['mn_parent_id']].child = [];
 				}
-				$scope.mn_rows[mn_row['mn_parent_id']].child.push(mn_row);
+				$scope.mn_rows['mn-'+mn_row['mn_parent_id']].child.push(mn_row);
+				
 			}
 		}
 		$scope.mn_parent_id_lists = {};

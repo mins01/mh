@@ -135,7 +135,7 @@ class Menu_model extends CI_Model {
 		}
 		$this->extends_menu_rows($rows);
 		// echo $this->db->last_query();
-		return $rows;
+		return array_values($rows);
 	}
 	
 	public function insert($sets){
