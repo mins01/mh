@@ -360,7 +360,12 @@ class Bbs_model extends CI_Model {
 	}
 	//-- 글 삭제
 	public function delete_b_row($b_idx){
-		return $this->update_b_row($b_idx,array('b_isdel'=>1));
+		$this->db->from($this->tbl)
+		->set('b_isdel',1)
+		->where('b_idx',$b_idx)
+		->where('b_isdel',0)
+		->set('b_update_date','now()',false)->update();
+		return $this->db->affected_rows();
 	}
 	public function delete_b_row_as_where($where){
 		return $this->update_b_row_as_where($where,array('b_isdel'=>1));
