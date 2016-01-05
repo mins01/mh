@@ -46,12 +46,25 @@ function(){
 $(
 	function(){
 		$('.input-daterange').datepicker({
-			"format":"yyyy-mm-dd",
-			language: "kr",
-			autoclose: true,
-			todayHighlight: true,
-			todayBtn: "linked",
-			});
+			format: "yyyy-mm-dd",
+    language: "kr"
+			//autoclose: true,
+			//todayHighlight: true,
+			//todayBtn: "linked",
+		});
+
+		// $('.input-daterange').datepicker({
+		// });
+			
+		// $('.input-daterange input').each(function() {
+			// $(this).datepicker({
+				// "format":"yyyy-mm-dd",
+				// language: "kr",
+				// autoclose: true,
+				// todayHighlight: true,
+				// todayBtn: "linked",
+			// });
+		//});
 		return;
 		// var checkin = $('.b_etc_0_datepicker').datepicker(
 			// {
