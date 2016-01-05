@@ -109,7 +109,7 @@
 					</div>
 				
 				</td>
-				<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
+				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
 				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
 				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
 
