@@ -35,12 +35,10 @@ if($mode=='write'||$mode=='answer'){
 				</div>
 				<? endif; ?>
 			</li>
-			<input type="text" class="form-control date_picker"  name="b_etc_0" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="min-width:4em" value="<?=html_escape($b_row['b_etc_0'])?>">
-			
 			<li class="list-group-item form-inline">
 				<div class="input-group input-daterange">
 					<input type="text" class="form-control"  name="b_etc_0" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="min-width:4em" value="<?=html_escape($b_row['b_etc_0'])?>">
-					<span class="input-group-addon">-</span>
+					<div class="input-group-addon">-</div>
 					<input type="text" class="form-control"  name="b_etc_1" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="min-width:4em" value="<?=html_escape($b_row['b_etc_1'])?>">
 				</div>
 				<div class="input-group">

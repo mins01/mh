@@ -47,57 +47,12 @@ $(
 	function(){
 		$('.input-daterange').datepicker({
 			format: "yyyy-mm-dd",
-    language: "kr"
-			//autoclose: true,
-			//todayHighlight: true,
-			//todayBtn: "linked",
+			language: "kr",
+			autoclose: true,
+			todayHighlight: true,
+			todayBtn: "linked",
 		});
-
-		// $('.input-daterange').datepicker({
-		// });
-			
-		// $('.input-daterange input').each(function() {
-			// $(this).datepicker({
-				// "format":"yyyy-mm-dd",
-				// language: "kr",
-				// autoclose: true,
-				// todayHighlight: true,
-				// todayBtn: "linked",
-			// });
-		//});
 		return;
-		// var checkin = $('.b_etc_0_datepicker').datepicker(
-			// {
-				// "format":"yyyy-mm-dd",
-				// language: "kr",
-				// autoclose: true,
-				// todayHighlight: true,
-				// todayBtn: "linked",
-			// }
-		// ).on('changeDate', function(ev) {
-			// var checkout_date = checkout.getDate();
-			// if(!checkout_date){
-				// checkout.datesDisabled()
-				// checkout.setDate(ev.date)
-			// }
-			// $('.b_etc_1_datepicker').focus();
-		// }).data('datepicker');
-		// var checkout = $('.b_etc_1_datepicker').datepicker(
-			// {
-				// "format":"yyyy-mm-dd",
-				// language: "kr",
-				// autoclose: true,
-				// todayHighlight: true,
-				// todayBtn: "linked",
-				// onRender: function(date) {
-					// var checkout_date = checkout.getDate();
-					// if(!checkout_date){
-						// return '';
-					// }
-					// return date.valueOf() <= checkout_date.valueOf() ? 'disabled' : '';
-				// }
-			// }
-		// ).data('datepicker');
 	}
 );
 </script>
