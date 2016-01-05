@@ -65,13 +65,17 @@
 					<li <?=$class?>><a href="<?=html_escape($mr['url'])?>" <?=$mr['mn_attr']?>><?=html_escape($mr['mn_text'])?></a></li>
 					<? endforeach; ?>
 				</ul>
-				<ul class="nav navbar-nav pull-right">
+				<div class="navbar-right">
 					<? if(!$logedin):?>
-					<li class="text-right"><button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'join'?>','_self')">회원가입</button> <button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'search_id'?>','_self')">아이디/비밀번호 찾기</button> <button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'login'?>','_self')">로그인</button></li>
+					<p class="navbar-text text-right ">
+					<button class="btn btn-success btn-xs" onclick="window.open('<?=base_url().'join'?>','_self')">회원가입</button> 
+					<button class="btn btn-warning btn-xs" onclick="window.open('<?=base_url().'search_id'?>','_self')">아이디/비밀번호 찾기</button> 
+					<button class="btn btn-primary btn-xs" onclick="window.open('<?=base_url().'login'?>','_self')">로그인</button>
+					</p>
 					<? else: ?>
-					<li><span class="navbar-text"> <a href="<?=base_url().'user_info'?>"><span class="glyphicon glyphicon-user"></span><?=html_escape($login_label)?></a>님</span> <button class="btn btn-default navbar-btn" onclick="window.open('<?=base_url().'logout'?>','_self')">로그아웃</button></li>
+					<p class="navbar-text text-right "><a href="<?=base_url().'user_info'?>"><span class="glyphicon glyphicon-user"></span><?=html_escape($login_label)?></a>님 <button class="btn btn-info btn-xs" onclick="window.open('<?=base_url().'logout'?>','_self')">로그아웃</button></p> 
 					<? endif;?>
-				</ul>
+				</>
 			</div><!--/.nav-collapse -->
 		</div>
 	</nav>
