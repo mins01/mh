@@ -36,11 +36,6 @@ if($mode=='write'||$mode=='answer'){
 				<? endif; ?>
 			</li>
 			<li class="list-group-item form-inline">
-				<div class="input-group input-daterange">
-					<input type="text" class="form-control"  name="b_etc_0" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="min-width:4em" value="<?=html_escape($b_row['b_etc_0'])?>">
-					<div class="input-group-addon">-</div>
-					<input type="text" class="form-control"  name="b_etc_1" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="min-width:4em" value="<?=html_escape($b_row['b_etc_1'])?>">
-				</div>
 				<div class="input-group">
 					<div class="input-group-addon">링크</div>
 					<input type="text" class="form-control"  name="b_link" aria-label="링크" placeholder="http://mins01.com/mh/" style="min-width:80px" value="<?=html_escape($b_row['b_link'])?>">
@@ -66,6 +61,26 @@ if($mode=='write'||$mode=='answer'){
 				?>
 
 			</li>
+			<li class="list-group-item form-inline">
+				<div class="input-group input-daterange">
+					<input type="text" class="form-control"  name="b_etc_0" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="min-width:4em" value="<?=html_escape($b_row['b_etc_0'])?>">
+					<div class="input-group-addon">-</div>
+					<input type="text" class="form-control"  name="b_etc_1" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="min-width:4em" value="<?=html_escape($b_row['b_etc_1'])?>">
+				</div>
+				<div class="input-group">
+					<div class="input-group-addon">주소</div>
+					<input type="text" class="form-control"  name="b_etc_3" aria-label="링크" placeholder="주소" style="min-width:80px" value="<?=html_escape($b_row['b_etc_3'])?>">
+					<div class="input-group-btn">
+					<button type="button" class="btn btn-success" onclick="showMapByAddress(this.form.b_etc_3.value,this.form.b_etc_4.value)">장소확인</button>
+					</div>
+					
+				</div>
+				<div class="input-group">
+					<div class="input-group-addon">좌표</div>
+					<input type="text" class="form-control" readonly name="b_etc_4" aria-label="링크" placeholder="좌표" style="min-width:80px" value="<?=html_escape($b_row['b_etc_4'])?>">
+				</div>
+
+			</li>
 			
 			<? if(isset($view_form_file[0])): ?>
 			<li class="list-group-item form-inline bbs-mode-read-file">
@@ -87,6 +102,20 @@ if($mode=='write'||$mode=='answer'){
 
 
 
+<script type="text/javascript">
+//<![CDATA[
+function callbackMaps(obj,popWindow){
+//var obj = {
+//		'lat':LatLng.lat()
+//		,'lng':LatLng.lng()
+//		,'address':document.form_search.address.value
+//		}
+document.form_bbs.b_etc_3.value=obj.address;
+document.form_bbs.b_etc_4.value=obj.lat+','+obj.lng
+popWindow.close();
+}
+//]]>
+</script>
 
 
 

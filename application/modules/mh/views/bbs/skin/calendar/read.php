@@ -45,9 +45,27 @@ if($d_day==0){
 				<span class="input-group-addon" >작성자</span>
 				<span class="form-control" ><?=html_escape($b_row['b_name'])?></span>
 			</div>
+			
+			<p class="pull-right form-control-static">
+				<? if(isset($b_row['b_link'][0])): ?>
+					<a class="label label-info glyphicon glyphicon-link" href="<?=html_escape($b_row['b_link'])?>" target="_blank">링크</a>
+				<? endif; ?>
+				<? if(isset($b_row['b_category'][0])): ?>
+					<span class="label label-primary">카테고리:<?=html_escape($b_row['b_category'])?></span>
+				<? endif; ?>
+				<? if($b_row['b_secret']=='1'): ?>
+					<span class="label label-danger">비밀글</span>
+				<? endif; ?>
+				<? if($b_row['b_notice']>0): ?>
+					<span class="label label-danger">공지글</span>
+				<? endif; ?>
+				<span class="label label-info ">작성 : <?=html_escape(date('m-d H:i',strtotime($b_row['b_insert_date'])))?></span>
+				<span class="label label-info ">조회 : <?=html_escape(isset($b_row['bh_cnt'][0])?$b_row['bh_cnt']:'0')?></span>
+			</p>
+			<span class="clearfix"></span>
 		</li>
 		<li class="list-group-item form-inline">
-			<div class="input-group input-daterange">
+			<div class="input-group ">
 				<span class="input-group-addon"><?=$d_day_label?></span>
 				<span class="form-control"><?=$period?>일간</span>
 			</div>
@@ -56,24 +74,37 @@ if($d_day==0){
 				<span class="input-group-addon">-</span>
 				<span class="form-control" ><?=html_escape($b_row['b_etc_1'])?></span>
 			</div>
+			<? if(isset($b_row['b_etc_3'][0])): ?>
+			<div class="input-group ">
+				<span class="input-group-addon">주소</span>
+				<span class="form-control"><?=html_escape($b_row['b_etc_3'])?></span>
+				<div class="input-group-btn">
+					<button type="button" class="btn btn-success" onclick="showMapByAddress('<?=html_escape($b_row['b_etc_3'])?>','<?=html_escape($b_row['b_etc_4'])?>')">장소확인</button>
+				</div>
+			</div>
 			
-			<? if(isset($b_row['b_link'][0])): ?>
-				<a class="label label-info glyphicon glyphicon-link" href="<?=html_escape($b_row['b_link'])?>" target="_blank">링크</a>
+			<? if(strpos($b_row['b_etc_4'],',')!==false):
+				list($lat,$lng) = explode(',',$b_row['b_etc_4']);
+				$lat = rawurlencode($lat);
+				$lng = rawurlencode($lng);
+				$v_query = rawurlencode(base64_encode($b_row['b_etc_3']));
+				$url="http://map.naver.com/?menu=location&mapMode=0&lat={$lat}&lng={$lng}&dlevel=10&query={$v_query}&tab=1&enc=b64";
+			?>
+			<div class="btn-group ">
+			
+				
+					<a href="<?=html_escape($url)?>" target="_blank" type="button" class="btn btn-success">네이버맵</a>
+				
+				
+			</div>
 			<? endif; ?>
-			<? if(isset($b_row['b_category'][0])): ?>
-				<span class="label label-primary">카테고리:<?=html_escape($b_row['b_category'])?></span>
 			<? endif; ?>
-			<? if($b_row['b_secret']=='1'): ?>
-				<span class="label label-danger">비밀글</span>
-			<? endif; ?>
-			<? if($b_row['b_notice']>0): ?>
-				<span class="label label-danger">공지글</span>
-			<? endif; ?>
-			<span class="pull-right">
-				<span class="label label-info ">작성 : <?=html_escape(date('m-d H:i',strtotime($b_row['b_insert_date'])))?></span>
-				<span class="label label-info ">조회 : <?=html_escape(isset($b_row['bh_cnt'][0])?$b_row['bh_cnt']:'0')?></span>
-			</span>
-			<span class="clearfix"></span>
+				
+			<div class="input-group hide">
+				<span class="input-group-addon">좌표</span>
+				<span class="form-control"><?=html_escape($b_row['b_etc_4'])?></span>
+			</div>
+			
 		</li>
 		<? if(isset($view_form_file[0])): ?>
 		<li class="list-group-item form-inline bbs-mode-read-file">

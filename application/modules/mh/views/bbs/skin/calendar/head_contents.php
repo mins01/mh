@@ -57,3 +57,17 @@ $(
 );
 </script>
 <? endif; ?>
+<script>
+/**
+* 스킨 전용 기능
+*/
+//--- 장소 확인 구글맵 띄우기
+function showMapByAddress(address,latLng){
+	if(!address || address.length<1){
+		alert('확인할 주소가 너무 짧습니다.');
+		return false;
+	}
+	var url = "/web_work/google_apis/maps/maps.php?address="+encodeURIComponent(address)+'&latLng='+latLng;
+	window.open(url,'pop_showMapByAddress',"width=800,height=600");
+}
+</script>
