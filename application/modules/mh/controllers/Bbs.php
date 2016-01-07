@@ -228,6 +228,7 @@ class Bbs extends MX_Controller {
 				);
 		$b_rows = $this->bbs_m->select_for_calendar($v_get);
 		$b_rowss = $this->bbs_m->exnteds_b_rows_for_calendar($b_rows,$date_st,$date_ed);
+		echo $this->db->last_query();
 		
 		$this->extends_b_rows($b_rows,$get);
 		$b_n_rows = $this->bbs_m->select_for_notice_list($get);

@@ -109,10 +109,39 @@ class Bbs_model extends CI_Model {
 		$this->db->where('b_isdel','0');
 		
 		//-- 검색어
-		if(isset($get['q'][0])){
+		
+		if(isset($get['q'][0]) && strlen(trim($get['q']))>0){
+			$get['q'] = trim($get['q']);
+			$v_q = preg_split('/\s+/',$get['q']);
 			switch($get['tq']){
-				case 'title':$this->db->like('b_title',$get['q'], 'both');break;
-				case 'text':$this->db->like('b_title',$get['q'], 'both');break;
+				case 'title':
+					$this->db->group_start();
+					foreach($v_q as $v){
+						$this->db->like('b_title',$v, 'both');
+					}
+					$this->db->group_end();
+				break;
+				case 'text':
+					$this->db->group_start();
+					foreach($v_q as $v){
+						$this->db->like('b_text',$v, 'both');
+					}
+					$this->db->group_end();
+				break;
+				case 'title_or_text':
+					$this->db->group_start();
+						$this->db->or_group_start();
+						foreach($v_q as $v){
+							$this->db->like('b_title',$v, 'both');
+						}
+						$this->db->group_end();
+						$this->db->or_group_start();
+						foreach($v_q as $v){
+							$this->db->like('b_text',$v, 'both');
+						}
+						$this->db->group_end();
+					$this->db->group_end();
+				break;
 			}
 		}
 		//-- 카테고리
