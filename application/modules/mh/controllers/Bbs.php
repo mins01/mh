@@ -223,18 +223,28 @@ class Bbs extends MX_Controller {
 		$dt = $get['dt'];
 		//$get['page']=$this->bbs_conf['page'];
 		list($date_st,$date_ed,$time_st,$time_ed) = $this->get_time_st_ed_by_date($get['dt']);
-
-		$b_rows = $this->bbs_m->select_for_calendar(
-			array_merge(
+		$v_get = array_merge(
 				$get,array('date_st'=>$date_st,'date_ed'=>$date_ed)
-				)
-		);
+				);
+		$b_rows = $this->bbs_m->select_for_calendar($v_get);
 		$b_rowss = $this->bbs_m->exnteds_b_rows_for_calendar($b_rows,$date_st,$date_ed);
 		
 		$this->extends_b_rows($b_rows,$get);
 		$b_n_rows = $this->bbs_m->select_for_notice_list($get);
 		$this->extends_b_rows($b_n_rows,$get);
-		$count = $this->bbs_m->count($get);
+		$count = $this->bbs_m->count_for_calendar($v_get);
+		
+		$v_t = strtotime($dt);
+		$v_Y = date('Y',$v_t);
+		$v_m = date('m',$v_t);
+		$v_get2 = array_merge(
+					$get,array(
+					'date_st'=>date('Y-m-01',mktime(0,0,0,$v_m-6,1,$v_Y)),
+					'date_ed'=>date('Y-m-d',mktime(-1,0,0,$v_m+7,1,$v_Y)),
+					)
+				);
+				
+		$count_rowss = $this->bbs_m->count_per_month_for_calendar($v_get2);
 		//$start_num = $this->bbs_m->get_start_num($count,$get);
 		
 		$tmp = $this->input->get();
@@ -243,7 +253,8 @@ class Bbs extends MX_Controller {
 		$pagination_dt = $this->load->view($this->skin_path.'/pagination_dt',array(
 		'dt' =>$get['dt'],
 		'get'=>$get,
-		'def_url'=>$def_url
+		'def_url'=>$def_url,
+		'count_rowss'=>$count_rowss,
 		),true);
 		if(!$with_read){
 			$this->config->set_item('layout_head_contents',$this->get_head_contents('list'));
@@ -268,6 +279,7 @@ class Bbs extends MX_Controller {
 		'time_st'=>$time_st,
 		'time_ed'=>$time_ed,
 		'base_url'=>$this->base_url,
+		
 		));
 	}
 	public function mode_list_for_default($b_idx=null,$with_read=false){

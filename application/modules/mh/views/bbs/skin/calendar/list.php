@@ -6,7 +6,6 @@
 //$b_rowss
 //$b_rowss['maxlength']
 //print_r($b_rowss);
-
 $v_time_st = $time_st;
 $v_date_st = $date_st;
 $v_time_ed = $time_ed;
@@ -15,8 +14,9 @@ $v_date_ed = $date_ed;
 $today_date = date('Y-m-d');
 
 ?>
+<!--
 <?=$v_date_st?> ~ <?=$v_date_ed?>
-
+-->
 <div class="panel panel-default bbs-mode-list">
 
 	<!-- Default panel contents -->
@@ -64,8 +64,10 @@ $today_date = date('Y-m-d');
 				<tr>
 					<td class="day-hide day-w-hide"></td>
 					<?
+					
 					$tmp_get = $get;
 					for($i=0,$m=7;$i<$m;$i++):
+						
 						$c_date = date('Y-m-d',$c_time);
 						$c_m = date('m',$c_time);
 						$c_date_label = date('n.j',$c_time);

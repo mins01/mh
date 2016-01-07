@@ -255,6 +255,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 	box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.4);
 	text-shadow:rgba(0, 0, 0, 0.2) 0px -1px 0px;
 }
+.Ym > .plotting_label > .Ym-label-cnt{
+	top:-1em;
+	font-weight: normal;
+	font-size: 0.5em;
+	box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.4);
+	text-shadow:rgba(0, 0, 0, 0.2) 0px -1px 0px;
+	opacity:0.6;
+	background-color:#993333;
+}
 .Ym > .Ym-label-m{
 	line-height: 1em;
 	font-size: 1.4em;

@@ -54,7 +54,7 @@ class Bbs_model extends CI_Model {
 		$post['b_ip'] = $this->input->server('REMOTE_ADDR');
 	}
 	//-- bm_row에 따른 값에 따라서 목록 쿼리 부분을 변경시킨다.
-	public function _apply_list_bm_row($bm_row,$select=''){
+	public function _apply_list_bm_row($bm_row,$select='',$no_bh_hit_cnt=false){
 		// select 부분 설정.
 		if(!isset($select[0])){
 			$select = 'b.b_idx,b_id,b_gidx,b_gpos,b_pidx,b_insert_date,b_update_date,b_isdel
@@ -87,7 +87,9 @@ class Bbs_model extends CI_Model {
 			$select.=',bf.bf_idx,bf.bf_name,bf.bf_save,bf.bf_size,bf.bf_type,bf.bf_represent';
 		}
 		// 조회수
-		$select.=",(select IFNULL(SUM(bh_hit_cnt),0) from ".$this->tblname('hit','bh')." where bh.bh_parent_idx=b.b_idx and bh.bh_parent_table='data') as bh_cnt";
+		if(!$no_bh_hit_cnt){
+			$select.=",(select IFNULL(SUM(bh_hit_cnt),0) from ".$this->tblname('hit','bh')." where bh.bh_parent_idx=b.b_idx and bh.bh_parent_table='data') as bh_cnt";
+		}
 		
 		//-- 마지막 처리
 		$this->db->select($select);
@@ -153,6 +155,38 @@ class Bbs_model extends CI_Model {
 		return $b_rows;
 	}
 	
+	//-- 목록 갯수
+	public function count_for_calendar($get){
+		if(!$this->_apply_list_where($get)){
+			return false;
+		}
+		if(!isset($get['date_ed']) || !isset($get['date_st'])){
+			return false;
+		}
+		$this->_apply_list_bm_row($this->bm_row);
+		$this->db->where('b_etc_0 <=',$get['date_ed'])->where('b_etc_1 >=',$get['date_st']);
+		return $this->db->count_all_results();
+	}
+	//-- 목록 갯수
+	public function count_per_month_for_calendar($get){
+
+		if(!$this->_apply_list_where($get)){
+			return false;
+		}
+		if(!isset($get['date_ed']) || !isset($get['date_st'])){
+			return false;
+		}
+		$this->_apply_list_bm_row($this->bm_row,'substr(b_etc_0,1,7) as yyyymm,count(*) as cnt',true);
+		$this->db->where('b_etc_0 <=',$get['date_ed'])
+		->where('b_etc_1 >=',$get['date_st'])
+		->group_by('substr(b_etc_0,1,7)');
+		$rows = $this->db->get()->result_array();
+		$rowss = array();
+		foreach($rows as $r){
+			$rowss[$r['yyyymm']] = $r['cnt'];
+		}
+		return $rowss;
+	}
 	//달력 목록용
 	public function select_for_calendar($get){
 		if(!$this->_apply_list_where($get)){
