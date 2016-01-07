@@ -71,3 +71,16 @@ padding-left:5px; padding-right:5px;
 }
 
 .input-group{margin-bottom:1px;margin-top:1px;}
+
+@media (max-width: 768px) {
+	.navbar-collapse{
+		margin-right: 0px !important;
+		margin-left: 0px !important;
+		left: 0;
+		right: 0;
+		position:absolute;
+		z-index:1030;
+		background-color:#fff;
+		box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.4);
+	}
+}

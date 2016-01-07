@@ -155,7 +155,7 @@ $today_date = date('Y-m-d');
 								<? if(isset($b_row['b_category'])): ?><span class="hidden-xs label label-primary b_category"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
 								<?=html_escape($label)?></a>
 								
-								<div class="plotting_label">
+								<div class="plotting_label hidden-xs">
 									<? if(($b_row['is_new'])): ?>
 										<span class="is_new label label-default" title="새글">new</span>
 									<? endif; ?>
