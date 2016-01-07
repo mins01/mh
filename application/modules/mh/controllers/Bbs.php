@@ -85,8 +85,7 @@ class Bbs extends MX_Controller {
 		if(!method_exists($this,'mode_'.$mode)){
 			show_error('잘못된 모드입니다.');
 		}
-		//echo $this->base_url;
-		
+		$this->bbs_conf['base_url'] = $this->base_url;
 		$this->bbs_conf['list_url'] = $this->base_url . "/list?".http_build_query($this->input->get());
 		$this->bbs_conf['write_url'] = $this->base_url . "/write?".http_build_query($this->input->get());
 		$this->bbs_conf['mode'] = $mode;
@@ -200,11 +199,12 @@ class Bbs extends MX_Controller {
 	public function mode_list($b_idx=null,$with_read=false){
 		$get = $this->input->get();
 		if($this->bm_row['bm_skin']=='calendar'){
-			if(isset($get['tq'][0]) && isset($get['q'][0])){
-				return $this->mode_list_for_calendar_list($b_idx,$with_read);
-			}else{
-				return $this->mode_list_for_calendar($b_idx,$with_read);
-			}
+			return $this->mode_list_for_calendar($b_idx,$with_read);
+			// if(isset($get['tq'][0]) && isset($get['q'][0])){
+				// return $this->mode_list_for_calendar_list($b_idx,$with_read);
+			// }else{
+				// return $this->mode_list_for_calendar($b_idx,$with_read);
+			// }
 		}else{
 			return $this->mode_list_for_default($b_idx,$with_read);
 		}

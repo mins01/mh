@@ -276,5 +276,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 	font-size: 0.8em;
 }
 
+.plan > a > .b_category{
+	font-weight: normal;
+	font-size:0.5em;
+	position: absolute;
+	left: 0;
+}
 
 

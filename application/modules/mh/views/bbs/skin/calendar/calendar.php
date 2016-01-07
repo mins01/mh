@@ -144,13 +144,16 @@ $today_date = date('Y-m-d');
 								if($b_row['b_idx']==$b_idx){
 									$tmp_class.=' plan-this';
 								}
-								$label = ($b_row['b_category']?"[{$b_row['b_category']}] ":'').$b_row['b_title'];
+								$label = $b_row['b_title'];
 							?>
 								<div class="plan <?=$tmp_class?> plotting_label_parent" 
 								data-b_idx="<?=$b_row['b_idx']?>"
 								data-plan-len="<?=$plan['len']?>"
 								data-plan-order="<?=$plan['order']?>"
-								><a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($label)?></a>
+								>
+								<a href="<?=html_escape($b_row['read_url'])?>">
+								<? if(isset($b_row['b_category'])): ?><span class="hidden-xs label label-primary b_category"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
+								<?=html_escape($label)?></a>
 								
 								<div class="plotting_label">
 									<? if(($b_row['is_new'])): ?>
@@ -193,7 +196,8 @@ $today_date = date('Y-m-d');
 			<div class="col-lg-2 col-sm-2 hidden-xs">
 			</div>
 			<div class="col-lg-8 col-sm-8 ">
-				<form action="" class="form-inline text-center">
+				<form action="<?=html_escape($bbs_conf['base_url'])?>/list" class="form-inline text-center">
+					<input name="dt" aria-label="날짜" type="hidden" class="form-control" placeholder="날짜" value="<?=html_escape(isset($get['dt'])?$get['dt']:'')?>">
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-btn">

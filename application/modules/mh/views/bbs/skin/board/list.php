@@ -1,7 +1,6 @@
 <?
 //$bm_row,$b_rows,$b_n_rows
 //$start_num,$count
-
 ?>
 
 <nav class="text-right">
@@ -15,7 +14,7 @@
 			<div class="col-lg-2 col-sm-2 hidden-xs">
 			</div>
 			<div class="col-lg-8 col-sm-8 ">
-				<form action="" class="form-inline text-center">
+				<form action="<?=html_escape($bbs_conf['base_url'])?>/list" class="form-inline text-center">
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-btn">
