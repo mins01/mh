@@ -198,8 +198,13 @@ class Bbs extends MX_Controller {
 		return array($v_date_st,$v_date_ed,$v_time_st,$v_time_ed);
 	}
 	public function mode_list($b_idx=null,$with_read=false){
+		$get = $this->input->get();
 		if($this->bm_row['bm_skin']=='calendar'){
-			return $this->mode_list_for_calendar($b_idx,$with_read);
+			if(isset($get['tq'][0]) && isset($get['q'][0])){
+				return $this->mode_list_for_calendar_list($b_idx,$with_read);
+			}else{
+				return $this->mode_list_for_calendar($b_idx,$with_read);
+			}
 		}else{
 			return $this->mode_list_for_default($b_idx,$with_read);
 		}
@@ -228,7 +233,6 @@ class Bbs extends MX_Controller {
 				);
 		$b_rows = $this->bbs_m->select_for_calendar($v_get);
 		$b_rowss = $this->bbs_m->exnteds_b_rows_for_calendar($b_rows,$date_st,$date_ed);
-		echo $this->db->last_query();
 		
 		$this->extends_b_rows($b_rows,$get);
 		$b_n_rows = $this->bbs_m->select_for_notice_list($get);
@@ -262,7 +266,7 @@ class Bbs extends MX_Controller {
 			$this->config->set_item('layout_hide',false);
 			$this->config->set_item('layout_title','calendar : '.$this->bm_row['bm_title']);
 		}
-		$this->load->view($this->skin_path.'/list',array(
+		$this->load->view($this->skin_path.'/calendar',array(
 		'b_rows' => $b_rows,
 		'b_rowss'=>$b_rowss,
 		'b_n_rows'=>$b_n_rows,
@@ -283,7 +287,7 @@ class Bbs extends MX_Controller {
 		
 		));
 	}
-	public function mode_list_for_default($b_idx=null,$with_read=false){
+	public function _mode_list($b_idx=null,$with_read=false,$opt = array()){
 		
 		$permission = $this->get_permission_lists();
 		if(!$permission['list']){
@@ -300,7 +304,8 @@ class Bbs extends MX_Controller {
 		if(!isset($get['q'])){ $get['q'] = ''; }
 		if(!isset($get['ct'])){ $get['ct'] = ''; }
 		$get['page']=$this->bbs_conf['page'];
-		$b_rows = $this->bbs_m->select_for_list($get);
+		$order_by = isset($opt['order_by'])?$opt['order_by']:'';
+		$b_rows = $this->bbs_m->select_for_list($get,$order_by);
 		$this->extends_b_rows($b_rows,$get);
 		$b_n_rows = $this->bbs_m->select_for_notice_list($get);
 		$this->extends_b_rows($b_n_rows,$get);
@@ -333,6 +338,13 @@ class Bbs extends MX_Controller {
 		'b_idx'=>$b_idx,
 		'permission'=>$permission,
 		));
+	}
+	public function mode_list_for_calendar_list($b_idx=null,$with_read=false){
+		$opt = array('order_by'=>'b.b_etc_1 DESC , b.b_etc_2 DESC ');
+		$this->_mode_list($b_idx,$with_read,$opt);
+	}
+	public function mode_list_for_default($b_idx=null,$with_read=false){
+		$this->_mode_list($b_idx,$with_read);
 	}
 	//비밀번호 필수 체크 : false: fail, true: OK
 	private function required_password($b_row,$b_pass,$title='비밀번호 확인',$sub_title=''){

@@ -164,7 +164,7 @@ class Bbs_model extends CI_Model {
 	}
 	
 	//일반 목록용
-	public function select_for_list($get){
+	public function select_for_list($get,$order_by=null){
 		
 		if(!$this->_apply_list_where($get)){
 			return false;
@@ -172,9 +172,13 @@ class Bbs_model extends CI_Model {
 		$this->_apply_list_bm_row($this->bm_row);
 
 		//-- 정렬
-		switch($this->bm_row['bm_list_type']){
-			case '0':$this->db->order_by('b_gidx,b_gpos');break;
-			case '1':$this->db->order_by('b.b_idx desc');break;
+		if(!isset($order_by[0])){
+			switch($this->bm_row['bm_list_type']){
+				case '0':$this->db->order_by('b_gidx,b_gpos');break;
+				case '1':$this->db->order_by('b.b_idx desc');break;
+			}
+		}else{
+			$this->db->order_by($order_by);
 		}
 		list($limit,$offset) = $this->get_limit_offset($get['page']);
 		$this->db->limit($limit,$offset);
