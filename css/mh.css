@@ -29,7 +29,9 @@ padding-left:5px; padding-right:5px;
 
 .panel-heading>nav>.pagination,.panel-footer>nav>.pagination{margin:0}
 
-.container-fluid{max-width:1000px}
+.container-fluid{max-width:1000px;}
+
+.google_ad{max-width:100%;overflow:hidden;}
 
 .text-overflow-ellipsis {
 	overflow: hidden;

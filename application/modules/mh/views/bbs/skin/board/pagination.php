@@ -36,7 +36,7 @@ if($page<$max_page){
 ?>
 
 
-	<ul class="pagination">
+	<ul class="pagination pagination-sm">
 
 		<? 
 		$url = $first_url;

@@ -88,7 +88,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 //== mh 설정
-define('SITE_NAME','MH-테스트');
+define('SITE_NAME','공대여자홈');
 define('SITE_ADMIN_MAIL','mins01.lycos.co.kr@gmail.com');
 define('SITE_URI_PREFIX', '/mh/'); // URI 앞부분 경로 (CI에서 제어 안하는 부분)
 define('ADMIN_PREFIX', '_admin'); // 관리자 URI 기본 경로
@@ -126,6 +126,7 @@ define('_FORM_DIR',dirname(__FILE__).'/../../_form');
 
 date_default_timezone_set('Asia/Seoul'); 
 
+require_once(dirname(__FILE__).'/legacy.php');
 
 
 

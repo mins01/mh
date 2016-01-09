@@ -80,6 +80,9 @@
 		</div>
 	</nav>
 	
+	<div style="width:320px;margin:2px auto" class="google_ad"><?=GoogleAds::print_google_adsense_320x50()?></div>
+	
 	<div class="container-fluid contents">
+	
 	<?=$top_html?>
 <? endif; ?>

@@ -6,14 +6,21 @@
 	<footer>
 		<div class="container-fluid" style="background-color:#fff;color:#999">
 			<div class="text-right"> 
+			<small>
+			[{elapsed_time} sec]/[{memory_usage} Byte]
 			<? if(isset($login_info['is_admin']) && $login_info['is_admin']): ?>
 			<a href="<?=html_escape(ADMIN_URI_PREFIX)?>" target="_blank" class="label label-warning">관리자</a>
 			<?  endif; ?>
-			<small>[{elapsed_time} sec]/[{memory_usage} Byte]</small></div>
+			</small>
+			</div>
+			
 		</div>
 	</footer>
 <?=$tail_contents?>
-
+<div style="width:300px;margin:2px auto" class="google_ad"><?=GoogleAds::print_google_adsense_300x250()?></div>
 <? endif; ?>
+<?
+GoogleAds::print_google_analytics()
+?>
 </body>
 </html>
