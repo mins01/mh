@@ -14,7 +14,7 @@
 	$mn_url = $v[4];
 	$k = $b_id;
 	$b_row = isset($b_rowss[$k])?$b_rowss[$k]:array();
-	$v_url = base_url($v[2]);
+	$v_url = base_url($mn_url);
 	?>
 	<div class="col-sm-6 col-md-4">
 		<ul class="list-group">
@@ -59,7 +59,7 @@
 	$mn_url = $v[4];
 	$k = $b_id;
 	$bc_row = isset($bc_rowss[$k])?$bc_rowss[$k]:array();
-	$v_url = base_url($v[2]);
+	$v_url = base_url($mn_url);
 	?>
 	<div class="col-sm-6 col-md-4">
 		<ul class="list-group">

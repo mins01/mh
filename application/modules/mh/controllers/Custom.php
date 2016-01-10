@@ -59,7 +59,7 @@ class Custom extends MX_Controller {
 			//array('test','test','테스트'),
 			//array('mine','diff','틀린그림찾기'),
 		);
-		$bc_rowss = $this->custom_m->last_bbs_comment_rowss($bc_tbl_b_ids,5,30);
+		$bc_rowss = $this->custom_m->last_bbs_comment_rowss($bc_tbl_b_ids,5,120);
 		
 		
 		

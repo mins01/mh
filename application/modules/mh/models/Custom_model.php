@@ -21,19 +21,25 @@ class Custom_model extends CI_Model {
 		if($type==0){
 			$sql = "select {$v_select} from {$from} b
 			
-			where b_isdel=0 and b_insert_date <= {$v_b_insert_date}
+			where b_isdel=0 and b_insert_date >= {$v_b_insert_date}
 			and b_id = {$v_b_id}
 			order by b_idx desc
 			limit {$limit} 
 			";
 		}else{
+			$v_b_etc_0 = $this->db->escape(date('Y-m-d 00:00:00',time()-60*60*24*2));
+			$v_b_etc_1 = $this->db->escape(date('Y-m-d 00:00:00',time()+60*60*24*$day));
+		
 			$sql = "select {$v_select} from {$from} b
 			
-			where b_isdel=0 and b_etc_1 <= {$v_b_insert_date}
+			where b_isdel=0 
+			and b_etc_0 >= {$v_b_etc_0}
+			and b_etc_1 <= {$v_b_etc_1}
 			and b_id = {$v_b_id}
-			order by b_etc_1 desc,b_etc_2 desc
+			order by b_etc_0 desc,b_etc_1 desc
 			limit {$limit}
 			";
+			//echo $sql;
 		}
 		return $sql;
 	}
@@ -70,7 +76,7 @@ class Custom_model extends CI_Model {
 		";
 		$sql = "select {$v_select} from {$from} bc
 		JOIN {$from_data} b on(b_id={$v_b_id} and b.b_idx=bc.b_idx)
-		where bc_isdel=0  and b_isdel=0  and bc_insert_date <= {$v_b_insert_date}
+		where bc_isdel=0  and b_isdel=0  and bc_insert_date >= {$v_b_insert_date}
 		order by bc_idx desc
 		limit {$limit} 
 		";
