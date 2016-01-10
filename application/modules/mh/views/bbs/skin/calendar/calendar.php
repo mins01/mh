@@ -45,11 +45,11 @@ $today_date = date('Y-m-d');
 			?>
 				<tr class="bbs-notice info <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 					<td class="text-center hidden-xs">공지</td>
-					<td class="bbs-title text-overflow-ellipsis plotting_label_parent">
+					<td class="bbs-title text-overflow-ellipsis floating_label_parent">
 						<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
 						<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
 						
-						<div class="plotting_label">
+						<div class="floating_label">
 							<? if(($b_row['is_new'])): ?>
 								<span class="is_new label label-default" title="새글">new</span>
 							<? endif; ?>
@@ -146,7 +146,7 @@ $today_date = date('Y-m-d');
 								}
 								$label = $b_row['b_title'];
 							?>
-								<div class="plan <?=$tmp_class?> plotting_label_parent" 
+								<div class="plan <?=$tmp_class?> floating_label_parent" 
 								data-b_idx="<?=$b_row['b_idx']?>"
 								data-plan-len="<?=$plan['len']?>"
 								data-plan-order="<?=$plan['order']?>"
@@ -155,7 +155,7 @@ $today_date = date('Y-m-d');
 								<? if(isset($b_row['b_category'])): ?><span class="hidden-xs label label-primary b_category"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
 								<?=html_escape($label)?></a>
 								
-								<div class="plotting_label hidden-xs">
+								<div class="floating_label hidden-xs">
 									<? if(($b_row['is_new'])): ?>
 										<span class="is_new label label-default" title="새글">new</span>
 									<? endif; ?>

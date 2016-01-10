@@ -82,13 +82,13 @@ margin-left:-1em;
 .img-preview img{max-width:95%}
 
 /* 플로팅 라벨 부모가 relative여야한다. */
-.plotting_label_parent{position:relative;}
-.plotting_label{position:absolute;top:5px; right:5px;}
-.plotting_label > .label{cursor:default;}
-.plotting_label > .bf_cnt{background-color:#933;}
-.plotting_label > .bc_cnt{background-color:#396;}
-.plotting_label > .is_new{background-color:#E8A437;}
-.plotting_label > .b_secret{background-color:#EA4D3C;}
+.floating_label_parent{position:relative;}
+.floating_label{position:absolute;top:5px; right:5px;}
+.floating_label > .label{cursor:default;}
+.floating_label > .bf_cnt{background-color:#933;}
+.floating_label > .bc_cnt{background-color:#396;}
+.floating_label > .is_new{background-color:#E8A437;}
+.floating_label > .b_secret{background-color:#EA4D3C;}
 
 
 

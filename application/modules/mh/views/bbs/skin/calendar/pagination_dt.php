@@ -25,8 +25,8 @@ $v_time_ed = mktime(0,0,0,$v_n0+6,1,$v_Y0);
 		$url = str_replace('{{dt}}',$v_dt,$def_url);
 		$v_tm =  mktime(0,0,0,$v_n+1,1,$v_Y);
 		?>
-		<button type="button" onclick="window.open('<?=$url?>','_self');" class="Ym btn <?=$btn_color?> plotting_label_parent">
-			<div class="plotting_label text-right">
+		<button type="button" onclick="window.open('<?=$url?>','_self');" class="Ym btn <?=$btn_color?> floating_label_parent">
+			<div class="floating_label text-right">
 				<? $t = $v_Y%2?'label-success':'label-warning'; ?>
 				<span class="Ym-label-Y label <?=$t?>"><?=$v_Y?>년</span>
 				<? if($v_cnt>0): ?>
@@ -51,8 +51,8 @@ $v_time_ed = mktime(0,0,0,$v_n0+6,1,$v_Y0);
 		$url = str_replace('&&','',str_replace('dt={{dt}}','',$def_url));
 		$v_tm =  mktime(0,0,0,$v_n+1,1,$v_Y);
 		?>
-		<button type="button" onclick="window.open('<?=$url?>','_self');" class="Ym btn <?=$btn_color?> plotting_label_parent">
-			<div class="plotting_label text-right">
+		<button type="button" onclick="window.open('<?=$url?>','_self');" class="Ym btn <?=$btn_color?> floating_label_parent">
+			<div class="floating_label text-right">
 				<? $t = $v_Y%2?'label-success':'label-warning'; ?>
 				<span class="Ym-label-Y label <?=$t?>"><?=$v_Y?>년</span><? 
 				if($v_cnt>0): 
@@ -78,8 +78,8 @@ $v_time_ed = mktime(0,0,0,$v_n0+6,1,$v_Y0);
 		$url = str_replace('{{dt}}',$v_dt,$def_url);
 		$v_tm =  mktime(0,0,0,$v_n+1,1,$v_Y);
 		?>
-		<button type="button" onclick="window.open('<?=$url?>','_self');" class="Ym btn <?=$btn_color?> plotting_label_parent">
-			<div class="plotting_label text-right">
+		<button type="button" onclick="window.open('<?=$url?>','_self');" class="Ym btn <?=$btn_color?> floating_label_parent">
+			<div class="floating_label text-right">
 				<? $t = $v_Y%2?'label-success':'label-warning'; ?>
 				<span class="Ym-label-Y label <?=$t?>"><?=$v_Y?>년</span>
 				<? if($v_cnt>0): ?>
@@ -108,8 +108,8 @@ $v_time_ed = mktime(0,0,0,$v_n0+6,1,$v_Y0);
 				$url = str_replace('{{dt}}',$v_dt,$def_url);
 				$v_tm =  mktime(0,0,0,$v_n+1,1,$v_Y);
 		?>
-		<button type="button" onclick="window.open('<?=$url?>','_self');" class="Ym btn <?=$btn_color?> plotting_label_parent">
-			<div class="plotting_label text-right">
+		<button type="button" onclick="window.open('<?=$url?>','_self');" class="Ym btn <?=$btn_color?> floating_label_parent">
+			<div class="floating_label text-right">
 				<? $t = $v_Y%2?'label-success':'label-warning'; ?>
 				<span class="Ym-label-Y label <?=$t?>"><?=$v_Y?>년</span>
 				<? if($v_cnt>0): ?>

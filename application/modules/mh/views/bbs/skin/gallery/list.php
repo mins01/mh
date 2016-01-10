@@ -24,11 +24,11 @@
 		?>
 			<tr class="bbs-notice info <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 				<td class="text-center hidden-xs">공지</td>
-				<td class="bbs-title text-overflow-ellipsis plotting_label_parent">
+				<td class="bbs-title text-overflow-ellipsis floating_label_parent">
 					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
 					<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
 					
-					<div class="plotting_label">
+					<div class="floating_label">
 						<? if(($b_row['is_new'])): ?>
 							<span class="is_new label label-default" title="새글">new</span>
 						<? endif; ?>
@@ -60,9 +60,9 @@
 		?>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 				<div class="panel panel-default center-block" style="max-width:300px;">
-					<div class="panel-heading text-center  text-overflow-ellipsis plotting_label_parent"
+					<div class="panel-heading text-center  text-overflow-ellipsis floating_label_parent"
 					 ><? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span> <? endif; ?><a href="<?=html_escape($b_row['read_url'])?>" title="<?=html_escape($b_row['b_title'])?>"><?=html_escape($b_row['b_title'])?></a></div>
-					<div class="panel-body thumbnail-div plotting_label_parent" >
+					<div class="panel-body thumbnail-div floating_label_parent" >
 						<a href="<?=html_escape($b_row['read_url'])?>">
 							<div class="text-center thumbnail-box img-rounded" >
 								<? if(isset($b_row['thumbnail_url'][0])): ?>
@@ -72,7 +72,7 @@
 								<? endif; ?>
 							</div>
 						</a>
-						<div class="plotting_label">
+						<div class="floating_label">
 							<? if(($b_row['is_new'])): ?>
 								<span class="is_new label label-default" title="새글">new</span>
 							<? endif; ?>

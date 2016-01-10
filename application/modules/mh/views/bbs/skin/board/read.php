@@ -6,12 +6,12 @@
 
 
 <div class="panel panel-default <?=$b_row['b_notice']>0?'bbs-notice':''?> bbs-mode-read">
-	<div class="panel-heading plotting_label_parent">
+	<div class="panel-heading floating_label_parent">
 		<h3 class="panel-title text-center bbs-title "><?=html_escape($b_row['b_title'])?>
 		<div class="clearfix"></div>
 		</h3>
 		
-		<div class="plotting_label">
+		<div class="floating_label">
 			<? if(($b_row['is_new'])): ?>
 				<span class="is_new label label-default" title="새글">new</span>
 			<? endif; ?>

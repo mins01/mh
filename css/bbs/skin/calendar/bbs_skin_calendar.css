@@ -237,7 +237,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 .day-w-4>.day> .day-label{}
 .day-w-5>.day> .day-label{}
 
-.Ym.plotting_label_parent > .plotting_label{
+.Ym.floating_label_parent > .floating_label{
 	top:-0.5em;
 	right:-0.2em;
 
@@ -248,14 +248,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', end
 	width:4.2em;
 	margin:3px 1px;
 }
-.Ym > .plotting_label > .Ym-label-Y{
+.Ym > .floating_label > .Ym-label-Y{
 	top:0;
 	font-weight: normal;
 	font-size: 0.7em;
 	box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.4);
 	text-shadow:rgba(0, 0, 0, 0.2) 0px -1px 0px;
 }
-.Ym > .plotting_label > .Ym-label-cnt{
+.Ym > .floating_label > .Ym-label-cnt{
 	top:-1em;
 	font-weight: normal;
 	font-size: 0.5em;
