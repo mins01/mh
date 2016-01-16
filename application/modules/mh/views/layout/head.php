@@ -6,10 +6,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="description" content="<?=html_escape($title)?>" />
-	<!--
-	<meta name="keywords" content="공대여자,웹,프로그래밍,DB,PHP,MySQL,ORACLE,SD건담캡슐파이터,캡파,SD건담,sdgo,sdgd" />
+	<meta name="keywords" content="공대여자,웹,프로그래밍,DB,PHP,MySQL,ORACLE" />
 	<meta name="classification" content="웹 프로그래밍" />
-	-->
+	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	
 	<!-- 합쳐지고 최소화된 최신 CSS -->

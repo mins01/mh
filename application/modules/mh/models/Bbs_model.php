@@ -16,6 +16,7 @@ class Bbs_model extends CI_Model {
 		'b_notice','b_secret','b_html','b_link','b_category',
 		'b_title','b_text',
 		'b_etc_0','b_etc_1','b_etc_2','b_etc_3','b_etc_4',
+		'b_num_0','b_num_1','b_num_2','b_num_3','b_num_4',
 	);
 	public function __construct()
 	{
@@ -60,7 +61,8 @@ class Bbs_model extends CI_Model {
 			$select = 'b.b_idx,b_id,b_gidx,b_gpos,b_pidx,b_insert_date,b_update_date,b_isdel
 			,b.m_idx
 			,b_name,b_ip,b_notice,b_secret,b_html,b_link,b_category,b_title
-			,b_etc_0,b_etc_1,b_etc_2,b_etc_3,b_etc_4';
+			,b_etc_0,b_etc_1,b_etc_2,b_etc_3,b_etc_4
+			,b_num_0,b_num_1,b_num_2,b_num_3,b_num_4';
 		}
 		// switch($bm_row['bm_list_type']){
 			// case '0': //일반 게시물
@@ -363,6 +365,11 @@ class Bbs_model extends CI_Model {
 			'b_etc_2'=>'',
 			'b_etc_3'=>'',
 			'b_etc_4'=>'',
+			'b_num_0'=>'',
+			'b_num_1'=>'',
+			'b_num_2'=>'',
+			'b_num_3'=>'',
+			'b_num_4'=>'',
 		);
 		return $b_row;
 	}

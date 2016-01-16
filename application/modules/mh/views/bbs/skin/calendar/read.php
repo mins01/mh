@@ -79,7 +79,7 @@ if($d_day==0){
 				<span class="input-group-addon">주소</span>
 				<span class="form-control"><?=html_escape($b_row['b_etc_3'])?></span>
 				<div class="input-group-btn">
-					<button type="button" class="btn btn-success" onclick="showMapByAddress('<?=html_escape($b_row['b_etc_3'])?>','<?=html_escape($b_row['b_etc_4'])?>')">장소확인</button>
+					<button type="button" class="btn btn-success" onclick="showMapByAddress('<?=html_escape($b_row['b_etc_3'])?>','<?=html_escape($b_row['b_num_0'])?>','<?=html_escape($b_row['b_num_1'])?>')">장소확인</button>
 				</div>
 			</div>
 			

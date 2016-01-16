@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['layout']= array(
 	'prefix_title'=> '',
-	'suffix_title'=> '::테스트사이트',
+	'suffix_title'=> '::'.SITE_NAME,
 );
 
 $config['db']= array(
