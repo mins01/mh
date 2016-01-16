@@ -83,19 +83,14 @@ if($d_day==0){
 				</div>
 			</div>
 			
-			<? if(strpos($b_row['b_etc_4'],',')!==false):
-				list($lat,$lng) = explode(',',$b_row['b_etc_4']);
-				$lat = rawurlencode($lat);
-				$lng = rawurlencode($lng);
+			<? if(isset($b_row['b_num_0'][0])):
+				$lat = rawurlencode($b_row['b_num_0']);
+				$lng = rawurlencode($b_row['b_num_1']);
 				$v_query = rawurlencode(base64_encode($b_row['b_etc_3']));
 				$url="http://map.naver.com/?menu=location&mapMode=0&lat={$lat}&lng={$lng}&dlevel=10&query={$v_query}&tab=1&enc=b64";
 			?>
 			<div class="btn-group ">
-			
-				
 					<a href="<?=html_escape($url)?>" target="_blank" type="button" class="btn btn-success">네이버맵</a>
-				
-				
 			</div>
 			<? endif; ?>
 			<? endif; ?>

@@ -21,7 +21,7 @@ $base_url = base_url();
 
 <? if($mode=='write' || $mode=='edit' || $mode=='answer'): ?>
 
-<link href="/web_work/mb_wysiwyg_dom/fontawesome.css" rel="stylesheet" type="text/css" />
+<link href="/web_work/mb_wysiwyg_dom/bootstrap.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/web_work/mb_wysiwyg_dom/mb_wysiwyg.js"></script>
 <script type="text/javascript" src="/web_work/mb_wysiwyg_dom/set.toolbar.js"></script>
 

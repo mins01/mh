@@ -44,3 +44,4 @@ Temporary Items
 application/logs/*
 _files/*
 _logs/*
+/_cache
