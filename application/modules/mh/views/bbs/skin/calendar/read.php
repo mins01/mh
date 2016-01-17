@@ -142,7 +142,7 @@ $(function(){
 
 	var lat = <?=$b_row['b_num_0']?>;
 	var lng = <?=$b_row['b_num_1']?>;
-	var zoom = <?=$b_row['b_num_2']?>;
+	var zoom = <?=$b_row['b_num_2']?$b_row['b_num_2']:18?>;
 	google_map.init_readonly_map(document.getElementById('google_map_canvas'),lat,lng,zoom);
 
 <? else: ?>
