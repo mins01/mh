@@ -65,15 +65,6 @@ if($d_day==0){
 			<span class="clearfix"></span>
 		</li>
 		<li class="list-group-item form-inline">
-			<div class="input-group ">
-				<span class="input-group-addon"><?=$d_day_label?></span>
-				<span class="form-control"><?=$period?>일간</span>
-			</div>
-			<div class="input-group input-daterange">
-				<span class="form-control" ><?=html_escape($b_row['b_etc_0'])?></span>
-				<span class="input-group-addon">-</span>
-				<span class="form-control" ><?=html_escape($b_row['b_etc_1'])?></span>
-			</div>
 			<? if(isset($b_row['b_etc_3'][0])): ?>
 			<div class="input-group ">
 				<span class="input-group-addon">주소</span>
@@ -101,12 +92,9 @@ if($d_day==0){
 			</div>
 			
 		</li>
-		
 		<li class="list-group-item">
 			<div id="google_map_canvas" style="height:300px"></div>
 		</li>
-		
-		
 		<? if(isset($view_form_file[0])): ?>
 		<li class="list-group-item form-inline bbs-mode-read-file">
 			<?=$view_form_file?>
@@ -151,4 +139,12 @@ $(function(){
 })
 </script>
 
+
+
 <?=$html_comment?>
+
+
+
+
+
+

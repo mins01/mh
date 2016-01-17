@@ -11,7 +11,7 @@ if($mode=='write'||$mode=='answer'){
 ?>
 
 <div class="skin-form">
-	<form action="" name="form_bbs" method="post" onsubmit="submitWysiwyg();return check_form_bbs(this);"  enctype="multipart/form-data"  >
+	<form action="" name="form_bbs" method="post" onsubmit="submitWysiwyg();return check_form_bbs(this);"	 enctype="multipart/form-data"	>
 	<input type="hidden" name="process" value="<?=html_escape($process)?>">
 	<div class="panel panel-default form-horizontal bbs-mode-form">
 		<div class="panel-heading">
@@ -25,7 +25,7 @@ if($mode=='write'||$mode=='answer'){
 						<? if($input_b_name): ?>
 						<input type="text" class="form-control" required name="b_name" aria-label="작성자" placeholder="작성자" style="min-width:80px" maxlength="40" value="<?=html_escape($b_row['b_name'])?>">
 						<? else: ?>
-						<input type="text" class="form-control" readonly  name="b_name" aria-label="작성자" placeholder="작성자" style="min-width:80px" maxlength="40" value="<?=html_escape($b_row['b_name'])?>">
+						<input type="text" class="form-control" readonly	name="b_name" aria-label="작성자" placeholder="작성자" style="min-width:80px" maxlength="40" value="<?=html_escape($b_row['b_name'])?>">
 						<? endif; ?>
 				</div>
 				<? if($input_b_pass):?>
@@ -38,21 +38,21 @@ if($mode=='write'||$mode=='answer'){
 			<li class="list-group-item form-inline">
 				<div class="input-group">
 					<div class="input-group-addon">링크</div>
-					<input type="text" class="form-control"  name="b_link" aria-label="링크" placeholder="http://mins01.com/mh/" style="min-width:80px" value="<?=html_escape($b_row['b_link'])?>">
+					<input type="text" class="form-control"	 name="b_link" aria-label="링크" placeholder="http://mins01.com/mh/" style="min-width:80px" value="<?=html_escape($b_row['b_link'])?>">
 				</div>
 				<? if($bm_row['bm_use_category']!='0'): ?>
-				<?=form_dropdown('b_category', $bm_row['categorys'], $b_row['b_category'], 'class="selectpicker show-tick" style="width:8em" data-width="100px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리" ')?>
+				<?=form_dropdown('b_category', $bm_row['categorys'], $b_row['b_category'], 'class="selectpicker show-tick" style="width:8em" data-width="100px" aria-label="카테고리 설정" title="카테고리"	 data-header="카테고리" ')?>
 				<? endif; ?>
 				<? if($bm_row['bm_use_secret']=='1'): ?>
 				<div class="btn-group" data-toggle="buttons">
-					<label class="btn btn-success  <?=!$b_row['b_secret']?'active':''?>"><input type="radio" name="b_secret" value="0" autocomplete="off" <?=!$b_row['b_secret']?'checked':''?>>공개글
+					<label class="btn btn-success	 <?=!$b_row['b_secret']?'active':''?>"><input type="radio" name="b_secret" value="0" autocomplete="off" <?=!$b_row['b_secret']?'checked':''?>>공개글
 					</label>
 					<label class="btn btn-warning <?=$b_row['b_secret']=='1'?'active':''?>"><input type="radio" name="b_secret" value="1" autocomplete="off" <?=$b_row['b_secret']=='1'?'checked':''?>>비밀글
 					</label>
 				</div>
 				<? endif; ?>
 				
-				<?=form_dropdown('b_html', $permission['admin']?$bbs_conf['b_htmls_for_admin']:$bbs_conf['b_htmls'], $b_row['b_html'], ' class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="글형식" title="글형식"  data-header="글형식"')?>
+				<?=form_dropdown('b_html', $permission['admin']?$bbs_conf['b_htmls_for_admin']:$bbs_conf['b_htmls'], $b_row['b_html'], ' class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="글형식" title="글형식"	data-header="글형식"')?>
 				
 				<?
 				if($permission['admin']){
@@ -60,13 +60,6 @@ if($mode=='write'||$mode=='answer'){
 				}
 				?>
 
-			</li>
-			<li class="list-group-item form-inline">
-				<div class="input-group input-daterange">
-					<input type="text" class="form-control"  name="b_etc_0" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_etc_0'])?>">
-					<div class="input-group-addon">-</div>
-					<input type="text" class="form-control"  name="b_etc_1" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_etc_1'])?>">
-				</div>
 			</li>
 			<li class="list-group-item">
 				<div class="input-group">
@@ -109,7 +102,7 @@ if($mode=='write'||$mode=='answer'){
 			
 		</ul>
 		<div class="panel-body" style="min-height:200px">
-			<textarea class="form-control pre-wysiwyg" name="b_text" rows="3"  placeholder="글내용" style="min-height:180px"><?=html_escape($b_row['b_text'])?></textarea>
+			<textarea class="form-control pre-wysiwyg" name="b_text" rows="3"	 placeholder="글내용" style="min-height:180px"><?=html_escape($b_row['b_text'])?></textarea>
 		</div>
 		<div class="panel-footer text-right">
 		<button type="submit" class="btn btn-primary glyphicon glyphicon-ok"> 확인</button>
@@ -123,18 +116,6 @@ if($mode=='write'||$mode=='answer'){
 
 <script type="text/javascript">
 //<!--
-function callbackMaps(obj,popWindow){
-//var obj = {
-//		'lat':LatLng.lat()
-//		,'lng':LatLng.lng()
-//		,'address':document.form_search.address.value
-//		}
-document.form_bbs.b_etc_3.value=obj.address;
-document.form_bbs.b_num_0.value=obj.lat
-document.form_bbs.b_num_1.value=obj.lng
-popWindow.close();
-}
-
 $(
 	function(){
 		//show_street_view()
@@ -143,6 +124,7 @@ $(
 )
 //-->
 </script>
+
 
 
 
