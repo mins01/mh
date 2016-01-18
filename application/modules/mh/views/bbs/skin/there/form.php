@@ -85,8 +85,20 @@ if($mode=='write'||$mode=='answer'){
 				<div class="input-group">
 					<div class="input-group-addon">Zoom</div>
 					<input type="text" class="form-control" readonly id="google_map_zoom" name="b_num_2" aria-label="Zoom" placeholder="위도" size="4" value="<?=html_escape($b_row['b_num_2'])?>">
-					
-					
+				</div>
+				<div class="input-group">
+					<div class="input-group-addon">별점</div>
+					<?
+					$b_num_3s=array(
+					'5'=>'★★★★★',
+					'4'=>'★★★★☆',
+					'3'=>'★★★☆☆',
+					'2'=>'★★☆☆☆',
+					'1'=>'★☆☆☆☆',
+					'0'=>'NONE',
+					)
+					?>
+					<?=form_dropdown('b_num_3', $b_num_3s, $b_row['b_num_3'], 'class="selectpicker show-tick" style="width:8em" data-width="100px" aria-label="별점" title="별점"	 data-header="별점" ')?>
 				</div>
 
 			</li>

@@ -50,7 +50,7 @@
 			zoom = parseFloat(zoom);
 			if(!lat) lat=37.5679872;
 			if(!lng) lng=126.97716349999996;
-			if(!zoom) zoom=13;
+			if(!zoom) zoom=16;
 			
 			
 			map = new google.maps.Map(this.map_canvas, {

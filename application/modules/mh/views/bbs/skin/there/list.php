@@ -47,8 +47,8 @@
 			<tr >
 				<th class="text-center hidden-xs" width="80">No</th>
 				<th class="text-center">제목</th>
-				<th class="text-center" width="80">작성자</th>
-				<th class="text-center hidden-xs hidden-sm"  width="120">등록</th>
+				<th class="text-center hidden-xs hidden-sm " width="80">작성자</th>
+				<th class="text-center "  width="120">등록</th>
 				<th class="text-center hidden-xs hidden-sm"  width="40">조회</th>
 			</tr>
 		<? foreach($b_n_rows as $b_row):
@@ -77,8 +77,8 @@
 					</div>
 				
 				</td>
-				<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
+				<td class="text-center hidden-xs hidden-sm "><?=html_escape($b_row['b_name'])?></td>
+				<td class="text-center "><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
 				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
 
 			</tr>
@@ -90,6 +90,8 @@
 				<td class="text-center hidden-xs"><?=$start_num--?></td>
 				<td class="bbs-title text-overflow-ellipsis floating_label_parent">
 					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
+					<? if(isset($b_row['b_num_3'][0])): ?><span title="star-<?=$b_row['b_num_3']?>" class="label label-default star-span star-<?=$b_row['b_num_3']?>"></span><? endif; ?>
+					
 					<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
 					
 					<div class="floating_label">
@@ -109,8 +111,8 @@
 					</div>
 				
 				</td>
-				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
+				<td class="text-center hidden-xs hidden-sm  text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
+				<td class="text-center "><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
 				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
 
 			</tr>

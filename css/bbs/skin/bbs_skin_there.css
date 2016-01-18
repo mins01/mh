@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+.star-span{font-family: 'Glyphicons Halflings'; font-weight:normal}
+.star-span:empty {
+    display: inline-block;
+}
+.star-{display:none;}
+.star-0{display:none !important;}
+.star-1{background-color:#963}
+.star-2{background-color:#096}
+.star-3{background-color:#039}
+.star-4{background-color:#C30}
+.star-5{background-color:#939}
+
+
+
+.star-0::before{}
+.star-1::before{content: "\e006\e007\e007\e007\e007";}
+.star-2::before{content: "\e006\e006\e007\e007\e007";}
+.star-3::before{content: "\e006\e006\e006\e007\e007";}
+.star-4::before{content: "\e006\e006\e006\e006\e007";}
+.star-5::before{content: "\e006\e006\e006\e006\e006";}

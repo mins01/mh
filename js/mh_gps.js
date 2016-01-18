@@ -1,7 +1,7 @@
 var mh_gps ={
 	get_location:function(cb_success,cb_error){
 		if(!navigator.geolocation){
-			alert('geolocation´Â Áö¿øµÇÁö ¾Ê´Â ±â´ÉÀÔ´Ï´Ù.');
+			alert('geolocationëŠ” ì§€ì›ë˜ì§€ ì•ŠëŠ” ê¸°ëŠ¥ì…ë‹ˆë‹¤.');
 			return false;
 		}
 		var geo_options	 = {'enableHighAccuracy':true,'timeout':10000};

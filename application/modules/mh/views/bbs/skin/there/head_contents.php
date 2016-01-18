@@ -13,17 +13,17 @@ $base_url = base_url();
 <link href="/web_work/mb_wysiwyg_dom/mb_wysiwyg.css" rel="stylesheet" type="text/css" />
 
 <link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_default.css'))?>" rel="stylesheet">
-<link href="<?=html_escape(base_url('css/bbs/skin/calendar/bbs_skin_calendar.css'))?>" rel="stylesheet">
-<!-- //게시판 추가 head_contents -->
+<link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_there.css'))?>" rel="stylesheet">
 
 <script type="text/javascript"
 	  src="//maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBw8nAJOdLCqN3DuGZJKvY0idP_QWRR5WM&libraries=places"></script>
 <script src="<?=html_escape(base_url('js/bbs/google_map.js'))?>"></script>
+<!-- //게시판 추가 head_contents -->
+
+
 
 <? if($mode=='read' && $bm_row['bm_use_comment']=='1'): ?>
 <script src="<?=html_escape(base_url('js/bbs/comment.js'))?>"></script>
-
-
 <? endif; ?>
 
 <? if($mode=='write' || $mode=='edit' || $mode=='answer'): ?>
