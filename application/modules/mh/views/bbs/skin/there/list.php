@@ -48,7 +48,7 @@
 				<th class="text-center hidden-xs" width="80">No</th>
 				<th class="text-center">제목</th>
 				<th class="text-center hidden-xs hidden-sm " width="80">작성자</th>
-				<th class="text-center "  width="120">등록</th>
+				<th class="text-center hidden-xs hidden-sm"  width="120">등록</th>
 				<th class="text-center hidden-xs hidden-sm"  width="40">조회</th>
 			</tr>
 		<? foreach($b_n_rows as $b_row):
@@ -78,7 +78,7 @@
 				
 				</td>
 				<td class="text-center hidden-xs hidden-sm "><?=html_escape($b_row['b_name'])?></td>
-				<td class="text-center "><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
+				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
 				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
 
 			</tr>
@@ -112,7 +112,7 @@
 				
 				</td>
 				<td class="text-center hidden-xs hidden-sm  text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
-				<td class="text-center "><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
+				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
 				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
 
 			</tr>
@@ -120,9 +120,9 @@
 		</table>
 	</div>
 	<? if(count($b_rows)==0): ?>
-		<div class="panel-body">
+	<div class="panel-body">
 		<div class="alert alert-danger text-center" role="alert">게시물이 없습니다.</div>
-		</div>
+	</div>
 	<? endif; ?>
 	<div class="panel-footer">
 		<nav class="text-center">
