@@ -143,3 +143,19 @@ margin-left:-1em;
 @media (max-width: 768px) {
 	ul{padding-left:1em;}
 }
+
+/**
+* 코멘트 관련
+*/
+.bc-star{}
+.bc-star-0{}
+.bc-star-1{color:#963}
+.bc-star-2{color:#096}
+.bc-star-3{color:#039}
+.bc-star-4{color:#C30}
+.bc-star-5{color:#939}
+span.bc-star-1::before{content:'★☆☆☆☆'}
+span.bc-star-2::before{content:'★★☆☆☆'}
+span.bc-star-3::before{content:'★★★☆☆'}
+span.bc-star-4::before{content:'★★★★☆'}
+span.bc-star-5::before{content:'★★★★★'}
