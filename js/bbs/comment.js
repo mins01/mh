@@ -33,8 +33,9 @@
 	bbsComment.controller(ngController, ['$scope', '$http','$httpParamSerializer','$filter', function ($scope,$http,$httpParamSerializer,$filter) {
 		$scope.form = {"bc_comment":"","mode":"write","bc_idx":"","bc_score":"0"};
 		
-		this.init = function( comment_url) {
+		this.init = function( comment_url,bm_use_commnet_score) {
 			$scope.comment_url = comment_url;
+			$scope.bm_use_commnet_score = !bm_use_commnet_score?'0':bm_use_commnet_score;
 			$scope.initData();
 		}
 

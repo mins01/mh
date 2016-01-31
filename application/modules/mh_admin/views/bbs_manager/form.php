@@ -372,6 +372,16 @@
 									<? 
 									endforeach;
 									?>
+									<? 
+									$t_label='점수사용?';
+									$t_col = 'bm_use_commnet_score';
+									?>
+									<div class="col-sm-4">
+										<label class="col-xs-6 control-label"><?=($t_label)?></label>
+										<div class="col-xs-6">
+											<?=form_dropdown($t_col, array('사용안함','별점'), $bm_row[$t_col], ' class="selectpicker show-tick" style="width:4em" data-width="120px" aria-label="'.$t_label.'" title="'.$t_label.'"  data-header="'.$t_label.'"')?>
+										</div>
+									</div>
 								</div>
 							</div>
 					</div>

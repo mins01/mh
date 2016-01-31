@@ -1,7 +1,8 @@
 <?
-//$comment_url 
+//$comment_url
+// print_r($bm_row );
 ?><div ng-app="bbsComment" class="bbs_c">
-<div class="panel panel-default bbs-mode-comment"  ng-controller="CommentCtrl as commentCtrl" ng-init="commentCtrl.init('<?=html_escape($comment_url )?>')">
+<div class="panel panel-default bbs-mode-comment"  ng-controller="CommentCtrl as commentCtrl" ng-init="commentCtrl.init('<?=html_escape($comment_url )?>','<?=$bm_row['bm_use_commnet_score']?>')">
 	<div class="panel-heading">
 		댓글
 	</div>
@@ -12,7 +13,7 @@
 					<dt class="sc_title">
 						<a id="cmt_{{bc_row.bc_idx}}"  name="cmt_{{bc_row.bc_idx}}"></a>
 						<span class="nick bc_nick" ng-bind="bc_row.bc_name"></span> 
-						<span ng-hide="bc_row.bc_score &lt;= 0">
+						<span ng-hide="bc_row.bc_score &lt;= 0 || bm_use_commnet_score!='1'" >
 						/ <span class="bc_score bc-star-{{bc_row.bc_score}}"></span> 
 						</span>
 						/ <span class="date bc_insert_date" ng-bind="bc_row.bc_insert_date|print_date"></span>
@@ -47,13 +48,8 @@
 				<input type="hidden" class="form-control" ng-model="form.mode" name="mode" value="write">
 				<input type="hidden" class="form-control" ng-model="form.bc_idx" name="bc_idx" value="">
 				<dl>
-					<dt ng-show="form.mode!='edit'" class="sc_title form-inline">
-						<div class="form-group">
-							<p class="form-control-static">
+					<dt ng-show="form.mode!='edit'" class="sc_title form-control-static">
 								<span class="nick bc_nick">{{m_row.m_nick}}</span>
-							</p>
-							
-						</div>
 					</dt>
 					<dd class="bc_comment">
 					<div class="form-group">
@@ -70,7 +66,10 @@
 					<div class="form-inline text-right">
 						<span ng-show="msg.length&gt;0" ng-bind="msg">-</span>
 						<div class="form-group" >
-							<select ng-model="form.bc_score" name="bc_score" class="form-control input-sm" style="width:9em">
+							<select ng-model="form.bc_score" 
+							ng-disabled="bm_use_commnet_score!='1'" 
+							ng-hide="bm_use_commnet_score!='1'" 
+							name="bc_score" class="form-control input-sm" style="width:9em">
 									<option value="0" class="bc-star bc-star-0" ng-selected="!form.bc_score">no-star</option>
 									<option value="1" class="bc-star bc-star-1">★☆☆☆☆</option>
 									<option value="2" class="bc-star bc-star-2">★★☆☆☆</option>
