@@ -31,11 +31,11 @@
 	}]);
 
 	bbsComment.controller(ngController, ['$scope', '$http','$httpParamSerializer','$filter', function ($scope,$http,$httpParamSerializer,$filter) {
-		$scope.form = {"bc_comment":"","mode":"write","bc_idx":"","bc_score":"0"};
+		$scope.form = {"bc_comment":"","mode":"write","bc_idx":"","bc_number":"0"};
 		
-		this.init = function( comment_url,bm_use_commnet_score) {
+		this.init = function( comment_url,bm_use_commnet_number) {
 			$scope.comment_url = comment_url;
-			$scope.bm_use_commnet_score = !bm_use_commnet_score?'0':bm_use_commnet_score;
+			$scope.bm_use_commnet_number = !bm_use_commnet_number?'0':bm_use_commnet_number;
 			$scope.initData();
 		}
 
@@ -128,13 +128,13 @@
 					this.form.bc_comment = '';
 				}else{
 					this.form.bc_comment = this.bc_rows[$index].bc_comment;
-					this.form.bc_score = this.bc_rows[$index].bc_score;
+					this.form.bc_number = this.bc_rows[$index].bc_number;
 				}
 			}else{
 				var bc_idx = '';
 				var id = '#bc_idx_write';
 				this.form.bc_comment = '';
-				this.form.bc_score = "0";
+				this.form.bc_number = "0";
 			}
 			this.form.bc_idx = bc_idx;
 			

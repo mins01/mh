@@ -2,7 +2,7 @@
 //$comment_url
 // print_r($bm_row );
 ?><div ng-app="bbsComment" class="bbs_c">
-<div class="panel panel-default bbs-mode-comment"  ng-controller="CommentCtrl as commentCtrl" ng-init="commentCtrl.init('<?=html_escape($comment_url )?>','<?=$bm_row['bm_use_commnet_score']?>')">
+<div class="panel panel-default bbs-mode-comment"  ng-controller="CommentCtrl as commentCtrl" ng-init="commentCtrl.init('<?=html_escape($comment_url )?>','<?=$bm_row['bm_use_commnet_number']?>')">
 	<div class="panel-heading">
 		댓글
 	</div>
@@ -13,8 +13,8 @@
 					<dt class="sc_title">
 						<a id="cmt_{{bc_row.bc_idx}}"  name="cmt_{{bc_row.bc_idx}}"></a>
 						<span class="nick bc_nick" ng-bind="bc_row.bc_name"></span> 
-						<span ng-hide="bc_row.bc_score &lt;= 0 || bm_use_commnet_score!='1'" >
-						/ <span class="bc_score bc-star-{{bc_row.bc_score}}"></span> 
+						<span ng-hide="bc_row.bc_number &lt;= 0 || bm_use_commnet_number!='1'" >
+						/ <span class="bc_number bc-star-{{bc_row.bc_number}}"></span> 
 						</span>
 						/ <span class="date bc_insert_date" ng-bind="bc_row.bc_insert_date|print_date"></span>
 						<div class="pull-right"  ng-if="m_row.m_idx>0">
@@ -66,11 +66,11 @@
 					<div class="form-inline text-right">
 						<span ng-show="msg.length&gt;0" ng-bind="msg">-</span>
 						<div class="form-group" >
-							<select ng-model="form.bc_score" 
-							ng-disabled="bm_use_commnet_score!='1'" 
-							ng-hide="bm_use_commnet_score!='1'" 
-							name="bc_score" class="form-control input-sm" style="width:9em">
-									<option value="0" class="bc-star bc-star-0" ng-selected="!form.bc_score">no-star</option>
+							<select ng-model="form.bc_number" 
+							ng-disabled="bm_use_commnet_number!='1'" 
+							ng-hide="bm_use_commnet_number!='1'" 
+							name="bc_number" class="form-control input-sm" style="width:9em">
+									<option value="0" class="bc-star bc-star-0" ng-selected="!form.bc_number">no-star</option>
 									<option value="1" class="bc-star bc-star-1">★☆☆☆☆</option>
 									<option value="2" class="bc-star bc-star-2">★★☆☆☆</option>
 									<option value="3" class="bc-star bc-star-3">★★★☆☆</option>

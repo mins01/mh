@@ -374,7 +374,7 @@
 									?>
 									<? 
 									$t_label='점수사용?';
-									$t_col = 'bm_use_commnet_score';
+									$t_col = 'bm_use_commnet_number';
 									?>
 									<div class="col-sm-4">
 										<label class="col-xs-6 control-label"><?=($t_label)?></label>
