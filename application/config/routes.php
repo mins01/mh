@@ -65,6 +65,10 @@ $route['_admin/(.*)'] = 'admin/$1';
 $route['bbs'] = 'mh/bbs/index';
 $route['bbs/(.*)'] = 'mh/bbs/index/$1';
 $route['bbs_comment/(.*)'] = 'mh/bbs_comment/index';
+
+$route['sdgn'] = 'front_sdgn/index';
+$route['sdgn/(.*)'] = 'front_sdgn/$1';
+
 $route['(.*)'] = 'front/$1';
 
 
