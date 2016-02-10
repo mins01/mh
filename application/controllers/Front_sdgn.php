@@ -19,7 +19,7 @@ class Front_sdgn extends MX_Controller {
 		$this->load->module('mh/layout');
 		
 		
-		$sdgn_menu = $this->menu_m->get_current_menu('sdgn_menus'); //기본 메뉴 그룹 변경.
+		$sdgn_menu = $this->get_current_menu('sdgn_menus'); //기본 메뉴 그룹 변경.
 		$this->config->set_item('menu_tree', array($sdgn_menu));
 	}
 
@@ -34,6 +34,7 @@ class Front_sdgn extends MX_Controller {
 		
 	}
 	public function get_current_menu($uri){
+
 		$current_menu = $this->menu_m->get_current_menu($uri);
 		$this->config->set_item('current_menu', $current_menu);
 		return $current_menu;
@@ -46,9 +47,9 @@ class Front_sdgn extends MX_Controller {
 		$data = array();
 
 		if($menu_uri!=''){
-			$menu_uri='sdgn/'.$menu_uri;
+			$menu_uri='/sdgn/'.$menu_uri;
 		}else{
-			$menu_uri='sdgn';
+			$menu_uri='/sdgn';
 		}
 		$menu = $this->get_current_menu($menu_uri);
 		if(!isset($menu)){

@@ -66,7 +66,12 @@ class Menu_model extends CI_Model {
 	}
 	private function extends_menu_rows(& $rows){
 		foreach($rows as & $r){
-			$r['url']=str_replace('//','/',$this->pre_uri.$r['mn_url']);
+			if(strpos($r['mn_url'],'/')===0){
+				$r['url']=$r['mn_url'];
+			}else{
+				$r['url']=str_replace('//','/',$this->pre_uri.$r['mn_url']);
+			}
+			
 			$r['active']=false;
 			$r['child']=array();
 			$r['breadcrumbs']=array();

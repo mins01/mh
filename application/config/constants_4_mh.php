@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 //== mh 설정
-$t = isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'';
+$http_host = isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'';
 define('SITE_NAME','공대여자홈');
 define('SITE_ADMIN_MAIL','mins01.lycos.co.kr@gmail.com');
 define('SITE_URI_PREFIX', '/mh/'); // URI 앞부분 경로
@@ -11,7 +11,7 @@ define('ADMIN_URI_PREFIX', SITE_URI_PREFIX.ADMIN_PREFIX.'/'); // 관리자 URI �
 define('DB_PREFIX', 'mh_'); // DB 접두사
 define('HASH_KEY','mh'); //해시용 추가 문자열. 한번 설정 후 바꾸면 안됩니다!
 
-define('IS_DEV', preg_match('/^[^\/]*dev[^\/]*\./',$t));
+define('IS_DEV', preg_match('/^[^\/]*dev[^\/]*\./',$http_host));
 define('IS_ADMIN', preg_match('|^'.SITE_URI_PREFIX.ADMIN_URI_PREFIX.'|',$_SERVER['REQUEST_URI']));
 
 if(IS_DEV){
@@ -22,15 +22,16 @@ if(IS_DEV){
 
 define('LOGIN_TYPE','cookie');
 define('LOGIN_EXPIRE',60*60*24*365);
-define('LOGIN_DOAMIN',$t);
-define('LOGIN_PATH',substr(SITE_URI_PREFIX,0,-1));
+define('LOGIN_DOAMIN',$http_host);
+//define('LOGIN_PATH',substr(SITE_URI_PREFIX,0,-1));
+define('LOGIN_PATH','/');
 define('LOGIN_PREFIX','');
 define('LOGIN_SECURE',false);
 
-define('ADMIN_LOGIN_NAME',md5('SESS_MH_ADMIN'.$t));
+define('ADMIN_LOGIN_NAME',md5('SESS_MH_ADMIN'.$http_host));
 define('ADMIN_LOGIN_TYPE','cookie');
 define('ADMIN_LOGIN_EXPIRE',60*60*24*365);
-define('ADMIN_LOGIN_DOAMIN',$t);
+define('ADMIN_LOGIN_DOAMIN',$http_host);
 define('ADMIN_LOGIN_PATH',substr(ADMIN_URI_PREFIX,0,-1));
 define('ADMIN_LOGIN_PREFIX','');
 define('ADMIN_LOGIN_SECURE',false);
