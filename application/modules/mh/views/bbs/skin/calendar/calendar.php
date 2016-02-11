@@ -77,7 +77,7 @@ $today_date = date('Y-m-d');
 	<? 
 	endif;
 	?>
-	<div class="table-responsive">
+	<div class="">
 		<table class="table  table-condensed  table-striped table-calender" style="table-layout:fixed">
 			<colgroup>
 			
