@@ -15,7 +15,7 @@
 			<?
 			switch($su_row['unit_properties']){
 				case '어썰트':$t = 'label-danger';break;
-				case '벨런스':$t = 'label-info';break;
+				case '밸런스':$t = 'label-info';break;
 				case '슈터':$t = 'label-success';break;
 			}
 			?>
