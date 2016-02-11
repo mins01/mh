@@ -114,11 +114,11 @@ class Bbs extends MX_Controller {
 			'list'=>$this->bm_row['bm_lv_list']<=$m_level,
 			'read'=>$this->bm_row['bm_lv_read']<=$m_level,
 			'write'=>$this->bm_row['bm_lv_write']<=$m_level,
-			'edit'=>$this->bm_row['bm_lv_edit']<=$m_level &&($is_guest_b_row || $is_mine),
+			'edit'=>$this->bm_row['bm_lv_edit']<=$m_level &&($is_guest_b_row || $is_mine ||$is_admin),
 			'set_represent'=>$this->bm_row['bm_lv_edit']<=$m_level &&($is_guest_b_row || $is_mine),
 			'answer'=>$this->bm_row['bm_lv_answer']<=$m_level,
 			'down'=>$this->bm_row['bm_lv_down']<=$m_level,
-			'delete'=>$this->bm_row['bm_lv_delete']<=$m_level &&($is_guest_b_row || $is_mine),
+			'delete'=>$this->bm_row['bm_lv_delete']<=$m_level &&($is_guest_b_row || $is_mine||$is_admin),
 			'admin'=>$is_admin,
 			'mine'=>$is_mine,
 		);
