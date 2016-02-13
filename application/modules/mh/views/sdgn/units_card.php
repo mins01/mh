@@ -1,6 +1,13 @@
 
+<table border="0" cellpadding="0" cellspacing="0" class="unit_card_table unit_card_info"
+data-unit_properties="<?=$su_row['unit_properties']?>"
+data-unit_rank="<?=$su_row['unit_rank']?>"
+data-unit_name="<?=preg_replace('/[\s\t]/','',$su_row['unit_name'])?>"
+>
+	<tr><td class="text-dot">&nbsp;</td></tr>
+	<tr><td>
 <? if($use_a): ?>
-	<a href="?unit_idx=<?=$su_row['unit_idx']?>" class="unit_card_img">
+	<a href="/sdgn/units?unit_idx=<?=$su_row['unit_idx']?>" class="unit_card_img">
 <? else: ?>
 	<div class="unit_card_img">
 <? endif; ?>
@@ -29,3 +36,6 @@
 <? else: ?>
 	</div>
 <? endif; ?>
+	</td></tr>
+	<tr><td class="text-dot">&nbsp;</td></tr>
+</table>

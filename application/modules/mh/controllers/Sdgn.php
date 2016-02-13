@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__).'/Bbs.php');
 
-class Sdgn_unit extends MX_Controller {
+class Sdgn extends MX_Controller {
 
 	public $b_id = 'sdgn_unit';
 	public $bm_row = null;
@@ -10,8 +10,11 @@ class Sdgn_unit extends MX_Controller {
 	public function __construct()
 	{
 		//parent::__construct();
-	
-
+		$this->load->module('mh_util/mh_cache');
+		
+		$this->config->set_item('layout_head_contents',
+			'<link href="/mh/css/sdgn/units.css" rel="stylesheet" type="text/css" />'
+		);
 	}
 	
 	public function _remap($method, $params = array())
@@ -52,8 +55,39 @@ class Sdgn_unit extends MX_Controller {
 		}
 		$this->{$conf['menu']['mn_arg1']}($conf,$param);
 	}
+	//==== 메인 화면용
+	public function main($conf,$param){
+		
+		
+		$cache_key = __METHOD__;
+		if (($view_data = $this->mh_cache->get($cache_key))===false)
+		{
+			$this->load->model('sdgn_etc_model','sdgn_etc_m');
+			//최대 평가 리플 수
+			$bc_rows = $this->sdgn_etc_m->select_comment_for_main();
+			//인기 기체
+			$su_rows = $this->sdgn_etc_m->select_units_for_main();
+			
+			$units_cards = array();
+			foreach($su_rows as $su_row){
+				$units_cards[] = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>true),true);
+			}
+				
+			$view_data = array(
+				'conf' =>$conf,
+				'param' =>$param,
+				'bc_rows'=>$bc_rows,
+				'su_rows'=>$su_rows,
+				'units_cards'=>$units_cards,
+			);
+			 $this->mh_cache->save($cache_key, $view_data,60*60);
+		}
+		
+		$this->load->view('mh/sdgn/main',$view_data);
+	}
 	
-	//====
+	
+	//==== 유닛 목록용
 	public function units($conf,$param){
 		$this->load->model('sdgn_unit_model','sdgn_unit_m');
 		$this->load->model('mh/bbs_master_model','bm_m');
@@ -64,9 +98,7 @@ class Sdgn_unit extends MX_Controller {
 		}
 		$this->skin_path = 'mh/bbs/skin/'.$this->bm_row['bm_skin'];
 		
-		$this->config->set_item('layout_head_contents',
-			'<link href="/mh/css/sdgn/units.css" rel="stylesheet" type="text/css" />'
-		);
+
 		$this->config->set_item('layout_title','SDGN UNITS');
 		
 		if($this->input->get('unit_idx')){
@@ -77,44 +109,56 @@ class Sdgn_unit extends MX_Controller {
 		
 	}
 	public function units_lists($conf,$param){
-		//print_r($su_rows);
-		$su_rows = $this->sdgn_unit_m->select_for_lists();
-		$units_cards = array();
-		foreach($su_rows as $su_row){
-			$units_cards[] = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>true),true);
+		$cache_key = __METHOD__;
+		if (($view_data = $this->mh_cache->get($cache_key))===false)
+		{
+			$su_rows = $this->sdgn_unit_m->select_for_lists();
+			$units_cards = array();
+			foreach($su_rows as $su_row){
+				$units_cards[] = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>true),true);
+			}
+			$view_data = array(
+			'conf' =>$conf,
+			'param' =>$param,
+			'units_cards'=>$units_cards,
+			'su_cnt' =>$this->sdgn_unit_m->count(),
+			
+			);
+			
+			$this->mh_cache->save($cache_key, $view_data,60*10);
 		}
-		$this->load->view('mh/sdgn/units',array(
-		'conf' =>$conf,
-		'param' =>$param,
-		'units_cards'=>$units_cards,
-		'su_cnt' =>$this->sdgn_unit_m->count(),
-		
-		));
+		$this->load->view('mh/sdgn/units',$view_data);
 	}
 	public function get_head_contents($mode){
 		return $this->load->view( $this->skin_path.'/head_contents',array('mode'=>$mode,'bm_row'=>$this->bm_row),true);
 	}
 	public function units_detail($conf,$param){
 		$unit_idx = $this->input->get('unit_idx');
-		$su_row=$this->sdgn_unit_m->select_by_unit_idx($unit_idx);
-		if(!isset($su_row)){
-			show_error('WHAT?');
-		}
+		
 		$mode = 'read';
 		$this->config->set_item('layout_head_contents',$this->config->item('layout_head_contents').$this->get_head_contents($mode));
 		
-		
-		$units_card = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>false),true);
-		
-		
-		$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$su_row['unit_idx']);
-		$this->load->view('mh/sdgn/units_detail',
-			array(
+		$cache_key = __METHOD__.'_'.$unit_idx;
+		if (($view_data = $this->mh_cache->get($cache_key))===false)
+		{
+			$su_row=$this->sdgn_unit_m->select_by_unit_idx($unit_idx);
+			if(!isset($su_row)){
+				show_error('WHAT?');
+			}
+			
+			$units_card = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>false),true);
+			
+			
+			$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$su_row['unit_idx']);
+			$view_data = array(
 				'su_row'=>$su_row,
 				'units_card'=>$units_card,
 				'html_comment'=>($this->bm_row['bm_use_comment']=='1')?$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url,'bm_row'=>$this->bm_row),true):'',
-			)
-		);
+			);
+			$this->mh_cache->save($cache_key, $view_data,60*10);
+		}
+		$this->load->view('mh/sdgn/units_detail',$view_data);
+		
 	}
 }
 
