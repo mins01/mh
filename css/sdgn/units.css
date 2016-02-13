@@ -1,14 +1,21 @@
 
 .unit_card{
-	min-width:180px;
+	padding:5px;
 	
 }
 .unit_card_img{
+	display:block;
 	position:relative;
 	margin:5px auto;
-	width:168px;
-	
+	max-width:168px;
+	min-width:150px;
+	background-color:#fff;
 }
+.unit_card_img:hover > img{
+	box-shadow: 2px 2px 5px #333;
+	opacity:0.9
+}
+.unit_card_img img{max-width:100%;}
 
 .unit_card_img > .unit_name{
 	position:absolute;
@@ -20,36 +27,83 @@
 	font-weight:bold;
 	color:#fff;
 }
+.unit_card_img > .avg_star{
+	position:absolute;
+	left: 5px;
+	top: 25px;
+	background-color:rgba(0,0,0,0.2);
+	border-radius: 3px;
+	font-weight:bold;
+	#color:#fff;
+	font-size:20px;
+	#text-shadow: 1px 1px 0.5em rgba(255,255,255,0.4);
+}
+.avg_star-0{display:none}
+.avg_star-1{
+	color:#963;
+	text-shadow: 1px 1px 0.5em #963;
+}
+.avg_star-2{
+	color:#096;
+	text-shadow: 1px 1px 0.5em #096;
+}
+.avg_star-3{
+	color:#039;
+	text-shadow: 1px 1px 0.5em #039;
+}
+.avg_star-4{
+
+	color:#C30;
+	text-shadow: 1px 1px 0.5em #C30;
+}
+.avg_star-5{
+	color:#939;
+	text-shadow: 1px 1px 0.5em #939;
+}
 
 .unit_card_img > .unit_properties{
 	position:absolute;
 	left: 5px;
 	top: 5px;
 }
+
 .unit_card_img > .unit_rank{
 	display:block;
-	width:1.5em;height:1.5em;
-	line-height:1.5em;
+	
 	position:absolute;
 	right: 2px;
 	top: 2px;
+	
+}
+
+.unit_rank{
+	width:1.5em;height:1.5em;
+	line-height:1.5em;
 	font-weight:bold;
 	font-style: italic;
 	border-radius: 1em;
 	color:#fff;
 	font-size:20px;
-	#box-shadow: 2px 2px 5px #abc;
 	background-color:rgba(0,0,0,0.5);
+	display:inline-block;
+	text-align:center;
 }
-.unit_rank.unit_rank-C{
 
+.unit_rank.unit_rank-C{
+	color:#BEFFE4;
+	text-shadow: 1px 1px 0.5em #BEFFE4;
 }
 .unit_rank.unit_rank-B{
-
+	color:#BED6FF;
+	text-shadow: 1px 1px 0.5em #BED6FF;
 }
 .unit_rank.unit_rank-A{
-
+	color:#FF8D56;
+	text-shadow: 1px 1px 0.5em #FF8D56;
 }
 .unit_rank.unit_rank-S{
-
+	color:#FFFF95;
+	text-shadow: 1px 1px 0.5em #FFFF95;
 }
+
+.row > div{margin-bottom:2px;}

@@ -18,15 +18,21 @@ class Sdgn_unit_model extends CI_Model {
 		'b_etc_0','b_etc_1','b_etc_2','b_etc_3','b_etc_4',
 		'b_num_0','b_num_1','b_num_2','b_num_3','b_num_4',
 	);
-	public function select(){
-		return $this->_select(null,'unit_idx DESC','*');
+	public function select_for_lists(){
+		return $this->_select(null,'unit_idx DESC','su.*');
+	}
+	public function select_by_unit_idx($unit_idx){
+		$su_rows = $this->_select(array('unit_idx'=>$unit_idx),null,'*');
+		return isset($su_rows[0])?$su_rows[0]:null;
 	}
 	public function count(){
 		$su_rows = $this->_select(null,null,'count(*) as CNT');
 		return $su_rows[0]['CNT'];
 	}
 	private function _select($wheres=null,$order_by=null,$select='*'){
-		$this->db->from('sdgn_unit su')->select($select);
+		$select_avg_star = "(SELECT AVG(bc_number) avg_star FROM mh_bbs_sdgnunits_comment bc WHERE b_idx= su.unit_idx and bc.bc_isdel =0 AND bc_number>0)";
+		$select .=",{$select_avg_star} as avg_star";
+		$this->db->from('sdgn_unit su')->select($select,false);
 		if(isset($wheres)){
 			$this->db->where($wheres);
 		}

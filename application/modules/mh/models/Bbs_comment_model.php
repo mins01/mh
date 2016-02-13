@@ -167,6 +167,7 @@ class Bbs_comment_model extends CI_Model {
 		$this->db->from($this->tbl)
 		->set($sets)
 		->set('bc_insert_date','now()',false)
+		->set('bc_ip',isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:'CLI')
 		->set('bc_update_date','now()',false)->insert();
 		$bc_idx = $this->db->insert_id();
 		if($bc_idx){
