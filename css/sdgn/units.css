@@ -14,6 +14,7 @@
 .unit_card_table{
 	border-width:0;
 	table-layout:fixed;
+	margin:0 auto;
 }
 .unit_card_table td{
 	border-width:0;

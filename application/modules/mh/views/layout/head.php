@@ -67,7 +67,7 @@
 				<div class="navbar-right">
 					<? if(!$logedin):?>
 					<p class="navbar-text text-right ">
-					<button class="btn btn-success btn-xs" onclick="window.open('<?=base_url().'join'?>','_self')">회원가입</button> 
+					<button class="btn btn-success btn-xs" onclick="window.open('<?=base_url('join')?>','_self')">회원가입</button> 
 					<button class="btn btn-warning btn-xs" onclick="window.open('<?=base_url().'search_id'?>','_self')">아이디/비밀번호 찾기</button> 
 					<button class="btn btn-primary btn-xs" onclick="window.open('<?=base_url().'login'?>','_self')">로그인</button>
 					</p>

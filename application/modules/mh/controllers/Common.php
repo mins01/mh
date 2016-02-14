@@ -75,7 +75,7 @@ class Common extends MX_Controller {
 	public function set_logout(){
 		switch(LOGIN_TYPE){
 			case 'cookie':
-				$this->set_login_at_cookie('',-100);
+				$this->delete_login_at_cookie('');
 				break;
 		}
 	}
@@ -98,6 +98,29 @@ class Common extends MX_Controller {
 				'name'   => LOGIN_NAME,
 				'value'  => $str,
 				'expire' => $expire,
+				'domain' => LOGIN_DOAMIN,
+				'path'   => LOGIN_PATH,
+				'prefix' => LOGIN_PREFIX,
+				'secure' => LOGIN_SECURE
+		);
+		$this->input->set_cookie($data);
+	}
+	public function delete_login_at_cookie(){
+		$data = array(
+				'name'   => LOGIN_NAME,
+				'value'  => '',
+				'expire' => -1,
+				'domain' => LOGIN_DOAMIN,
+				'path'   => '/mh',
+				'prefix' => LOGIN_PREFIX,
+				'secure' => LOGIN_SECURE
+		);
+		$this->input->set_cookie($data);
+		
+		$data = array(
+				'name'   => LOGIN_NAME,
+				'value'  => '',
+				'expire' => -1,
 				'domain' => LOGIN_DOAMIN,
 				'path'   => LOGIN_PATH,
 				'prefix' => LOGIN_PREFIX,
