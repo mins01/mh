@@ -15,7 +15,7 @@
 				</dl>
 				<dl class="">
 					<dt>소개</dt>
-					<dd><?=html_escape($su_row['unit_txt'])?></dd>
+					<dd><?=($su_row['unit_txt'])?></dd>
 				</dl>
 			</div>
 		</div>
