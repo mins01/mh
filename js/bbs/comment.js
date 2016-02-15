@@ -75,7 +75,12 @@
 				method: 'GET',
 				url: $scope.comment_url,
 			})
-			.success($scope.callback_success)
+			.success(function(data, status, headers, config){
+				$scope.callback_success(data, status, headers, config);
+				if(document.location.hash.length>0 && document.location.hash.indexOf('#cmt_')===0){
+					setTimeout(function(){document.location.assign(document.location.hash);},500);
+				}
+			})
 			.error($scope.callback_error);
 		}
 		$scope.call_ajax = function(d){

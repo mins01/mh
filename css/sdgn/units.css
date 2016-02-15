@@ -11,16 +11,39 @@
 	width:45%;
 	
 }
-.unit_card_table{
+
+.unit_card_a:hover{
+	text-decoration: none !important;
+}
+
+.unit_card_table_layout{
 	border-width:0;
 	table-layout:fixed;
 	margin:0 auto;
+	width:100%;
 }
-.unit_card_table td{
+.unit_card_top_info{
+	height:130px;
+	margin-bottom: -130px;
+	z-index: 2;
+	position: relative;
+}
+.unit_card_bottom_info{
+	margin-top: -65px;
+	z-index: 2;
+	position: relative;
+}
+.unit_card_bottom_info td{
+	vertical-align:bottom;
+	height:60px;
+}
+
+.unit_card_table_layout td{
 	border-width:0;
-	padding:0; margin:0
+	padding:0; margin:0;
+	
 }
-.unit_card_table td.text-dot{
+.text-dot{
 	overflow:hidden;
 	height:2px;
 	line-height: 2px;
@@ -34,32 +57,28 @@
 	min-width:150px;
 	background-color:#fff;
 }
-.unit_card_img:hover > img{
+.unit_card_img:hover  img{
 	box-shadow: 2px 2px 5px #333;
 	opacity:0.9
 }
 .unit_card_img img{max-width:100%;}
 
-.unit_card_img > .unit_name{
-	position:absolute;
-	left: 10px;
-	right: 10px;
-	bottom: 5px;
+.unit_card_img .unit_name{
+	text-align:center;
+	margin:0 5px;
 	background-color:rgba(255,255,255,0.3);
 	border-radius: 3px;
 	font-weight:bold;
 	color:#fff;
 }
-.unit_card_img > .avg_star{
-	position:absolute;
-	left: 5px;
-	top: 25px;
+.unit_card_img .avg_star{
+	font-size:20px;
+	line-height:1em;
+	width:20px;
+	margin-left:5px;
 	background-color:rgba(0,0,0,0.2);
 	border-radius: 3px;
 	font-weight:bold;
-	#color:#fff;
-	font-size:20px;
-	#text-shadow: 1px 1px 0.5em rgba(255,255,255,0.4);
 }
 .avg_star-0{display:none}
 .avg_star-1{
@@ -84,41 +103,34 @@
 	text-shadow: 1px 1px 0.5em #939;
 }
 
-.unit_card_img > .unit_properties{
-	position:absolute;
-	left: 5px;
-	top: 5px;
+.unit_card_img  .unit_properties{
+	margin:0px 0px 0 5px;
 }
 
-.unit_card_img > .unit_rank{
-	display:block;
-	
-	position:absolute;
-	right: 2px;
-	top: 2px;
-	
+.unit_card_img .unit_rank{
+	margin:0px 2px 0 0;
 }
-
 .unit_rank{
-	width:1.5em;height:1.5em;
+	width:30px;
+	height:30px;
 	line-height:1.5em;
 	font-weight:bold;
 	font-style: italic;
 	border-radius: 1em;
 	color:#fff;
 	font-size:20px;
-	background-color:rgba(0,0,0,0.5);
+	background-color:rgba(0,0,0,0.8);
 	display:inline-block;
 	text-align:center;
 }
 
 .unit_rank.unit_rank-C{
-	color:#BEFFE4;
-	text-shadow: 1px 1px 0.5em #BEFFE4;
+	color:#ccc;
+	text-shadow: 1px 1px 0.5em #ccc;
 }
 .unit_rank.unit_rank-B{
-	color:#BED6FF;
-	text-shadow: 1px 1px 0.5em #BED6FF;
+	color:#86A9F0;
+	text-shadow: 1px 1px 0.5em #86A9F0;
 }
 .unit_rank.unit_rank-A{
 	color:#FF8D56;
@@ -130,3 +142,29 @@
 }
 
 .row > div{margin-bottom:2px;}
+
+a.unit_properties_num:hover{opacity:0.8;}
+.unit_properties_num-1{ background-color: #d9534f;}
+.unit_properties_num-2{ background-color: #5bc0de;}
+.unit_properties_num-3{ background-color: #5cb85c;}
+
+
+/* 상세부분 */
+.unit_weapon{
+}
+.unit_weapon::after{
+	content: "";
+	clear: both;
+	display: block;
+}
+.unit_weapon img{
+	
+}
+.unit_weapon_name{margin-top:-1em;line-height:2em;width:114px;text-align:center;font-weight:bold;}
+.unit_skill::after{
+	content: "";
+	clear: both;
+	display: block;
+}
+.unit_skill > img{float:left;}
+.unit_skill_name{font-weight:bold;}

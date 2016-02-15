@@ -13,7 +13,7 @@ class Sdgn_etc_model extends CI_Model {
 				WHERE bc_isdel = 0 AND bc_number > 0
 				GROUP BY bc_name
 				ORDER BY cnt DESC
-				LIMIT 7
+				LIMIT 10
 			";
 		return $this->db->query($sql)->result_array();
 		
@@ -26,11 +26,22 @@ class Sdgn_etc_model extends CI_Model {
 				WHERE bc_isdel = 0 AND bc_number > 0
 				GROUP BY b_idx
 				ORDER BY cnt DESC , max_bc_insert_date desc
-				LIMIT 7) bc
+				LIMIT 10) bc
 				JOIN sdgn_units su USING(unit_idx)
 			";
 		return $this->db->query($sql)->result_array();
-		
+	}
+	
+	public function select_last_comment_for_main(){
+		$sql = "	SELECT 
+				*
+				FROM(SELECT *,b_idx unit_idx FROM mh_bbs_sdgnunits_comment
+				WHERE bc_isdel = 0 AND bc_number > 0
+				ORDER BY bc_idx DESC
+				LIMIT 10) bc
+				JOIN sdgn_units su USING(unit_idx)
+			";
+		return $this->db->query($sql)->result_array();
 	}
 	
 

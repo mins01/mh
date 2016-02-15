@@ -1,14 +1,6 @@
 <?
 //$su_row
 ?>
-
-<?
-switch($su_row['unit_properties']){
-	case '어썰트':$unit_properties_class = 'label-danger';break;
-	case '밸런스':$unit_properties_class = 'label-info';break;
-	case '슈터':$unit_properties_class = 'label-success';break;
-}
-?>
 <ul class="list-group">
 	<li class="list-group-item  active"><?=html_escape($su_row['unit_name'])?></li>
 	<li class="list-group-item">
@@ -34,7 +26,7 @@ switch($su_row['unit_properties']){
 			<dt>속성</dt>
 			<dd>
 			<span class="unit_rank unit_rank-<?=html_escape($su_row['unit_rank'])?>" ><?=html_escape($su_row['unit_rank'])?></span>랭크 / 
-			<span class="label label-default <?=$unit_properties_class?>"><?=html_escape($su_row['unit_properties'])?></span> / 
+			<span class="label unit_properties_num unit_properties_num-<?=$su_row['unit_properties_num']?>"><?=html_escape($su_row['unit_properties'])?></span> / 
 			<?=html_escape($su_row['unit_movetype'])?> 
 			
 			</dd>
@@ -47,15 +39,15 @@ switch($su_row['unit_properties']){
 				<div class="row">
 					<div class="col-sm-4 unit_weapon unit_weapon-1">
 						<img src="<?=html_escape($su_row['unit_weapon1_img'])?>">
-						<span><?=html_escape($su_row['unit_weapon1'])?></span>
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon1'])?></div>
 					</div>
 					<div class="col-sm-4 unit_weapon unit_weapon-2">
 						<img src="<?=html_escape($su_row['unit_weapon2_img'])?>">
-						<span><?=html_escape($su_row['unit_weapon2'])?></span>
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon2'])?></div>
 					</div>
 					<div class="col-sm-4 unit_weapon unit_weapon-3">
 						<img src="<?=html_escape($su_row['unit_weapon3_img'])?>">
-						<span><?=html_escape($su_row['unit_weapon3'])?></span>
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon3'])?></div>
 					</div>
 				</div>
 			</dd>
@@ -66,17 +58,20 @@ switch($su_row['unit_properties']){
 			<dt>스킬</dt>
 			<dd>
 				<div class="row">
-					<div class="col-sm-4 unit_skil unit_skil-1">
-						<img class="img-rounded" src="<?=html_escape($su_row['unit_skil1_img'])?>">
-						<span><?=html_escape($su_row['unit_skil1'])?></span>
+					<div class="col-sm-4 unit_skill unit_skill-1">
+						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill1_img'])?>">
+						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill1'])?></div>
+						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill1_desc'])?></div>
 					</div>
-					<div class="col-sm-4 unit_skil unit_skil-2">
-						<img class="img-rounded" src="<?=html_escape($su_row['unit_skil2_img'])?>">
-						<span><?=html_escape($su_row['unit_skil2'])?></span>
+					<div class="col-sm-4 unit_skill unit_skill-2">
+						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill2_img'])?>">
+						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill2'])?></div>
+						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill2_desc'])?></div>
 					</div>
-					<div class="col-sm-4 unit_skil unit_skil-3">
-						<img class="img-rounded" src="<?=html_escape($su_row['unit_skil3_img'])?>">
-						<span><?=html_escape($su_row['unit_skil3'])?></span>
+					<div class="col-sm-4 unit_skill unit_skill-3">
+						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill3_img'])?>">
+						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill3'])?></div>
+						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill3_desc'])?></div>
 					</div>
 				</div>
 			</dd>

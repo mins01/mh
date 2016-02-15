@@ -60,18 +60,23 @@ class Sdgn extends MX_Controller {
 		
 		
 		$cache_key = __METHOD__;
-		if (($view_data = $this->mh_cache->get($cache_key))===false)
+		$disable_cache = IS_DEV;
+		
+		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
 			$this->load->model('sdgn_etc_model','sdgn_etc_m');
-			//최대 평가 리플 수
+			//최대 평가 코멘트 수
 			$bc_rows = $this->sdgn_etc_m->select_comment_for_main();
 			//인기 기체
 			$su_rows = $this->sdgn_etc_m->select_units_for_main();
+			// 최근 코멘트
+			$last_bc_rows = $this->sdgn_etc_m->select_last_comment_for_main();
 			
 			$units_cards = array();
 			foreach($su_rows as $su_row){
 				$units_cards[] = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>true),true);
 			}
+			
 				
 			$view_data = array(
 				'conf' =>$conf,
@@ -79,8 +84,9 @@ class Sdgn extends MX_Controller {
 				'bc_rows'=>$bc_rows,
 				'su_rows'=>$su_rows,
 				'units_cards'=>$units_cards,
+				'last_bc_rows'=>$last_bc_rows,
 			);
-			 $this->mh_cache->save($cache_key, $view_data,60*60);
+			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*60);
 		}
 		
 		$this->load->view('mh/sdgn/main',$view_data);
@@ -110,7 +116,9 @@ class Sdgn extends MX_Controller {
 	}
 	public function units_lists($conf,$param){
 		$cache_key = __METHOD__;
-		if (($view_data = $this->mh_cache->get($cache_key))===false)
+		$disable_cache = IS_DEV;
+		
+		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
 			$su_rows = $this->sdgn_unit_m->select_for_lists();
 			$units_cards = array();
@@ -124,8 +132,7 @@ class Sdgn extends MX_Controller {
 			'su_cnt' =>$this->sdgn_unit_m->count(),
 			
 			);
-			
-			$this->mh_cache->save($cache_key, $view_data,60*10);
+			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
 		}
 		$this->load->view('mh/sdgn/units',$view_data);
 	}
@@ -138,8 +145,9 @@ class Sdgn extends MX_Controller {
 		$mode = 'read';
 		$this->config->set_item('layout_head_contents',$this->config->item('layout_head_contents').$this->get_head_contents($mode));
 		
+		$disable_cache = IS_DEV;
 		$cache_key = __METHOD__.'_'.$unit_idx;
-		if (($view_data = $this->mh_cache->get($cache_key))===false)
+		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
 			$su_row=$this->sdgn_unit_m->select_by_unit_idx($unit_idx);
 			if(!isset($su_row)){
@@ -155,7 +163,8 @@ class Sdgn extends MX_Controller {
 				'units_card'=>$units_card,
 				'html_comment'=>($this->bm_row['bm_use_comment']=='1')?$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url,'bm_row'=>$this->bm_row),true):'',
 			);
-			$this->mh_cache->save($cache_key, $view_data,60*10);
+			
+			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
 		}
 		$this->load->view('mh/sdgn/units_detail',$view_data);
 		
