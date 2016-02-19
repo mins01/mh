@@ -36,7 +36,7 @@ class Sdgn_etc_model extends CI_Model {
 		$sql = "	SELECT 
 				*
 				FROM(SELECT *,b_idx unit_idx FROM mh_bbs_sdgnunits_comment
-				WHERE bc_isdel = 0 AND bc_number > 0
+				WHERE bc_isdel = 0
 				ORDER BY bc_idx DESC
 				LIMIT 10) bc
 				JOIN sdgn_units su USING(unit_idx)

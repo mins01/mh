@@ -104,7 +104,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 					<div class="form-group">
 						<label class="col-sm-2 control-label">m_pass <input type="checkbox" ng-checked="able_change_m_pass" ng-click="able_change_m_pass=!able_change_m_pass"></label>
 						<div class="col-sm-4">
-							<input type="text" maxlength="20" ng-disabled="!able_change_m_pass" class="form-control" name="m_pass" placeholder="m_pass" ng-model="selected_m_row.m_pass">
+							<input type="password" maxlength="20" ng-disabled="!able_change_m_pass" class="form-control" name="m_pass" placeholder="m_pass" ng-model="selected_m_row.m_pass">
 						</div>
 						<label class="col-sm-2 control-label">m_level</label>
 						<div class="col-sm-4 form-control-static">
@@ -114,6 +114,12 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 							, <label><input type="radio" value="99" ng-model="selected_m_row.m_level">관리자</label>
 						</div>
 						
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">m_email</label>
+						<div class="col-sm-4">
+							<input type="email" maxlength="200" class="form-control" name="m_email" placeholder="m_email" ng-model="selected_m_row.m_email">
+						</div>
 					</div>
 					<div class="form-group text-right">
 						<div class="col-sm-12">
@@ -206,7 +212,7 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 	}
 	$scope.select_m_row = function(m_row,mode){
 		$scope.mode = mode;
-		$scope.selected_m_row = angular.copy(m_row);		
+		$scope.selected_m_row = angular.copy(m_row);
 	}
 	$scope.set_page = function(page){
 		$scope.page = page;

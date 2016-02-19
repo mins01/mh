@@ -80,6 +80,7 @@ class Json_member_manager extends MX_Controller {
 			'm_pass',
 			//'m_login_date',
 			'm_name','m_nick','m_isout',
+			'm_email',
 			//'m_update_date',
 		);
 		$rt = array();
@@ -91,6 +92,11 @@ class Json_member_manager extends MX_Controller {
 			
 		}
 		return $rt;
+	}
+	private function _select_by_m_idx($m_idx){
+		$m_row = $this->member_m->select_by_m_idx($m_idx);
+		unset($m_row['m_pass']);
+		return $m_row;
 	}
 	private function insert(){
 		// $mn_id = $this->input->post('mn_id');
@@ -145,13 +151,11 @@ class Json_member_manager extends MX_Controller {
 		$r = $this->member_m->update($wheres,$sets);
 		if(!$r){
 			$json = array(
-				//'m_row'=>$this->member_m->select_by_m_idx($m_idx),
-				//'m_idx'=>$m_idx,
 				'msg' => $this->member_m->msg,
 			);
 		}else{
 			$json = array(
-				'm_row'=>$this->member_m->select_by_m_idx($m_idx),
+				'm_row'=>$this->_select_by_m_idx($m_idx),
 				'm_idx'=>$m_idx,
 				'msg' => "{$m_id}을 수정하였습니다.",
 			);
@@ -246,7 +250,7 @@ class Json_member_manager extends MX_Controller {
 		$this->load->model('mh/bbs_master_model','bm_m');
 		$m_idx = $this->input->get('m_idx');
 		$json = array(
-			'm_row'=>$this->member_m->select_by_m_idx($m_idx),
+			'm_row'=>$this->_select_by_m_idx($m_idx),
 		);
 		return $this->echo_json($json);
 	}
