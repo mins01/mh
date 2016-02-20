@@ -11,7 +11,7 @@ class Sdgn extends MX_Controller {
 	{
 		//parent::__construct();
 		$this->load->module('mh_util/mh_cache');
-		
+		$this->load->model('sdgn_etc_model','sdgn_etc_m');
 		$this->config->set_item('layout_head_contents',
 			'<link href="/mh/css/sdgn/units.css" rel="stylesheet" type="text/css" />'
 		);
@@ -19,7 +19,7 @@ class Sdgn extends MX_Controller {
 	
 	public function _remap($method, $params = array())
 	{
-
+		
 		$this->index($params);
 	}
 	
@@ -64,7 +64,7 @@ class Sdgn extends MX_Controller {
 		
 		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
-			$this->load->model('sdgn_etc_model','sdgn_etc_m');
+			
 			//최대 평가 코멘트 수
 			$bc_rows = $this->sdgn_etc_m->select_comment_for_main();
 			//인기 기체
@@ -168,6 +168,22 @@ class Sdgn extends MX_Controller {
 		}
 		$this->load->view('mh/sdgn/units_detail',$view_data);
 		
+	}
+	
+	public function vs_sdgo($conf,$param){
+		$cache_key = __METHOD__;
+		$disable_cache = IS_DEV;
+		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
+		{
+			$view_data = array(
+			'sdgn_count_units'=>$this->sdgn_etc_m->count_units(),
+			'sdgo_count_units'=>767,
+			'sdgn_count_skills'=>$this->sdgn_etc_m->count_skills(),
+			'sdgo_count_skills'=>232,
+			);
+			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
+		}
+		$this->load->view('mh/sdgn/vs_sdgo',$view_data);
 	}
 }
 

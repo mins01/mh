@@ -168,3 +168,6 @@ a.unit_properties_num:hover{opacity:0.8;}
 }
 .unit_skill > img{float:left;}
 .unit_skill_name{font-weight:bold;}
+
+
+.table-vertical-middle td{vertical-align:middle !important;}
