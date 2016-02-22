@@ -2,7 +2,9 @@
 // bc_rows , su_rows, units_cards
 ?>
 
-<h1 class="text-center" ><a href="http://sdgn.co.kr/" target="_blank"><img src="http://static.sdgn.co.kr/next/images/common/logo.png"></a></h1>
+<h1 class="text-center" ><a href="http://sdgn.co.kr/" target="_blank"><!--<img src="http://static.sdgn.co.kr/next/images/common/logo.png">--><img src="http://static.sdgn.co.kr/next/images/intro/160205/logo.png"></a></h1>
+
+
 <h3 class="text-center" >
 	SD건담넥스트에볼루션분석
 </h3>

@@ -60,6 +60,19 @@ class Sdgn_etc_model extends CI_Model {
 		return $rows[0]['CNT'];
 	}
 	
+	public function count_comments(){
+		$sql ="SELECT COUNT(*) CNT FROM mh_bbs_sdgnunits_comment bc
+		where bc.bc_isdel=0";
+		$rows = $this->db->query($sql)->result_array();
+		return $rows[0]['CNT'];
+	}
+	public function count_comment_users(){
+		$sql ="SELECT COUNT(DISTINCT m_idx) CNT FROM mh_bbs_sdgnunits_comment bc
+		where bc.bc_isdel=0";
+		$rows = $this->db->query($sql)->result_array();
+		return $rows[0]['CNT'];
+	}
+	
 
 
 	

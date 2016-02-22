@@ -71,4 +71,33 @@
 		<td class="text-center"><strong><?=($label)?></strong></td>
 		<td class="text-left" ><label <?=$class2?>><?=$t2?></label></td>
 	</tr>
+	<? /* ?>
+	<?
+	$t1 = $sdgn_count_comments;
+	$t2 = $sdgo_count_comments;
+	$per = round($t1/$t2*100,2);
+	$label = "한마디<br>({$per}%)";
+	$class1 = $t1>$t2?$class1_def:$class2_def;
+	$class2 = $t1<$t2?$class1_def:$class2_def;
+	?>
+	<tr>
+		<td class="text-right" ><label <?=$class1?>><?=$t1?></label></td>
+		<td class="text-center"><strong><?=($label)?></strong></td>
+		<td class="text-left" ><label <?=$class2?>><?=$t2?></label></td>
+	</tr>
+	<?
+	$t1 = $sdgn_count_comment_users;
+	$t2 = $sdgo_count_comment_users;
+	$per = round($t1/$t2*100,2);
+	$label = "한마디<br>참여자<br>({$per}%)";
+	$class1 = $t1>$t2?$class1_def:$class2_def;
+	$class2 = $t1<$t2?$class1_def:$class2_def;
+	?>
+	<tr>
+		<td class="text-right" ><label <?=$class1?>><?=$t1?></label></td>
+		<td class="text-center"><strong><?=($label)?></strong></td>
+		<td class="text-left" ><label <?=$class2?>><?=$t2?></label></td>
+	</tr>
+	<? */ ?>
+	
 </table>
