@@ -64,10 +64,12 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 				</div>
 				<label class="col-sm-2 control-label">정렬순서</label>
 				<div class="col-sm-4">
-					<select class="form-control" placeholder="mn_sort" ng-model="selected_obj.mn_sort"  required >
+					<!-- <select class="form-control" placeholder="mn_sort" ng-model="selected_obj.mn_sort"  required >
 						<option value="" >#NONE#</option>
-						<option ng-repeat="v in [-1,0,1,2,3,4,5,6,7,8,9]" value="{{v}}" >{{v}}</option>
+						<option ng-repeat="v in mn_sorts" value="{{v}}" >{{v}}</option>
 					</select>
+					-->
+					<input type="number" string-to-number  min="-10" max="99"  class="form-control" placeholder="mn_sort" ng-model="selected_obj.mn_sort"  required >
 				</div>
 			</div>
 			<div class="form-group">
@@ -199,11 +201,29 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 		}else{
 			$scope.selected_obj.mode='';
 		}
+		if($scope.selected_obj.mn_sort.length>0){
+			$scope.selected_obj.mn_sort = parseInt($scope.selected_obj.mn_sort);
+		}else{
+			$scope.selected_obj.mn_sort = 0;
+		}
 		//console.log($scope.selected_obj.mode);
 	}
 	$scope.form_appendChild=function(menu){
+		console.log($scope.mn_rows["mn-"+menu.mn_id]);
+		if(!$scope.mn_rows["mn-"+menu.mn_id]){
+			return false;
+		}
 		$scope.selected_obj = {}
 		$scope.selected_obj.mn_parent_id  = menu.mn_id;
+		var t = $scope.mn_rows["mn-"+menu.mn_id].child
+		var mx = 0;
+		for(var i=0,m=t.length;i<m;i++){
+			var tt = Math.floor(parseInt(t[i].mn_sort)/10)*10
+			mx = Math.max(mx,tt);
+		}
+		mx = Math.min(mx+10,99);
+		$scope.selected_obj.mn_sort = mx;
+		//$scope.selected_obj.mn_sort = 
 		$scope.selected_obj.mode='insert';
 	}
 	//트리모양으로 만든다.
@@ -263,8 +283,8 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 			$scope.page_lists = data.page_lists;
 		}
 		if(data.mn_id){
-			if($scope.mn_rows[data.mn_id]){
-				$scope.form_update($scope.mn_rows[data.mn_id]);
+			if($scope.mn_rows["mn-"+data.mn_id]){
+				$scope.form_update($scope.mn_rows["mn-"+data.mn_id]);
 			}else{
 				$scope.form_update({});
 			}

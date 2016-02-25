@@ -7,6 +7,7 @@ class Sdgn_etc_model extends CI_Model {
 	public $bm_row = array();
 	public $error = '';
 	private $tbl = '';
+	private $select_avg_star = "(SELECT AVG(bc_number) avg_star FROM mh_bbs_sdgnunits_comment bc WHERE b_idx= su.unit_idx and bc.bc_isdel =0 AND bc_number>0)";
 	
 	public function select_comment_for_main(){
 		$sql = "SELECT bc_name,COUNT(*) cnt FROM mh_bbs_sdgnunits_comment bc
@@ -72,7 +73,14 @@ class Sdgn_etc_model extends CI_Model {
 		$rows = $this->db->query($sql)->result_array();
 		return $rows[0]['CNT'];
 	}
-	
+	public function select_for_last_comments($limit=10){
+		$sql = "SELECT *,{$this->select_avg_star} as avg_star FROM (SELECT * FROM mh_bbs_sdgnunits_comment bc
+						WHERE bc.bc_isdel = 0
+						ORDER BY bc_insert_date desc
+						LIMIT {$limit}) bc
+						JOIN sdgn_units su ON(unit_idx = b_idx)";
+		return $this->db->query($sql)->result_array();
+	}
 
 
 	

@@ -1,3 +1,8 @@
+/* 기본 */
+a:hover,a:focus{
+	text-decoration: none !important;
+}
+
 
 .unit_card{
 	padding:5px;
@@ -73,13 +78,20 @@
 }
 .unit_card_img .avg_star{
 	font-size:20px;
-	line-height:1em;
-	width:20px;
-	margin-left:5px;
+	display:block;
 	background-color:rgba(0,0,0,0.2);
+	width:20px;
+	padding:0px;
+	margin-left:5px;
+}
+.avg_star{
+	line-height:1em;
+	padding:2px;
 	border-radius: 3px;
 	font-weight:bold;
+	display:inline-block;
 }
+
 .avg_star-0{display:none}
 .avg_star-1{
 	color:#963;
@@ -148,6 +160,16 @@ a.unit_properties_num:hover{opacity:0.8;}
 .unit_properties_num-2{ background-color: #5bc0de;}
 .unit_properties_num-3{ background-color: #5cb85c;}
 
+.last_comments .unit_name{
+	display:inline-block;
+	text-align:center;
+	margin:0 1px;
+	padding:0 5px;
+	
+	border-radius: 5px;
+	font-weight:bold;
+	color:#fff;
+}
 
 /* 상세부분 */
 .unit_weapon{
@@ -169,5 +191,7 @@ a.unit_properties_num:hover{opacity:0.8;}
 .unit_skill > img{float:left;}
 .unit_skill_name{font-weight:bold;}
 
-
+.last_comments table{table-layout:fixed;width:100%; margin:0;padding:0;}
+.last_comments table td{padding:0;margin:0;}
 .table-vertical-middle td{vertical-align:middle !important;}
+.last_comments .bc_name{display:inline-block;}

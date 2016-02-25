@@ -79,6 +79,7 @@ class Sdgn_json extends MX_Controller {
 		
 	}
 	public function units_lists($conf,$param){
+		$this->output->cache(1);
 		$cache_key = __METHOD__;
 		$disable_cache = IS_DEV;
 		

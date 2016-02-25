@@ -191,6 +191,25 @@ class Sdgn extends MX_Controller {
 		}
 		$this->load->view('mh/sdgn/vs_sdgo',$view_data);
 	}
+	
+	public function last_comments($conf,$param){
+		$cache_key = __METHOD__;
+		$disable_cache = IS_DEV;
+		
+		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
+		{
+			
+			$bc_rows = $this->sdgn_etc_m->select_for_last_comments(20);
+			$units_cards = array();
+			$view_data = array(
+			'conf' =>$conf,
+			'param' =>$param,
+			'bc_rows'=>$bc_rows,
+			);
+			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
+		}
+		$this->load->view('mh/sdgn/last_comments',$view_data);
+	}
 }
 
 

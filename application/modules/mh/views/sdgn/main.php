@@ -28,7 +28,7 @@
 	</div>
 	<div class="col-sm-4">
 		<div class="list-group">
-			<div class="list-group-item active text-center"><strong>최근 한마디</strong></div>
+			<a href="/sdgn/last_comments" class="list-group-item active text-center">최근 한마디</strong></a>
 			<? 
 			$i_cnt = 1;
 			foreach($last_bc_rows as $last_bc_row): 
@@ -63,5 +63,14 @@
 			<?=$units_card?>
 		</div>
 		<? endforeach; ?>
+	</div>
+	<hr>
+	<div class="text-center">
+	<small> 
+		<div>유닛이나 스틸등의 이미지 저작권은 <a href="http://sdgn.co.kr/" target="blank">sdgn.co.kr</a>에 문의해주시기 바랍니다. (즉, 저쪽 사이트꺼라는 소리다.)</div>
+		<div>이곳은 SD건담넥스트에볼루션 팬사이트일 뿐입니다. 이곳을 사용함으로 발생되는 불이익에 대해서는 책임지지 않습니다. (중요 정보는 공식사이트를 한번 더 체크!)</div>
+		<div>즐겁게 게임과 사이트를 즐깁시다. (분쟁 발생 시 어떻게 될지 모릅니다.)</div>
+
+	</small>
 	</div>
 </div>

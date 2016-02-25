@@ -60,7 +60,7 @@ $v_time_ed = mktime(0,0,0,$v_n0+6,1,$v_Y0);
 				<span class="Ym-label-cnt label label-default"><?=$v_cnt?>건</span>
 				<? endif; ?>
 			</div>
-			<span class="Ym-label-m2">오늘</span>
+			<span class="Ym-label-m2"><?=$v_n?></span><span  class="Ym-label-m-unit">월</span>
 		</button>
 		
 		<?
