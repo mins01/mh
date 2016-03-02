@@ -7,7 +7,7 @@ class Sdgn_unit_model extends CI_Model {
 	public $bm_row = array();
 	public $error = '';
 	private $tbl = '';
-	private $select_avg_star = "(SELECT AVG(bc_number) avg_star FROM mh_bbs_sdgnunits_comment bc WHERE b_idx= su.unit_idx and bc.bc_isdel =0 AND bc_number>0)";
+	private $select_avg_star = "IFNULL((SELECT AVG(bc_number) avg_star FROM mh_bbs_sdgnunits_comment bc WHERE b_idx= su.unit_idx and bc.bc_isdel =0 AND bc_number>0),0)";
 	private $fields= array(
 		'b_idx','b_id','b_gidx','b_gpos','b_pidx',
 		//'b_insert_date','b_update_date',
