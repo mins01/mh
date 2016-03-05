@@ -71,11 +71,6 @@ class Common extends MX_Controller {
 				$this->set_login_at_cookie($this->enc_str($m_row));
 				break;
 		}
-		$this->mh_log->info(array(
-			'title'=>__METHOD__,
-			'msg'=>'로그인',
-			'm_row'=>$m_row,
-		));
 	}
 	public function set_logout(){
 		switch(LOGIN_TYPE){

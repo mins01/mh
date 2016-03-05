@@ -70,6 +70,7 @@ class Member extends MX_Controller {
 			return $this->login_process_end(true,'해당 회원 정보가 없습니다.');
 		}
 		if($m_row['m_pass'] != $m_pass && $m_row['m_pass'] != $enc_m_pass){
+			unset($m_row['m_pass']);
 			$this->mh_log->error(array(
 				'title'=>__METHOD__,
 				'msg'=>'로그인',
@@ -80,6 +81,15 @@ class Member extends MX_Controller {
 		}
 		//-- 로그인 처리
 		$this->common->set_login($m_row);
+		
+		unset($m_row['m_pass']);
+		$this->mh_log->info(array(
+			'title'=>__METHOD__,
+			'msg'=>'로그인',
+			'result'=>'성공',
+			'm_row'=>@$m_row,
+		));
+		
 		$this->member_m->set_m_login_date($m_row['m_idx']);
 		return $this->login_process_end(false,'로그인에 성공하였습니다.',$ret_url);
 	}
@@ -89,6 +99,13 @@ class Member extends MX_Controller {
 		$m_row = $this->member_m->select_by_m_idx($m_idx);
 		$r = $this->common->set_login($m_row);
 		$this->member_m->set_m_login_date($m_idx);
+		unset($m_row['m_pass']);
+		$this->mh_log->info(array(
+		'title'=>__METHOD__,
+		'msg'=>'재로그인',
+		'result'=>'성공',
+		'm_row'=>@$m_row,
+		));
 		return $r;
 	}
 	
@@ -108,7 +125,14 @@ class Member extends MX_Controller {
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
 		}
+		$this->mh_log->info(array(
+		'title'=>__METHOD__,
+		'msg'=>'로그아웃',
+		'result'=>'성공',
+		'm_row'=>$this->common->get_login(),
+		));
 		$this->common->set_logout();
+		
 		return $this->login_process_end(false,'로그아웃에 성공하였습니다.',$ret_url);
 	}
 	
@@ -158,7 +182,13 @@ class Member extends MX_Controller {
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
 		}
-		
+		unset($m_row['m_pass']);
+		$this->mh_log->info(array(
+		'title'=>__METHOD__,
+		'msg'=>'회원가입',
+		'result'=>'성공',
+		'm_row'=>@$m_row,
+		));
 		return $this->login_process_end(true,'회원 가입 완료',$ret_url);
 	}
 
@@ -207,8 +237,15 @@ class Member extends MX_Controller {
 		if(!$this->member_m->modify($m_idx,$sets)){
 			$this->common->redirect($this->member_m->msg,'');
 		}
-		$this->db->last_query();
+		//$this->db->last_query();
 		$this->relogin($m_idx);
+		
+		$this->mh_log->info(array(
+		'title'=>__METHOD__,
+		'msg'=>'회원정보수정',
+		'result'=>'성공',
+		'm_row'=>@$sets,
+		));
 		$this->common->redirect('정보를 수정하였습니다.','');
 		return;
 	}
@@ -266,6 +303,15 @@ class Member extends MX_Controller {
 		}
 		$this->db->last_query();
 		$this->relogin($m_idx);
+		
+		unset($m_row['b_pass']);
+		$this->mh_log->info(array(
+		'title'=>__METHOD__,
+		'msg'=>'비밀번호수정',
+		'result'=>'성공',
+		'm_row'=>@$m_row,
+		));
+		
 		$this->common->redirect('정보를 수정하였습니다.','');
 		return;
 	}
@@ -319,7 +365,12 @@ class Member extends MX_Controller {
 		$data = array(
 			'm_id'=>$m_id,
 		);
-		
+		$this->mh_log->info(array(
+		'title'=>__METHOD__,
+		'msg'=>'아이디찾기',
+		'result'=>'성공',
+		'm_id'=>@$m_id,
+		));
 		$this->load->view('mh/member/search_id_process',$data);
 		//$this->load->view('mh/member/search_id',$data);
 	}
@@ -357,7 +408,12 @@ class Member extends MX_Controller {
 			'm_id'=>$m_id,
 			'm_nick'=>$m_nick,
 		);
-		
+		$this->mh_log->info(array(
+		'title'=>__METHOD__,
+		'msg'=>'비밀번호찾기',
+		'result'=>'성공',
+		'm_id'=>@$m_id,
+		));
 		$this->load->view('mh/member/search_pw_process',$data);
 		//$this->load->view('mh/member/search_id',$data);
 	}
