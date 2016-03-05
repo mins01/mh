@@ -60,16 +60,48 @@ class Member extends MX_Controller {
 		$m_row = $this->member_m->select_by_m_id($m_id);
 		
 		if(!$m_row){
+			//unset($m_row['m_pass']);
+			$this->mh_log->error(array(
+				'title'=>__METHOD__,
+				'msg'=>'관리자로그인',
+				'result'=>'실패1',
+				'm_row'=>@$m_row,
+			));
 			return $this->login_process_end(true,'해당 회원 정보가 없습니다.');
 		}
 		if($m_row['m_pass'] != $m_pass && $m_row['m_pass'] != $enc_m_pass){
+			unset($m_row['m_pass']);
+			$this->mh_log->error(array(
+				'title'=>__METHOD__,
+				'msg'=>'관리자로그인',
+				'result'=>'실패2',
+				'm_row'=>@$m_row,
+			));
 			return $this->login_process_end(true,'해당 회원 정보를 찾을 수 없습니다.');
 		}
 		//-- 로그인 처리
 		if($m_row['m_level']!='99'){
+			
+			unset($m_row['m_pass']);
+			$this->mh_log->error(array(
+				'title'=>__METHOD__,
+				'msg'=>'관리자로그인',
+				'result'=>'실패3',
+				'm_row'=>@$m_row,
+			));
+			
 			return $this->login_process_end(true,'관리자 권한이 필요합니다.');
 		}
 		$this->common->set_login($m_row);
+		
+		unset($m_row['m_pass']);
+		$this->mh_log->error(array(
+			'title'=>__METHOD__,
+			'msg'=>'관리자로그인',
+			'result'=>'성공',
+			'm_row'=>@$m_row,
+		));
+		
 		$this->member_m->set_m_login_date($m_row['m_idx']);
 		return $this->login_process_end(false,'로그인에 성공하였습니다.',$ret_url);
 	}
