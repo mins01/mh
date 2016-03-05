@@ -61,9 +61,21 @@ class Member extends MX_Controller {
 		$m_row = $this->member_m->select_by_m_id($m_id);
 		
 		if(!$m_row){
+			$this->mh_log->error(array(
+				'title'=>__METHOD__,
+				'msg'=>'로그인',
+				'result'=>'실패1',
+				'm_row'=>@$m_row,
+			));
 			return $this->login_process_end(true,'해당 회원 정보가 없습니다.');
 		}
 		if($m_row['m_pass'] != $m_pass && $m_row['m_pass'] != $enc_m_pass){
+			$this->mh_log->error(array(
+				'title'=>__METHOD__,
+				'msg'=>'로그인',
+				'result'=>'실패2',
+				'm_row'=>@$m_row,
+			));
 			return $this->login_process_end(true,'해당 회원 정보를 찾을 수 없습니다.');
 		}
 		//-- 로그인 처리

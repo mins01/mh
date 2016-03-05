@@ -42,6 +42,10 @@ define('_FORM_DIR',dirname(__FILE__).'/../../_form');
 
 date_default_timezone_set('Asia/Seoul'); 
 
+define('MH_LOG_STORE',3); //로그 저장소, 0:로그저장안함, 1: CI로그파일,2:DB, 3:1+2
+
+
+
 require_once(dirname(__FILE__).'/legacy.php');
 
 
