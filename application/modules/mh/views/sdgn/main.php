@@ -2,13 +2,15 @@
 // bc_rows , su_rows, units_cards
 ?>
 
-<h1 class="text-center" ><a href="http://sdgn.co.kr/" target="_blank"><!--<img src="http://static.sdgn.co.kr/next/images/common/logo.png">--><img src="http://static.sdgn.co.kr/next/images/intro/160205/logo.png"></a></h1>
+
 
 
 <h3 class="text-center" >
 	SD건담넥스트에볼루션분석
 </h3>
+<h4 class="text-center" ><a href="http://sdgn.co.kr/" target="_blank"><!--<img src="http://static.sdgn.co.kr/next/images/common/logo.png">--><img src="http://static.sdgn.co.kr/next/images/intro/160205/logo.png"><br>공식게임사이트 방문하기</a></h4>
 
+<div class="text-center"><a href="https://play.google.com/store/apps/details?id=com.mins01.app001"><img src="https://www.gstatic.com/android/market_images/web/play_one_bar_logo.png"><img style="width:32px" src="https://lh3.googleusercontent.com/y-Q8e1HEOIDP6Je5mwMp2D-_cbWWa8E99tRf1V5QQg01_thpRcy3Qhv2X8eVrTYA3g=w300-rw"> 건넥 한마디</a></div>
 
 <div class="row">
 	<div class="col-sm-4">
