@@ -18,7 +18,7 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-btn">
-								<? if($bm_row['bm_use_category']=='1'): ?>
+								<? if($bm_row['bm_use_category']!='0'): ?>
 								<?=form_dropdown('ct', $bm_row['categorys'], isset($get['ct'])?$get['ct']:'', 'class="selectpicker show-tick" style="width:8em" data-width="80px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리"')?>
 								<? endif; ?>
 								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
@@ -138,7 +138,7 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-btn">
-								<? if($bm_row['bm_use_category']=='1'): ?>
+								<? if($bm_row['bm_use_category']!='0'): ?>
 								<?=form_dropdown('ct', $bm_row['categorys'], isset($get['ct'])?$get['ct']:'', 'class="selectpicker show-tick" style="width:8em" data-width="80px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리"')?>
 								<? endif; ?>
 								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
