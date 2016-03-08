@@ -49,7 +49,7 @@
 												_data
 											</span>
 										</div><!-- /input-group -->
-										<div class="text-danger">주의 : 병경시 게시물 이전 안됨!</div>
+										<div class="text-danger">주의 : 변경시 게시물 자동 이전 안 됨!</div>
 										<? //endif;?>
 									
 								</div>
@@ -201,6 +201,8 @@
 								<div class="col-sm-9">
 									<div class="btn-group" data-toggle="buttons">
 										<label class="btn btn-success  <?=$bm_row[$t_col]=='1'?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="1" autocomplete="off" <?=$bm_row[$t_col]=='1'?'checked':''?>>사용
+										</label>
+										<label class="btn btn-danger  <?=$bm_row[$t_col]=='2'?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="2" autocomplete="off" <?=$bm_row[$t_col]=='2'?'checked':''?>>필수
 										</label>
 										<label class="btn btn-warning <?=!$bm_row[$t_col]?'active':''?>"><input type="radio" name="<?=html_escape($t_col)?>" value="0" autocomplete="off" <?=!$bm_row[$t_col]?'checked':''?>>금지
 										</label>

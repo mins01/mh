@@ -11,7 +11,7 @@ if($mode=='write'||$mode=='answer'){
 ?>
 
 <div class="skin-form">
-	<form action="" name="form_bbs" method="post" onsubmit="submitWysiwyg();return check_form_bbs(this);"  enctype="multipart/form-data"  >
+	<form action="" name="form_bbs" method="post" onsubmit="submitWysiwyg();return check_form_bbs(this);"  enctype="multipart/form-data" data-bm_use_category="<?=$bm_row['bm_use_category']?>"  >
 	<input type="hidden" name="process" value="<?=html_escape($process)?>">
 	<div class="panel panel-default form-horizontal bbs-mode-form">
 		<div class="panel-heading">
