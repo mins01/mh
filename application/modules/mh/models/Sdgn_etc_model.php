@@ -11,7 +11,7 @@ class Sdgn_etc_model extends CI_Model {
 	
 	public function select_comment_for_main(){
 		$sql = "SELECT bc_name,COUNT(*) cnt FROM mh_bbs_sdgnunits_comment bc
-				WHERE bc_isdel = 0 AND bc_number > 0
+				WHERE bc_isdel = 0 
 				GROUP BY bc_name
 				ORDER BY cnt DESC
 				LIMIT 10
@@ -24,7 +24,7 @@ class Sdgn_etc_model extends CI_Model {
 		$sql = "	SELECT 
 				*, {$select_avg_star} as avg_star
 				FROM(SELECT b_idx unit_idx,max(bc_insert_date) max_bc_insert_date,COUNT(*) cnt FROM mh_bbs_sdgnunits_comment bc
-				WHERE bc_isdel = 0 AND bc_number > 0
+				WHERE bc_isdel = 0 
 				GROUP BY b_idx
 				ORDER BY max_bc_insert_date DESC , cnt DESC
 				LIMIT 10) bc
