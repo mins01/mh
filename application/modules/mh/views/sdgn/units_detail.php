@@ -26,30 +26,11 @@
 			<dt>속성</dt>
 			<dd>
 			<span class="unit_rank unit_rank-<?=html_escape($su_row['unit_rank'])?>" ><?=html_escape($su_row['unit_rank'])?></span>랭크 / 
-			<span class="label unit_properties_num unit_properties_num-<?=$su_row['unit_properties_num']?>"><?=html_escape($su_row['unit_properties'])?></span> / 
-			<?=html_escape($su_row['unit_movetype'])?> 
-			
-			</dd>
-		</dl>
-	</li>
-	<li class="list-group-item">
-		<dl class="dl-horizontal">
-			<dt>무기</dt>
-			<dd>
-				<div class="row">
-					<div class="col-sm-4 unit_weapon unit_weapon-1">
-						<img src="<?=html_escape($su_row['unit_weapon1_img'])?>">
-						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon1'])?></div>
-					</div>
-					<div class="col-sm-4 unit_weapon unit_weapon-2">
-						<img src="<?=html_escape($su_row['unit_weapon2_img'])?>">
-						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon2'])?></div>
-					</div>
-					<div class="col-sm-4 unit_weapon unit_weapon-3">
-						<img src="<?=html_escape($su_row['unit_weapon3_img'])?>">
-						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon3'])?></div>
-					</div>
-				</div>
+			<span class="label unit_properties_num unit_properties_num-<?=$su_row['unit_properties_num']?>"><?=html_escape($su_row['unit_properties'])?></span> 
+			/ <?=html_escape($su_row['unit_movetype'])?> 
+			<? if($su_row['unit_is_transform']): ?>
+			/ <span class="label label-success unit_is_transform">변신가능</span> 
+			<? endif; ?>			
 			</dd>
 		</dl>
 	</li>
@@ -75,6 +56,46 @@
 					</div>
 				</div>
 			</dd>
+		</dl>
+	</li>
+	<li class="list-group-item">
+		<dl class="dl-horizontal">
+			<dt>무기</dt>
+			<dd>
+				<div class="row">
+					<div class="col-sm-4 unit_weapon unit_weapon-1">
+						<img src="<?=html_escape($su_row['unit_weapon1_img'])?>">
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon1'])?></div>
+					</div>
+					<div class="col-sm-4 unit_weapon unit_weapon-2">
+						<img src="<?=html_escape($su_row['unit_weapon2_img'])?>">
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon2'])?></div>
+					</div>
+					<div class="col-sm-4 unit_weapon unit_weapon-3">
+						<img src="<?=html_escape($su_row['unit_weapon3_img'])?>">
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon3'])?></div>
+					</div>
+				</div>
+			</dd>
+			<? if($su_row['unit_is_transform']): ?>
+			<dt>무기 (변신 후)</dt>
+			<dd>
+				<div class="row">
+					<div class="col-sm-4 unit_weapon unit_weapon-4">
+						<img src="<?=html_escape($su_row['unit_weapon4_img'])?>">
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon4'])?></div>
+					</div>
+					<div class="col-sm-4 unit_weapon unit_weapon-5">
+						<img src="<?=html_escape($su_row['unit_weapon5_img'])?>">
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon5'])?></div>
+					</div>
+					<div class="col-sm-4 unit_weapon unit_weapon-6">
+						<img src="<?=html_escape($su_row['unit_weapon6_img'])?>">
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon6'])?></div>
+					</div>
+				</div>
+			</dd>
+			<? endif; ?>
 		</dl>
 	</li>
 	<li class="list-group-item text-right">
