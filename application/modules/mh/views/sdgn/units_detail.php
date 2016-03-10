@@ -39,21 +39,37 @@
 			<dt>스킬</dt>
 			<dd>
 				<div class="row">
-					<div class="col-sm-4 unit_skill unit_skill-1">
+					<div class="col-sm-6 unit_skill unit_skill-1">
 						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill1_img'])?>">
 						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill1'])?></div>
 						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill1_desc'])?></div>
 					</div>
-					<div class="col-sm-4 unit_skill unit_skill-2">
+					<div class="col-sm-6 unit_skill unit_skill-2">
 						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill2_img'])?>">
 						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill2'])?></div>
 						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill2_desc'])?></div>
 					</div>
-					<div class="col-sm-4 unit_skill unit_skill-3">
+				</div>
+			</dd>
+		</dl>
+	</li>
+	<li class="list-group-item">
+		<dl class="dl-horizontal">
+			<dt>필살기</dt>
+			<dd>
+				<div class="row">
+					<div class="col-sm-6 unit_skill unit_skill-3">
 						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill3_img'])?>">
 						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill3'])?></div>
 						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill3_desc'])?></div>
 					</div>
+					<? if($su_row['unit_is_transform']): ?>
+					<div class="col-sm-6 unit_skill unit_skill-4">
+						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill4_img'])?>">
+						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill4'])?> (변신후)</div>
+						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill4_desc'])?></div>
+					</div>
+					<? endif; ?>
 				</div>
 			</dd>
 		</dl>
