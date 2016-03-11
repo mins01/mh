@@ -61,6 +61,8 @@ $route['default_controller'] = 'front/index';
 $route['member'] = 'front_member/index'; //바꾸지 마시오!
 $route['member/(.*)'] = 'front_member/$1'; //바꾸지 마시오!
 
+$route['_test/(.*)'] = 'front_test/$1'; //개발 테스트용. 필요 없으면 주석처리.
+
 $route['_admin'] = 'admin/index';
 $route['_admin/bbs_admin'] = 'mh_admin/bbs_admin/index';
 $route['_admin/bbs_admin/(.*)'] = 'mh_admin/bbs_admin/index/$1';

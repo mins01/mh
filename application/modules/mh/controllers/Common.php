@@ -51,21 +51,33 @@ class Common extends MX_Controller {
 	}
 	
 	private function init_login(){
-		switch(LOGIN_TYPE){
-			case 'cookie':
-				$v = $this->input->cookie(LOGIN_NAME);
-				break;
+		$v = $this->input->post_get('enc_m_row'); //json 호출등에서 값이 있다면 자동으로 로그인 된 것으로 처리한다.
+		if(isset($$v)){
+		}else{
+			switch(LOGIN_TYPE){
+				case 'cookie':
+					$v = $this->input->cookie(LOGIN_NAME);
+					break;
+			}
 		}
+		
 
 		if(isset($v)){
 			$this->m_row = $this->dec_str($v);
 		}
 	}
-	public function set_login($m_row){
+	//m_row에서 로그인할 때 쓸 필드만 추려낸다.
+	public function filter_login_from_m_row($m_row){
 		$m_row['m_level'] = (int)$m_row['m_level'];
 		$m_row['is_admin'] = @$m_row['m_level']==99;//관리자 유무
-		
-		unset($m_row['m_pass']);
+		unset($m_row['m_pass'],$m_row['m_isdel'],$m_row['m_isout'],
+		$m_row['m_ip'],
+		$m_row['m_login_date'],$m_row['m_insert_date'],$m_row['m_update_date'],$m_row['m_pass_update_date']);
+		return $m_row;
+	}
+	public function set_login($m_row){
+		$m_row = $this->filter_login_from_m_row($m_row);
+
 		switch(LOGIN_TYPE){
 			case 'cookie':
 				$this->set_login_at_cookie($this->enc_str($m_row));

@@ -41,7 +41,7 @@ class Member extends MX_Controller {
 		
 		$m_id = $this->input->post('m_id');
 		$m_pass = $this->input->post('m_pass');
-		$enc_m_pass = $this->member_m->hash($m_pass);
+		
 		$ret_url = $this->input->post('ret_url');
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
@@ -58,6 +58,53 @@ class Member extends MX_Controller {
 			return $this->load->view('mh/member/login',$data);
 		}	
 		
+		$res = $this->process_login_process($m_id,$m_pass);
+		if($res['is_error']){
+			$this->login_process_end($res['is_error'],$res['msg']);
+		}else{
+			$m_row = $res['m_row'];
+			$this->common->set_login($m_row);
+			$this->member_m->set_m_login_date($m_row['m_idx']);
+			$this->login_process_end($res['is_error'],$res['msg'],$ret_url);
+		}
+	}
+	
+	public function json_login_process(){
+		$m_id = $this->input->post_get('m_id');
+		$m_pass = $this->input->post_get('m_pass');
+		
+		$res = $this->process_login_process($m_id,$m_pass);
+		if(isset($res['m_row'])){
+			$res['enc_m_row'] = $this->common->enc_str($this->common->filter_login_from_m_row($res['m_row']));
+			unset($res['m_row']);
+		}
+		exit_json($res);
+		
+	}
+	
+	/**
+	* 로그인 처리결과 및 사용자 정보를 준다.
+	*/
+	public function process_login_process($m_id,$m_pass){
+		$res = array('is_error'=>true,'msg'=>'처리 시작','m_row'=>null);
+		
+		if(!isset($m_id)){
+			$res['msg'] = '아이디를 입력해주세요.';return $res;
+		}else if(!isset($m_id[0])){
+			$res['msg'] = '아이디가 너무 짧습니다.';return $res;
+		}else if(isset($m_id[1000])){
+			$res['msg'] = '아이디가 너무 깁니다.';return $res;
+		}
+		if(!isset($m_pass)){
+			$res['msg'] = '비밀번호를 입력해주세요.';return $res;
+		}else if(!isset($m_pass[0])){
+			$res['msg'] = '비밀번호가 너무 짧습니다.';return $res;
+		}else if(isset($m_pass[40])){
+			$res['msg'] = '비밀번호가 너무 깁니다.';return $res;
+		}
+		
+		$enc_m_pass = $this->member_m->hash($m_pass);		
+		
 		$m_row = $this->member_m->select_by_m_id($m_id);
 		
 		if(!$m_row){
@@ -67,7 +114,8 @@ class Member extends MX_Controller {
 				'result'=>'실패1',
 				'm_row'=>@$m_row,
 			));
-			return $this->login_process_end(true,'해당 회원 정보가 없습니다.');
+			$res['msg'] = '해당 회원 정보가 없습니다.';
+			return $res;
 		}
 		if($m_row['m_pass'] != $m_pass && $m_row['m_pass'] != $enc_m_pass){
 			unset($m_row['m_pass']);
@@ -77,21 +125,23 @@ class Member extends MX_Controller {
 				'result'=>'실패2',
 				'm_row'=>@$m_row,
 			));
-			return $this->login_process_end(true,'해당 회원 정보를 찾을 수 없습니다.');
+			$res['msg'] = '해당 회원 정보를 찾을 수 없습니다.';
+			return $res;
 		}
-		//-- 로그인 처리
-		$this->common->set_login($m_row);
-		
+		//-- 로그인정보 필터 처리
+		//$m_row = $this->common->filter_login_from_m_row($m_row);
 		unset($m_row['m_pass']);
+		
+		$res['m_row'] = $m_row;
 		$this->mh_log->info(array(
 			'title'=>__METHOD__,
 			'msg'=>'로그인',
 			'result'=>'성공',
 			'm_row'=>@$m_row,
 		));
-		
-		$this->member_m->set_m_login_date($m_row['m_idx']);
-		return $this->login_process_end(false,'로그인에 성공하였습니다.',$ret_url);
+		$res['is_error'] = false;
+		$res['msg'] = '로그인에 성공하였습니다.';
+		return $res;		
 	}
 	
 	private function relogin($m_idx){

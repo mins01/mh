@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Front_member extends MX_Controller {
+class Front_test extends MX_Controller {
 
 	public function __construct()
 	{
@@ -18,33 +18,20 @@ class Front_member extends MX_Controller {
 		$this->load->module('mh/common');
 		$this->load->module('mh/member');
 	}
-	public function login(){
-		$this->member->login();
-	}
 	public function json_login(){
-		$this->member->json_login_process();
+		$this->load->view('/test/json_login');
 	}
-	public function user_info(){
-		$this->member->modify();
-	}
-	public function user_pass(){
-		$this->member->password();
-	}
-	public function logout(){
-		$this->member->logout();
-	}
-	public function join(){
-		$this->member->join();
-	}
-	
-	public function search_id(){
-		$this->member->search_id();
-	}
-	public function search_pw(){
-		$this->member->search_pw();
-	}
-	public function reset_pw(){
-		$this->member->reset_pw();
+	public function dec_enc_str(){
+		$enc_str = $this->input->post_get('enc_str');
+		$dec_arr = null;
+		if(isset($enc_str)){
+			$dec_arr = $this->common->dec_str($enc_str);
+		}
+		$data = array(
+			'enc_str'=>$enc_str,
+			'dec_arr'=>$dec_arr,
+		);
+		$this->load->view('/test/dec_enc_str',$data);
 	}
 
 

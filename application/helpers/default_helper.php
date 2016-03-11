@@ -112,7 +112,15 @@ function get_offset_by_page($page,$limit=10){
 	return $offset;
 }
 
-
+function exit_json($res){
+	header('Content-Type: application/json');
+	
+	if(defined('JSON_UNESCAPED_UNICODE')){
+		exit(json_encode($res,JSON_UNESCAPED_UNICODE));
+	}else{
+		exit(json_encode($res));
+	}
+}
 
 
 
