@@ -60,39 +60,39 @@ class Front extends MX_Controller {
 		return true;
 	}
 	
-	public function login(){
-		$this->load->module('mh/member');
-		$this->member->login();
-	}
-	public function user_info(){
-		$this->load->module('mh/member');
-		$this->member->modify();
-	}
-	public function user_pass(){
-		$this->load->module('mh/member');
-		$this->member->password();
-	}
-	public function logout(){
-		$this->load->module('mh/member');
-		$this->member->logout();
-	}
-	public function join(){
-		$this->load->module('mh/member');
-		$this->member->join();
-	}
+	// public function login(){
+		// $this->load->module('mh/member');
+		// $this->member->login();
+	// }
+	// public function user_info(){
+		// $this->load->module('mh/member');
+		// $this->member->modify();
+	// }
+	// public function user_pass(){
+		// $this->load->module('mh/member');
+		// $this->member->password();
+	// }
+	// public function logout(){
+		// $this->load->module('mh/member');
+		// $this->member->logout();
+	// }
+	// public function join(){
+		// $this->load->module('mh/member');
+		// $this->member->join();
+	// }
 	
-	public function search_id(){
-		$this->load->module('mh/member');
-		$this->member->search_id();
-	}
-	public function search_pw(){
-		$this->load->module('mh/member');
-		$this->member->search_pw();
-	}
-	public function reset_pw(){
-		$this->load->module('mh/member');
-		$this->member->reset_pw();
-	}
+	// public function search_id(){
+		// $this->load->module('mh/member');
+		// $this->member->search_id();
+	// }
+	// public function search_pw(){
+		// $this->load->module('mh/member');
+		// $this->member->search_pw();
+	// }
+	// public function reset_pw(){
+		// $this->load->module('mh/member');
+		// $this->member->reset_pw();
+	// }
 
 
 }

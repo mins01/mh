@@ -67,12 +67,12 @@
 				<div class="navbar-right">
 					<? if(!$logedin):?>
 					<p class="navbar-text text-right ">
-					<button class="btn btn-success btn-xs" onclick="window.open('<?=base_url('join')?>','_self')">회원가입</button> 
-					<button class="btn btn-warning btn-xs" onclick="window.open('<?=base_url().'search_id'?>','_self')">아이디/비밀번호 찾기</button> 
-					<button class="btn btn-primary btn-xs" onclick="window.open('<?=base_url().'login'?>','_self')">로그인</button>
+					<button class="btn btn-success btn-xs" onclick="window.open('<?=base_url('member/join')?>','_self')">회원가입</button> 
+					<button class="btn btn-warning btn-xs" onclick="window.open('<?=base_url('member/search_id')?>','_self')">아이디/비밀번호 찾기</button> 
+					<button class="btn btn-primary btn-xs" onclick="window.open('<?=base_url('member/login')?>','_self')">로그인</button>
 					</p>
 					<? else: ?>
-					<p class="navbar-text text-right "><a href="<?=base_url().'user_info'?>"><span class="glyphicon glyphicon-user"></span><?=html_escape($login_label)?></a>님 <button class="btn btn-info btn-xs" onclick="window.open('<?=base_url().'logout'?>','_self')">로그아웃</button></p> 
+					<p class="navbar-text text-right "><a href="<?=base_url('member/user_info')?>"><span class="glyphicon glyphicon-user"></span><?=html_escape($login_label)?></a>님 <button class="btn btn-info btn-xs" onclick="window.open('<?=base_url('member/logout')?>','_self')">로그아웃</button></p> 
 					<? endif;?>
 				</>
 			</div><!--/.nav-collapse -->

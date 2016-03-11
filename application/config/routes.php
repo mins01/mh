@@ -58,6 +58,9 @@ $route['default_controller'] = 'front/index';
 //$route[ADMIN_URI_PREFIX] = 'mh/admin/index';
 //$route[ADMIN_URI_PREFIX.'/(.*)'] = 'mh/admin/index';
 //$route['(.*)/(:any)'] = 'front/$2';
+$route['member'] = 'Front_member/index'; //바꾸지 마시오!
+$route['member/(.*)'] = 'Front_member/$1'; //바꾸지 마시오!
+
 $route['_admin'] = 'admin/index';
 $route['_admin/bbs_admin'] = 'mh_admin/bbs_admin/index';
 $route['_admin/bbs_admin/(.*)'] = 'mh_admin/bbs_admin/index/$1';

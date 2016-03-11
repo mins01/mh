@@ -34,7 +34,7 @@
 		</div>
 		<hr>
 		<div class="text-right">
-		<a href="<?=html_escape(base_url('user_pass'))?>" class="btn btn-info glyphicon glyphicon-cog"> 비밀번호수정</a>
+		<a href="<?=html_escape(base_url('member/user_pass'))?>" class="btn btn-info glyphicon glyphicon-cog"> 비밀번호수정</a>
 			<div class="btn-group" role="group" aria-label="">
 				<button  class="btn btn-primary glyphicon glyphicon-ok-circle"> 정보수정</button>
 				<button type="button" onclick="history.back()" class="btn btn-danger glyphicon glyphicon-ban-circle"> 취소</button>
