@@ -10,7 +10,7 @@
 </h3>
 <h4 class="text-center" ><a href="http://sdgn.co.kr/" target="_blank"><!--<img src="http://static.sdgn.co.kr/next/images/common/logo.png">--><img src="http://static.sdgn.co.kr/next/images/intro/160205/logo.png"><br>공식게임사이트 방문하기</a></h4>
 
-<div class="text-center"><a href="https://play.google.com/store/apps/details?id=com.mins01.app001"><img src="https://www.gstatic.com/android/market_images/web/play_one_bar_logo.png"><img style="width:32px" src="https://lh3.googleusercontent.com/y-Q8e1HEOIDP6Je5mwMp2D-_cbWWa8E99tRf1V5QQg01_thpRcy3Qhv2X8eVrTYA3g=w300-rw"> 건넥 한마디</a></div>
+<div class="text-center" style="margin:1em; auto"><a class="btn btn-default btn-lg" href="https://play.google.com/store/apps/details?id=com.mins01.app001" target="_blank"><img src="https://www.gstatic.com/android/market_images/web/play_one_bar_logo.png"><img style="width:32px" src="https://lh3.googleusercontent.com/y-Q8e1HEOIDP6Je5mwMp2D-_cbWWa8E99tRf1V5QQg01_thpRcy3Qhv2X8eVrTYA3g=w300-rw"> 건넥 한마디</a></div>
 
 <div class="row">
 	<div class="col-sm-4">
@@ -30,7 +30,7 @@
 	</div>
 	<div class="col-sm-4">
 		<div class="list-group">
-			<a href="/sdgn/last_comments" class="list-group-item active text-center">최근 한마디</strong></a>
+			<a href="/sdgn/last_comments" class="list-group-item active text-center"><strong>최근 한마디</strong></a>
 			<? 
 			$i_cnt = 1;
 			foreach($last_bc_rows as $last_bc_row): 
@@ -45,19 +45,19 @@
 		</div>
 	</div>
 	<div class="col-sm-4">
-		<ul class="list-group">
-			<li class="list-group-item active text-center"><strong>유닛 TOP 10</strong></li>
+		<div class="list-group">
+			<a href="/sdgn/last_comments" class="list-group-item active text-center"><strong>유닛 TOP 10</strong></a>
 			<? 
 			$i_cnt = 1;
 			foreach($su_rows as $su_row): 
 			?>
-			<li class="list-group-item">
-				<strong><?=$i_cnt++?></strong>. <a href="/sdgn/units?unit_idx=<?=$su_row['unit_idx']?>"><?=html_escape($su_row['unit_name'])?></a>
+			<a href="/sdgn/units?unit_idx=<?=$su_row['unit_idx']?>" class="list-group-item">
+				<strong><?=$i_cnt++?></strong>. <?=html_escape($su_row['unit_name'])?>
 				<span class="badge"><?=$su_row['cnt']?> 마디</span>
-			</li>
+			</a>
 			<? endforeach; ?>
 			
-		</ul>
+		</div>
 	</div>
 	<div class="text-center">
 		<? foreach($units_cards as $units_card): ?>

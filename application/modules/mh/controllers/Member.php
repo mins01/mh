@@ -74,10 +74,14 @@ class Member extends MX_Controller {
 		$m_pass = $this->input->post_get('m_pass');
 		
 		$res = $this->process_login_process($m_id,$m_pass);
+		$res['post'] = $_POST;
+		$res['get'] = $_GET;
+		$res['m_nick'] = isset($res['m_row']['m_nick'])?$res['m_row']['m_nick']:null;
 		if(isset($res['m_row'])){
+			
 			$res['enc_m_row'] = $this->common->enc_str($this->common->filter_login_from_m_row($res['m_row']));
-			unset($res['m_row']);
 		}
+		unset($res['m_row']);
 		exit_json($res);
 		
 	}

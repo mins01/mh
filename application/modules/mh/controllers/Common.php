@@ -52,7 +52,8 @@ class Common extends MX_Controller {
 	
 	private function init_login(){
 		$v = $this->input->post_get('enc_m_row'); //json 호출등에서 값이 있다면 자동으로 로그인 된 것으로 처리한다.
-		if(isset($$v)){
+		if(isset($v)){
+			unset($_POST['enc_m_row'],$_GET['enc_m_row'],$_REQUEST['enc_m_row']);
 		}else{
 			switch(LOGIN_TYPE){
 				case 'cookie':

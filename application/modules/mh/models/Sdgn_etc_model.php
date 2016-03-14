@@ -11,6 +11,7 @@ class Sdgn_etc_model extends CI_Model {
 	
 	public function select_comment_for_main(){
 		$sql = "SELECT bc_name,COUNT(*) cnt FROM mh_bbs_sdgnunits_comment bc
+				JOIN sdgn_units su on(su.unit_idx=bc.b_idx and su.unit_isdel=0)
 				WHERE bc_isdel = 0 
 				GROUP BY bc_name
 				ORDER BY cnt DESC
@@ -27,8 +28,9 @@ class Sdgn_etc_model extends CI_Model {
 				WHERE bc_isdel = 0 
 				GROUP BY b_idx
 				ORDER BY max_bc_insert_date DESC , cnt DESC
-				LIMIT 10) bc
-				JOIN sdgn_units su USING(unit_idx)
+				LIMIT 20) bc
+				JOIN sdgn_units su on(su.unit_idx=bc.unit_idx and su.unit_isdel=0)
+				LIMIT 10
 			";
 		return $this->db->query($sql)->result_array();
 	}
@@ -39,8 +41,9 @@ class Sdgn_etc_model extends CI_Model {
 				FROM(SELECT *,b_idx unit_idx FROM mh_bbs_sdgnunits_comment
 				WHERE bc_isdel = 0
 				ORDER BY bc_idx DESC
-				LIMIT 10) bc
-				JOIN sdgn_units su USING(unit_idx)
+				LIMIT 20) bc
+				JOIN sdgn_units su on(su.unit_idx=bc.unit_idx and su.unit_isdel=0)
+				LIMIT 10
 			";
 		return $this->db->query($sql)->result_array();
 	}
@@ -52,11 +55,11 @@ class Sdgn_etc_model extends CI_Model {
 	}
 	
 	public function count_skills(){
-		$sql ="SELECT COUNT(DISTINCT nn) CNT FROM (SELECT unit_skill1 nn FROM `sdgn_units`
+		$sql ="SELECT COUNT(DISTINCT nn) CNT FROM (SELECT unit_skill1 nn FROM `sdgn_units` su where su.unit_isdel=0
 				UNION ALL
-				SELECT unit_skill2 FROM `sdgn_units`
+				SELECT unit_skill2 FROM `sdgn_units` su where su.unit_isdel=0
 				UNION ALL
-				SELECT unit_skill3 FROM `sdgn_units`) A";
+				SELECT unit_skill3 FROM `sdgn_units` su where su.unit_isdel=0) A";
 		$rows = $this->db->query($sql)->result_array();
 		return $rows[0]['CNT'];
 	}
@@ -78,7 +81,9 @@ class Sdgn_etc_model extends CI_Model {
 						WHERE bc.bc_isdel = 0
 						ORDER BY bc_insert_date desc
 						LIMIT {$limit}) bc
-						JOIN sdgn_units su ON(unit_idx = b_idx)";
+						JOIN sdgn_units su on(su.unit_idx=bc.b_idx and su.unit_isdel=0)
+						LIMIT {$limit}
+		";
 		return $this->db->query($sql)->result_array();
 	}
 

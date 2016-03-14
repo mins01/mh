@@ -36,6 +36,7 @@ class Sdgn_unit_model extends CI_Model {
 		if(isset($wheres)){
 			$this->db->where($wheres);
 		}
+		$this->db->where('unit_isdel',0);
 		if(isset($order_by)){
 			$this->db->order_by($order_by);
 		}
