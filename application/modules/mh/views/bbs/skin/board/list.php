@@ -49,7 +49,7 @@
 				<th class="text-center">제목</th>
 				<th class="text-center" width="80">작성자</th>
 				<th class="text-center hidden-xs hidden-sm"  width="120">등록</th>
-				<th class="text-center hidden-xs hidden-sm"  width="40">조회</th>
+				<th class="text-center hidden-xs hidden-sm"  width="50">조회</th>
 			</tr>
 		<? foreach($b_n_rows as $b_row):
 		//print_r($r);
@@ -79,7 +79,7 @@
 				</td>
 				<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
 				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
+				<td class="text-center hidden-xs hidden-sm"><small><?=html_escape($b_row['bh_cnt'])?></small></td>
 
 			</tr>
 		<? endforeach; ?>
@@ -111,7 +111,7 @@
 				</td>
 				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
 				<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
+				<td class="text-center hidden-xs hidden-sm"><small><?=html_escape($b_row['bh_cnt'])?></small></td>
 
 			</tr>
 		<? endforeach; ?>
