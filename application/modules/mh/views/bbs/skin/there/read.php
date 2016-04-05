@@ -21,7 +21,13 @@ if($d_day==0){
 
 <div class="panel panel-default <?=$b_row['b_notice']>0?'bbs-notice':''?> bbs-mode-read">
 	<div class="panel-heading floating_label_parent">
-		<h3 class="panel-title text-center bbs-title "><? if(isset($b_row['b_num_3'][0])): ?><span title="star-<?=$b_row['b_num_3']?>" class="label label-default label-lg star-span star-<?=$b_row['b_num_3']?>"></span> <? endif; ?><?=html_escape($b_row['b_title'])?>
+		<h3 class="panel-title text-center bbs-title ">
+		
+		
+			<? if(isset($b_row['avg_bc_number'][0])): 
+			$t = round($b_row['avg_bc_number']);
+			?><span title="star-<?=$t?>" class="label label-default star-span star-<?=$t?>"></span><? endif; ?>
+			<?=html_escape($b_row['b_title'])?>
 		<div class="clearfix"></div>
 		</h3>
 		

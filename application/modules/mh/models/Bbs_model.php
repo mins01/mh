@@ -92,6 +92,10 @@ class Bbs_model extends CI_Model {
 		if(!$no_bh_hit_cnt){
 			$select.=",(select IFNULL(SUM(bh_hit_cnt),0) from ".$this->tblname('hit','bh')." where bh.bh_parent_idx=b.b_idx and bh.bh_parent_table='data') as bh_cnt";
 		}
+		// 코멘트 별점을 사용할 경우
+		if($bm_row['bm_use_commnet_number']=='1'){
+			$select.=",(select IFNULL(AVG(bc_number),0) from ".$this->tblname('comment','bc')." where bc.b_idx=b.b_idx) as avg_bc_number";
+		}
 		
 		//-- 마지막 처리
 		$this->db->select($select);

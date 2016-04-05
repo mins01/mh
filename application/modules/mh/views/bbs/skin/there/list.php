@@ -90,7 +90,9 @@
 				<td class="text-center hidden-xs"><?=$start_num--?></td>
 				<td class="bbs-title text-overflow-ellipsis floating_label_parent">
 					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
-					<? if(isset($b_row['b_num_3'][0])): ?><span title="star-<?=$b_row['b_num_3']?>" class="label label-default star-span star-<?=$b_row['b_num_3']?>"></span><? endif; ?>
+					<? if(isset($b_row['avg_bc_number'][0])): 
+					$t = round($b_row['avg_bc_number']);
+					?><span title="star-<?=$t?>" class="label label-default star-span star-<?=$t?>"></span><? endif; ?>
 					
 					<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
 					
