@@ -94,7 +94,7 @@ class Bbs_model extends CI_Model {
 		}
 		// 코멘트 별점을 사용할 경우
 		if($bm_row['bm_use_commnet_number']=='1'){
-			$select.=",(select IFNULL(AVG(bc_number),0) from ".$this->tblname('comment','bc')." where bc.b_idx=b.b_idx) as avg_bc_number";
+			$select.=",(select IFNULL(AVG(bc_number),0) from ".$this->tblname('comment','bc')." where bc.b_idx=b.b_idx and bc.bc_isdel=0 and bc.bc_number>0) as avg_bc_number";
 		}
 		
 		//-- 마지막 처리
