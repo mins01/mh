@@ -30,7 +30,10 @@
 			/ <?=html_escape($su_row['unit_movetype'])?> 
 			<? if($su_row['unit_is_transform']): ?>
 			/ <span class="label label-success unit_is_transform">변신가능</span> 
-			<? endif; ?>			
+			<? endif; ?>
+			<? if($su_row['unit_is_weapon_change']): ?>
+			/ <span class="label label-danger unit_is_weapon_change">웨폰체인지</span> 
+			<? endif; ?>
 			</dd>
 		</dl>
 	</li>
@@ -95,6 +98,25 @@
 			</dd>
 			<? if($su_row['unit_is_transform']): ?>
 			<dt>무기 (변신 후)</dt>
+			<dd>
+				<div class="row">
+					<div class="col-sm-4 unit_weapon unit_weapon-4">
+						<img src="<?=html_escape($su_row['unit_weapon4_img'])?>">
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon4'])?></div>
+					</div>
+					<div class="col-sm-4 unit_weapon unit_weapon-5">
+						<img src="<?=html_escape($su_row['unit_weapon5_img'])?>">
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon5'])?></div>
+					</div>
+					<div class="col-sm-4 unit_weapon unit_weapon-6">
+						<img src="<?=html_escape($su_row['unit_weapon6_img'])?>">
+						<div class="unit_weapon_name"><?=html_escape($su_row['unit_weapon6'])?></div>
+					</div>
+				</div>
+			</dd>
+			<? endif; ?>
+			<? if($su_row['unit_is_weapon_change']): ?>
+			<dt>웨폰체인지</dt>
 			<dd>
 				<div class="row">
 					<div class="col-sm-4 unit_weapon unit_weapon-4">
