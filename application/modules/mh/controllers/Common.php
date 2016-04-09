@@ -29,6 +29,7 @@ class Common extends MX_Controller {
 		$t = $this->get_login('m_id');
 
 		$this->logedin = isset($t[0]);
+		$this->is_admin = $this->get_login('is_admin');
 		$this->config->set_item('layout_logedin',$this->logedin);
 	}
 	

@@ -28,6 +28,16 @@ class Mh_cache extends MX_Controller {
 		}
 		return $r;
 	}
+	public function delete($key){
+		$key = preg_replace('/[^\w\s\.]/','_',$key);
+		$r = $this->cache->delete($key);
+		if(!$r){
+			header('X-Cache-No-Deleted :'.$key);
+		}else{
+			header('X-Cache-Deleted :'.$key);
+		}
+		return $r;
+	}
 }
 
 

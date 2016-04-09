@@ -123,25 +123,35 @@ class Sdgn_json extends MX_Controller {
 	}
 	
 	public function vs_sdgo($conf,$param){
-		$cache_key = __METHOD__;
-		$disable_cache = IS_DEV;
-		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
-		{
+		
+	}
+	
+	public function update_weapons_add(){
+		$this->load->model('sdgn_weapon_model','sdgn_weapon_m');
+		$post = $this->input->post();
+		$unit_idx = $this->input->post('unit_idx');
+		$post['m_idx'] = $this->common->get_login('m_idx');
+		$post['is_admin'] = $this->common->is_admin;
+		$r = $this->sdgn_weapon_m->update_weapons_add_by_sw_key($post);
+		if(!$r){
 			$view_data = array(
-			'sdgn_count_units'=>$this->sdgn_etc_m->count_units(),
-			'sdgo_count_units'=>767,
-			'sdgn_count_skills'=>$this->sdgn_etc_m->count_skills(),
-			'sdgo_count_skills'=>232,
-			'sdgn_count_comments'=>$this->sdgn_etc_m->count_comments(),
-			'sdgo_count_comments'=>12102,
-			'sdgn_count_comment_users'=>$this->sdgn_etc_m->count_comment_users(),
-			'sdgo_count_comment_users'=>1068,
-			
-			
+				'is_error'=>true,
+				'msg'=>'실패하였습니다.',
 			);
-			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
+		}else{
+			$view_data = array(
+				'is_error'=>false,
+				'msg'=>'수정되었습니다.',
+			);
+			if($unit_idx){
+				$cache_key = 'Sdgn::units_detail'.'_'.$unit_idx;
+				$this->mh_cache->delete($cache_key);
+			}
 		}
-		$this->load->view('mh/sdgn/vs_sdgo',$view_data);
+		
+		
+		echo $this->json_encode($view_data);
+		return;
 	}
 }
 

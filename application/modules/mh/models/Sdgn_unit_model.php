@@ -42,4 +42,5 @@ class Sdgn_unit_model extends CI_Model {
 		}
 		return $this->db->get()->result_array();
 	}
+	
 }

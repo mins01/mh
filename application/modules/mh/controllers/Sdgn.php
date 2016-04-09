@@ -140,32 +140,45 @@ class Sdgn extends MX_Controller {
 		return $this->load->view( $this->skin_path.'/head_contents',array('mode'=>$mode,'bm_row'=>$this->bm_row),true);
 	}
 	public function units_detail($conf,$param){
+		$this->load->model('sdgn_weapon_model','sdgn_weapon_m');
+		
+		
 		$unit_idx = $this->input->get('unit_idx');
 		
 		$mode = 'read';
 		$this->config->set_item('layout_head_contents',$this->config->item('layout_head_contents').$this->get_head_contents($mode));
 		
 		$disable_cache = IS_DEV;
-		$cache_key = __METHOD__.'_'.$unit_idx;
+		$cache_key = 'Sdgn::units_detail'.'_'.$unit_idx;
 		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
 			$su_row=$this->sdgn_unit_m->select_by_unit_idx($unit_idx);
 			if(!isset($su_row)){
 				show_error('WHAT?');
 			}
-			
+			$sw_rows = $this->sdgn_weapon_m->select_weapons_by_unit_idx($su_row['unit_idx']);
+			foreach($sw_rows as & $sw_row){
+				$sw_row['card'] = $this->load->view('mh/sdgn/weapon_card',array('sw_row'=>$sw_row),1);
+			}
+			unset($sw_row);			
+			$sw_rows = $this->sdgn_weapon_m->select_assoc_weapons_by_rows($sw_rows);
+
 			$units_card = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>false),true);
 			
 			
 			$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$su_row['unit_idx']);
 			$view_data = array(
 				'su_row'=>$su_row,
+				'sw_rows'=>$sw_rows,
 				'units_card'=>$units_card,
 				'html_comment'=>($this->bm_row['bm_use_comment']=='1')?$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url,'bm_row'=>$this->bm_row),true):'',
 			);
 			
 			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
 		}
+		$view_data['logedin'] = $this->common->logedin;
+		$view_data['is_admin'] = $this->common->is_admin;
+		
 		$this->load->view('mh/sdgn/units_detail',$view_data);
 		
 	}

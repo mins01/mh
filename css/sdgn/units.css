@@ -172,17 +172,7 @@ a.unit_properties_num:hover{opacity:0.8;}
 }
 
 /* 상세부분 */
-.unit_weapon{
-}
-.unit_weapon::after{
-	content: "";
-	clear: both;
-	display: block;
-}
-.unit_weapon img{
-	
-}
-.unit_weapon_name{margin-top:-1em;line-height:2em;width:114px;text-align:center;font-weight:bold;}
+
 .unit_skill::after{
 	content: "";
 	clear: both;
@@ -195,3 +185,53 @@ a.unit_properties_num:hover{opacity:0.8;}
 .last_comments table td{padding:0;margin:0;}
 .table-vertical-middle td{vertical-align:middle !important;}
 .last_comments .bc_name{display:inline-block;}
+
+
+.unit_weapon{
+	text-align:left;
+}
+.unit_weapon .btn{width:114px; margin:5px;}
+.unit_weapon > table{padding:0; margin:0;width:100%; table-layout:fixed;}
+.unit_weapon > table td{padding:0; margin:0;overflow:hidden;vertical-align:top;height:100px;}
+/* 웨폰 카드 */
+.weapon_card{border:1px solid #ccc; display:inline-block; text-align:center;
+border-radius: 0 0 10px 10px;
+position:relative;
+margin:8px 3px 11px 3px;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,000000+100&0.65+0,0+100 */
+background: -moz-linear-gradient(top,  rgba(238,238,238,0.65) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  rgba(238,238,238,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  rgba(238,238,238,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6eeeeee', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+
+}
+.weapon_card > .sw_cost{font-weight:bold; text-align:right;
+bottom:1em; right:2px;font-size:20px;line-height:1em;
+margin-top:-1em;
+padding-right:4px;
+color:#BF6000;
+}
+.weapon_card > .sw_cost:before{content:'Cost ';font-size:10px;}
+.weapon_card > .sw_name{font-weight:bold;border-top:1px dotted #ccc;}
+
+.weapon_card > .m_nick{font-weight:bold; text-align:right;
+position:absolute; bottom:-1em; right:2px;font-size:8px;line-height:1em;
+color:#666;
+}
+.weapon_card > .tag_label{font-weight:bold; text-align:right;
+position:absolute; top:-8px; left:2px;font-size:8px;line-height:1em;
+color:#666;
+border:1px solid #ccc;
+background-color:rgba(240,240,240,0.8);
+padding:2px;
+border-radius: 4px;
+}
+
+.weapon_card.box-sw_desc{font-size:smaller;min-width:40px;text-align:left;
+display:block; 
+
+}
+.weapon_card .sw_desc{
+	padding:0.5em;
+	height:90px; overflow-y:auto;overflow-x:hidden;word-break:break-all; 
+}
