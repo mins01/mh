@@ -222,11 +222,23 @@
 								 <div class="input-group-addon">m</div>
 							</div>
 						</div>
+						
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">사거리타입</div>
+								<select required class="form-control" name="sw_range_type">
+										<option value="">선택해주세요</option>
+										<option value="1">근거리</option>
+										<option value="2">원거리</option>
+										<option value="0">기타</option>
+									</select>
+							</div>
+						</div>
 					</div>
 					<div>
 						<div class="form-group">
 							<div class="input-group">
-								<div class="input-group-addon">부가 효과<small><small>(다운,슬로우 등)</small></small></div>
+								<div class="input-group-addon">부가효과<small><small>(다운,슬로우 등)</small></small></div>
 								<input type="text" list="data_list_sw_effect" style="min-width:8em" class="form-control" name="sw_effect" laceholder="sw_effect" value="없음">
 							</div>
 							<datalist id="data_list_sw_effect">
@@ -242,7 +254,7 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon">설명</div>
-							<textarea required class="form-control" name="sw_desc" laceholder="설명" rows="5" cols="5" ></textarea>
+							<textarea class="form-control" name="sw_desc" laceholder="설명" rows="5" cols="5" ></textarea>
 						</div>
 					</div>
 				</div>

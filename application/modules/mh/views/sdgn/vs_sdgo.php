@@ -59,7 +59,7 @@
 		<td class="text-left" ><label <?=$class2?>><?=$t2?></label></td>
 	</tr>
 	<?
-	$t1 = 4;
+	$t1 = 5;
 	$t2 = 34;
 	$per = round($t1/$t2*100,2);
 	$label = "맵<br>({$per}%)";

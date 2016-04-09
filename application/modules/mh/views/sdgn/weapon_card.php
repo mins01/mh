@@ -1,3 +1,6 @@
+<?
+// var_dump($sw_row);
+?>
 <table style="width:100%;table-layout:fixed">
 	<tr>
 		<td style="width:126px">
@@ -6,7 +9,15 @@
 				<? if(isset($sw_row['sw_cost'][0])): ?><div class="sw_cost"><?=html_escape($sw_row['sw_cost'])?></div><? endif; ?>
 				<div class="sw_name"><?=html_escape($sw_row['sw_name'])?></div>
 				<? if(isset($sw_row['m_nick'][0])): ?><div class="m_nick">edit by <?=html_escape($sw_row['m_nick'])?></div><? endif; ?>
-				<? if(isset($sw_row['sw_range'][0])): ?><div class="sw_range tag_label"><?=$sw_row['sw_range']<=5?'근거리':'원거리'?> [<?=html_escape($sw_row['sw_range'])?>m]</div><? endif; ?>
+				<? if(isset($sw_row['sw_range'][0]) || isset($sw_row['sw_range_type'])): ?><div class="sw_range tag_label"><?
+				if(isset($sw_row['sw_range_type'])){
+					switch($sw_row['sw_range_type']){
+						case '0':echo '기타';break;
+						case '1':echo '근거리';break;
+						case '2':echo '원거리';break;
+					}
+				}
+				?> <? if(isset($sw_row['sw_range'][0]) ):?>[<?=html_escape($sw_row['sw_range'])?>m]<? endif; ?></div><? endif; ?>
 			</div>
 		</td>
 		<td valign="top">

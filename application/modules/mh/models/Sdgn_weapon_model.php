@@ -37,6 +37,7 @@ class Sdgn_weapon_model extends CI_Model {
 								'sw_bullet_count',
 								'sw_reload_time',
 								'sw_range',
+								'sw_range_type',
 								'sw_effect',
 								'm_idx',
 								//'swa_isdel',
