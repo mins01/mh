@@ -15,7 +15,12 @@ class Sdgn_weapon_model extends CI_Model {
 		
 	}
 	public function select_assoc_weapons_by_rows($rows){
-		$r_rows = array();
+		$r_rows = array(
+			
+		);
+		$r_rows[] = array(array(),array());
+		$r_rows[] = array(array(),array());
+		
 		foreach($rows as $row){
 			if(!isset($r_rows[$row['sw_is_change']])){
 				$r_rows[$row['sw_is_change']] = array();
@@ -46,6 +51,7 @@ class Sdgn_weapon_model extends CI_Model {
 		
 		$this->db->from('sdgn_weapons_add swa')
 		->set('swa_isdel',0)
+		->set('swa_update_date','now()',false)
 		->where('sw_key',$post['sw_key']);
 		foreach($fs as $f){
 			if(!isset($post[$f])) continue;
@@ -62,7 +68,14 @@ class Sdgn_weapon_model extends CI_Model {
 			}
 		}
 		$this->db->update();
+		$affected_rows = $this->db->affected_rows();
 		// echo $this->db->last_query();exit;
+		$this->mh_log->info(array(
+			'title'=>__METHOD__,
+			'msg'=>'무기추가정보변경',
+			'result'=>$affected_rows,
+			'post'=>@$post,
+		));
 		return true;
 	}
 }

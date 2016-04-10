@@ -86,6 +86,17 @@ class Sdgn_etc_model extends CI_Model {
 		";
 		return $this->db->query($sql)->result_array();
 	}
+	
+	public function select_for_last_update_weapon($limit=10){
+		$sql = "SELECT svw.* , su.unit_name,unit_properties_num , m_nick FROM `sdgn_view_weapons` svw
+						JOIN sdgn_units su USING(unit_idx)
+						LEFT JOIN mh_member m using(m_idx)
+						where swa_update_date is not null
+						ORDER BY swa_update_date DESC
+						LIMIT {$limit}
+		";
+		return $this->db->query($sql)->result_array();
+	}
 
 
 	

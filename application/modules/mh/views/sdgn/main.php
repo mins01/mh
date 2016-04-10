@@ -6,13 +6,14 @@
 
 
 <h3 class="text-center" >
-	SD건담넥스트에볼루션분석
+	건넥한마디
 </h3>
 <h4 class="text-center" ><a href="http://sdgn.co.kr/" target="_blank"><!--<img src="http://static.sdgn.co.kr/next/images/common/logo.png">--><img src="http://static.sdgn.co.kr/next/images/intro/160205/logo.png"><br>공식게임사이트 방문하기</a></h4>
 
 <div class="text-center" style="margin:1em; auto"><a class="btn btn-default btn-lg" href="https://play.google.com/store/apps/details?id=com.mins01.app001" target="_blank"><img src="https://www.gstatic.com/android/market_images/web/play_one_bar_logo.png"><img style="width:32px" src="https://lh3.googleusercontent.com/y-Q8e1HEOIDP6Je5mwMp2D-_cbWWa8E99tRf1V5QQg01_thpRcy3Qhv2X8eVrTYA3g=w300"> 건넥 한마디</a></div>
 
 <div class="row">
+	<? /* 
 	<div class="col-sm-4">
 		<ul class="list-group">
 			<li class="list-group-item active text-center"><strong>한마디 TOP 10</strong></li>
@@ -27,6 +28,24 @@
 			<? endforeach; ?>
 			
 		</ul>
+	</div>
+	*/ ?>
+	<div class="col-sm-4">
+		<div class="list-group">
+			<div class="list-group-item active text-center"><strong>최근 무기 수정</strong></div>
+			<? 
+			$i_cnt = 1;
+			foreach($sw_rows as $sw_row): 
+			?>
+			<a href="/sdgn/units?unit_idx=<?=$sw_row['unit_idx']?>"  class="list-group-item text-overflow-ellipsis">
+				<span class="label  unit_properties_num unit_properties_num-<?=$sw_row['unit_properties_num']?>"><?=$sw_row['unit_name']?></span> : 
+				<span class="label label-default"><?=html_escape($sw_row['sw_name'])?></span>
+				 
+				<small>by <?=html_escape($sw_row['m_nick'])?></small>
+			</a>
+			<? endforeach; ?>
+			
+		</div>
 	</div>
 	<div class="col-sm-4">
 		<div class="list-group">

@@ -96,6 +96,8 @@ class Sdgn_json extends MX_Controller {
 	}
 
 	public function units_detail($conf,$param){
+		$this->load->model('sdgn_weapon_model','sdgn_weapon_m');
+		
 		$unit_idx = $this->input->get('unit_idx');
 		
 		$disable_cache = IS_DEV;
@@ -107,12 +109,15 @@ class Sdgn_json extends MX_Controller {
 				show_error('WHAT?');
 			}
 			
-			$units_card = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>false),true);
+			//$units_card = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>false),true);
+			$sw_rows = $this->sdgn_weapon_m->select_weapons_by_unit_idx($su_row['unit_idx']);
+			$sw_rows = $this->sdgn_weapon_m->select_assoc_weapons_by_rows($sw_rows);
 			
 			
 			$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$su_row['unit_idx']);
 			$view_data = array(
 				'su_row'=>$su_row,
+				'sw_rows'=>$sw_rows,
 			);
 			
 			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);

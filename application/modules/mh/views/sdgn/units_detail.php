@@ -228,9 +228,10 @@
 								<div class="input-group-addon">사거리타입</div>
 								<select required class="form-control" name="sw_range_type">
 										<option value="">선택해주세요</option>
-										<option value="1">근거리</option>
-										<option value="2">원거리</option>
-										<option value="0">기타</option>
+										<option value="근거리">근거리</option>
+										<option value="중거리">중거리</option>
+										<option value="원거리">원거리</option>
+										<option value="기타">기타</option>
 									</select>
 							</div>
 						</div>

@@ -66,7 +66,9 @@ class Sdgn extends MX_Controller {
 		{
 			
 			//최대 평가 코멘트 수
-			$bc_rows = $this->sdgn_etc_m->select_comment_for_main();
+			//$bc_rows = $this->sdgn_etc_m->select_comment_for_main();
+			//유닛 무기 수정 TOP 10
+			$sw_rows = $this->sdgn_etc_m->select_for_last_update_weapon();
 			//인기 기체
 			$su_rows = $this->sdgn_etc_m->select_units_for_main();
 			// 최근 코멘트
@@ -81,7 +83,8 @@ class Sdgn extends MX_Controller {
 			$view_data = array(
 				'conf' =>$conf,
 				'param' =>$param,
-				'bc_rows'=>$bc_rows,
+				// 'bc_rows'=>$bc_rows,
+				'sw_rows'=>$sw_rows,
 				'su_rows'=>$su_rows,
 				'units_cards'=>$units_cards,
 				'last_bc_rows'=>$last_bc_rows,
