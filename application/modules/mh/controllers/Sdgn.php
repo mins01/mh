@@ -89,7 +89,7 @@ class Sdgn extends MX_Controller {
 				'units_cards'=>$units_cards,
 				'last_bc_rows'=>$last_bc_rows,
 			);
-			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*60);
+			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
 		}
 		
 		$this->load->view('mh/sdgn/main',$view_data);

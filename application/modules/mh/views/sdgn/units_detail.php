@@ -168,7 +168,7 @@
 						<div class="form-group">
 							<div class="input-group">
 								<div class="input-group-addon">코스트</div>
-								<input type="number" required  class="form-control" name="sw_cost" laceholder="코스트" min="0" max="200"  value="30">
+								<input type="number"  class="form-control" name="sw_cost" laceholder="코스트" min="0" max="200"  value="30">
 								<div class="input-group-addon">Cost</div>
 							</div>
 						</div>
@@ -176,7 +176,7 @@
 						<div class="form-group">
 							<div class="input-group">
 								<div class="input-group-addon">최대공격수</div>
-								<select required class="form-control" name="sw_atack_count">
+								<select class="form-control" name="sw_atack_count">
 										<option value="">선택해주세요</option>
 										<option selected value="1">1 (사격,단타)</option>
 										<option value="0">0 (특수기)</option>
@@ -191,7 +191,7 @@
 						<div class="form-group">
 							<div class="input-group">
 								<div class="input-group-addon">리로드타입</div>
-									<select required class="form-control" name="sw_reload_type">
+									<select class="form-control" name="sw_reload_type">
 										<option value="">선택해주세요</option>
 										<option value="0">무한(기본격투무기)</option>
 										<option value="1">에너지(실시간)</option>
@@ -203,14 +203,14 @@
 						<div class="form-group">
 							<div class="input-group">
 								<div class="input-group-addon">잔탄</div>
-								<input required type="number"  class="form-control" name="sw_bullet_count" laceholder="sw_bullet_count"  value="1">
+								<input type="number"  class="form-control" name="sw_bullet_count" laceholder="sw_bullet_count"  value="1">
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<div class="input-group">
 								<div class="input-group-addon">리로드시간</div>
-								<input required type="number"  class="form-control" name="sw_reload_time" min="0" max="60" laceholder="sw_reload_time" value="5">
+								<input type="number"  class="form-control" name="sw_reload_time" min="0" max="60" laceholder="sw_reload_time" value="5">
 								<div class="input-group-addon">초</div>
 							</div>
 						</div>
@@ -226,7 +226,7 @@
 						<div class="form-group">
 							<div class="input-group">
 								<div class="input-group-addon">사거리타입</div>
-								<select required class="form-control" name="sw_range_type">
+								<select class="form-control" name="sw_range_type">
 										<option value="">선택해주세요</option>
 										<option value="근거리">근거리</option>
 										<option value="중거리">중거리</option>
@@ -245,8 +245,13 @@
 							<datalist id="data_list_sw_effect">
 									<option value="없음">
 									<option value="다운">
+									<option value="경직">
+									<option value="스턴">
+									<option value="자신방어">
+									<option value="호밍">
 									<option value="슬로우">
 									<option value="방어력감소">
+									<option value="공격력감소">
 									
 								</datalist>
 						</div>
