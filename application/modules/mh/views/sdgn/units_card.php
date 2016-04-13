@@ -1,6 +1,7 @@
 <?
 	$avg_star = round($su_row['avg_star']);
 	$tmp_avg_star = str_repeat('★<br>',$avg_star).str_repeat('☆<br>',5-$avg_star);
+	$url = '/sdgn/units?unit_idx='.$su_row['unit_idx'];
 ?>
 <div class="unit_card_info"
 data-unit_properties="<?=$su_row['unit_properties']?>"
@@ -8,7 +9,7 @@ data-unit_rank="<?=$su_row['unit_rank']?>"
 data-unit_name="<?=preg_replace('/[\s\t]/','',$su_row['unit_name'])?>"
 >
 <? if($use_a): ?>
-	<a href="/sdgn/units?unit_idx=<?=$su_row['unit_idx']?>" class="unit_card_a unit_card_img">
+	<a href="<?=html_escape($url)?>" class="unit_card_a unit_card_img">
 <? else: ?>
 	<div class="unit_card_img ">
 <? endif; ?>
@@ -35,7 +36,7 @@ data-unit_name="<?=preg_replace('/[\s\t]/','',$su_row['unit_name'])?>"
 	</td></tr>
 	<tr><td><table  border="0" cellpadding="0" cellspacing="0" class="unit_card_table_layout unit_card_bottom_info">
 		<tr>
-			<td  class="text-center"><div class="unit_name"><?=html_escape($su_row['unit_name']);?></div></td>
+			<td  class="text-center"><div class="unit_name"><a href="<?=html_escape($url)?>"><?=html_escape($su_row['unit_name']);?></a></div></td>
 		</tr>
 	</table></td></tr>
 </table>

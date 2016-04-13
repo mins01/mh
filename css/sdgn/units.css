@@ -84,6 +84,7 @@ a:hover,a:focus{
 	padding:0px;
 	margin-left:5px;
 }
+.unit_name a{color:#fff;}
 .avg_star{
 	line-height:1em;
 	padding:2px;
@@ -136,19 +137,19 @@ a:hover,a:focus{
 	text-align:center;
 }
 
-.unit_rank.unit_rank-C{
+.unit_rank-C{
 	color:#ccc;
 	text-shadow: 1px 1px 0.5em #ccc;
 }
-.unit_rank.unit_rank-B{
+.unit_rank-B{
 	color:#86A9F0;
 	text-shadow: 1px 1px 0.5em #86A9F0;
 }
-.unit_rank.unit_rank-A{
+.unit_rank-A{
 	color:#FF8D56;
 	text-shadow: 1px 1px 0.5em #FF8D56;
 }
-.unit_rank.unit_rank-S{
+.unit_rank-S{
 	color:#FFFF95;
 	text-shadow: 1px 1px 0.5em #FFFF95;
 }

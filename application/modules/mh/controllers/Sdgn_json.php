@@ -79,15 +79,24 @@ class Sdgn_json extends MX_Controller {
 		
 	}
 	public function units_lists($conf,$param){
-		//$this->output->cache(1);
-		$cache_key = __METHOD__;
+		$sh = array(
+			'unit_name'=>$this->input->get('unit_name'),
+			'unit_ranks'=>$this->input->get('unit_ranks'),
+			'unit_properties_nums'=>$this->input->get('unit_properties_nums'),
+		);
+		if(!$sh['unit_ranks']) $sh['unit_ranks'] = array();
+		if(!$sh['unit_properties_nums']) $sh['unit_properties_nums'] = array();
+		
+		$cache_key = __METHOD__.md5(serialize($sh));
 		$disable_cache = IS_DEV;
 		
 		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
-			$su_rows = $this->sdgn_unit_m->select_for_lists();
+			$su_rows = $this->sdgn_unit_m->select_for_lists($sh);
 			$view_data = array(
 				'su_rows'=>$su_rows,
+				'su_cnt_all' =>$this->sdgn_unit_m->count(),
+				'su_cnt'	=> $this->sdgn_unit_m->count_for_lists($sh),
 			);
 			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
 		}

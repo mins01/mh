@@ -19,7 +19,25 @@ class Sdgn_unit_model extends CI_Model {
 		'b_etc_0','b_etc_1','b_etc_2','b_etc_3','b_etc_4',
 		'b_num_0','b_num_1','b_num_2','b_num_3','b_num_4',
 	);
-	public function select_for_lists(){
+	private function attach_where($sh){
+		if(isset($sh['unit_name'][0])){
+			$this->db->like('unit_name',$sh['unit_name']);
+		}
+		if(isset($sh['unit_ranks'][0])){
+			$this->db->where_in('unit_rank',$sh['unit_ranks']);
+		}
+		
+		if(isset($sh['unit_properties_nums'][0])){
+			$this->db->where_in('unit_properties_num',$sh['unit_properties_nums']);
+		}
+	}
+	public function count_for_lists($sh=array()){
+		$this->attach_where($sh);
+		$rows = $this->_select(null,'unit_idx DESC','count(*) CNT');
+		return $rows[0]['CNT'];
+	}
+	public function select_for_lists($sh=array()){
+		$this->attach_where($sh);
 		return $this->_select(null,'unit_idx DESC','su.*');
 	}
 	public function select_by_unit_idx($unit_idx){

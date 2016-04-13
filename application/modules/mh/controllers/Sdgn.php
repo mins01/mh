@@ -118,12 +118,21 @@ class Sdgn extends MX_Controller {
 		
 	}
 	public function units_lists($conf,$param){
-		$cache_key = __METHOD__;
+		// $get = $this->input->get();
+		$sh = array(
+			'unit_name'=>$this->input->get('unit_name'),
+			'unit_ranks'=>$this->input->get('unit_ranks'),
+			'unit_properties_nums'=>$this->input->get('unit_properties_nums'),
+		);
+		if(!$sh['unit_ranks']) $sh['unit_ranks'] = array();
+		if(!$sh['unit_properties_nums']) $sh['unit_properties_nums'] = array();
+		
+		$cache_key = __METHOD__.md5(serialize($sh));
 		$disable_cache = IS_DEV;
 		
 		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
-			$su_rows = $this->sdgn_unit_m->select_for_lists();
+			$su_rows = $this->sdgn_unit_m->select_for_lists($sh);
 			$units_cards = array();
 			foreach($su_rows as $su_row){
 				$units_cards[] = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>true),true);
@@ -132,7 +141,9 @@ class Sdgn extends MX_Controller {
 			'conf' =>$conf,
 			'param' =>$param,
 			'units_cards'=>$units_cards,
-			'su_cnt' =>$this->sdgn_unit_m->count(),
+			'su_cnt_all' =>$this->sdgn_unit_m->count(),
+			'su_cnt'	=> $this->sdgn_unit_m->count_for_lists($sh),
+			'sh'=>$sh,
 			
 			);
 			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
