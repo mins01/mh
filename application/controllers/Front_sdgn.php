@@ -60,7 +60,7 @@ class Front_sdgn extends MX_Controller {
 		$this->config->set_item('menu', $menu); 
 		$conf = array(
 			'menu'=>$menu,
-			'base_url'=>base_url($menu['mn_uri']),
+			'base_url'=>mh_base_url($menu['mn_uri']),	
 		);
 		$this->load->module('mh/'.$menu['mn_module'],$conf);
 		if(!class_exists($menu['mn_module'],false)){

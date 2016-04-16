@@ -1,4 +1,12 @@
 <?
+//-- base_url에서 /로 시작할 경우 따로 처리하도록 한다.
+function mh_base_url($url){
+	if(isset($url[0]) && $url[0]=='/'){
+		return $url;
+	}else{
+		return base_url($url);
+	}
+}
 
 function generate_paging($get,$max_page,$uri='',$i_conf=array()){
 	$conf = array_merge(array(

@@ -8,10 +8,57 @@
 <h3 class="text-center" >
 	건넥한마디
 </h3>
-<h4 class="text-center" ><a href="http://sdgn.co.kr/" target="_blank"><!--<img src="http://static.sdgn.co.kr/next/images/common/logo.png">--><img src="http://static.sdgn.co.kr/next/images/intro/160205/logo.png"><br>공식게임사이트 방문하기</a></h4>
+<div class="row">
+	<div class="col-sm-6">
+		<div class="list-group">
+			<div class="list-group-item text-center">
+				<h4 class="text-center" ><a href="http://sdgn.co.kr/" target="_blank"><!--<img src="http://static.sdgn.co.kr/next/images/common/logo.png">--><img style="max-width:100%" src="http://static.sdgn.co.kr/next/images/intro/160205/logo.png"><br>공식게임사이트 방문하기</a></h4>
+			</div>
+			<div class="list-group-item text-center">
+				<div class="text-center" style="margin:1em; auto; max-width:100%"><a class="btn btn-default btn-lg" href="https://play.google.com/store/apps/details?id=com.mins01.app001" target="_blank"><img style="max-width:100%" src="https://www.gstatic.com/android/market_images/web/play_one_bar_logo.png"><br><img style="width:32px;max-width:100%" src="https://lh3.googleusercontent.com/y-Q8e1HEOIDP6Je5mwMp2D-_cbWWa8E99tRf1V5QQg01_thpRcy3Qhv2X8eVrTYA3g=w300"> 건넥 한마디</a></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="list-group">
+			<a href="/sdgn/plan" class="list-group-item active text-center" title="일정페이지로 바로가기"><strong>일정</strong> [<small class=""><?=html_escape($plan_dt_st)?> ~ <?=html_escape($plan_dt_ed)?></small>]</a>
+			<? 
+			foreach($plan_b_rows as $b_row): 
+			$t = ($b_row['b_etc_0']<=DATE_YMD && DATE_YMD<=$b_row['b_etc_1']);
+			$t1 = $t?'list-group-item-info':'';
+			?>
+			<a href="/sdgn/plan/read/<?=$b_row['b_idx']?>" class="list-group-item text-overflow-ellipsis <?=$t1?>">
+				<? if($t): ?>
+				<span class="badge">진행중</span>
+				<? endif; ?>
+				<?
+				if($b_row['b_etc_0']==$b_row['b_etc_1']):
+				?>
+				<span class="label label-success"><?=html_escape($b_row['b_etc_0'])?></span>
+				<? 
+				else:
+				?>
+				<span class="label label-success"><?=html_escape($b_row['b_etc_0'])?> ~ <?=html_escape($b_row['b_etc_1'])?></span>
+				<?
+				endif;
+				?>
+				<?
+				if(isset($b_row['b_category'][0])):
+				?>
+				<span class="label label-info"><?=html_escape($b_row['b_category'])?></span>
+				<?
+				endif;
+				?>
+				<?=html_escape($b_row['b_title'])?>
+			</a>
+			<? endforeach; ?>
+		</div>
+	</div>
+</div>
 
-<div class="text-center" style="margin:1em; auto"><a class="btn btn-default btn-lg" href="https://play.google.com/store/apps/details?id=com.mins01.app001" target="_blank"><img src="https://www.gstatic.com/android/market_images/web/play_one_bar_logo.png"><img style="width:32px" src="https://lh3.googleusercontent.com/y-Q8e1HEOIDP6Je5mwMp2D-_cbWWa8E99tRf1V5QQg01_thpRcy3Qhv2X8eVrTYA3g=w300"> 건넥 한마디</a></div>
 
+
+<hr>
 <div class="row">
 	<? /* 
 	<div class="col-sm-4">

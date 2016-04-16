@@ -44,7 +44,7 @@ date_default_timezone_set('Asia/Seoul');
 
 define('MH_LOG_STORE',3); //로그 저장소, 0:로그저장안함, 1: CI로그파일,2:DB, 3:1+2
 
-
+define('DATE_YMD',date('Y-m-d'));
 
 require_once(dirname(__FILE__).'/legacy.php');
 

@@ -97,6 +97,17 @@ class Sdgn_etc_model extends CI_Model {
 		";
 		return $this->db->query($sql)->result_array();
 	}
+	
+	public function select_for_plan($plan_dt_st,$plan_dt_ed){
+		$sql = "SELECT b_idx,b_category,b_title,b_etc_0,b_etc_1 FROM mh_bbs_sdgn_data
+						WHERE 
+						b_etc_0 <= '{$plan_dt_ed}' AND b_etc_1 >= '{$plan_dt_st}'
+						AND b_id = 'sdgn_plan'
+						AND b_isdel = 0
+						ORDER BY b_etc_0
+		";
+		return $this->db->query($sql)->result_array();
+	}
 
 
 	

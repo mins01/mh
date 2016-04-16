@@ -73,7 +73,12 @@ class Sdgn extends MX_Controller {
 			$su_rows = $this->sdgn_etc_m->select_units_for_main();
 			// 최근 코멘트
 			$last_bc_rows = $this->sdgn_etc_m->select_last_comment_for_main();
-			
+			// 일정
+			$tm = time();
+			$plan_dt_st = date('Y-m-d',$tm-(60*60*24*7));
+			$plan_dt_ed = date('Y-m-d',$tm+(60*60*24*7));
+			$plan_b_rows = $this->sdgn_etc_m->select_for_plan($plan_dt_st,$plan_dt_ed); 
+
 			$units_cards = array();
 			foreach($su_rows as $su_row){
 				$units_cards[] = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>true),true);
@@ -88,6 +93,9 @@ class Sdgn extends MX_Controller {
 				'su_rows'=>$su_rows,
 				'units_cards'=>$units_cards,
 				'last_bc_rows'=>$last_bc_rows,
+				'plan_b_rows'=>$plan_b_rows,
+				'plan_dt_st'=>$plan_dt_st,
+				'plan_dt_ed'=>$plan_dt_ed,
 			);
 			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
 		}
