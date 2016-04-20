@@ -59,6 +59,21 @@
 			</div>
 
 		</div>
+		<div class="form-inline">
+			<div class="checkbox-inline">
+				<label>
+				<input type="checkbox" name="unit_is_weapon_change" <?=$sh['unit_is_weapon_change']=='1'?'checked':''?> value="1">
+					<span class="label label-danger">웨폰체인지</span>
+				</label>
+			</div>
+			<div class="checkbox-inline">
+				<label>
+				<input type="checkbox" name="unit_is_transform" <?=$sh['unit_is_transform']=='1'?'checked':''?> value="1">
+					<span class="label label-info">변신</span>
+				</label>
+			</div>
+		
+		</div>
 	
 		<div class="form-inline">
 			<div class="input-group">
@@ -103,4 +118,12 @@ function fn_filter(f){
 		<?=$units_card?>
 	</div>
 	<? endforeach; ?>
+	<? if(!isset($units_cards[0])): ?>
+	<div class="alert alert-danger">
+		<div >NO DATA.</div>
+	</div>
+	<? endif; ?>
 </div>
+
+
+

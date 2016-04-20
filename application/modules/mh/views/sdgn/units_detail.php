@@ -147,7 +147,7 @@
 		</dl>
 	</li>
 	<li class="list-group-item text-right">
-		<a class="btn btn-info btn-sm" href="./units">목록</a>
+		<a class="btn btn-info btn-sm" href="<?=html_escape(isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'/sdgn/units')?>">목록</a>
 	</li>
 </ul>
 <?=$html_comment?>

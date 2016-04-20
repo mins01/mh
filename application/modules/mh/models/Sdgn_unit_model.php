@@ -30,6 +30,12 @@ class Sdgn_unit_model extends CI_Model {
 		if(isset($sh['unit_properties_nums'][0])){
 			$this->db->where_in('unit_properties_num',$sh['unit_properties_nums']);
 		}
+		if(isset($sh['unit_is_weapon_change'][0])){
+			$this->db->where('unit_is_weapon_change',(int)$sh['unit_is_weapon_change']);
+		}
+		if(isset($sh['unit_is_transform'][0])){
+			$this->db->where('unit_is_transform',(int)$sh['unit_is_transform']);
+		}
 	}
 	public function count_for_lists($sh=array()){
 		$this->attach_where($sh);

@@ -19,6 +19,8 @@ a:hover,a:focus{
 
 .unit_card_a:hover{
 	text-decoration: none !important;
+	cursor:pointer;
+	display:inline-block;
 }
 
 .unit_card_table_layout{

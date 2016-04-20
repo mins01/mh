@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+if($_SERVER['REMOTE_ADDR']=='121.189.37.55'){ //과도 접근자.
+	header('Location: http://www.police.go.kr');
+	exit('');
+}
+
+
 //== mh 설정
 $http_host = isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'';
 define('SITE_NAME','공대여자홈');

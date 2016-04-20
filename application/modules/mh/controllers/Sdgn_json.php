@@ -141,11 +141,23 @@ class Sdgn_json extends MX_Controller {
 	}
 	
 	public function update_weapons_add(){
+		if(!$this->common->logedin){
+			$view_data = array(
+				'is_error'=>true,
+				'msg'=>'실패하였습니다.(2)',
+			);
+			echo $this->json_encode($view_data);
+			return;
+		}
+		
 		$this->load->model('sdgn_weapon_model','sdgn_weapon_m');
 		$post = $this->input->post();
 		$unit_idx = $this->input->post('unit_idx');
 		$post['m_idx'] = $this->common->get_login('m_idx');
 		$post['is_admin'] = $this->common->is_admin;
+		
+		
+		
 		$r = $this->sdgn_weapon_m->update_weapons_add_by_sw_key($post);
 		if(!$r){
 			$view_data = array(

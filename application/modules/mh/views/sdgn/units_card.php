@@ -9,7 +9,8 @@ data-unit_rank="<?=$su_row['unit_rank']?>"
 data-unit_name="<?=preg_replace('/[\s\t]/','',$su_row['unit_name'])?>"
 >
 <? if($use_a): ?>
-	<a href="<?=html_escape($url)?>" class="unit_card_a unit_card_img">
+	<!--<a href="<?=html_escape($url)?>" class="unit_card_a unit_card_img">-->
+	<div onclick="window.open('<?=html_escape($url)?>','_self');" class="unit_card_a unit_card_img">
 <? else: ?>
 	<div class="unit_card_img ">
 <? endif; ?>
@@ -20,7 +21,15 @@ data-unit_name="<?=preg_replace('/[\s\t]/','',$su_row['unit_name'])?>"
 	<tr><td>
 	<table  border="0" cellpadding="0" cellspacing="0" class="unit_card_table_layout unit_card_top_info">
 		<tr>
-			<td width="50%" style="height:30px" class="text-left"><span class="unit_properties label unit_properties_num unit_properties_num-<?=$su_row['unit_properties_num']?>"><?=html_escape($su_row['unit_properties'])?></span></td>
+			<td width="50%" style="height:30px" class="text-left"><span class="unit_properties label unit_properties_num unit_properties_num-<?=$su_row['unit_properties_num']?>"><?=html_escape($su_row['unit_properties'])?></span>
+			<?
+			if($su_row['unit_is_weapon_change']==1):
+			?>
+			<span class="label label-danger" title="웨폰 체인지 가능">!</span>
+			<?
+			endif;
+			?>
+			</td>
 			<td  class="text-right"><span class="unit_rank unit_rank-<?=html_escape($su_row['unit_rank']);?>"><?=html_escape($su_row['unit_rank']);?></span></td>
 		</tr>
 		<tr>
@@ -42,7 +51,8 @@ data-unit_name="<?=preg_replace('/[\s\t]/','',$su_row['unit_name'])?>"
 </table>
 <div class="text-dot">&nbsp;</div>
 <? if($use_a): ?>
-	</a>
+	<!-- </a> -->
+	</div>
 <? else: ?>
 	</div>
 <? endif; ?>

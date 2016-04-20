@@ -49,7 +49,7 @@ class Sdgn_etc_model extends CI_Model {
 	}
 	
 	public function count_units(){
-		$sql ="select count(*) CNT from sdgn_units";
+		$sql ="select count(*) CNT from sdgn_units where unit_isdel=0";
 		$rows = $this->db->query($sql)->result_array();
 		return $rows[0]['CNT'];
 	}
