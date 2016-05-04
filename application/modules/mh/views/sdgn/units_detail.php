@@ -55,6 +55,25 @@
 				</div>
 			</dd>
 		</dl>
+		<? if($su_row['unit_is_change_skill']==1): ?>
+		<dl class="dl-horizontal">
+			<dt>스킬 (변신 후)</dt>
+			<dd>
+				<div class="row">
+					<div class="col-sm-6 unit_skill unit_skill-4">
+						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill4_img'])?>">
+						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill4'])?></div>
+						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill4_desc'])?></div>
+					</div>
+					<div class="col-sm-6 unit_skill unit_skill-5">
+						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill5_img'])?>">
+						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill5'])?></div>
+						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill5_desc'])?></div>
+					</div>
+				</div>
+			</dd>
+		</dl>
+		<? endif; ?>
 	</li>
 	<li class="list-group-item">
 		<dl class="dl-horizontal">
@@ -67,10 +86,10 @@
 						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill3_desc'])?></div>
 					</div>
 					<? if($su_row['unit_is_transform']): ?>
-					<div class="col-sm-6 unit_skill unit_skill-4">
-						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill4_img'])?>">
-						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill4'])?> (변신후)</div>
-						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill4_desc'])?></div>
+					<div class="col-sm-6 unit_skill unit_skill-6">
+						<img class="img-rounded" src="<?=html_escape($su_row['unit_skill6_img'])?>">
+						<div class="unit_skill_name"><?=html_escape($su_row['unit_skill6'])?> (변신후)</div>
+						<div class="unit_skill_desc"><?=html_escape($su_row['unit_skill6_desc'])?></div>
 					</div>
 					<? endif; ?>
 				</div>
@@ -99,6 +118,22 @@
 			?>
 			<!-- 기본 무기 (변신후) -->
 			<dt>무기 (변신 후)</dt>
+			<dd>
+				<div class="row">
+				<? foreach($sw_rows_k as $sw_row): ?>
+					<div class="col-sm-4 unit_weapon unit_weapon-<?=$sw_row['sw_is_change']?>-<?=$sw_row['sw_is_transform']?>-<?=$sw_row['sw_sort']?>">
+						<?=$sw_row['card']?>
+						<div><button class="btn btn-warning btn-sm" onclick="units_detail.load_weapon_info('<?=$sw_row['sw_key']?>');" data-toggle="modal" data-target="#edit_weapon">추가정보입력</button></div>
+					</div>
+				<? endforeach; ?>
+				</div>
+			</dd>
+			<? endif; ?>
+			<? if(isset($sw_rows['0']['2'][0])): 
+			$sw_rows_k = $sw_rows['0']['2'];
+			?>
+			<!-- 기본 무기 (변신후) -->
+			<dt>무기 (변신 후 변신)</dt>
 			<dd>
 				<div class="row">
 				<? foreach($sw_rows_k as $sw_row): ?>

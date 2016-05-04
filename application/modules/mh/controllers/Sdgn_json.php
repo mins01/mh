@@ -83,6 +83,8 @@ class Sdgn_json extends MX_Controller {
 			'unit_name'=>$this->input->get('unit_name'),
 			'unit_ranks'=>$this->input->get('unit_ranks'),
 			'unit_properties_nums'=>$this->input->get('unit_properties_nums'),
+			'unit_is_weapon_change'=>$this->input->get('unit_is_weapon_change'),
+			'unit_is_transform'=>$this->input->get('unit_is_transform'),
 		);
 		if(!$sh['unit_ranks']) $sh['unit_ranks'] = array();
 		if(!$sh['unit_properties_nums']) $sh['unit_properties_nums'] = array();
