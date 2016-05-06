@@ -104,7 +104,7 @@ class Sdgn_etc_model extends CI_Model {
 						b_etc_0 <= '{$plan_dt_ed}' AND b_etc_1 >= '{$plan_dt_st}'
 						AND b_id = 'sdgn_plan'
 						AND b_isdel = 0
-						ORDER BY b_etc_0
+						ORDER BY b_etc_1
 		";
 		return $this->db->query($sql)->result_array();
 	}

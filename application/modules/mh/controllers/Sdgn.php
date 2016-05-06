@@ -166,6 +166,7 @@ class Sdgn extends MX_Controller {
 	}
 	public function units_detail($conf,$param){
 		$this->load->model('sdgn_weapon_model','sdgn_weapon_m');
+		$this->load->model('sdgn_box_model','sdgn_box_m');
 		
 		
 		$unit_idx = $this->input->get('unit_idx');
@@ -178,6 +179,7 @@ class Sdgn extends MX_Controller {
 		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
 			$su_row=$this->sdgn_unit_m->select_by_unit_idx($unit_idx);
+			$sb_rows=$this->sdgn_box_m->get_box_by_unit_idx($unit_idx);
 			if(!isset($su_row)){
 				show_error('WHAT?');
 			}
@@ -194,6 +196,7 @@ class Sdgn extends MX_Controller {
 			$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$su_row['unit_idx']);
 			$view_data = array(
 				'su_row'=>$su_row,
+				'sb_rows'=>$sb_rows,
 				'sw_rows'=>$sw_rows,
 				'units_card'=>$units_card,
 				'html_comment'=>($this->bm_row['bm_use_comment']=='1')?$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url,'bm_row'=>$this->bm_row),true):'',
@@ -248,7 +251,75 @@ class Sdgn extends MX_Controller {
 		}
 		$this->load->view('mh/sdgn/last_comments',$view_data);
 	}
+	
+	public function box($conf,$param){
+		$view_data = array();
+		$this->load->model('sdgn_unit_model','sdgn_unit_m');
+		$this->load->model('sdgn_box_model','sdgn_box_m');
+		$cache_key = __METHOD__;
+		$disable_cache = IS_DEV;
+		$sb_idx = $this->input->get('sb_idx');
+		$mode = $this->input->get('mode');
+		$view_data['mode'] = $mode;
+
+		if($view_data['mode']=='add_units'){
+			$view_data['all_su_rows'] = $this->sdgn_unit_m->select_for_lists(array());	
+		}
+		
+		
+		//-- 박스 목록
+		$view_data['sb_rows'] = $this->sdgn_box_m->get_box_lists();
+		if(!isset($sb_idx)){
+			$sb_idx = $view_data['sb_rows'][count($view_data['sb_rows'])-1]['sb_idx'];
+		}
+		$view_data['selected_sb_row'] = null;
+		if(isset($sb_idx)){
+			if($sb_idx=='0'){
+				$view_data['selected_sb_row'] = array_fill_keys(array_keys($view_data['sb_rows'][0]),null);
+			}else{
+				foreach($view_data['sb_rows'] as $sb_row){
+					if($sb_row['sb_idx']==$sb_idx){
+						$view_data['selected_sb_row'] = $sb_row;
+						break;
+					}
+				}
+			}
+		}
+		if($sb_idx!=='0' && !isset($view_data['selected_sb_row'])){
+			$view_data['selected_sb_row'] = $view_data['sb_rows'][0];
+			$sb_idx = $view_data['selected_sb_row']['sb_idx'];
+		}
+		$view_data['sb_idx']=$sb_idx;
+		//-- 박스속 유닛 목록
+		$view_data['su_rows'] = $this->sdgn_unit_m->select_for_lists_by_sb_idx($sb_idx);
+		$view_data['units_cards'] = array();
+		foreach($view_data['su_rows'] as $su_row){
+			$view_data['units_cards'][] = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>true),true);
+		}
+		$view_data['is_admin'] = $this->common->is_admin;
+		
+		
+		$this->load->view('mh/sdgn/box',$view_data);
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

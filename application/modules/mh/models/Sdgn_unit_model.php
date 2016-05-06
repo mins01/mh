@@ -46,6 +46,13 @@ class Sdgn_unit_model extends CI_Model {
 		$this->attach_where($sh);
 		return $this->_select(null,'unit_idx DESC','su.*');
 	}
+	public function select_for_lists_by_sb_idx($sb_idx){
+		$v_sb_idx = $this->db->escape($sb_idx);
+		$this->attach_where(array());
+		$this->db->join('sdgn_units_in_box suib',"suib.unit_idx = su.unit_idx and sb_idx = {$v_sb_idx}")
+		->where('suib.suib_isdel',0);
+		return $this->_select(null,'suib_sort','*');
+	}
 	public function select_by_unit_idx($unit_idx){
 		$su_rows = $this->_select(array('unit_idx'=>$unit_idx),null,'*');
 		return isset($su_rows[0])?$su_rows[0]:null;

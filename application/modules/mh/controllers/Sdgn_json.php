@@ -181,6 +181,92 @@ class Sdgn_json extends MX_Controller {
 		echo $this->json_encode($view_data);
 		return;
 	}
+	
+	public function save_box(){
+		if(!$this->common->is_admin){
+			show_error('???');
+		}
+		$this->load->model('sdgn_box_model','sdgn_box_m');
+		$in_data = array(
+			'sb_idx' => $this->input->post('sb_idx'),
+			'sb_type' => $this->input->post('sb_type'),
+			'sb_sort' => $this->input->post('sb_sort'),
+			'sb_label' => $this->input->post('sb_label'),
+			'sb_desc' => $this->input->post('sb_desc'),
+		);
+		$sb_idx = $this->sdgn_box_m->save_box($in_data);
+		$view_data = array(
+			'is_error'=>false,
+			'msg'=>'수정되었습니다.',
+			'sb_idx'=>$sb_idx
+		);
+		echo $this->json_encode($view_data);
+		return;
+	}
+	public function delete_box(){
+		if(!$this->common->is_admin){
+			show_error('???');
+		}
+		$this->load->model('sdgn_box_model','sdgn_box_m');
+		$in_data = array(
+			'sb_idx' => $this->input->post('sb_idx'),
+		);
+		$sb_idx = $this->sdgn_box_m->delete_box($in_data['sb_idx']);
+		$view_data = array(
+			'is_error'=>false,
+			'msg'=>'삭제되었습니다.',
+			'sb_idx'=>''
+		);
+		echo $this->json_encode($view_data);
+		return;
+	}
+	
+	public function save_unit_in_box(){
+		if(!$this->common->is_admin){
+			show_error('???');
+		}
+		$this->load->model('sdgn_box_model','sdgn_box_m');
+		$in_data = array(
+			'suib_idx' => $this->input->post('suib_idx'),
+			'unit_idx' => $this->input->post('unit_idx'),
+			'sb_idx' => $this->input->post('sb_idx'),
+			'suib_desc' => $this->input->post('suib_desc'),
+			'suib_sort' => $this->input->post('suib_sort'),
+		);
+		if(empty($in_data['unit_idx'])){
+			$view_data = array(
+				'is_error'=>true,
+				'msg'=>'필수값?',
+			);
+			echo $this->json_encode($view_data);
+			return;
+		}
+		$suib_idx = $this->sdgn_box_m->save_unit($in_data);
+		$view_data = array(
+			'is_error'=>false,
+			'msg'=>'수정되었습니다.',
+			'suib_idx'=>$suib_idx
+		);
+		echo $this->json_encode($view_data);
+		return;
+	}
+	public function delete_unit_in_box(){
+		if(!$this->common->is_admin){
+			show_error('???');
+		}
+		$this->load->model('sdgn_box_model','sdgn_box_m');
+		$in_data = array(
+			'suib_idx' => $this->input->post('suib_idx'),
+		);
+		$suib_idx = $this->sdgn_box_m->delete_unit($in_data['suib_idx']);
+		$view_data = array(
+			'is_error'=>false,
+			'msg'=>'삭제되었습니다.',
+			'suib_idx'=>''
+		);
+		echo $this->json_encode($view_data);
+		return;
+	}
 }
 
 

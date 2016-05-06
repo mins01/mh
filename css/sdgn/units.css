@@ -238,3 +238,6 @@ display:block;
 	padding:0.5em;
 	height:90px; overflow-y:auto;overflow-x:hidden;word-break:break-all; 
 }
+
+.label.unit_is_transform{font-weight:normal;}
+.label.unit_is_weapon_change{font-weight:normal;}

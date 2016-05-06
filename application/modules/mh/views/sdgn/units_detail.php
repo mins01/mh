@@ -181,6 +181,28 @@
 			<? endif; ?>
 		</dl>
 	</li>
+	<li class="list-group-item">
+		<dl class="dl-horizontal">
+			<dt>입수방법</dt>
+			<dd>
+				<div class="row">
+				<? foreach($sb_rows as $sb_row): 
+					$temp_url = '/sdgn/box?sb_idx='.$sb_row['sb_idx'];
+				?>
+					<div class="col-sm-6 sb_row">
+						<div><a href="<?=html_escape($temp_url)?>"><strong class="label label-info"><?=html_escape($sb_row['sb_label'])?></strong></a> <small><?=html_escape($sb_row['sb_desc'])?></small></div>
+						<div><?=html_escape($sb_row['suib_desc'])?></div>
+					</div>
+				<? endforeach; ?>
+				<? if(!isset($sb_rows[0])): ?>
+					<div class="col-sm-6 sb_row">
+						<div><strong class="label label-warning">알려진 입수 방법이 없습니다.</strong> <small>지금 못구해요.</small></div>
+					</div>
+				<? endif; ?>
+				</div>
+			</dd>
+		</dl>
+	</li>
 	<li class="list-group-item text-right">
 		<a class="btn btn-info btn-sm" href="<?=html_escape(isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'/sdgn/units')?>">목록</a>
 	</li>
