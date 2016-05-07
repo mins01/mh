@@ -108,6 +108,7 @@ class Sdgn_json extends MX_Controller {
 
 	public function units_detail($conf,$param){
 		$this->load->model('sdgn_weapon_model','sdgn_weapon_m');
+		$this->load->model('sdgn_box_model','sdgn_box_m');
 		
 		$unit_idx = $this->input->get('unit_idx');
 		
@@ -123,12 +124,14 @@ class Sdgn_json extends MX_Controller {
 			//$units_card = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>false),true);
 			$sw_rows = $this->sdgn_weapon_m->select_weapons_by_unit_idx($su_row['unit_idx']);
 			$sw_rows = $this->sdgn_weapon_m->select_assoc_weapons_by_rows($sw_rows);
+			$sb_rows = $this->sdgn_box_m->get_box_by_unit_idx($su_row['unit_idx']);
 			
 			
 			$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$su_row['unit_idx']);
 			$view_data = array(
 				'su_row'=>$su_row,
 				'sw_rows'=>$sw_rows,
+				'sb_rows'=>$sb_rows,
 			);
 			
 			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
@@ -263,6 +266,25 @@ class Sdgn_json extends MX_Controller {
 			'is_error'=>false,
 			'msg'=>'삭제되었습니다.',
 			'suib_idx'=>''
+		);
+		echo $this->json_encode($view_data);
+		return;
+	}
+
+	// 최근 일정
+	public function last_plan(){
+			$this->load->model('sdgn_etc_model','sdgn_etc_m');
+			// 일정
+			$tm = time();
+			$plan_dt_st = date('Y-m-d',$tm-(60*60*24*3));
+			$plan_dt_ed = date('Y-m-d',$tm+(60*60*24*15));
+			$plan_b_rows = $this->sdgn_etc_m->select_for_plan($plan_dt_st,$plan_dt_ed);
+			$view_data = array(
+			'is_error'=>false,
+			'msg'=>'',
+			'plan_dt_st'=>$plan_dt_st,
+			'plan_dt_ed'=>$plan_dt_ed,
+			'plan_b_rows'=>$plan_b_rows,
 		);
 		echo $this->json_encode($view_data);
 		return;

@@ -18,7 +18,7 @@ class Sdgn_weapon_model extends CI_Model {
 		$r_rows = array(
 			
 		);
-		$r_rows[] = array(array(),array());
+		$r_rows[] = array(array(),array(),array());
 		$r_rows[] = array(array(),array());
 		
 		foreach($rows as $row){

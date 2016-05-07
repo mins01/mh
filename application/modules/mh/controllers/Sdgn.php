@@ -75,8 +75,8 @@ class Sdgn extends MX_Controller {
 			$last_bc_rows = $this->sdgn_etc_m->select_last_comment_for_main();
 			// 일정
 			$tm = time();
-			$plan_dt_st = date('Y-m-d',$tm-(60*60*24*7));
-			$plan_dt_ed = date('Y-m-d',$tm+(60*60*24*7));
+			$plan_dt_st = date('Y-m-d',$tm-(60*60*24*3));
+			$plan_dt_ed = date('Y-m-d',$tm+(60*60*24*15));
 			$plan_b_rows = $this->sdgn_etc_m->select_for_plan($plan_dt_st,$plan_dt_ed); 
 
 			$units_cards = array();
