@@ -145,7 +145,7 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 	}
 	
 	$scope.mode = 'list'
-	$scope.limit = 5;
+	$scope.limit = 15;
 	$scope.page = 1;
 	$scope.max_page = 0;
 	$scope.m_cnt = 0;
@@ -218,13 +218,14 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 		$scope.page = page;
 		//$scope.m_cnt = m_cnt;
 		$scope.max_page = Math.ceil($scope.m_cnt/$scope.limit);
-		var t0 = Math.max(1,($scope.page-3)*$scope.limit );
+		var t0 = Math.max(1,Math.floor($scope.page-3) );
 		var t1 = Math.min(t0+6,$scope.max_page);
 		$scope.pagination_nums = [];
 		while(t0<=t1){
 			$scope.pagination_nums.push(t0++);
 		}
-		//console.log($scope.pagination_nums);
+		console.log(t0,t1);
+		console.log($scope.pagination_nums);
 	}
 	
 	//통신 결과처리:성공
