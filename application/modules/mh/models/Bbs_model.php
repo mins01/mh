@@ -55,7 +55,7 @@ class Bbs_model extends CI_Model {
 		$post['b_ip'] = $this->input->server('REMOTE_ADDR');
 	}
 	//-- bm_row에 따른 값에 따라서 목록 쿼리 부분을 변경시킨다.
-	public function _apply_list_bm_row($bm_row,$select='',$no_bh_hit_cnt=false){
+	public function _apply_list_bm_row($bm_row,$select='',$no_bh_hit_cnt=false,$opt = array()){
 		// select 부분 설정.
 		if(!isset($select[0])){
 			$select = 'b.b_idx,b_id,b_gidx,b_gpos,b_pidx,b_insert_date,b_update_date,b_isdel
@@ -80,7 +80,7 @@ class Bbs_model extends CI_Model {
 			$select.=',(select count(*) from '.$this->tblname('file','bf2').' where bf2.b_idx=b.b_idx and bf_isdel=0) as bf_cnt';
 		}
 		// 리플 사용중인가?
-		if($bm_row['bm_use_comment']=='1'){
+		if($bm_row['bm_use_comment']=='1' && empty($opt['no_bc_cnt'])){
 			$select.=',(select count(*) from '.$this->tblname('comment','bc2').' where bc2.b_idx=b.b_idx and bc_isdel=0) as bc_cnt';
 		}
 		// 조인 부분
@@ -208,18 +208,50 @@ class Bbs_model extends CI_Model {
 	}
 	//-- 목록 갯수
 	public function count_per_month_for_calendar($get){
-
+		
 		if(!$this->_apply_list_where($get)){
 			return false;
 		}
 		if(!isset($get['date_ed']) || !isset($get['date_st'])){
 			return false;
 		}
-		$this->_apply_list_bm_row($this->bm_row,'substr(b_etc_0,1,7) as yyyymm,count(*) as cnt',true);
-		$this->db->where('b_etc_0 <=',$get['date_ed'])
-		->where('b_etc_1 >=',$get['date_st'])
-		->group_by('substr(b_etc_0,1,7)');
-		$rows = $this->db->get()->result_array();
+		$this->_apply_list_bm_row($this->bm_row,'\'{{yyyymm}}\' as yyyymm,count(*) as cnt',true,array('no_bc_cnt'=>1));
+		// $this->db->where('b_etc_0 <=','{{$get['date_ed']}}')
+		// ->where('b_etc_1 >=',$get['date_st']);
+		$this->db->where('b_etc_0 <','{{b_etc_0}}')
+		->where('b_etc_1 >=','{{b_etc_1}}');
+		//->group_by('substr(b_etc_0,1,7)');
+		$def_sql =  $this->db->get_compiled_select();
+		$this->db->flush_cache();
+		// echo $def_sql;
+
+		$d_d = $get['date_st'];
+		$limit_i = 100;
+		$sqls = array();
+		while($d_d<=$get['date_ed'] && $limit_i--){
+			$t = strtotime($d_d);
+			$b_etc_1 = date('Y-m-01',$t);
+			$b_etc_0 = date('Y-m-01',mktime(0,0,0,date('n',$t)+1,1,date('Y',$t))); 
+			$d_d = $b_etc_0;
+			$yyyymm = substr($b_etc_1, 0,7);
+			$sql = str_replace(array(
+				'{{yyyymm}}',
+				'{{b_etc_0}}',
+				'{{b_etc_1}}',
+				), 
+				array(
+				$yyyymm,
+				$b_etc_0,
+				$b_etc_1,
+				), $def_sql);
+			$sqls[] = $sql."\n";	
+		}
+		$sql = '('.implode(') UNION ALL (',$sqls).')';
+		// echo $sql;
+
+		// $rows = $this->db->get()->result_array();
+		$rows = $this->db->query($sql)->result_array();
+		// echo $this->db->last_query();
 		$rowss = array();
 		foreach($rows as $r){
 			$rowss[$r['yyyymm']] = $r['cnt'];
