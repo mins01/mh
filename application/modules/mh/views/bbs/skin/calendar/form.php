@@ -44,11 +44,8 @@ if($mode=='write'||$mode=='answer'){
 				<?=form_dropdown('b_category', $bm_row['categorys'], $b_row['b_category'], 'class="selectpicker show-tick" style="width:8em" data-width="100px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리" ')?>
 				<? endif; ?>
 				<? if($bm_row['bm_use_secret']=='1'): ?>
-				<div class="btn-group" data-toggle="buttons">
-					<label class="btn btn-success  <?=!$b_row['b_secret']?'active':''?>"><input type="radio" name="b_secret" value="0" autocomplete="off" <?=!$b_row['b_secret']?'checked':''?>>공개글
-					</label>
-					<label class="btn btn-warning <?=$b_row['b_secret']=='1'?'active':''?>"><input type="radio" name="b_secret" value="1" autocomplete="off" <?=$b_row['b_secret']=='1'?'checked':''?>>비밀글
-					</label>
+				<div class="btn-group">
+					<?=print_onoff('b_secret',$b_row['b_secret'],'비밀글','일반글')?>
 				</div>
 				<? endif; ?>
 				
