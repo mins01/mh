@@ -14,7 +14,7 @@
 			<div class="col-lg-2 col-sm-2 hidden-xs">
 			</div>
 			<div class="col-lg-8 col-sm-8 ">
-				<form action="<?=html_escape($bbs_conf['base_url'])?>/list" class="form-inline text-center">
+				<form action="<?=html_escape($bbs_conf['base_url'])?>/list" class="form-inline text-center form-search">
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-btn">
@@ -27,7 +27,7 @@
 								<option value="title_or_text" <?=$get['tq']=='title_or_text'?'selected':''?>>제목+내용</option>
 								</select>
 							</div>
-							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
+							<input name="q" aria-label="검색어" type="search" class="form-control  m_autodatalist" data-m_autodatalist="bbs_<?=$bm_row['b_id']?>_q" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
 							<span class="input-group-btn">
 								<button type="submit" class="btn btn-info">검색</button>
 							</span>
@@ -132,7 +132,7 @@
 			<div class="col-lg-2 col-sm-2 hidden-xs">
 			</div>
 			<div class="col-lg-8 col-sm-8 ">
-				<form action="" class="form-inline text-center">
+				<form action="" class="form-inline text-center form-search">
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-btn">
@@ -145,7 +145,7 @@
 								<option value="title_or_text" <?=$get['tq']=='title_or_text'?'selected':''?>>제목+내용</option>
 								</select>
 							</div>
-							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
+							<input name="q" aria-label="검색어" type="search" class="form-control m_autodatalist" data-m_autodatalist="bbs_<?=$bm_row['b_id']?>_q"  placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
 							<span class="input-group-btn">
 								<button type="submit" class="btn btn-info">검색</button>
 							</span>
@@ -163,3 +163,15 @@
 </div>
 
 
+<!-- 검색어 자동 완성 관련 -->
+<script src="<?=html_escape(base_url('js/vendor/mins01.com/m_autodatalist.js'))?>"></script>
+<script type="text/javascript">
+	$(function(){
+		$("form.form-search").each(
+			function(idx,el){
+				m_autodatalist.initEventForm(el);
+			}
+			)
+		
+	})
+</script>
