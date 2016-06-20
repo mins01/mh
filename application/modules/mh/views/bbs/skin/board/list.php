@@ -18,16 +18,19 @@
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-btn">
+							
 								<? if($bm_row['bm_use_category']!='0'): ?>
-								<?=form_dropdown('ct', $bm_row['categorys'], isset($get['ct'])?$get['ct']:'', 'class="selectpicker show-tick" style="width:8em" data-width="80px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리"')?>
+								<?=form_dropdown('ct', $bm_row['categorys'], isset($get['ct'])?$get['ct']:'', 'class="form-control btn btn-default" style="max-width:8em" aria-label="카테고리 설정" title="카테고리" ')?>
 								<? endif; ?>
-								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
+								<select name="tq" class="form-control btn btn-default" style="max-width:8em" aria-label="검색대상" >
 								<option value="title" <?=$get['tq']=='title'?'selected':''?>>제목</option>
 								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>
 								<option value="title_or_text" <?=$get['tq']=='title_or_text'?'selected':''?>>제목+내용</option>
 								</select>
 							</div>
-							<input name="q" aria-label="검색어" type="search" class="form-control  m_autodatalist" data-m_autodatalist="bbs_<?=$bm_row['b_id']?>_q" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
+						</div>
+						<div class="input-group">
+							<input name="q" aria-label="검색어" type="search" class="form-control " placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
 							<span class="input-group-btn">
 								<button type="submit" class="btn btn-info">검색</button>
 							</span>
