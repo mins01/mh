@@ -25,26 +25,53 @@
 <fieldset>
 	<legend>이거 뭔가?</legend>
 	HTML5의 저장소를 기반으로 만든 검색어용 자동 완성기능<br>
-	form이 submit 할 때 form 속의 .m_autodatalist[data-m_autodatalist] 인 input을 찾아서 자동완성 목록에 넣기를 한다.
+	form이 submit 할 때 form 속의 .m_autodatalist[data-m_autodatalist] 인 input을 찾아서 자동완성 목록에 넣기를 한다.<br>
+	* 지원 브라우저 : chrome 20+, IE10+, FF4.0+, opera9+ <br>
+	* 미지원 브라우저 : 사파리<br>
 </fieldset>
 
 <fieldset>
-	<legend>자동 완성</legend>
+	<legend>자동 완성(스크립트로 제어)</legend>
 	<div class="form-inline">
-		<form name="form_y" onsubmit="return false;" >
+		<form name="form_y" onsubmit="alert('onsubmit');return false;" >
 
 			<div class="input-group">
 				<input type="text" name="val" class="form-control m_autodatalist" data-m_autodatalist="test_input" value="1" onsubmit="return false;">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="submit">Go!</button>
 					<button class="btn btn-default" type="button" onclick="m_autodatalist.clearValue('test_input')">clear</button>
-					<button class="btn btn-default" type="button" onclick="console.log(localStorage.getItem('test_input'))">localStorage.getItem('test_input')</button>
+					
 				</span>
 			</div><!-- /input-group -->
+			<button class="btn btn-default" type="button" onclick="console.log(localStorage.getItem('test_input'))">localStorage.getItem('test_input')</button>
 		</form>
 	</div>
 	
 </fieldset>
+
+<fieldset>
+	<legend>자동 완성(일반 HTML)</legend>
+	<div class="form-inline">
+		<form name="formxx" onsubmit="alert('onsubmit');return false;" >
+
+			<div class="input-group">
+				<input type="text" name="val" class="form-control m_autodatalist" list="demo_input-list" value="1" onsubmit="return false;">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="submit">Go!</button>
+				</span>
+			</div><!-- /input-group -->
+		</form>
+	</div>
+	<datalist id="demo_input-list">
+		<option value="test1"></option>
+		<option value="test2"></option>
+		<option value="test3"></option>
+		<option value="test4"></option>
+		<option value="test5"></option>
+
+	</datalist>
+</fieldset>
+
 </div>
 </body>
 </html>

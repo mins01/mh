@@ -1,6 +1,17 @@
+/**
+ * form의 submit동작에 따라서 자동완성을 등록해서 보여준다.
+ * input의 애트리뷰트에 data-m_autodatalist={자동완성키값} 과 클래스에 m_autodatalist 를 적용해줘야한다.
+ * 여러개의 input에서 하나의 자동완성을 공유할 수 있다.
+ * "공대여자는 이쁘다"를 나타내야한다.
+ * 작성 : 공대여자 (2016-06-17)
+ * 지원 브라우저 : chrome 20+, IE10+, FF4.0+, opera9+
+ * 미지원 브라우저 : 사파리
+ * 
+ * @type {Object}
+ */
 var m_autodatalist = {
-		maxSave:10,
-		maxLength:10,
+		maxSave:10, //자동완성 최대 저장 갯수
+		maxLength:10, //자동완성 저장 문자열 최대 길이
 		initEventForm:function(form){
 			var $inputs = $(form).find(".m_autodatalist[data-m_autodatalist]");
 			$inputs.each(
