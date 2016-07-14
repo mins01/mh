@@ -1,64 +1,126 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>404 Page Not Found</title>
-<style type="text/css">
+?><!doctype html>
+<html lang="ko">
+	<head>
+	<title>404 Page Not Found</title>
 
-::selection { background-color: #E13300; color: white; }
-::-moz-selection { background-color: #E13300; color: white; }
+	<style>
+	.unit_icon{
+		display: inline-block;
+		overflow: visible;
+		height: 300px;
+		width: 300px;
+	}
+	.unit_icon .circle{
+		animation-duration: 2s;
+		animation-name: slidein;
+		animation-iteration-count: 1;
+		animation-direction: alternate;
 
-body {
-	background-color: #fff;
-	margin: 40px;
-	font: 13px/20px normal Helvetica, Arial, sans-serif;
-	color: #4F5155;
-}
+		border-radius: 50%;
+		border:30px solid #fc5d56;
+		background-color: #edd776;
+		width:240px;height: 240px;
+		!box-sizing: border-box;
+		box-sizing: content-box;
 
-a {
-	color: #003399;
-	background-color: transparent;
-	font-weight: normal;
-}
+		font-size: 240px;
+		line-height: 1.2em;
+		text-align: center;
+	}
 
-h1 {
-	color: #444;
-	background-color: transparent;
-	border-bottom: 1px solid #D0D0D0;
-	font-size: 19px;
-	font-weight: normal;
-	margin: 0 0 14px 0;
-	padding: 14px 15px 10px 15px;
-}
+	.unit_icon .exclamation-mark{
+		display: inline-block;
+	}
+	.exclamation-mark .exclamation-mark-1{
+		margin: 0 auto;
+		width:60px;height: 60px;
+		background-color: #2b2b2b;
+		border-radius: 50%;
+		margin-bottom: -30px;
+	}
 
-code {
-	font-family: Consolas, Monaco, Courier New, Courier, monospace;
-	font-size: 12px;
-	background-color: #f9f9f9;
-	border: 1px solid #D0D0D0;
-	color: #002166;
-	display: block;
-	margin: 14px 0 14px 0;
-	padding: 12px 10px 12px 10px;
-}
+	.exclamation-mark .exclamation-mark-2{
+		margin: 0 auto;
+		width: 30px;
+		height: 0;
+		border-left: 15px solid transparent;
+		border-right: 15px solid transparent;
+		border-top: 100px solid #2b2b2b;
+		margin-bottom: -15px;
+	}
+	.exclamation-mark .exclamation-mark-3{
+		margin: 0 auto;
+		width:30px;height: 30px;
+		background-color: #2b2b2b;
+		border-radius: 50%;
+	}
+	.exclamation-mark .exclamation-mark-4{
+		margin: 0 auto;
+		margin-top:10px;
+		width:40px;height: 40px;
+		background-color: #2b2b2b;
+		border-radius: 50%;
+	}
 
-#container {
-	margin: 10px;
-	border: 1px solid #D0D0D0;
-	box-shadow: 0 0 8px #D0D0D0;
-}
+	@keyframes slidein {
+		from {
+			margin-top: -100%;
+		}
+		45%{
+			
+			margin-left: -10%;
+			margin-top: 40%;
+			transform: rotate(10deg);
+		}
+		50%{
+			margin-left: 10%;
+			margin-top: -40%;
+			transform: rotate(-10deg);
+		}
+		55%{
+			margin-left: -10%;
+			margin-top: -55%;
+		}
+		60%{
+			margin-left: 0%;
+			transform: rotate(0deg);
+		}
+		to {
+		margin-top: 0%;
+		}
+	}
+	/* ---- */
+	h1{
+		text-align: center; color: red;
+		text-shadow: 2px 2px 5px #f99;
+	}
+	#container{
+		text-align: center; color: black;
+	}
 
-p {
-	margin: 12px 15px 12px 15px;
-}
-</style>
-</head>
-<body>
-	<div id="container">
-		<h1><?php echo $heading; ?></h1>
-		<?php echo $message; ?>
-	</div>
-</body>
+	body{min-width: 320px;}
+
+	</style>
+
+	</head>
+	<body>
+		<div class="" style="text-align:center;">
+			<div class="unit_icon">
+				<div class="circle">
+					<div class="exclamation-mark">
+						<div class="exclamation-mark-1"></div>
+						<div class="exclamation-mark-2"></div>
+						<div class="exclamation-mark-3"></div>
+						<div class="exclamation-mark-4"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="container">
+			<h1><?php echo $heading; ?></h1>
+			<?php echo $message; ?>
+		</div>
+	</body>
 </html>
