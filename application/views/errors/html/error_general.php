@@ -3,20 +3,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!doctype html>
 <html lang="ko">
 	<head>
-	<title>ERROR</title>
-
+	<title>Error</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<style>
-	.unit_icon{
+	.icon-box{
+		text-align: center;
+		height: 300px;
+	}
+	.icon-unit{
 		display: inline-block;
 		overflow: visible;
 		height: 300px;
 		width: 300px;
+		border:0px solid black;
 	}
-	.unit_icon .circle{
-		animation-duration: 2s;
-		animation-name: slidein;
-		animation-iteration-count: 1;
-		animation-direction: alternate;
+	.icon-unit .circle{
 
 		border-radius: 50%;
 		border:30px solid #fc5d56;
@@ -26,11 +27,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		box-sizing: content-box;
 
 		font-size: 240px;
-		line-height: 1.2em;
+		line-height: 1em;
+		vertical-align: top;
 		text-align: center;
 	}
+	.animation .animation-target{
+		animation-duration: 2s;
+		animation-name: rolypoly;
+		animation-iteration-count: 1;
+		
+	}
+	.animation:hover .animation-target{
+		animation-iteration-count: infinite;
+	}
 
-	.unit_icon .exclamation-mark{
+	.icon-unit .exclamation-mark{
+		margin-top:20px;
 		display: inline-block;
 	}
 	.exclamation-mark .exclamation-mark-1{
@@ -64,37 +76,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		border-radius: 50%;
 	}
 
-	@keyframes slidein {
-		from {
-			margin-top: -100%;
-		}
-		45%{
-			
-			margin-left: -10%;
-			margin-top: 40%;
-			transform: rotate(10deg);
-		}
-		50%{
-			margin-left: 10%;
-			margin-top: -40%;
-			transform: rotate(-10deg);
-		}
-		55%{
-			margin-left: -10%;
-			margin-top: -55%;
-		}
-		60%{
-			margin-left: 0%;
-			transform: rotate(0deg);
-		}
-		to {
-		margin-top: 0%;
-		}
+	@keyframes rolypoly {
+		from {margin-left: 0%;transform: rotate(0deg);}
+		7%{margin-left: 10%; transform: rotate(10deg);}
+		14%{margin-left: -10%; transform: rotate(-10deg);}
+		21%{margin-left: 6.67%; transform: rotate(6.67deg);}
+		29%{margin-left: -6.67%; transform: rotate(-6.67deg);}
+		36%{margin-left: 4.44%; transform: rotate(4.44deg);}
+		43%{margin-left: -4.44%; transform: rotate(-4.44deg);}
+		50%{margin-left: 2.96%; transform: rotate(2.96deg);}
+		57%{margin-left: -2.96%; transform: rotate(-2.96deg);}
+		64%{margin-left: 1.98%; transform: rotate(1.98deg);}
+		71%{margin-left: -1.98%; transform: rotate(-1.98deg);}
+		79%{margin-left: 1.32%; transform: rotate(1.32deg);}
+		86%{margin-left: -1.32%; transform: rotate(-1.32deg);}
+		93%{margin-left: 0.00%; transform: rotate(0.00deg);}
+		100%{margin-left: 0.00%; transform: rotate(0.00deg);}
+		to {margin-left: 0%;transform: rotate(0deg);}
 	}
+
 	/* ---- */
 	h1{
 		text-align: center; color: red;
-		text-shadow: 2px 2px 5px #f99;
+		text-shadow: 2px 2px 5px #c33;
 	}
 	#container{
 		text-align: center; color: black;
@@ -106,9 +110,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	</head>
 	<body>
-		<div class="" style="text-align:center;">
-			<div class="unit_icon">
-				<div class="circle">
+		<div class="icon-box animation" >
+			<div class="icon-unit animation-target">
+				<div class="circle ">
 					<div class="exclamation-mark">
 						<div class="exclamation-mark-1"></div>
 						<div class="exclamation-mark-2"></div>
