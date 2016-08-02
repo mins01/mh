@@ -47,6 +47,7 @@ class Front extends MX_Controller {
 			return false;
 		}
 		$this->config->set_item('menu', $menu); 
+
 		$conf = array(
 			'menu'=>$menu,
 			'base_url'=>mh_base_url($menu['mn_uri']),
@@ -55,6 +56,7 @@ class Front extends MX_Controller {
 		if(!class_exists($menu['mn_module'],false)){
 			show_error('모듈이 없습니다.',404);
 		}else{
+			$this->config->set_item('layout_og_title', $this->config->item('layout_og_title').':'.$menu['mn_text']);
 			$this->{$menu['mn_module']}->index_as_front($conf,$params);
 		}
 		return true;
