@@ -44,6 +44,9 @@ class Bbs extends MX_Controller {
 		$mode = $this->uri->segment(3,'list');//option
 		$b_idx = $this->uri->segment(4);//option
 		$this->set_base_url(base_url('bbs/'.$b_id));
+
+		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : {$b_id}");
+
 		$this->action($b_id,$mode,$b_idx);
 	}
 	// front 컨트롤에서 접근할 경우.
@@ -419,7 +422,7 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','read : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
-		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 읽기 : {$b_row['b_title']}");
+		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : {$b_row['b_title']}");
 		$this->config->set_item('layout_og_description', "읽기 : {$b_row['b_title']}");
 		
 		$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$b_idx);
