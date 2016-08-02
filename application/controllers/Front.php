@@ -57,6 +57,7 @@ class Front extends MX_Controller {
 			show_error('모듈이 없습니다.',404);
 		}else{
 			$this->config->set_item('layout_og_title', $this->config->item('layout_og_title').':'.$menu['mn_text']);
+			$this->config->set_item('layout_og_description', $this->config->item('layout_og_title'));
 			$this->{$menu['mn_module']}->index_as_front($conf,$params);
 		}
 		return true;
