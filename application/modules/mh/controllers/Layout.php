@@ -26,6 +26,16 @@ class Layout extends MX_Controller {
 		$conf['login_label'] = $this->common->get_login('m_nick');
 		$conf['login_info']	=	 $this->common->get_login();
 
+
+		$conf['layout_og_title'] = $this->config->item('layout_og_title');
+		$conf['layout_og_description'] = $this->config->item('layout_og_description');
+		$conf['layout_og_image'] = $this->config->item('layout_og_image');
+		$conf['layout_og_image_width'] = $this->config->item('layout_og_image_width');
+		$conf['layout_og_image_height'] = $this->config->item('layout_og_image_height');
+		$conf['layout_og_site_name'] = $this->config->item('layout_og_site_name');
+		$conf['layout_og_type'] = $this->config->item('layout_og_type');
+
+
 		if(!isset($conf['head_contents'])) $conf['head_contents'] = '';
 		if(!isset($conf['tail_contents'])) $conf['tail_contents'] = '';
 		if(!isset($conf['hide'])) $conf['hide'] = false;
