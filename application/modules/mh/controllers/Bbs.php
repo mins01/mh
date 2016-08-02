@@ -265,6 +265,7 @@ class Bbs extends MX_Controller {
 			$this->config->set_item('layout_head_contents',$this->get_head_contents('list'));
 			$this->config->set_item('layout_hide',false);
 			$this->config->set_item('layout_title','calendar : '.$this->bm_row['bm_title']);
+			$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 달력 : {$v_Y}년 {$v_m}월");
 			$this->config->set_item('layout_og_description', "달력 : {$v_Y}년 {$v_m}월");
 		}
 		$this->load->view($this->skin_path.'/calendar',array(
@@ -326,6 +327,7 @@ class Bbs extends MX_Controller {
 			$this->config->set_item('layout_head_contents',$this->get_head_contents('list'));
 			$this->config->set_item('layout_hide',false);
 			$this->config->set_item('layout_title','list : '.$this->bm_row['bm_title']);
+			$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 목록 {$get['page']} page");
 			$this->config->set_item('layout_og_description', "목록 {$get['page']} page");
 		}
 		
@@ -417,6 +419,7 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','read : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
+		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 읽기 : {$b_row['b_title']}");
 		$this->config->set_item('layout_og_description', "읽기 : {$b_row['b_title']}");
 		
 		$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$b_idx);
@@ -590,7 +593,7 @@ class Bbs extends MX_Controller {
 			$view_form_file = '';
 		}
 		
-		
+		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 작성폼");
 		$this->config->set_item('layout_og_description', "작성폼");
 
 		$this->load->view($this->skin_path.'/form',array(
@@ -645,7 +648,8 @@ class Bbs extends MX_Controller {
 			return $this->_mode_process($b_row);
 		}
 		$error_msg = '';
-		
+
+		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 삭제폼");
 		$this->config->set_item('layout_og_description', "삭제폼");
 
 		$this->load->view($this->skin_path.'/delete',array(
@@ -740,9 +744,10 @@ class Bbs extends MX_Controller {
 			$ret_url = $b_row['read_url'];
 		}
 		$this->config->set_item('layout_hide',true);
-		
+
+		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 처리중");		
 		$this->config->set_item('layout_og_description', "처리중");
-		
+
 		$this->load->view($this->skin_path.'/process',array(
 		//'b_row' => $b_row,
 		'bm_row' => $this->bm_row,
