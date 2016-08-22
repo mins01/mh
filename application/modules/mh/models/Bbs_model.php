@@ -135,6 +135,7 @@ class Bbs_model extends CI_Model {
 					$this->db->group_end();
 				break;
 				case 'title_or_text':
+				case 'tt':
 					$this->db->group_start();
 						$this->db->or_group_start();
 						foreach($v_q as $v){
@@ -146,6 +147,29 @@ class Bbs_model extends CI_Model {
 							$this->db->like('b_text',$v, 'both');
 						}
 						$this->db->group_end();
+					$this->db->group_end();
+				break;
+				case 'ttc':
+					$this->db->group_start();
+						$this->db->or_group_start();
+						foreach($v_q as $v){
+							$this->db->like('b_title',$v, 'both');
+						}
+						$this->db->group_end();
+						$this->db->or_group_start();
+						foreach($v_q as $v){
+							$this->db->like('b_text',$v, 'both');
+						}
+						$this->db->group_end();
+
+						$this->db->or_group_start();
+						foreach($v_q as $v){
+							$vv = $this->db->escape_like_str($v);
+							$t = " exists (select 'x' from mh_bbs_mine_comment bc3 where b.b_idx = bc3.b_idx and `bc_comment` LIKE '%{$vv}%' ESCAPE '!') ";
+							$this->db->where($t,null);
+						}
+						$this->db->group_end();
+
 					$this->db->group_end();
 				break;
 			}

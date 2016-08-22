@@ -25,6 +25,7 @@
 								<option value="title" <?=$get['tq']=='title'?'selected':''?>>제목</option>
 								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>
 								<option value="title_or_text" <?=$get['tq']=='title_or_text'?'selected':''?>>제목+내용</option>
+								<? if($bm_row['bm_use_comment']){ ?><option value="ttc" <?=$get['tq']=='ttc'?'selected':''?>>제목+내용+코멘트</option><? } ?>
 								</select>
 							</div>
 							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
@@ -146,7 +147,8 @@
 								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
 								<option value="title" <?=$get['tq']=='title'?'selected':''?>>제목</option>
 								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>
-								<option value="title_or_text" <?=$get['tq']=='title_or_text'?'selected':''?>>제목+내용</option>
+								<option value="tt" <?=$get['tq']=='tt'?'selected':''?>>제목+내용</option>
+								<? if($bm_row['bm_use_comment']){ ?><option value="ttc" <?=$get['tq']=='ttc'?'selected':''?>>제목+내용+코멘트</option><? } ?>
 								</select>
 							</div>
 							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
