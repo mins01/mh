@@ -163,9 +163,10 @@ class Bbs_model extends CI_Model {
 						$this->db->group_end();
 
 						$this->db->or_group_start();
+						$f = $this->tblname('comment','bc3');
 						foreach($v_q as $v){
 							$vv = $this->db->escape_like_str($v);
-							$t = " exists (select 'x' from mh_bbs_mine_comment bc3 where b.b_idx = bc3.b_idx and `bc_comment` LIKE '%{$vv}%' ESCAPE '!') ";
+							$t = " exists (select 'x' from {$f} where b.b_idx = bc3.b_idx and bc3.bc_isdel=0 and `bc_comment` LIKE '%{$vv}%' ESCAPE '!') ";
 							$this->db->where($t,null);
 						}
 						$this->db->group_end();
@@ -214,6 +215,7 @@ class Bbs_model extends CI_Model {
 		$this->db->limit($limit,$offset);
 
 		$b_rows = $this->db->get()->result_array();
+		
 		$this->extends_b_rows($b_rows);
 		return $b_rows;
 	}
