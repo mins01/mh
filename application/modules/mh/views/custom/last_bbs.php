@@ -18,7 +18,7 @@
 	?>
 	<div class="col-sm-6 col-md-4">
 		<ul class="list-group">
-			<li class="list-group-item active"><a style="color:#fff" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?></a></li>
+			<a class="list-group-item list-group-item-success" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?></a>
 			<? foreach($b_row as $b_row): 
 				$url = base_url($mn_url.'/read/'.$b_row['b_idx']);
 			?>
@@ -63,7 +63,7 @@
 	?>
 	<div class="col-sm-6 col-md-4">
 		<ul class="list-group">
-			<li class="list-group-item active"><a style="color:#fff" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?></a></li>
+			<a class="list-group-item list-group-item-info" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?></a>
 			<? foreach($bc_row as $bc_row): 
 				$url = base_url($mn_url.'/read/'.$bc_row['b_idx']);
 			?>
