@@ -122,6 +122,7 @@
 								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>
 								<option value="tt" <?=$get['tq']=='tt'?'selected':''?>>제목+내용</option>
 								<? if($bm_row['bm_use_comment']){ ?><option value="ttc" <?=$get['tq']=='ttc'?'selected':''?>>제목+내용+코멘트</option><? } ?>
+								<option value="name" <?=$get['tq']=='name'?'selected':''?>>작성자</option>
 								</select>
 							</div>
 							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">

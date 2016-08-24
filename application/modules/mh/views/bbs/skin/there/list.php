@@ -27,6 +27,7 @@
 								<option value="title_or_text" <?=$get['tq']=='title_or_text'?'selected':''?>>제목+내용</option>
 								<? if($bm_row['bm_use_comment']){ ?><option value="ttc" <?=$get['tq']=='ttc'?'selected':''?>>제목+내용+코멘트</option><? } ?>
 								</select>
+								<option value="name" <?=$get['tq']=='name'?'selected':''?>>작성자</option>
 							</div>
 							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
 							<span class="input-group-btn">
@@ -150,6 +151,7 @@
 								<option value="tt" <?=$get['tq']=='tt'?'selected':''?>>제목+내용</option>
 								<? if($bm_row['bm_use_comment']){ ?><option value="ttc" <?=$get['tq']=='ttc'?'selected':''?>>제목+내용+코멘트</option><? } ?>
 								</select>
+								<option value="name" <?=$get['tq']=='name'?'selected':''?>>작성자</option>
 							</div>
 							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
 							<span class="input-group-btn">

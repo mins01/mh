@@ -173,6 +173,13 @@ class Bbs_model extends CI_Model {
 
 					$this->db->group_end();
 				break;
+				case 'name':
+					$this->db->group_start();
+						foreach($v_q as $v){
+							$this->db->or_where('b_name',$v);
+						}
+					$this->db->group_end();
+				break;
 			}
 		}
 		//-- 카테고리
@@ -215,6 +222,7 @@ class Bbs_model extends CI_Model {
 		$this->db->limit($limit,$offset);
 
 		$b_rows = $this->db->get()->result_array();
+		// echo $this->db->last_query();
 		
 		$this->extends_b_rows($b_rows);
 		return $b_rows;
