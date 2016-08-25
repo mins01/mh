@@ -145,7 +145,7 @@ function print_onoff_type2($name,$val,$label_on='사용',$label_off='금지',$la
 	?>
 	<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="<?=html_escape($name)?>" value="1" autocomplete="off" <?=$val=='1'?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label_on)?>" data-label-off=""></div>
 	</label>
-	<label class="m-onoff m-onoff-danger m-with-label btn btn-danger"><input type="radio" name="<?=html_escape($name)?>" value="1" autocomplete="off" <?=$val=='2'?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label_require)?>" data-label-off=""></div>
+	<label class="m-onoff m-onoff-danger m-with-label btn btn-danger"><input type="radio" name="<?=html_escape($name)?>" value="2" autocomplete="off" <?=$val=='2'?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label_require)?>" data-label-off=""></div>
 	</label>
 	<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="<?=html_escape($name)?>" value="0" autocomplete="off" <?=!$val?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label_off)?>" data-label-off=""></div>
 	</label>
