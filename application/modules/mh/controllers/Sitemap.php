@@ -41,11 +41,12 @@ class Sitemap extends MX_Controller {
 		);
 		// print_r($menu_rows);
 		$lastmod = date('Y-m-d');
+		$http_domain = (!empty($_SERVER['HTTPS'])?'https://':'http://').$_SERVER['HTTP_HOST'];
 		foreach($menu_rows[0]['child'] as $row){
 			if($row['mn_hide'] && !$row['mn_use']){continue;}
 			// print_r($row);
 			$rr['url'][]=array(
-			'loc'=>array('@value'=>$row['url'],
+			'loc'=>array('@value'=>$http_domain.$row['url'],
 						'@attributes'=>array(
 							'mn_text'=>$row['mn_text'],
 						),),
