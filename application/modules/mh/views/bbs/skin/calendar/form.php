@@ -3,10 +3,9 @@
 //$start_num,$count
 if($mode=='write'||$mode=='answer'){
 	if(isset($get['dt'])){
-		$b_row['b_etc_0'] =$b_row['b_etc_1'] = $get['dt'];
+		$b_row['b_date_st'] =$b_row['b_date_ed'] = $get['dt'];
 	}
 }
-//$b_row['b_etc_0']?$b_row['b_etc_0']:$get['dt']
 
 ?>
 
@@ -60,9 +59,9 @@ if($mode=='write'||$mode=='answer'){
 			</li>
 			<li class="list-group-item form-inline">
 				<div class="input-group input-daterange">
-					<input type="text" class="form-control"  name="b_etc_0" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_etc_0'])?>">
+					<input type="text" class="form-control"  name="b_date_st" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_st'])?>">
 					<div class="input-group-addon">-</div>
-					<input type="text" class="form-control"  name="b_etc_1" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_etc_1'])?>">
+					<input type="text" class="form-control"  name="b_date_ed" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_ed'])?>">
 				</div>
 			</li>
 			<li class="list-group-item">

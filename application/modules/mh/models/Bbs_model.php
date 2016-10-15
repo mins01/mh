@@ -15,6 +15,7 @@ class Bbs_model extends CI_Model {
 		//'b_ip',
 		'b_notice','b_secret','b_html','b_link','b_category',
 		'b_title','b_text',
+		'b_date_st','b_date_ed',
 		'b_etc_0','b_etc_1','b_etc_2','b_etc_3','b_etc_4',
 		'b_num_0','b_num_1','b_num_2','b_num_3','b_num_4',
 	);
@@ -61,6 +62,7 @@ class Bbs_model extends CI_Model {
 			$select = 'b.b_idx,b_id,b_gidx,b_gpos,b_pidx,b_insert_date,b_update_date,b_isdel
 			,b.m_idx
 			,b_name,b_ip,b_notice,b_secret,b_html,b_link,b_category,b_title
+			,b_date_st,b_date_ed
 			,b_etc_0,b_etc_1,b_etc_2,b_etc_3,b_etc_4
 			,b_num_0,b_num_1,b_num_2,b_num_3,b_num_4';
 		}
@@ -237,7 +239,7 @@ class Bbs_model extends CI_Model {
 			return false;
 		}
 		$this->_apply_list_bm_row($this->bm_row);
-		$this->db->where('b_etc_0 <=',$get['date_ed'])->where('b_etc_1 >=',$get['date_st']);
+		$this->db->where('b_date_st <=',$get['date_ed'])->where('b_date_ed >=',$get['date_st']);
 		return $this->db->count_all_results();
 	}
 	//-- 목록 갯수
@@ -252,8 +254,8 @@ class Bbs_model extends CI_Model {
 		$this->_apply_list_bm_row($this->bm_row,'\'{{yyyymm}}\' as yyyymm,count(*) as cnt',true,array('no_bc_cnt'=>1));
 		// $this->db->where('b_etc_0 <=','{{$get['date_ed']}}')
 		// ->where('b_etc_1 >=',$get['date_st']);
-		$this->db->where('b_etc_0 <','{{b_etc_0}}')
-		->where('b_etc_1 >=','{{b_etc_1}}');
+		$this->db->where('b_date_st <','{{b_date_st}}')
+		->where('b_date_ed >=','{{b_date_ed}}');
 		//->group_by('substr(b_etc_0,1,7)');
 		$def_sql =  $this->db->get_compiled_select();
 		$this->db->flush_cache();
@@ -264,19 +266,19 @@ class Bbs_model extends CI_Model {
 		$sqls = array();
 		while($d_d<=$get['date_ed'] && $limit_i--){
 			$t = strtotime($d_d);
-			$b_etc_1 = date('Y-m-01',$t);
-			$b_etc_0 = date('Y-m-01',mktime(0,0,0,date('n',$t)+1,1,date('Y',$t))); 
-			$d_d = $b_etc_0;
-			$yyyymm = substr($b_etc_1, 0,7);
+			$b_date_ed = date('Y-m-01',$t);
+			$b_date_st = date('Y-m-01',mktime(0,0,0,date('n',$t)+1,1,date('Y',$t))); 
+			$d_d = $b_date_st;
+			$yyyymm = substr($b_date_ed, 0,7);
 			$sql = str_replace(array(
 				'{{yyyymm}}',
-				'{{b_etc_0}}',
-				'{{b_etc_1}}',
+				'{{b_date_st}}',
+				'{{b_date_ed}}',
 				), 
 				array(
 				$yyyymm,
-				$b_etc_0,
-				$b_etc_1,
+				$b_date_st,
+				$b_date_ed,
 				), $def_sql);
 			$sqls[] = $sql."\n";	
 		}
@@ -304,8 +306,8 @@ class Bbs_model extends CI_Model {
 		$this->_apply_list_bm_row($this->bm_row);
 
 		
-		$this->db->where('b_etc_0 <=',$get['date_ed'])->where('b_etc_1 >=',$get['date_st']);
-		$this->db->order_by('b.b_etc_0,b.b_etc_1');
+		$this->db->where('b_date_st <=',$get['date_ed'])->where('b_date_ed >=',$get['date_st']);
+		$this->db->order_by('b.b_date_st,b.b_date_ed');
 		//list($limit,$offset) = $this->get_limit_offset($get['page']);
 		//$this->db->limit($limit,$offset);
 
@@ -328,10 +330,10 @@ class Bbs_model extends CI_Model {
 			$time_st+=86400*7;
 			//$b_rowss[$t_a]= array();
 			foreach($b_rows as & $b_row){
-				if($b_row['b_etc_1']>=$t_a && $b_row['b_etc_0']<=$t_b){
+				if($b_row['b_date_ed']>=$t_a && $b_row['b_date_st']<=$t_b){
 					
-					if($t_a<$b_row['b_etc_0']){
-						$v_dt_st = $b_row['b_etc_0'];
+					if($t_a<$b_row['b_date_st']){
+						$v_dt_st = $b_row['b_date_st'];
 					}else{
 						$v_dt_st = $t_a;
 					}
@@ -363,11 +365,11 @@ class Bbs_model extends CI_Model {
 					if(!isset($b_rowss[$v_dt_st])){
 						$b_rowss[$v_dt_st] = array();
 					}
-					$v_dt_ed = min($t_b,$b_row['b_etc_1']);
+					$v_dt_ed = min($t_b,$b_row['b_date_ed']);
 					$v_len = floor((strtotime($v_dt_ed)-strtotime($v_dt_st))/86400)+1;
 					
 					$b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']]);
-					$b_etc_1s[$b_row['b_idx']] = $b_row['b_etc_1'];
+					$b_etc_1s[$b_row['b_idx']] = $b_row['b_date_ed'];
 				}else{
 					unset($orders[$b_row['b_idx']]);
 				}
@@ -430,6 +432,8 @@ class Bbs_model extends CI_Model {
 			'b_category'=>'',
 			'b_title'=>'',
 			'b_text'=>'',
+			'b_date_st'=>'',
+			'b_date_ed'=>'',
 			'b_etc_0'=>'',
 			'b_etc_1'=>'',
 			'b_etc_2'=>'',
@@ -495,7 +499,14 @@ class Bbs_model extends CI_Model {
 		$this->db->from($this->tbl)
 		->set($sets)
 		->set('b_insert_date','now()',false)
-		->set('b_update_date','now()',false)->insert();
+		->set('b_update_date','now()',false);
+		if(!isset($sets['b_date_st'][0])){
+			$this->db->set('b_date_st','now()',false);
+		}
+		if(!isset($sets['b_date_ed'][0])){
+			$this->db->set('b_date_ed','now()',false);
+		}
+		$this->db->insert();
 		$b_idx = $this->db->insert_id();
 		if($b_idx){
 			$this->update_b_row($b_idx,array('b_gidx'=>-1*$b_idx/100,'b_pidx'=>$b_idx));

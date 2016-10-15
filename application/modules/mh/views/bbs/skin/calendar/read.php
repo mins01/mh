@@ -2,10 +2,10 @@
 //$bm_row,$b_row
 //$start_num,$count
 
-$period = floor((strtotime($b_row['b_etc_1'])-strtotime($b_row['b_etc_0']))/86400)+1;
+$period = floor((strtotime($b_row['b_date_ed'])-strtotime($b_row['b_date_st']))/86400)+1;
 
-$d_day  = floor((strtotime($b_row['b_etc_0'])-time())/86400);
-$next_day  = floor((time()-strtotime($b_row['b_etc_1']))/86400);
+$d_day  = floor((strtotime($b_row['b_date_st'])-time())/86400);
+$next_day  = floor((time()-strtotime($b_row['b_date_ed']))/86400);
 
 if($d_day==0){
 	$d_day_label = 'D-day';
@@ -70,9 +70,9 @@ if($d_day==0){
 				<span class="form-control"><?=$period?>일간</span>
 			</div>
 			<div class="input-group input-daterange">
-				<span class="form-control" ><?=html_escape($b_row['b_etc_0'])?></span>
+				<span class="form-control" ><?=html_escape($b_row['b_date_st'])?></span>
 				<span class="input-group-addon">-</span>
-				<span class="form-control" ><?=html_escape($b_row['b_etc_1'])?></span>
+				<span class="form-control" ><?=html_escape($b_row['b_date_ed'])?></span>
 			</div>
 			<? if(isset($b_row['b_etc_3'][0])): ?>
 			<div class="input-group ">
