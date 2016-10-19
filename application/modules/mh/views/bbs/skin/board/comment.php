@@ -58,7 +58,7 @@
 						ng-disabled="form.mode=='delete' || !permission[form.mode]" 
 						ng-model="form.bc_comment"
 						ng-trim="true"
-						name="bc_comment"  class="form-control" rows="3" placeholder="댓글내용" required></textarea>
+						name="bc_comment"  class="form-control" rows="3" placeholder="댓글내용" required onkeyup="sync_textarea_height(this)" onblur="this.onkeyup()" style="line-height: 1.5em;max-height: 20em; min-height: 6em"></textarea>
 						<div role="alert">
 						<div class="alert alert-danger" role="alert" ng-show="wform.bc_comment.$error.maxlength">내용이 너무 많습니다!</div>
 						</div>
@@ -87,7 +87,17 @@
 	</ul>
 </div>
 </div>
-
+<script>
+	/**
+	 * 텍스트박스 높이 맞추기.
+	 * @param  {[type]} el [description]
+	 * @return {[type]}    [description]
+	 */
+	function sync_textarea_height(el){
+		var nl_cnt = el.value.split("\n").length;
+		el.style.height = ((nl_cnt+2)*1.5)+'em';
+	}
+</script>
 <script>
 ng_bbs_comment('bbsComment','CommentCtrl');
 </script>
