@@ -17,8 +17,11 @@ $today_date = date('Y-m-d');
 <!--
 <?=$v_date_st?> ~ <?=$v_date_ed?>
 -->
+<div class="text-right">
+	<a href="?lm=list" type="button" class="btn btn-link btn-xs"><span class="glyphicon glyphicon-list"></span>목록형</a>
+</div>
 <div class="panel panel-default bbs-mode-list">
-
+	
 	<!-- Default panel contents -->
 	<div class="panel-heading">
 		<nav class="text-right">
@@ -196,27 +199,7 @@ $today_date = date('Y-m-d');
 			<div class="col-lg-2 col-sm-2 hidden-xs">
 			</div>
 			<div class="col-lg-8 col-sm-8 ">
-				<form action="<?=html_escape($bbs_conf['base_url'])?>/list" class="form-inline text-center">
-					<input name="dt" aria-label="날짜" type="hidden" class="form-control" placeholder="날짜" value="<?=html_escape(isset($get['dt'])?$get['dt']:'')?>">
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-btn">
-								<? if($bm_row['bm_use_category']!='0'): ?>
-								<?=form_dropdown('ct', $bm_row['categorys'], isset($get['ct'])?$get['ct']:'', 'class="selectpicker show-tick" style="width:8em" data-width="80px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리"')?>
-								<? endif; ?>
-								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
-								<option value="title" <?=$get['tq']=='title'?'selected':''?>>제목</option>
-								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>
-								<option value="title_or_text" <?=$get['tq']=='title_or_text'?'selected':''?>>제목+내용</option>
-								</select>
-							</div>
-							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
-							<span class="input-group-btn">
-								<button type="submit" class="btn btn-info">검색</button>
-							</span>
-						</div><!-- /input-group -->
-					</div>
-				</form>
+				<? include(dirname(__FILE__).'/inc_search.php'); ?>
 			</div>
 		</div>
 	</div>

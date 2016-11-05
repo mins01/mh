@@ -201,13 +201,16 @@ class Bbs extends MX_Controller {
 	}
 	public function mode_list($b_idx=null,$with_read=false){
 		$get = $this->input->get();
-		if($this->bm_row['bm_skin']=='calendar'){
+		$lm = $this->input->get('lm');
+		
+		if(!isset($lm)){
+			$lm = $this->bm_row['bm_list_def'];
+		}
+
+		if($lm=='calendar'){
 			return $this->mode_list_for_calendar($b_idx,$with_read);
-			// if(isset($get['tq'][0]) && isset($get['q'][0])){
-				// return $this->mode_list_for_calendar_list($b_idx,$with_read);
-			// }else{
-				// return $this->mode_list_for_calendar($b_idx,$with_read);
-			// }
+		}else if($lm=='list'){
+			return $this->mode_list_for_default($b_idx,$with_read);
 		}else{
 			return $this->mode_list_for_default($b_idx,$with_read);
 		}

@@ -129,6 +129,7 @@ class Bbs_master_model extends CI_Model {
 			'bm_category'=>'',
 			'bm_use_category'=>'',
 			'bm_list_type'=>'',
+			'bm_list_def'=>'',
 			'bm_use_file'=>'',
 			'bm_file_limit'=>'2',
 			'bm_use_thumbnail'=>'',

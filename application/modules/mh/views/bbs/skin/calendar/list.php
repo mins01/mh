@@ -6,37 +6,16 @@
 
 <nav class="text-right">
 	게시물 : <?=$count?> (<?=$max_page?> page)
+	<a href="?lm=calendar" type="button" class="btn btn-link btn-xs"><span class="glyphicon glyphicon-calendar"></span>달력형</a>
 </nav>
-
 <div class="panel panel-default bbs-mode-list">
 	<!-- Default panel contents -->
-	<div class="panel-heading">
-		<div class="row">
+	<div class="panel-heading ">
+		<div class="row visible-lg-block">
 			<div class="col-lg-2 col-sm-2 hidden-xs">
 			</div>
 			<div class="col-lg-8 col-sm-8 ">
-				<form action="<?=html_escape($bbs_conf['base_url'])?>/list" class="form-inline text-center">
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-btn">
-								<? if($bm_row['bm_use_category']!='0'): ?>
-								<?=form_dropdown('ct', $bm_row['categorys'], isset($get['ct'])?$get['ct']:'', 'class="selectpicker show-tick" style="width:8em" data-width="80px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리"')?>
-								<? endif; ?>
-								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
-								<option value="title" <?=$get['tq']=='title'?'selected':''?>>제목</option>
-								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>
-								<option value="title_or_text" <?=$get['tq']=='title_or_text'?'selected':''?>>제목+내용</option>
-								<? if($bm_row['bm_use_comment']){ ?><option value="ttc" <?=$get['tq']=='ttc'?'selected':''?>>제목+내용+코멘트</option><? } ?>
-								<option value="name" <?=$get['tq']=='name'?'selected':''?>>작성자</option>
-								</select>
-							</div>
-							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
-							<span class="input-group-btn">
-								<button type="submit" class="btn btn-info">검색</button>
-							</span>
-						</div><!-- /input-group -->
-					</div>
-				</form>
+				<? include(dirname(__FILE__).'/inc_search.php'); ?>
 			</div>
 		</div>
 	</div>
@@ -128,28 +107,7 @@
 			<div class="col-lg-2 col-sm-2 hidden-xs">
 			</div>
 			<div class="col-lg-8 col-sm-8 ">
-				<form action="<?=html_escape($bbs_conf['base_url'])?>/list" class="form-inline text-center">
-					<div class="form-group">
-						<div class="input-group">
-							<div class="input-group-btn">
-								<? if($bm_row['bm_use_category']!='0'): ?>
-								<?=form_dropdown('ct', $bm_row['categorys'], isset($get['ct'])?$get['ct']:'', 'class="selectpicker show-tick" style="width:8em" data-width="80px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리"')?>
-								<? endif; ?>
-								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
-								<option value="title" <?=$get['tq']=='title'?'selected':''?>>제목</option>
-								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>
-								<option value="tt" <?=$get['tq']=='tt'?'selected':''?>>제목+내용</option>
-								<? if($bm_row['bm_use_comment']){ ?><option value="ttc" <?=$get['tq']=='ttc'?'selected':''?>>제목+내용+코멘트</option><? } ?>
-								<option value="name" <?=$get['tq']=='name'?'selected':''?>>작성자</option>
-								</select>
-							</div>
-							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
-							<span class="input-group-btn">
-								<button type="submit" class="btn btn-info">검색</button>
-							</span>
-						</div><!-- /input-group -->
-					</div>
-				</form>
+				<? include(dirname(__FILE__).'/inc_search.php'); ?>
 			</div>
 		</div>
 	</div>
