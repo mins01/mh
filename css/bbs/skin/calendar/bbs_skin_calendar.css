@@ -42,9 +42,16 @@ border-bottom-width: 0px !important;
 td.day-td.day-td-today{
 
 }
+td.day-td.day-td-today>.day:before{
+	content:"오늘";
+	position:absolute;
+	font-size:10px;
+	margin:3px;
+	font-weight:bold;
+	color:#FF921E;
+}
 td.day-td.day-td-today>.day>.day-label{
-	font-size:1.3em;
-	transform: rotate(20deg);
+	/*border:4px solid #FFFF80;*/
 }
 
 .table-calender .day{

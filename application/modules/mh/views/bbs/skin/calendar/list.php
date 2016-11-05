@@ -64,9 +64,8 @@
 			<tr class="bbs-dpeth bbs-dpeth-<?=$b_row['depth']?> <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 				<td class="text-center hidden-xs"><?=$start_num--?></td>
 				<td class="bbs-title text-overflow-ellipsis floating_label_parent">
-					<span class="label label-success"><?=$b_row['b_etc_0'],'~',$b_row['b_etc_1']?></span>
 					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
-					<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
+					<a href="<?=html_escape($b_row['read_url'])?>" title="<?=$b_row['b_date_st'],'~',$b_row['b_date_ed']?>"><?=html_escape($b_row['b_title'])?></a>
 					
 					<div class="floating_label">
 						<? if(($b_row['is_new'])): ?>
