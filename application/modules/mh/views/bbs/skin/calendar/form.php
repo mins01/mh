@@ -9,10 +9,10 @@ if($mode=='write'||$mode=='answer'){
 
 ?>
 
-<div class="skin-form">
+<div class="skin-form ">
 	<form action="" name="form_bbs" method="post" onsubmit="submitWysiwyg();return check_form_bbs(this);"  enctype="multipart/form-data" data-bm_use_category="<?=$bm_row['bm_use_category']?>"  >
 	<input type="hidden" name="process" value="<?=html_escape($process)?>">
-	<div class="panel panel-default form-horizontal bbs-mode-form">
+	<div class="panel panel-default form-horizontal bbs-mode-form for-geo-hide">
 		<div class="panel-heading">
 			<input type="text" required maxlength="200" class="form-control" id="b_title" name="b_title" placeholder="글제목" value="<?=html_escape($b_row['b_title'])?>">
 		</div>
@@ -55,26 +55,32 @@ if($mode=='write'||$mode=='answer'){
 				echo form_dropdown('b_notice', $bbs_conf['b_notices'], $b_row['b_notice'], 'class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="공지설정" title="공지글" data-header="공지글 설정"');
 				}
 				?>
-
+				<div class="btn-group">
+					<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="none_geo" value="1" autocomplete="off" onclick="show_geo_form(true)"><div class="m-layout" data-label-on="지형정보on" data-label-off=""></div>
+					</label>
+					<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="none_geo" value="0" autocomplete="off"  onclick="show_geo_form(false)" checked=""><div class="m-layout" data-label-on="지형정보off" data-label-off=""></div>
+					</label>
+				</div>
 			</li>
-			<li class="list-group-item form-inline">
+			<li class="list-group-item form-inline for-geo-form">
 				<div class="input-group input-daterange">
+					<div class="input-group-addon">날짜</div>
 					<input type="text" class="form-control"  name="b_date_st" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_st'])?>">
 					<div class="input-group-addon">-</div>
 					<input type="text" class="form-control"  name="b_date_ed" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_ed'])?>">
 				</div>
 			</li>
-			<li class="list-group-item">
+
+			<li class="list-group-item  for-geo-form">
 				<div class="input-group">
 						<div class="input-group-addon">주소</div>
 						<input type="text" class="form-control"	id="google_map_address" name="b_etc_3" aria-label="주소" placeholder="주소" style="min-width:6em" value="<?=html_escape($b_row['b_etc_3'])?>">
 						<div class="input-group-btn">
 						<button type="button" class="btn btn-success" onclick="google_map.search_by_address(this.form.b_etc_3.value)">주소검색</button>
-						
 					</div>
 				</div>
 			</li>
-			<li class="list-group-item form-inline">
+			<li class="list-group-item form-inline  for-geo-form">
 				
 				<div class="input-group">
 					<div class="input-group-addon">위도</div>
@@ -93,7 +99,7 @@ if($mode=='write'||$mode=='answer'){
 				</div>
 
 			</li>
-			<li	 class="list-group-item">
+			<li	 class="list-group-item  for-geo-form">
 				<div id="google_map_canvas" style="height:300px"></div>
 			</li>
 			
@@ -131,12 +137,27 @@ document.form_bbs.b_num_1.value=obj.lng
 popWindow.close();
 }
 
-$(
-	function(){
-		//show_street_view()
-		google_map.init();
+function show_geo_form(bool){
+
+	if(bool){
+		if(!show_geo_form.inited_map){
+			google_map.init();
+			show_geo_form.inited_map = true;
+		}
+		$('.bbs-mode-form.for-geo-hide').removeClass('for-geo-hide').addClass('for-geo-show');
+	}else{
+		$('.bbs-mode-form.for-geo-show').removeClass('for-geo-show').addClass('for-geo-hide');
 	}
-)
+	
+}
+show_geo_form.inited_map = false;
+
+var on_geo = <?=isset($b_row['b_etc_3'][0])?'true':'false'?>;
+if(on_geo){
+	$(function(){
+		$(document.form_bbs.none_geo[0]).trigger('click');
+	})
+}
 //-->
 </script>
 

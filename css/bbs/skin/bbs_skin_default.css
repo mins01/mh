@@ -160,3 +160,10 @@ span.bc-star-2::before{content:'★★☆☆☆'}
 span.bc-star-3::before{content:'★★★☆☆'}
 span.bc-star-4::before{content:'★★★★☆'}
 span.bc-star-5::before{content:'★★★★★'}
+
+
+/**
+* 달력 폼용
+*/
+.for-geo-form{}
+.for-geo-hide .for-geo-form{display:none;}
