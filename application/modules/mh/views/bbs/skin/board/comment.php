@@ -58,7 +58,7 @@
 						ng-disabled="form.mode=='delete' || !permission[form.mode]" 
 						ng-model="form.bc_comment"
 						ng-trim="true"
-						name="bc_comment"  class="form-control" rows="3" placeholder="댓글내용" required onkeyup="sync_textarea_height(this)" onblur="this.onkeyup()" style="line-height: 1.5em;max-height: 20em; min-height: 6em"></textarea>
+						name="bc_comment"  class="form-control" rows="3" placeholder="댓글내용" required onkeyup="sync_textarea_height(this)" onblur="this.onkeyup()" onfocus="this.onkeyup()" style="line-height: 1.5em;max-height: 20em; min-height: 6em"></textarea>
 						<div role="alert">
 						<div class="alert alert-danger" role="alert" ng-show="wform.bc_comment.$error.maxlength">내용이 너무 많습니다!</div>
 						</div>
