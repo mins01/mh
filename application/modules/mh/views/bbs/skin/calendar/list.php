@@ -31,8 +31,8 @@
 				<th class="text-center hidden-xs" width="80">No</th>
 				<th class="text-center">제목</th>
 				<th class="text-center" width="80">작성자</th>
-				<th class="text-center hidden-xs hidden-sm"  width="40">조회</th>
 				<th class="text-center"  width="80">날짜</th>
+				<th class="text-center hidden-xs hidden-sm"  width="40">조회</th>
 			</tr>
 		<? foreach($b_n_rows as $b_row):
 		//print_r($r);
@@ -61,15 +61,14 @@
 				
 				</td>
 				<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
 				<?
 				$t = $b_row['b_date_st']!=$b_row['b_date_ed']?'b_date_st_ed':'b_date';
 				?>
 				<td class="text-center <?=$t?>"><?
-				echo '<span class="b_date_st">',html_escape(bbs_date_former('m-d',$b_row['b_date_st'])),'</span>';
+				echo '<span class="b_date_st">',html_escape(bbs_date_former('y-m-d',$b_row['b_date_st'])),'</span>';
 				echo '<span class="b_date_ed">',html_escape(bbs_date_former('m-d',$b_row['b_date_ed'])),'</span>';
 				?></td>
-
+				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
 			</tr>
 		<? endforeach; ?>
 		<? foreach($b_rows as $b_row):
@@ -99,7 +98,6 @@
 				
 				</td>
 				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
 				<?
 				$t = $b_row['b_date_st']!=$b_row['b_date_ed']?'b_date_st_ed':'b_date';
 				?>
@@ -107,7 +105,7 @@
 				echo '<span class="b_date_st">',html_escape(bbs_date_former('y-m-d',$b_row['b_date_st'])),'</span>';
 				echo '<span class="b_date_ed">',html_escape(bbs_date_former('m-d',$b_row['b_date_ed'])),'</span>';
 				?></td>
-
+				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
 			</tr>
 		<? endforeach; ?>
 		</table>
