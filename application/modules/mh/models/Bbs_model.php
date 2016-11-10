@@ -496,16 +496,20 @@ class Bbs_model extends CI_Model {
 		
 		$this->filter_vals($sets);
 		
+		if(!isset($sets['b_date_st'][0])){
+			$this->db->set('b_date_st','now()',false);
+			unset($sets['b_date_st']);
+		}
+		if(!isset($sets['b_date_ed'][0])){
+			$this->db->set('b_date_ed','now()',false);
+			unset($sets['b_date_ed']);
+		}
+
 		$this->db->from($this->tbl)
 		->set($sets)
 		->set('b_insert_date','now()',false)
 		->set('b_update_date','now()',false);
-		if(!isset($sets['b_date_st'][0])){
-			$this->db->set('b_date_st','now()',false);
-		}
-		if(!isset($sets['b_date_ed'][0])){
-			$this->db->set('b_date_ed','now()',false);
-		}
+		
 		$this->db->insert();
 		$b_idx = $this->db->insert_id();
 		if($b_idx){

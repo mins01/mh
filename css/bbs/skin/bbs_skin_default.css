@@ -91,8 +91,6 @@ margin-left:-1em;
 .floating_label > .is_new{background-color:#E8A437;}
 .floating_label > .b_secret{background-color:#EA4D3C;}
 
-
-
 /* 목록용 썸네일 박스 */
 .thumbnail-div{height:170px; padding:5px;}
 .thumbnail-div a:focus,
@@ -167,3 +165,14 @@ span.bc-star-5::before{content:'★★★★★'}
 */
 .for-geo-form{}
 .for-geo-hide .for-geo-form{display:none;}
+
+
+/* b_date_st , b_date_ed 용 */
+.bbs-list-table .b_date_st_ed{position: relative;}
+.b_date .b_date_ed{display: none;}
+.b_date_st_ed .b_date_st{position: absolute; display: block;top:0; left:0;}
+.b_date_st_ed .b_date_ed{position: absolute; display: block;bottom:0; right:0;font-size: small; opacity: 0.8}
+.b_date_st_ed .b_date_ed::before{content: '~ ';}
+
+
+

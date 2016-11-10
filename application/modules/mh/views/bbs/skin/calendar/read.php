@@ -101,10 +101,20 @@ if($d_day==0){
 			</div>
 			
 		</li>
-		
+		<? if(isset($b_row['b_etc_3'][0]) && !empty($b_row['b_num_0']) && !empty($b_row['b_num_1'])):?>
 		<li class="list-group-item">
 			<div id="google_map_canvas" style="height:300px"></div>
+			<script>
+			$(function(){
+				var lat = <?=$b_row['b_num_0']?>;
+				var lng = <?=$b_row['b_num_1']?>;
+				var zoom = <?=$b_row['b_num_2']?$b_row['b_num_2']:18?>;
+				google_map.init_readonly_map(document.getElementById('google_map_canvas'),lat,lng,zoom);
+				$('#google_map_canvas').parent().show();
+			})
+			</script>
 		</li>
+		<? endif; ?>
 		
 		
 		<? if(isset($view_form_file[0])): ?>
@@ -136,19 +146,6 @@ if($d_day==0){
 	</div>
 </div>
 
-<script>
-$(function(){
-<? if(isset($b_row['b_etc_3'][0])&& isset($b_row['b_num_0'])&& isset($b_row['b_num_1'])):?>
 
-	var lat = <?=$b_row['b_num_0']?>;
-	var lng = <?=$b_row['b_num_1']?>;
-	var zoom = <?=$b_row['b_num_2']?$b_row['b_num_2']:18?>;
-	google_map.init_readonly_map(document.getElementById('google_map_canvas'),lat,lng,zoom);
-
-<? else: ?>
-	$('#google_map_canvas').parent().hide();
-<? endif; ?>
-})
-</script>
 
 <?=$html_comment?>

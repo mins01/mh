@@ -152,7 +152,9 @@ function print_onoff_type2($name,$val,$label_on='사용',$label_off='금지',$la
 	<?
 }
 
-
+function bbs_date_former($form,$dtstr){
+	return date($form,strtotime($dtstr));
+}
 
 
 
