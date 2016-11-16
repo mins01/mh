@@ -42,16 +42,21 @@ endforeach;
 <? 
 	if(preg_match('/^(edit|answer|write)$/',$mode)): 
 ?>
+	<script type="text/javascript">
+		$(function(){
+				init_drag_and_drop_file();
+		});
+	</script>
 <?
 		for($i=0,$m=$bm_row['bm_file_limit']-count($bf_rows);$i<$m;$i++): 
 ?>
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mode-form-file-item">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mode-form-file-item drag-and-drop-files title="드래그앤드롭으로 파일 첨부 가능">
 		<div class="panel panel-primary center-block " style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
 				NEW FILE
 			</div>
 			<div class="panel-body text-center">
-				<div class="img-preview">Select File...</div>
+				<div class="img-preview">Select File... or Drop File...</div>
 			</div>
 			<div class="panel-footer text-center">
 				<span class="btn-block btn btn-primary btn-file ">
@@ -81,7 +86,7 @@ endforeach;
 						if(preview.html().length>1){
 							$(preview).append('<hr>');
 						}
-						$(preview).append('<div class="text-danger">파일'+(num+1)+'</div><div>'+file.name+'</div>');
+						$(preview).append('<div class="text-danger">파일'+(num+1)+'</div><div>'+file.name+'</div><div>'+file.size+' Byte</div>');
 						
 						
 						continue;
@@ -104,10 +109,30 @@ endforeach;
 					})(ta.files[i],num)
 				}
 			}else{
-				preview.html('Select File...');
+				preview.html('Select File... or Drop File...');
 			}
 		}catch(e){
 			//지원안되는 브라우저
 		}
 	}
+
+
+/**
+ * 파일 업로드 관련
+ */
+function init_drag_and_drop_file(){
+	$('.drag-and-drop-files').on("dragstart dragend dragover dragenter dragleave drag drop",function(evt){
+		console.log(evt.type);
+		evt.preventDefault(); 
+		evt.stopPropagation();
+	})
+	$('.drag-and-drop-files').on("drop",function(evt){
+		try{
+			$(this).find('input[type="file"]').prop('files',evt.originalEvent.dataTransfer.files)
+			$(this).find('input[type="file"]').trigger('change');
+		}catch(e){
+			//지원 안되는 브라우저
+		}
+	})
+}
 </script>

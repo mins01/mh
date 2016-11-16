@@ -1,14 +1,20 @@
+/**
+ * ë”ì´ìƒ ì‚¬ìš© ì•ˆë˜ëŠ” íŒŒì¼
+ */
+
+
+
 function check_form_bbs(f){
 	var ta = f.b_title;
 	if(ta && ta.value.length<2){
 		ta.focus();
-		alert('±ÛÁ¦¸ñÀ» 2±ÛÀÚ ÀÌ»ó ÀÔ·ÂÇØÁÖ¼¼¿ä.');
+		alert('ê¸€ì œëª©ì„ 2ê¸€ì ì´ìƒ ì…ë ¥í•´ì£¼ì„¸ìš”.');
 		return false;
 	}
 	var ta = f.b_text;
 	if(ta && ta.value.length<2){
 		ta.focus();
-		alert('±Û³»¿ëÀ» 2±ÛÀÚ ÀÌ»ó  ÀÔ·ÂÇØÁÖ¼¼¿ä.');
+		alert('ê¸€ë‚´ìš©ì„ 2ê¸€ì ì´ìƒ  ì…ë ¥í•´ì£¼ì„¸ìš”.');
 		return false;
 	}
 	
@@ -16,7 +22,7 @@ function check_form_bbs(f){
 	var ta = f.b_category;
 	if(bm_use_category=='2' && ta.value.length==0){
 		ta.focus();
-		alert('Ä«Å×°í¸®¸¦ ÇÊ¼ö·Î ¼±ÅÃÇÏ¼Å¾ßÇÕ´Ï´Ù.');
+		alert('ì¹´í…Œê³ ë¦¬ë¥¼ í•„ìˆ˜ë¡œ ì„ íƒí•˜ì…”ì•¼í•©ë‹ˆë‹¤.');
 		return false;
 	}
 	
