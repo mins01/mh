@@ -77,7 +77,9 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				</button>
-				<!-- <a class="navbar-brand" href="<?=SITE_URI_PREFIX?>">HOME</a> -->
+				<a class="navbar-brand" href="/" style="margin: 0;padding: 3px"><img src="/img/logo.gif" style="max-height: 100%;"></a>
+				<a class="navbar-brand" href="<?=SITE_URI_PREFIX?>">메인</a>
+				<a class="navbar-brand" href="<?=SITE_URI_PREFIX?>/tech">기술</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-left">
