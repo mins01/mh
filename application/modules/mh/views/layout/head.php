@@ -1,7 +1,10 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<title><?=html_escape($title)?></title>
+	<title><?=html_escape($title)?></title>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Script-Type" content="text/javascript">
+	<meta http-equiv="Content-Style-Type" content="text/css">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
@@ -9,7 +12,7 @@
 	<meta name="keywords" content="공대여자,웹,프로그래밍,DB,PHP,MySQL,ORACLE" />
 	<meta name="classification" content="웹 프로그래밍" />
 	
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 	<!-- 합쳐지고 최소화된 최신 CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -78,8 +81,8 @@
 				<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="/" style="margin: 0;padding: 3px"><img src="/img/logo.gif" style="max-height: 100%;"></a>
-				<a class="navbar-brand" href="<?=SITE_URI_PREFIX?>">메인</a>
-				<a class="navbar-brand" href="<?=SITE_URI_PREFIX?>/tech">기술</a>
+				<a class="navbar-brand hidden-sm hidden-md hidden-lg " href="<?=SITE_URI_PREFIX?>">메인</a>
+				<a class="navbar-brand hidden-sm hidden-md hidden-lg " href="<?=SITE_URI_PREFIX?>tech">기술</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-left">
