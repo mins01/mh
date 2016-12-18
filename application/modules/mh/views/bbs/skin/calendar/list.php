@@ -7,6 +7,7 @@
 <nav class="text-right">
 	게시물 : <?=$count?> (<?=$max_page?> page)
 	<a href="?lm=calendar" type="button" class="btn btn-link btn-xs"><span class="glyphicon glyphicon-calendar"></span>달력형</a>
+	<a target="_blank" href="<?=html_escape($bbs_conf['rss_url'])?>" type="button" class="btn btn-link btn-xs"><span class="glyphicon bbs_feed_icon_14x14"></span>RSS</a>
 </nav>
 <div class="panel panel-default bbs-mode-list">
 	<!-- Default panel contents -->
@@ -42,7 +43,7 @@
 				<td class="bbs-title text-overflow-ellipsis floating_label_parent">
 					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
 					<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
-					
+
 					<div class="floating_label">
 						<? if(($b_row['is_new'])): ?>
 							<span class="is_new label label-default" title="새글">new</span>
@@ -53,12 +54,12 @@
 						<? if(!empty($b_row['bf_cnt'])): ?>
 							<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
 						<? endif; ?>
-						
+
 						<? if(!empty($b_row['bc_cnt'])): ?>
 							<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
 						<? endif; ?>
 					</div>
-				
+
 				</td>
 				<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
 				<?
@@ -79,7 +80,7 @@
 				<td class="bbs-title text-overflow-ellipsis floating_label_parent">
 					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
 					<a href="<?=html_escape($b_row['read_url'])?>" title="<?=$b_row['b_date_st'],'~',$b_row['b_date_ed']?>"><?=html_escape($b_row['b_title'])?></a>
-					
+
 					<div class="floating_label">
 						<? if(($b_row['is_new'])): ?>
 							<span class="is_new label label-default" title="새글">new</span>
@@ -90,12 +91,12 @@
 						<? if(!empty($b_row['bf_cnt'])): ?>
 							<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
 						<? endif; ?>
-						
+
 						<? if(!empty($b_row['bc_cnt'])): ?>
 							<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
 						<? endif; ?>
 					</div>
-				
+
 				</td>
 				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
 				<?
@@ -135,5 +136,3 @@
 		</div>
 	</div>
 </div>
-
-

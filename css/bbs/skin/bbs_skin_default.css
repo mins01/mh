@@ -30,7 +30,7 @@
 	word-wrap: break-word;
 }
 
-.bbs_c .bc_depth dt::before , 
+.bbs_c .bc_depth dt::before ,
 .bbs_c .bc_depth form dt::before{
 content: '';
 width: 0.5em;
@@ -77,7 +77,7 @@ margin-left:-1em;
 }
 
 /* 첨부파일 미리보기용 */
-.img-preview{   
+.img-preview{
 	max-height: 200px;
   overflow: auto;}
 .img-preview img{max-width:95%}
@@ -105,7 +105,7 @@ margin-left:-1em;
 .thumbnail-box img{max-width:100%;max-height:100%;}
 
 .thumbnail-box div.no-thumbnail{
-	height:100%; background-color:#333; 
+	height:100%; background-color:#333;
 	display: table;
 	width: 100%;
 	color:#fff;
@@ -118,7 +118,7 @@ margin-left:-1em;
 	content:"No-Thumbnail"; color:#fff;
 	height:100%; display:table-cell;
 	vertical-align: middle;
-	
+
 }
 
 /* bootstrap-datepicker bugfix*/
@@ -176,3 +176,8 @@ span.bc-star-5::before{content:'★★★★★'}
 
 
 
+.bbs_feed_icon_14x14{
+	display: inline-block;
+	width: 14px; height: 14px;
+ 	background-image: url("../../../img/feed-icon-14x14.png")
+}

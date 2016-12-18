@@ -10,26 +10,26 @@ class Bbs extends MX_Controller {
 	public function __construct()
 	{
 				$this->load->helper('form');
-		
+
 		$this->load->model('mh/bbs_master_model','bm_m');
 		$this->load->model('mh/bbs_model','bbs_m');
 		$this->load->model('mh/bbs_file_model','bf_m');
-		
+
 		$this->load->module('mh/layout');
 		$this->load->module('mh/common');
-		
+
 		$this->m_row = $this->common->get_login();
 		$this->logedin = & $this->common->logedin;
 		$this->config->load('bbs');
 		$this->bbs_conf = $this->config->item('bbs');
 
 	}
-	
+
 	public function _remap($method, $params = array())
 	{
 		$this->index($params);
 	}
-	
+
 	public function set_base_url($base_url){
 		$this->base_url = $base_url;
 	}
@@ -83,19 +83,24 @@ class Bbs extends MX_Controller {
 		if(!isset($mode)){
 			$mode = 'list';
 		}
-		
-		
+
+
 		if(!method_exists($this,'mode_'.$mode)){
 			show_error('잘못된 모드입니다.');
 		}
+		$get = $this->input->get();
 		$this->bbs_conf['base_url'] = $this->base_url;
-		$this->bbs_conf['list_url'] = $this->base_url . "/list?".http_build_query($this->input->get());
-		$this->bbs_conf['write_url'] = $this->base_url . "/write?".http_build_query($this->input->get());
+		$this->bbs_conf['list_url'] = $this->base_url . "/list?".http_build_query($get);
+		$this->bbs_conf['write_url'] = $this->base_url . "/write?".http_build_query($get);
+		$get2 = $get;
+		$get2['lm'] = 'rss';
+		$this->bbs_conf['rss_url'] = $this->base_url . "/list?".http_build_query($get2);
+
 		$this->bbs_conf['mode'] = $mode;
-		
-		
+
+
 		$this->{'mode_'.$mode}($b_idx);
-		
+
 
 	}
 
@@ -104,14 +109,14 @@ class Bbs extends MX_Controller {
 		$uri = $this->base_url . "/list";
 		return generate_paging($get,$max_page,$uri);
 	}
-	
+
 	private function get_permission_lists($m_idx=''){
-		
+
 		$is_mine = !empty($m_idx) && $m_idx == $this->common->get_login('m_idx');
 		$m_level = (int)$this->common->get_login('m_level');
 		$is_guest_b_row = !isset($m_idx[0]);
 		$is_admin = $this->bm_row['bm_lv_admin']<=$m_level;
-		
+
 		if(!isset($m_level)) $m_level = 0;
 		return array(
 			'list'=>$this->bm_row['bm_lv_list']<=$m_level,
@@ -127,27 +132,27 @@ class Bbs extends MX_Controller {
 		);
 	}
 	private function extends_b_row(& $b_row,$get){
-		
+
 		$b_row['read_url'] = $this->base_url . '/read/'.$b_row['b_idx'].'?'.http_build_query($get);
-		
+
 		$b_row['answer_url'] = $this->base_url . '/answer/'.$b_row['b_idx'].'?'.http_build_query($get);
-		
+
 		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_row['b_idx'].'?'.http_build_query($get);
-		
+
 		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx'].'?'.http_build_query($get);
-		
+
 		if(!empty($b_row['bf_idx'])){
 			$b_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($b_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
 		}
-		
+
 		if(isset($b_row['b_insert_date'][0]) && time()-strtotime($b_row['b_insert_date'])<$this->bm_row['bm_new']){
 			$b_row['is_new'] = true;
 		}else{
 			$b_row['is_new'] = false;
 		}
-		
+
 		unset($get['b_idx']);
-		
+
 		$b_row['write_url'] = $this->base_url . '/write?'.http_build_query($get);
 	}
 	private function extends_b_rows(&$b_rows,$get){
@@ -156,7 +161,7 @@ class Bbs extends MX_Controller {
 		}
 	}
 	private function extends_bf_row(& $bf_row,$b_row){
-		
+
 		$bf_row['download_url'] = $this->base_url . '/download/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']); //강제로 다운로드 시킨다.
 		$bf_row['view_url'] = $bf_row['download_url'].'&inline=1'; //브라우저에서 보인다면 보여준다.
 		$bf_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
@@ -166,19 +171,19 @@ class Bbs extends MX_Controller {
 			$this->extends_bf_row($r,$b_row);
 		}
 	}
-	
+
 	private function get_bf_rows_by_b_row(&$b_row){
 		$bf_rows = $this->bf_m->select_for_list($b_row['b_idx']);
 		$this->extends_bf_rows($bf_rows,$b_row);
 		return $bf_rows;
 	}
-	
+
 	private function get_bf_row_by_b_row($b_row){
 		$bf_rows = $this->bf_m->select_for_list($b_row['b_idx']);
 		$this->extends_bf_rows($bf_rows,$b_row);
 		return $bf_rows;
 	}
-	
+
 	public function get_time_st_ed_by_date($v_date){
 		if(!$v_date || strtotime($v_date)===false){
 			$v_date = date('Y-m-d');
@@ -202,15 +207,23 @@ class Bbs extends MX_Controller {
 	public function mode_list($b_idx=null,$with_read=false){
 		$get = $this->input->get();
 		$lm = $this->input->get('lm');
-		
+
+		if($lm=='rss' && $with_read){
+			$lm = null;
+		}
+
 		if(!isset($lm)){
 			$lm = $this->bm_row['bm_list_def'];
 		}
+
+
 
 		if($lm=='calendar'){
 			return $this->mode_list_for_calendar($b_idx,$with_read);
 		}else if($lm=='list'){
 			return $this->mode_list_for_default($b_idx,$with_read);
+		}else if($lm=='rss'){
+			return $this->mode_list_for_rss();
 		}else{
 			return $this->mode_list_for_default($b_idx,$with_read);
 		}
@@ -224,7 +237,7 @@ class Bbs extends MX_Controller {
 				show_error('권한이 없습니다.');
 			}
 		}
-		
+
 		$get = $this->input->get();
 		$dt = $this->input->get('dt');
 		if(!isset($get['tq'])){ $get['tq'] = null; }
@@ -239,12 +252,13 @@ class Bbs extends MX_Controller {
 				);
 		$b_rows = $this->bbs_m->select_for_calendar($v_get);
 		$b_rowss = $this->bbs_m->exnteds_b_rows_for_calendar($b_rows,$date_st,$date_ed);
-		
-		$this->extends_b_rows($b_rows,$get);
+
+		$get2 = $this->input->get();
+		$this->extends_b_rows($b_rows,$get2);
 		$b_n_rows = $this->bbs_m->select_for_notice_list($get);
-		$this->extends_b_rows($b_n_rows,$get);
+		$this->extends_b_rows($b_n_rows,$get2);
 		$count = $this->bbs_m->count_for_calendar($v_get);
-		
+
 		$v_t = strtotime($dt);
 		$v_Y = date('Y',$v_t);
 		$v_m = date('m',$v_t);
@@ -254,10 +268,10 @@ class Bbs extends MX_Controller {
 					'date_ed'=>date('Y-m-d',mktime(-1,0,0,$v_m+7,1,$v_Y)),
 					)
 				);
-				
+
 		$count_rowss = $this->bbs_m->count_per_month_for_calendar($v_get2);
 		//$start_num = $this->bbs_m->get_start_num($count,$get);
-		
+
 		$tmp = $this->input->get();
 		$tmp['dt'] ='dt';
 		$def_url = $this->base_url . "/list?".str_replace('dt=dt','dt={{dt}}',http_build_query($tmp));
@@ -292,12 +306,12 @@ class Bbs extends MX_Controller {
 		'time_st'=>$time_st,
 		'time_ed'=>$time_ed,
 		'base_url'=>$this->base_url,
-		
+
 		));
-		
+
 	}
 	public function _mode_list($b_idx=null,$with_read=false,$opt = array()){
-		
+
 		$permission = $this->get_permission_lists();
 		if(!$permission['list']){
 			if($with_read){
@@ -306,7 +320,7 @@ class Bbs extends MX_Controller {
 				show_error('권한이 없습니다.');
 			}
 		}
-		
+
 		$get = $this->input->get();
 		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
 		if(!isset($get['tq'])){ $get['tq'] = ''; }
@@ -315,12 +329,14 @@ class Bbs extends MX_Controller {
 		$get['page']=$this->bbs_conf['page'];
 		$order_by = isset($opt['order_by'])?$opt['order_by']:'';
 		$b_rows = $this->bbs_m->select_for_list($get,$order_by);
-		$this->extends_b_rows($b_rows,$get);
+
+		$get2 = $this->input->get();
+		$this->extends_b_rows($b_rows,$get2);
 		$b_n_rows = $this->bbs_m->select_for_notice_list($get);
 		$this->extends_b_rows($b_n_rows,$get);
 		$count = $this->bbs_m->count($get);
 		$start_num = $this->bbs_m->get_start_num($count,$get);
-		
+
 		$tmp = $this->input->get();
 		$tmp['page'] ='page';
 		$def_url = $this->base_url . "/list?".str_replace('page=page','page={{page}}',http_build_query($tmp));
@@ -336,7 +352,7 @@ class Bbs extends MX_Controller {
 			$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 목록 {$get['page']} page");
 			$this->config->set_item('layout_og_description', "목록 {$get['page']} page");
 		}
-		
+
 
 		$this->load->view($this->skin_path.'/list',array(
 		'b_rows' => $b_rows,
@@ -359,6 +375,65 @@ class Bbs extends MX_Controller {
 	}
 	public function mode_list_for_default($b_idx=null,$with_read=false){
 		$this->_mode_list($b_idx,$with_read);
+	}
+	public function mode_list_for_rss(){
+		$permission = $this->get_permission_lists();
+		if(!$permission['list']){
+			if($with_read){
+				return;
+			}else{
+				show_error('권한이 없습니다.');
+			}
+		}
+
+		$get = $this->input->get();
+		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
+		if(!isset($get['tq'])){ $get['tq'] = ''; }
+		if(!isset($get['q'])){ $get['q'] = ''; }
+		if(!isset($get['ct'])){ $get['ct'] = ''; }
+		$get['page']=$this->bbs_conf['page'];
+		$opts = array(
+			'with_short_b_text'=>true,
+			'order_by' => isset($opt['order_by'])?$opt['order_by']:'',
+		);
+		$b_rows = $this->bbs_m->select_for_list($get,$opts);
+		$get2 = $this->input->get();
+		unset($get['lm']);
+		$this->extends_b_rows($b_rows,$get2);
+		$this->config->set_item('layout_disable',true);
+
+
+		//-- RSS 구조 생성.
+		$rss_arr = array(
+			'@attributes' => array(
+			    'xmlns:dc' => 'http://purl.org/dc/elements/1.1/',
+			    'version' => '2.0',
+			)
+		);
+		// print_r($this->bm_row);
+		$rss_arr['channel'] = array(
+			'title' => 'RSS : '.$this->bm_row['bm_title'],
+			'description' =>  $this->config->item('layout_og_title')." : 목록 {$get['page']} page",
+			'language' => 'ko',
+			'link' => $this->base_url . '/list',
+			'itme' => array(),
+		);
+		foreach ($b_rows as $b_row) {
+			$item = array(
+				'title'=>$b_row['b_title'],
+				'link'=>$b_row['read_url'],
+				'description'=>array('@cdata'=>$b_row['short_b_text']),
+				'dc:creator'=>$b_row['b_name'],
+				'dc:date'=>substr($b_row['b_insert_date'],0,10),
+			);
+			$rss_arr['channel']['item'][]=$item;
+		}
+		$this->load->library('Array2XML');
+		Array2XML::init('1.0', 'UTF-8');
+		$xml = Array2XML::createXML('rss', $rss_arr);
+		header('Content-Type: application/xml');
+		echo $xml->saveXML();
+		return;
 	}
 	//비밀번호 필수 체크 : false: fail, true: OK
 	private function required_password($b_row,$b_pass,$title='비밀번호 확인',$sub_title=''){
@@ -392,6 +467,11 @@ class Bbs extends MX_Controller {
 			show_error('게시물 아이디가 없습니다');
 		}
 		$get = $this->input->get();
+		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
+		if(!isset($get['tq'])){ $get['tq'] = ''; }
+		if(!isset($get['q'])){ $get['q'] = ''; }
+		if(!isset($get['ct'])){ $get['ct'] = ''; }
+		$get['page']=$this->bbs_conf['page'];
 		$b_row = $this->bbs_m->select_by_b_idx($b_idx);
 		if(!$b_row){
 			show_error('데이터가 없습니다');
@@ -427,7 +507,7 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_title','read : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : {$b_row['b_title']}");
 		$this->config->set_item('layout_og_description', "읽기 : {$b_row['b_title']}");
-		
+
 		$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$b_idx);
 		$this->load->view($this->skin_path.'/read',array(
 			'mode'=>'read',
@@ -439,7 +519,7 @@ class Bbs extends MX_Controller {
 			'permission'=>$permission,
 			'view_form_file'=>$view_form_file,
 		));
-		
+
 		if($this->bm_row['bm_read_with_list']=='1'){
 			$this->mode_list($b_idx,true);
 		}
@@ -467,20 +547,20 @@ class Bbs extends MX_Controller {
 				return;
 			}
 		}
-		
+
 		$inline = !!$this->input->post_get('inline');
 		$resume = !!$this->input->post_get('resume');
-		
+
 		$bf_idx = $this->input->post_get('bf_idx');
 		$bf_row = $this->bf_m->select_by_bf_idx($bf_idx);
 		//print_r($bf_row);
 		if(!isset($bf_row['bf_idx'])){
 			show_error('파일 데이터가 없습니다.');
 		}
-		
+
 		while(ob_get_level()>0 && ob_end_clean()){//출력 버퍼 삭제하고 종료.(모든 버퍼를 삭제한다.
 		}
-		
+
 		if($is_thumbnail ){
 			if($bf_row['is_image'] && $this->bf_m->thumbnail_by_bf_row($bf_row,$inline,$resume)){
 				exit();// 여기서 강제로 종료!
@@ -516,7 +596,7 @@ class Bbs extends MX_Controller {
 			show_error('게시물이 없습니다');
 		}
 		$this->extends_b_row($b_row,$this->input->get());
-		
+
 
 		$this->_mode_form($b_row,'edit');
 	}
@@ -536,38 +616,38 @@ class Bbs extends MX_Controller {
 		$b_row['b_title'] = 'RE:'.$b_row['b_title'];
 		$b_row['b_text'] = $b_row['b_text']."\n=-----------------=\n";
 		$this->extends_b_row($b_row,$this->input->get());
-		
+
 		$this->_mode_form($b_row,'answer');
 	}
 	public function mode_write(){
 		$b_row = $this->bbs_m->generate_empty_b_row();
 		$b_row['b_name']=$this->common->get_login('m_nick');
 		$this->extends_b_row($b_row,$this->input->get());
-		
+
 		$this->_mode_form($b_row,'write');
 	}
 
 	private function _mode_form($b_row,$mode){
 		//print_r($conf);
-		
+
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission[$mode]){
 			show_error('권한이 없습니다.');
 		}
 		//print_r($permission);
-		
+
 		if($mode =='edit'){
 			$b_pass = $this->input->post('b_pass');
 			if(!$this->required_password($b_row,$b_pass)){
 				return;
 			}
 		}
-		
+
 		if($this->input->post('process')){
 			return $this->_mode_process($b_row);
 		}
 
-		
+
 		$get = $this->input->get();
 		$post = $this->input->post();
 
@@ -576,7 +656,7 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_head_contents',$this->get_head_contents($mode));
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',''.$mode.' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
-		
+
 		if(isset($post['b_pass'])){
 			$b_row['b_pass'] = $post['b_pass'];
 		}else{
@@ -585,7 +665,7 @@ class Bbs extends MX_Controller {
 		if($mode =='write' || $mode =='answer'){
 			$b_row['b_pass'] = '';
 		}
-		
+
 		if($this->bm_row['bm_use_file']=='1'){
 			$view_form_file = $this->load->view($this->skin_path.'/form_file',array(
 				'mode'=>$mode,
@@ -598,7 +678,7 @@ class Bbs extends MX_Controller {
 		}else{
 			$view_form_file = '';
 		}
-		
+
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 작성폼");
 		$this->config->set_item('layout_og_description', "작성폼");
 
@@ -626,13 +706,13 @@ class Bbs extends MX_Controller {
 		if(!$b_row){
 			show_error('게시물이 없습니다');
 		}
-		
+
 
 		$get = $this->input->get();
 		$post = $this->input->post();
-		
+
 		$this->extends_b_row($b_row,$get);
-		
+
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission['delete']){
 			show_error('권한이 없습니다.');
@@ -641,14 +721,14 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',''.$this->bbs_conf['mode'].' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
-		
+
 		$b_pass = $this->input->post('b_pass');
 		if(!$this->required_password($b_row,$b_pass,'삭제하시겠습니까?',$b_row['b_title'])){
 			return;
 		}
-		
+
 		$b_row['b_pass'] = $b_pass;
-		
+
 		//print_r($conf);
 		if($this->input->post('process')){
 			return $this->_mode_process($b_row);
@@ -682,16 +762,16 @@ class Bbs extends MX_Controller {
 		$b_idx = $b_row['b_idx'];
 		$post = $this->input->post();
 		unset($post['process']);
-		
+
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission[$process]){
 			show_error('권한이 없습니다.');
 		}
-		
+
 		$this->config->set_item('layout_head_contents',$this->get_head_contents($process));
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',''.$this->bbs_conf['mode'].' : process : '.$this->bm_row['bm_title']);
-		
+
 		$r = 0;
 		switch($process){
 			case 'edit':
@@ -739,11 +819,11 @@ class Bbs extends MX_Controller {
 			show_error('허용되지 않는 요청');
 			break;
 		}
-		
+
 
 		$b_row = array('b_idx'=>$b_idx);
 		$this->extends_b_row($b_row,$get);
-		
+
 		if($process =='delete'){
 			$ret_url = $this->bbs_conf['list_url'];
 		}else{
@@ -751,7 +831,7 @@ class Bbs extends MX_Controller {
 		}
 		$this->config->set_item('layout_hide',true);
 
-		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 처리중");		
+		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 처리중");
 		$this->config->set_item('layout_og_description', "처리중");
 
 		$this->load->view($this->skin_path.'/process',array(
@@ -763,13 +843,7 @@ class Bbs extends MX_Controller {
 		'ret_url'=>$ret_url,
 		'msg'=>'처리완료.',
 		));
-		
+
 	}
 
 }
-
-
-
-
-
-

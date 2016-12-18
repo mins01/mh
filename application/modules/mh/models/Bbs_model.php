@@ -23,7 +23,7 @@ class Bbs_model extends CI_Model {
 	{
 		// Call the CI_Model constructor
 		parent::__construct();
-		
+
 	}
 	public function hash($str){
 		return md5($str);
@@ -56,7 +56,7 @@ class Bbs_model extends CI_Model {
 		$post['b_ip'] = $this->input->server('REMOTE_ADDR');
 	}
 	//-- bm_row에 따른 값에 따라서 목록 쿼리 부분을 변경시킨다.
-	public function _apply_list_bm_row($bm_row,$select='',$no_bh_hit_cnt=false,$opt = array()){
+	public function _apply_list_bm_row($bm_row,$select='',$no_bh_hit_cnt=false,$opts = array()){
 		// select 부분 설정.
 		if(!isset($select[0])){
 			$select = 'b.b_idx,b_id,b_gidx,b_gpos,b_pidx,b_insert_date,b_update_date,b_isdel
@@ -82,7 +82,7 @@ class Bbs_model extends CI_Model {
 			$select.=',(select count(*) from '.$this->tblname('file','bf2').' where bf2.b_idx=b.b_idx and bf_isdel=0) as bf_cnt';
 		}
 		// 리플 사용중인가?
-		if($bm_row['bm_use_comment']=='1' && empty($opt['no_bc_cnt'])){
+		if($bm_row['bm_use_comment']=='1' && empty($opts['no_bc_cnt'])){
 			$select.=',(select count(*) from '.$this->tblname('comment','bc2').' where bc2.b_idx=b.b_idx and bc_isdel=0) as bc_cnt';
 		}
 		// 조인 부분
@@ -98,15 +98,20 @@ class Bbs_model extends CI_Model {
 		if($bm_row['bm_use_commnet_number']=='1'){
 			$select.=",(select IFNULL(AVG(bc_number),0) from ".$this->tblname('comment','bc')." where bc.b_idx=b.b_idx and bc.bc_isdel=0 and bc.bc_number>0) as avg_bc_number";
 		}
-		
+
+		// 간단 본문 출력용
+		if(!empty($opts['with_short_b_text'])){
+			$select.=",substr(b_text,1,500) as short_b_text";
+		}
+
 		//-- 마지막 처리
 		$this->db->select($select);
-	}	
-	
+	}
+
 	//-- 목록과 카운팅용
 	private function _apply_list_where($get){
 		$this->db->from($this->tbl.' as b');
-		
+
 		//-- 게시판 아이디
 		if(!isset($this->bm_row['b_id'])){
 			$this->error = '게시판 아이디가 없습니다.';
@@ -115,9 +120,9 @@ class Bbs_model extends CI_Model {
 		$this->db->where('b_id',$this->bm_row['b_id']);
 		//-- 필수 where절
 		$this->db->where('b_isdel','0');
-		
+
 		//-- 검색어
-		
+
 		if(isset($get['q'][0]) && strlen(trim($get['q']))>0){
 			$get['q'] = trim($get['q']);
 			$v_q = preg_split('/\s+/',$get['q']);
@@ -191,7 +196,7 @@ class Bbs_model extends CI_Model {
 		return true;
 
 	}
-	
+
 	//페이지 값으로 limit와 offset 계산
 	public function get_limit_offset($page){
 		if(!isset($page) || !is_numeric($page) || $page < 0){
@@ -202,14 +207,18 @@ class Bbs_model extends CI_Model {
 		$offset = ($page-1)*$limit;
 		return array($limit,$offset);
 	}
-	
+
 	//일반 목록용
-	public function select_for_list($get,$order_by=null){
-		
+	public function select_for_list($get,$opts=null){
+		$order_by = is_string($opts)?$opts:null;
+		if(isset($opts['order_by'])){
+			$order_by = $opts['order_by'];
+		}
+
 		if(!$this->_apply_list_where($get)){
 			return false;
 		}
-		$this->_apply_list_bm_row($this->bm_row);
+		$this->_apply_list_bm_row($this->bm_row,null,false,$opts);
 
 		//-- 정렬
 		if(!isset($order_by[0])){
@@ -225,11 +234,11 @@ class Bbs_model extends CI_Model {
 
 		$b_rows = $this->db->get()->result_array();
 		// echo $this->db->last_query();
-		
+
 		$this->extends_b_rows($b_rows);
 		return $b_rows;
 	}
-	
+
 	//-- 목록 갯수
 	public function count_for_calendar($get){
 		if(!$this->_apply_list_where($get)){
@@ -244,7 +253,7 @@ class Bbs_model extends CI_Model {
 	}
 	//-- 목록 갯수
 	public function count_per_month_for_calendar($get){
-		
+
 		if(!$this->_apply_list_where($get)){
 			return false;
 		}
@@ -267,20 +276,20 @@ class Bbs_model extends CI_Model {
 		while($d_d<=$get['date_ed'] && $limit_i--){
 			$t = strtotime($d_d);
 			$b_date_ed = date('Y-m-01',$t);
-			$b_date_st = date('Y-m-01',mktime(0,0,0,date('n',$t)+1,1,date('Y',$t))); 
+			$b_date_st = date('Y-m-01',mktime(0,0,0,date('n',$t)+1,1,date('Y',$t)));
 			$d_d = $b_date_st;
 			$yyyymm = substr($b_date_ed, 0,7);
 			$sql = str_replace(array(
 				'{{yyyymm}}',
 				'{{b_date_st}}',
 				'{{b_date_ed}}',
-				), 
+				),
 				array(
 				$yyyymm,
 				$b_date_st,
 				$b_date_ed,
 				), $def_sql);
-			$sqls[] = $sql."\n";	
+			$sqls[] = $sql."\n";
 		}
 		$sql = '('.implode(') UNION ALL (',$sqls).')';
 		// echo $sql;
@@ -302,10 +311,10 @@ class Bbs_model extends CI_Model {
 		if(!isset($get['date_ed']) || !isset($get['date_st'])){
 			return false;
 		}
-		
+
 		$this->_apply_list_bm_row($this->bm_row);
 
-		
+
 		$this->db->where('b_date_st <=',$get['date_ed'])->where('b_date_ed >=',$get['date_st']);
 		$this->db->order_by('b.b_date_st,b.b_date_ed');
 		//list($limit,$offset) = $this->get_limit_offset($get['page']);
@@ -331,13 +340,13 @@ class Bbs_model extends CI_Model {
 			//$b_rowss[$t_a]= array();
 			foreach($b_rows as & $b_row){
 				if($b_row['b_date_ed']>=$t_a && $b_row['b_date_st']<=$t_b){
-					
+
 					if($t_a<$b_row['b_date_st']){
 						$v_dt_st = $b_row['b_date_st'];
 					}else{
 						$v_dt_st = $t_a;
 					}
-					
+
 					// 기간 지난 것 삭제
 					unset($orders[$b_row['b_idx']]);
 					foreach($orders as $v_b_idx => $v_order){
@@ -361,13 +370,13 @@ class Bbs_model extends CI_Model {
 						}
 						$b_rowss['maxlength'] = max($b_rowss['maxlength'],count($orders));
 					}
-					
+
 					if(!isset($b_rowss[$v_dt_st])){
 						$b_rowss[$v_dt_st] = array();
 					}
 					$v_dt_ed = min($t_b,$b_row['b_date_ed']);
 					$v_len = floor((strtotime($v_dt_ed)-strtotime($v_dt_st))/86400)+1;
-					
+
 					$b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']]);
 					$b_etc_1s[$b_row['b_idx']] = $b_row['b_date_ed'];
 				}else{
@@ -375,28 +384,28 @@ class Bbs_model extends CI_Model {
 				}
 			}
 		}
-		
+
 		return $b_rowss;
 	}
-	
+
 	//공지 목록용
 	public function select_for_notice_list($get=array()){
-		
+
 		if(!$this->_apply_list_where(array())){
 			return false;
 		}
 		$this->_apply_list_bm_row($this->bm_row);
-		
+
 		$this->db->order_by('b_notice desc');
 		$this->db->where('b_notice>',0); //공지만
-	
+
 		$b_rows = $this->db->get()->result_array();
 		$this->extends_b_rows($b_rows);
 		return $b_rows;
 	}
-	
+
 	private function extends_b_rows(& $b_rows){
-		
+
 		foreach($b_rows as & $r){
 			$this->extends_b_row($r);
 		}
@@ -493,9 +502,9 @@ class Bbs_model extends CI_Model {
 		if(isset($sets['b_pass'][0])){
 			$sets['b_pass'] = $this->hash($sets['b_pass']);
 		}
-		
+
 		$this->filter_vals($sets);
-		
+
 		if(!isset($sets['b_date_st'][0])){
 			$this->db->set('b_date_st','now()',false);
 			unset($sets['b_date_st']);
@@ -509,7 +518,7 @@ class Bbs_model extends CI_Model {
 		->set($sets)
 		->set('b_insert_date','now()',false)
 		->set('b_update_date','now()',false);
-		
+
 		$this->db->insert();
 		$b_idx = $this->db->insert_id();
 		if($b_idx){
@@ -537,7 +546,7 @@ class Bbs_model extends CI_Model {
 			$sets['b_pass'] = $this->hash($sets['b_pass']);
 		}
 		$this->filter_vals($sets);
-		
+
 		$v_b_idx = $this->db->escape((int)$b_idx);
 		$sql_b_gidx = "(SELECT b_gidx from {$this->tbl} bbsd1 WHERE bbsd1.b_idx = {$v_b_idx})";
 		$sql_b_gpos =
@@ -554,14 +563,14 @@ CAST(
 CONV(
 SUBSTR(
 
-(SELECT 
+(SELECT
 bbsd2.b_gpos
 FROM {$this->tbl}  bbsd1
-JOIN {$this->tbl}  bbsd2 ON(bbsd2.b_gpos LIKE CONCAT(bbsd1.b_gpos,'__') AND bbsd2.b_gidx = bbsd1.b_gidx) 
+JOIN {$this->tbl}  bbsd2 ON(bbsd2.b_gpos LIKE CONCAT(bbsd1.b_gpos,'__') AND bbsd2.b_gidx = bbsd1.b_gidx)
 WHERE bbsd1.b_idx = {$v_b_idx}
 ORDER BY b_gpos DESC LIMIT 1)
 
-,-2,2) 
+,-2,2)
 ,36,10)
 AS SIGNED )+1
 
@@ -571,8 +580,8 @@ AS SIGNED )+1
 ,2,0)
 )
 ";
-		
-		
+
+
 		$this->db->from($this->tbl)
 		->set($sets)
 		->set('b_gidx',$sql_b_gidx,false)
@@ -582,7 +591,7 @@ AS SIGNED )+1
 		->set('b_update_date','now()',false)->insert();
 
 		$b_idx = $this->db->insert_id();
-		
+
 
 		return $b_idx;
 	}
@@ -597,14 +606,14 @@ AS SIGNED )+1
 		$bh_insert_date ='now()';
 		$bh_update_date ='now()';
 		$bh_hit_cnt = 1;
-		
+
 		$v_bh_update_date = $this->db->escape(date('Y-m-d 00:00:00'));
-		
+
 		$sql = "INSERT INTO {$tbl} (bh_parent_table,bh_parent_idx,bh_m_idx,bh_ip_number,bh_insert_date,bh_update_date,bh_hit_cnt)
 		values({$bh_parent_table},{$bh_parent_idx},{$bh_m_idx},{$bh_ip_number},{$bh_insert_date},{$bh_update_date},{$bh_hit_cnt})
-		ON DUPLICATE KEY UPDATE 
-			bh_hit_cnt = IF(bh_update_date < {$v_bh_update_date},bh_hit_cnt+1,bh_hit_cnt), 
-			bh_update_date = IF(bh_update_date < {$v_bh_update_date},now(),bh_update_date)  
+		ON DUPLICATE KEY UPDATE
+			bh_hit_cnt = IF(bh_update_date < {$v_bh_update_date},bh_hit_cnt+1,bh_hit_cnt),
+			bh_update_date = IF(bh_update_date < {$v_bh_update_date},now(),bh_update_date)
 		";
 		$this->db->query($sql);
 		return $this->db->affected_rows();
