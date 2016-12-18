@@ -92,7 +92,7 @@ class Bbs extends MX_Controller {
 		$this->bbs_conf['base_url'] = $this->base_url;
 		$this->bbs_conf['list_url'] = $this->base_url . "/list?".http_build_query($get);
 		$this->bbs_conf['write_url'] = $this->base_url . "/write?".http_build_query($get);
-		$get2 = $get;
+		$get2 = array();
 		$get2['lm'] = 'rss';
 		$this->bbs_conf['rss_url'] = $this->base_url . "/list?".http_build_query($get2);
 
@@ -398,7 +398,7 @@ class Bbs extends MX_Controller {
 		);
 		$b_rows = $this->bbs_m->select_for_list($get,$opts);
 		$get2 = $this->input->get();
-		unset($get['lm']);
+		unset($get2['lm']);
 		$this->extends_b_rows($b_rows,$get2);
 		$this->config->set_item('layout_disable',true);
 
@@ -431,7 +431,8 @@ class Bbs extends MX_Controller {
 		$this->load->library('Array2XML');
 		Array2XML::init('1.0', 'UTF-8');
 		$xml = Array2XML::createXML('rss', $rss_arr);
-		header('Content-Type: application/xml');
+		// header('Content-Type: application/xml');
+		header('Content-Type: application/rss+xml');
 		echo $xml->saveXML();
 		return;
 	}
@@ -460,7 +461,13 @@ class Bbs extends MX_Controller {
 		return true;
 	}
 	public function get_head_contents($mode){
-		return $this->load->view( $this->skin_path.'/head_contents',array('mode'=>$mode,'bm_row'=>$this->bm_row),true);
+		return $this->load->view( $this->skin_path.'/head_contents',
+			array(
+				'mode'=>$mode,
+				'bm_row'=>$this->bm_row,
+				'bbs_conf'=>$this->bbs_conf,
+			)
+			,true);
 	}
 	public function mode_read($b_idx){
 		if(!$b_idx){
