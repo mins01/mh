@@ -61,7 +61,7 @@
 					</div>
 
 				</td>
-				<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
+				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
 				<?
 				$t = $b_row['b_date_st']!=$b_row['b_date_ed']?'b_date_st_ed':'b_date';
 				?>
@@ -69,7 +69,7 @@
 				echo '<span class="b_date_st">',html_escape(bbs_date_former('y-m-d',$b_row['b_date_st'])),'</span>';
 				echo '<span class="b_date_ed">',html_escape(bbs_date_former('m-d',$b_row['b_date_ed'])),'</span>';
 				?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
+				<td class="text-center hidden-xs hidden-sm"><small><?=html_escape($b_row['bh_cnt'])?></small></td>
 			</tr>
 		<? endforeach; ?>
 		<? foreach($b_rows as $b_row):
@@ -106,7 +106,7 @@
 				echo '<span class="b_date_st">',html_escape(bbs_date_former('y-m-d',$b_row['b_date_st'])),'</span>';
 				echo '<span class="b_date_ed">',html_escape(bbs_date_former('m-d',$b_row['b_date_ed'])),'</span>';
 				?></td>
-				<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
+				<td class="text-center hidden-xs hidden-sm"><small><?=html_escape($b_row['bh_cnt'])?></small></td>
 			</tr>
 		<? endforeach; ?>
 		</table>
