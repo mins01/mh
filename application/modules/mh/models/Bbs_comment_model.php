@@ -11,7 +11,7 @@ class Bbs_comment_model extends CI_Model {
 	{
 		// Call the CI_Model constructor
 		parent::__construct();
-		
+
 	}
 	public function hash($str){
 		return md5($str);
@@ -28,21 +28,21 @@ class Bbs_comment_model extends CI_Model {
 	//-- 목록과 카운팅용
 	private function _apply_list_where($get){
 		$this->db->from($this->tbl);
-		
+
 		//-- 게시판 아이디
 		if(!isset($get['b_idx'])){
 			$this->error = '게시물 관리번호가 없습니다.';
 			return false;
 		}
 		$this->db->where('b_idx',$get['b_idx']);
-		
+
 		//-- 필수 where절
 		$this->db->where('bc_isdel','0');
-		
+
 		return true;
 
 	}
-	
+
 	//페이지 값으로 limit와 offset 계산
 	public function get_limit_offset($page){
 		if(!isset($page) || !is_numeric($page) || $page < 0){
@@ -54,17 +54,17 @@ class Bbs_comment_model extends CI_Model {
 		$offset = ($page-1)*$limit;
 		return array($limit,$offset);
 	}
-	
+
 	//목록용
 	public function select_for_list($get){
-		
+
 		if(!$this->_apply_list_where($get)){
 			return false;
 		}
 
 		$this->db->order_by('bc_gidx ,bc_gpos');
 		//$this->db->order_by('bc_idx');
-		
+
 		//list($limit,$offset) = $this->get_limit_offset($get['page']);
 		//$this->db->limit($limit,$offset);
 
@@ -73,9 +73,9 @@ class Bbs_comment_model extends CI_Model {
 		$this->extends_bc_rows($bc_rows);
 		return $bc_rows;
 	}
-	
+
 	private function extends_bc_rows(& $bc_rows){
-		
+
 		foreach($bc_rows as & $r){
 			$this->extends_bc_row($r);
 		}
@@ -122,7 +122,7 @@ class Bbs_comment_model extends CI_Model {
 	//-- 게시물 하나 b_idx로 가져오기
 	public function select_by_b_idx($b_idx){
 		$this->db->from($this->tbl);
-		
+
 		//-- 게시판 아이디
 		if(!isset($this->bm_row['b_id'])){
 			$this->error = '게시판 아이디가 없습니다.';
@@ -174,7 +174,7 @@ class Bbs_comment_model extends CI_Model {
 			//$this->update_bc_row($bc_idx,array('bc_gidx'=>-1*$bc_idx/100,'bc_pidx'=>$bc_idx));
 			$this->update_bc_row($bc_idx,array('bc_gidx'=>1*$bc_idx/100,'bc_pidx'=>$bc_idx));
 		}
-		
+
 		return $bc_idx;
 	}
 	//-- 글 삭제
@@ -204,14 +204,14 @@ CAST(
 CONV(
 SUBSTR(
 
-(SELECT 
+(SELECT
 bbsd2.bc_gpos
 FROM {$this->tbl}  bbsd1
-JOIN {$this->tbl}  bbsd2 ON(bbsd2.bc_gpos LIKE CONCAT(bbsd1.bc_gpos,'__') AND bbsd2.bc_gidx = bbsd1.bc_gidx) 
+JOIN {$this->tbl}  bbsd2 ON(bbsd2.bc_gpos LIKE CONCAT(bbsd1.bc_gpos,'__') AND bbsd2.bc_gidx = bbsd1.bc_gidx)
 WHERE bbsd1.bc_idx = {$v_bc_idx}
 ORDER BY bc_gpos DESC LIMIT 1)
 
-,-2,2) 
+,-2,2)
 ,36,10)
 AS SIGNED )+1
 
@@ -221,8 +221,8 @@ AS SIGNED )+1
 ,2,0)
 )
 ";
-		
-		
+
+
 		$this->db->from($this->tbl)
 		->set($sets)
 		->set('bc_gidx',$sql_bc_gidx,false)
@@ -232,7 +232,7 @@ AS SIGNED )+1
 		->set('bc_update_date','now()',false)->insert();
 
 		$bc_idx = $this->db->insert_id();
-		
+
 
 		return $bc_idx;
 	}

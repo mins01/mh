@@ -12,19 +12,19 @@
 				<dl class="form-inline">
 					<dt class="sc_title">
 						<a id="cmt_{{bc_row.bc_idx}}"  name="cmt_{{bc_row.bc_idx}}"></a>
-						<span class="nick bc_nick" ng-bind="bc_row.bc_name"></span> 
+						<span class="nick bc_nick" ng-bind="bc_row.bc_name"></span>
 						<span ng-hide="bc_row.bc_number &lt;= 0 || bm_use_commnet_number!='1'" >
-						/ <span class="bc_number bc-star-{{bc_row.bc_number}}"></span> 
+						/ <span class="bc_number bc-star-{{bc_row.bc_number}}"></span>
 						</span>
 						/ <span class="date bc_insert_date" ng-bind="bc_row.bc_insert_date|print_date"></span>
 						<div class="pull-right"  ng-if="m_row.m_idx>0">
-							<button ng-click="set_mode('answer',$index);" ng-show="permission.answer" type="button" class="btn btn-xs btn-success">답변</button>
-							<button ng-show="m_row.m_idx == bc_row.m_idx && permission.edit" ng-click="set_mode('edit',$index);" type="button" class="btn btn-xs btn-warning">수정</button>
-							<button ng-show="m_row.m_idx == bc_row.m_idx && permission.delete" ng-click="mode_delete($index);" type="button" class="btn btn-xs btn-danger">삭제</button>
+							<button ng-click="set_mode('answer',$index);" ng-show="permission.admin || permission.answer" type="button" class="btn btn-xs btn-success">답변</button>
+							<button ng-show="permission.admin || (m_row.m_idx == bc_row.m_idx &amp;&amp; permission.edit )" ng-click="set_mode('edit',$index);" type="button" class="btn btn-xs btn-warning">수정</button>
+							<button ng-show="permission.admin || (m_row.m_idx == bc_row.m_idx &amp;&amp; permission.delete )" ng-click="mode_delete($index);" type="button" class="btn btn-xs btn-danger">삭제</button>
 						</div>
 						<div class="clearfix"></div>
 					</dt>
-					<dd class="bc_comment" ng-hide="form.mode=='edit' && form.bc_idx==bc_row.bc_idx"
+					<dd class="bc_comment" ng-hide="form.mode=='edit' &amp;&amp; form.bc_idx==bc_row.bc_idx"
 					ng-bind-html="bc_row.bc_comment | linky | nl2br | space2nbsp"></dd>
 				</dl>
 			</div>
@@ -53,9 +53,9 @@
 					</dt>
 					<dd class="bc_comment">
 					<div class="form-group">
-						<textarea 
+						<textarea
 						ng-maxlength="60000"
-						ng-disabled="form.mode=='delete' || !permission[form.mode]" 
+						ng-disabled="form.mode=='delete' || !permission[form.mode]"
 						ng-model="form.bc_comment"
 						ng-trim="true"
 						name="bc_comment"  class="form-control" rows="3" placeholder="댓글내용" required onkeyup="sync_textarea_height(this)" onblur="this.onkeyup()" onfocus="this.onkeyup()" style="line-height: 1.5em;max-height: 20em; min-height: 6em"></textarea>
@@ -66,9 +66,9 @@
 					<div class="form-inline text-right">
 						<span ng-show="msg.length&gt;0" ng-bind="msg">-</span>
 						<div class="form-group" >
-							<select ng-model="form.bc_number" 
-							ng-disabled="bm_use_commnet_number!='1'" 
-							ng-hide="bm_use_commnet_number!='1'" 
+							<select ng-model="form.bc_number"
+							ng-disabled="bm_use_commnet_number!='1'"
+							ng-hide="bm_use_commnet_number!='1'"
 							name="bc_number" class="form-control input-sm" style="width:9em">
 									<option value="0" class="bc-star bc-star-0" ng-selected="!form.bc_number">no-star</option>
 									<option value="1" class="bc-star bc-star-1">★☆☆☆☆</option>
