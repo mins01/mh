@@ -52,7 +52,7 @@
 								<span ng-if="m_row.m_idx" class="nick bc_nick">{{m_row.m_nick}}</span>
 								<span  ng-if="!m_row.m_idx" class="form-inline">
 									<input type="text" class="form-control" maxlength="50" required placeholder="nick" ng-model="form.bc_name"  name="bc_name" value="">
-									<input type="password" class="form-control" maxlength="100" required placeholder="password" ng-model="form.bc_pass"  name="bc_pass" value="">
+									<? /* <input type="password" class="form-control" maxlength="100" required placeholder="password" ng-model="form.bc_pass"  name="bc_pass" value=""> */ ?>
 								</span>
 					</dt>
 					<dd class="bc_comment">

@@ -162,7 +162,7 @@ class Bbs_comment extends MX_Controller {
 			// 이미 들어 있어야함.
 			//$post['bc_name'] = $this->input->post('bc_name');
 			//$post['bc_pass'] = $this->input->post('bc_pass');
-			if(!isset($post['bc_name'][0]) || !isset($post['bc_pass'][0])){
+			if(!isset($post['bc_name'][0])){
 				return false;
 			}
 		}else{
@@ -240,7 +240,7 @@ class Bbs_comment extends MX_Controller {
 			// 이미 들어 있어야함.
 			//$post['bc_name'] = $this->input->post('bc_name');
 			//$post['bc_pass'] = $this->input->post('bc_pass');
-			if(!isset($post['bc_name'][0]) || !isset($post['bc_pass'][0])){
+			if(!isset($post['bc_name'][0])){
 				return false;
 			}
 		}else{

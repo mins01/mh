@@ -86,7 +86,7 @@
 			.error($scope.callback_error);
 		}
 		$scope.call_ajax = function(d){
-			console.log($httpParamSerializer(d))
+			// console.log($httpParamSerializer(d))
 			$http({
 				url: this.comment_url,
 				method: 'POST',
@@ -159,7 +159,7 @@
 				return false;
 			}
 			this['mode_'+this.form.mode]($index);
-			if('bc_name' in this.form && this.form.bc_name.length > 0){
+			if(this.form.bc_name && this.form.bc_name.length > 0){
 				var r = sessionStorage.setItem('guest_bc_name', this.form.bc_name);
 			}
 			this.set_mode('write','write',true);
