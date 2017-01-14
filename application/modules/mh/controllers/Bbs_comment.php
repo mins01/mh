@@ -158,7 +158,17 @@ class Bbs_comment extends MX_Controller {
 		//$get['page']=$page;
 		$post['b_idx']=$b_idx;
 		$post['m_idx'] = $this->common->get_login('m_idx');
-		$post['bc_name'] = $this->common->get_login('m_nick');
+		if(!$post['m_idx']){
+			// 이미 들어 있어야함.
+			//$post['bc_name'] = $this->input->post('bc_name');
+			//$post['bc_pass'] = $this->input->post('bc_pass');
+			if(!isset($post['bc_name'][0]) || !isset($post['bc_pass'][0])){
+				return false;
+			}
+		}else{
+				$post['bc_name'] = $this->common->get_login('m_nick');
+		}
+
 		$json = array(
 			'bc_idx' => $this->bbs_c_m->insert_bc_row($post),
 			'bc_rows' => $this->data_list($b_idx,$post),
@@ -226,7 +236,16 @@ class Bbs_comment extends MX_Controller {
 
 		$post['b_idx']=$b_idx;
 		$post['m_idx'] = $this->common->get_login('m_idx');
-		$post['bc_name'] = $this->common->get_login('m_nick');
+		if(!$post['m_idx']){
+			// 이미 들어 있어야함.
+			//$post['bc_name'] = $this->input->post('bc_name');
+			//$post['bc_pass'] = $this->input->post('bc_pass');
+			if(!isset($post['bc_name'][0]) || !isset($post['bc_pass'][0])){
+				return false;
+			}
+		}else{
+				$post['bc_name'] = $this->common->get_login('m_nick');
+		}
 		$bc_idx = $post['bc_idx'];unset($post['bc_idx']);
 		$bc_idx = $this->bbs_c_m->insert_answer_bc_row($bc_idx,$post);
 		$json = array(

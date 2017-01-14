@@ -12,15 +12,15 @@
 				<dl class="form-inline">
 					<dt class="sc_title">
 						<a id="cmt_{{bc_row.bc_idx}}"  name="cmt_{{bc_row.bc_idx}}"></a>
-						<span class="nick bc_nick" ng-bind="bc_row.bc_name"></span>
+						<span class="nick bc_nick" ng-bind="bc_row.bc_name"  ng-class="{'bc_nick_guest':!bc_row.m_idx}" ng-attr-title="{{!bc_row.m_idx?'Guest는 수정 및 삭제 불가!':''}}"></span>
 						<span ng-hide="bc_row.bc_number &lt;= 0 || bm_use_commnet_number!='1'" >
 						/ <span class="bc_number bc-star-{{bc_row.bc_number}}"></span>
 						</span>
 						/ <span class="date bc_insert_date" ng-bind="bc_row.bc_insert_date|print_date"></span>
-						<div class="pull-right"  ng-if="m_row.m_idx>0">
+						<div class="pull-right" >
 							<button ng-click="set_mode('answer',$index);" ng-show="permission.admin || permission.answer" type="button" class="btn btn-xs btn-success">답변</button>
-							<button ng-show="permission.admin || (m_row.m_idx == bc_row.m_idx &amp;&amp; permission.edit )" ng-click="set_mode('edit',$index);" type="button" class="btn btn-xs btn-warning">수정</button>
-							<button ng-show="permission.admin || (m_row.m_idx == bc_row.m_idx &amp;&amp; permission.delete )" ng-click="mode_delete($index);" type="button" class="btn btn-xs btn-danger">삭제</button>
+							<button ng-show="permission.admin || (bc_row.m_idx &amp;&amp; m_row.m_idx == bc_row.m_idx &amp;&amp; permission.edit )" ng-click="set_mode('edit',$index);" type="button" class="btn btn-xs btn-warning">수정</button>
+							<button ng-show="permission.admin || (bc_row.m_idx &amp;&amp; m_row.m_idx == bc_row.m_idx &amp;&amp; permission.delete )" ng-click="mode_delete($index);" type="button" class="btn btn-xs btn-danger">삭제</button>
 						</div>
 						<div class="clearfix"></div>
 					</dt>
@@ -41,15 +41,19 @@
 			<div ng-if="form.mode!='write'" class="text-center">
 				<button type="button" class="btn btn-info" ng-click="set_mode('write','write')">새로운 댓글 작성</button>
 			</div>
-			<div ng-hide="m_row.m_idx&gt;0" class="text-center">
-				로그인이 필요합니다.
+			<div ng-hide="permission.write" class="text-center">
+				권한이 없습니다.
 			</div>
-			<form ng-if="m_row.m_idx&gt;0" name="wform" ng-submit="submitComment()" ng-class="{'wform-answer':form.mode=='answer'}">
+			<form  ng-hide="!permission[form.mode]"  name="wform" ng-submit="submitComment()" ng-class="{'wform-answer':form.mode=='answer'}">
 				<input type="hidden" class="form-control" ng-model="form.mode" name="mode" value="write">
 				<input type="hidden" class="form-control" ng-model="form.bc_idx" name="bc_idx" value="">
 				<dl>
 					<dt ng-show="form.mode!='edit'" class="sc_title form-control-static">
-								<span class="nick bc_nick">{{m_row.m_nick}}</span>
+								<span ng-if="m_row.m_idx" class="nick bc_nick">{{m_row.m_nick}}</span>
+								<span  ng-if="!m_row.m_idx" class="form-inline">
+									<input type="text" class="form-control" maxlength="50" required placeholder="nick" ng-model="form.bc_name"  name="bc_name" value="">
+									<input type="password" class="form-control" maxlength="100" required placeholder="password" ng-model="form.bc_pass"  name="bc_pass" value="">
+								</span>
 					</dt>
 					<dd class="bc_comment">
 					<div class="form-group">

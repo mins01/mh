@@ -1,5 +1,5 @@
 ﻿function ng_bbs_comment(ngApp,ngController){
-	
+
 	var bbsComment = angular.module(ngApp, ['ngSanitize']);
 	bbsComment.filter('nl2br', ['$sanitize', function($sanitize) {
 		var tag = (/xhtml/i).test(document.doctype) ? '<br />' : '<br>';
@@ -32,7 +32,7 @@
 
 	bbsComment.controller(ngController, ['$scope', '$http','$httpParamSerializer','$filter', function ($scope,$http,$httpParamSerializer,$filter) {
 		$scope.form = {"bc_comment":"","mode":"write","bc_idx":"","bc_number":"0"};
-		
+
 		this.init = function( comment_url,bm_use_commnet_number) {
 			$scope.comment_url = comment_url;
 			$scope.bm_use_commnet_number = !bm_use_commnet_number?'0':bm_use_commnet_number;
@@ -41,14 +41,14 @@
 
 		$scope.comment_url = '';//통신URL
 		$scope.bc_rows = [{"bc_idx":"-","b_idx":"-","m_idx":"-","bc_name":"","bc_comment":"-","bc_insert_date":"",}]; //Model, 커멘트 배열
-		
+
 		$scope.msg = '';
 		$scope.permission = {list: true, write: false, edit: true, answer: true, "delete": true, };
 		$scope.x = function(){
 			return 'xxx';
 		}
-		
-		
+
+
 		//통신 결과처리:성공
 		$scope.callback_success = function(data, status, headers, config){
 			$scope.bc_rows = data.bc_rows;
@@ -71,11 +71,13 @@
 		}
 		//데이터초기처리
 		$scope.initData = function(){
+				this.form.bc_name = sessionStorage.getItem('guest_bc_name');
 			$http({
 				method: 'GET',
 				url: $scope.comment_url,
 			})
 			.success(function(data, status, headers, config){
+
 				$scope.callback_success(data, status, headers, config);
 				if(document.location.hash.length>0 && document.location.hash.indexOf('#cmt_')===0){
 					setTimeout(function(){document.location.assign(document.location.hash);},500);
@@ -109,23 +111,26 @@
 			$scope.call_ajax(this.form);
 		}
 		$scope.mode_delete= function($index){
-			
+
 			var d = angular.copy(this.form)
 			d.mode='delete';
 			if(!this.bc_rows[$index]){
 				return false;
 			}
 			d.bc_idx = this.bc_rows[$index].bc_idx;
-			
+
 			if(!confirm('삭제하시겠습니까?')){
 				return false;
 			}
 			$scope.set_mode('write','write'); //글 쓰기 폼을 옮겨둬야한다.
-			
+
 			$scope.call_ajax(d);
 		}
 		$scope.set_mode=function(mode,$index,nofocus){
 			this.form.mode = mode;
+			if('bc_pass' in  this.form){
+				this.form.bc_pass = '';
+			}
 			if(mode!='write' && this.bc_rows[$index]){
 				var bc_idx = this.bc_rows[$index].bc_idx;
 				var id = '#bc_idx_'+bc_idx;
@@ -142,7 +147,7 @@
 				this.form.bc_number = "0";
 			}
 			this.form.bc_idx = bc_idx;
-			
+
 			angular.element(id).append(document.wform);
 			if(!nofocus){
 				setTimeout(function(){ document.wform.bc_comment.focus(); },100);
@@ -154,6 +159,9 @@
 				return false;
 			}
 			this['mode_'+this.form.mode]($index);
+			if('bc_name' in this.form && this.form.bc_name.length > 0){
+				var r = sessionStorage.setItem('guest_bc_name', this.form.bc_name);
+			}
 			this.set_mode('write','write',true);
 			return false;
 		}

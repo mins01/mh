@@ -62,7 +62,7 @@ class Bbs_comment_model extends CI_Model {
 			return false;
 		}
 
-		$this->db->order_by('bc_gidx ,bc_gpos');
+		$this->db->select("*,'' as bc_pass ")->order_by('bc_gidx ,bc_gpos');
 		//$this->db->order_by('bc_idx');
 
 		//list($limit,$offset) = $this->get_limit_offset($get['page']);
@@ -188,6 +188,9 @@ class Bbs_comment_model extends CI_Model {
 	//-- 답변 글 작성
 	public function insert_answer_bc_row($bc_idx,$sets){
 		unset($sets['bc_idx']);
+		if(isset($sets['bc_pass'][0])){
+			$sets['bc_pass'] = $this->hash($sets['bc_pass']);
+		}
 		$v_bc_idx = $this->db->escape((int)$bc_idx);
 		$sql_bc_gidx = "(SELECT bc_gidx from {$this->tbl} bbsd1 WHERE bbsd1.bc_idx = {$v_bc_idx})";
 		$sql_bc_gpos =

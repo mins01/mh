@@ -54,7 +54,14 @@ margin-left:-1em;
 .bbs_c .bc_depth-8{margin-left:16%;}
 .bbs_c .bc_depth-9{margin-left:18%;}
 .bbs_c .bc_depth-10{margin-left:20%;}
-
+.bbs_c .bc_nick_guest::after{
+	content:"(Guest)";
+	color:#d6b986;
+	position: relative;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: top;
+}
 /* 첨부파일 버튼으로 만들기 */
 .btn-file {
     position: relative;
