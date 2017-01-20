@@ -395,6 +395,9 @@ class Bbs extends MX_Controller {
 		$opts = array(
 			'with_short_b_text'=>true,
 			'order_by' => isset($opt['order_by'])?$opt['order_by']:'',
+			'wheres' =>array(
+				'b_secret' => '0',
+			)
 		);
 		$b_rows = $this->bbs_m->select_for_list($get,$opts);
 		$get2 = $this->input->get();
@@ -416,7 +419,7 @@ class Bbs extends MX_Controller {
 			'description' =>  $this->config->item('layout_og_title')." : 목록 {$get['page']} page",
 			'language' => 'ko',
 			'link' => $this->base_url . '/list',
-			'itme' => array(),
+			'item' => array(),
 		);
 		foreach ($b_rows as $b_row) {
 			$item = array(

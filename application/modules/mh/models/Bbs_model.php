@@ -109,9 +109,11 @@ class Bbs_model extends CI_Model {
 	}
 
 	//-- 목록과 카운팅용
-	private function _apply_list_where($get){
+	private function _apply_list_where($get,$opts=null){
 		$this->db->from($this->tbl.' as b');
-
+		if(isset($opts['wheres'])){
+			$this->db->where($opts['wheres']);	
+		}
 		//-- 게시판 아이디
 		if(!isset($this->bm_row['b_id'])){
 			$this->error = '게시판 아이디가 없습니다.';
@@ -215,7 +217,7 @@ class Bbs_model extends CI_Model {
 			$order_by = $opts['order_by'];
 		}
 
-		if(!$this->_apply_list_where($get)){
+		if(!$this->_apply_list_where($get,$opts)){
 			return false;
 		}
 		$this->_apply_list_bm_row($this->bm_row,null,false,$opts);
