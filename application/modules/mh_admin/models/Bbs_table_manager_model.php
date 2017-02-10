@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 //-- 게시판 모델
 
-class bbs_table_manager_model extends CI_Model {
+class Bbs_table_manager_model extends CI_Model {
 	public $msg = '';
 	public $_tables = null;
 	public function __construct()

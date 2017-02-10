@@ -69,7 +69,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 						<option ng-repeat="v in mn_sorts" value="{{v}}" >{{v}}</option>
 					</select>
 					-->
-					<input type="number" string-to-number  min="-10" max="99"  class="form-control" placeholder="mn_sort" ng-model="selected_obj.mn_sort"  required >
+					<input type="number" string-to-number  min="-10" max="999999"  class="form-control" placeholder="mn_sort" ng-model="selected_obj.mn_sort"  required >
 				</div>
 			</div>
 			<div class="form-group">
