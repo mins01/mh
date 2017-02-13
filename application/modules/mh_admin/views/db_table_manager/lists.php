@@ -7,7 +7,7 @@ if(isset($rows[0])){
 }
 ?>
 <div class="text-danger text-right">
-	최대 100개까지 보입니다.
+	<a href="<?=html_escape($base_url)?>" class="btn btn-primary btn-xs">테이블 목록으로</a> / 최대 100개까지 보입니다.
 </div>
 <form action="?" method="get">
 	<input type="hidden" name="tbl_name" value="<?=html_escape($tbl_name)?>" />

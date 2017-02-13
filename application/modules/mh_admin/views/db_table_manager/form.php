@@ -29,6 +29,9 @@ $row = $rows[0];
 				$v = $row[$k]; 
 				$c = $col['Comment']; 
 				$is_pk = $col['Key']=='PRI';
+				if(!$is_pk){
+					$is_pk = in_array($k,$cnf['pks']);
+				}
 				// $readonly = $is_pk?'readonly':'';
 				$readonly = '';
 				$pklabel = $is_pk?' (PK)':'';

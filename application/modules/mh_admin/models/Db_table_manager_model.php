@@ -27,6 +27,9 @@ class Db_table_manager_model extends CI_Model {
 		return $this->db->from($from)->where($wheres)->order_by($order_by)->limit($limit,$offset)->get()->result_array();
 	}
 	public function update($from,$wheres=array(),$sets=array()){
+		if(count($wheres)==0){
+			return false;
+		}
 		$this->db->from($from)
 		->where($wheres)
 		->set($sets)->update();

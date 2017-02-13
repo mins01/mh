@@ -2,6 +2,9 @@
 // print_r($rows);
 ?>
 <div class="list-group">
+	<div class="list-group-item active">
+		테이블 목록	
+	</div>
 	<? 
 		foreach($rows as $name): 
 		$qstrs = array('tbl_name'=>$name,'mode'=>'lists');

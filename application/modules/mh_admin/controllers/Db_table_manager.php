@@ -154,7 +154,14 @@ class Db_table_manager extends MX_Controller {
 			$k = $column['Field'];
 			$v = $this->input->post($k);
 			if($column['Key']=='PRI'){
-				$v2 = $this->input->post('_!@#$_'.$k);
+				$v2 = $this->input->post('_PKS_'.$k);
+				if(!isset($v2[0])){
+					show_error('PK 값이 없습니다.');
+					return false;
+				}
+				$wheres[$k] = $v2;
+			}else if(in_array($k,$cnf['pks'])){
+				$v2 = $this->input->post('_PKS_'.$k);
 				if(!isset($v2[0])){
 					show_error('PK 값이 없습니다.');
 					return false;
