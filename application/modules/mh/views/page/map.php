@@ -1,6 +1,6 @@
 <!-- 구글맵 확장 라이브러리 사용 -->
 <script type="text/javascript"
-	src="http://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBw8nAJOdLCqN3DuGZJKvY0idP_QWRR5WM&sensor=false&libraries=places">
+	src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBw8nAJOdLCqN3DuGZJKvY0idP_QWRR5WM&sensor=false&libraries=places">
 </script>
 <script type="text/javascript">
 // <![CDATA[

@@ -22,7 +22,7 @@ $base_url = base_url();
 <link rel="alternate" type="application/rss+xml" title="RSS : <?=$bm_row['bm_title']?>" href="<?=html_escape($bbs_conf['rss_url'])?>" />
 
 <script type="text/javascript"
-	  src="//maps.googleapis.com/maps/api/js?v=3.exp&amp;key=AIzaSyBw8nAJOdLCqN3DuGZJKvY0idP_QWRR5WM&amp;libraries=places"></script>
+	  src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;key=AIzaSyBw8nAJOdLCqN3DuGZJKvY0idP_QWRR5WM&amp;libraries=places"></script>
 <script src="<?=html_escape(base_url('js/bbs/google_map.js'))?>"></script>
 
 <? if($mode=='read' && $bm_row['bm_use_comment']=='1'): ?>

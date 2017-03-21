@@ -16,7 +16,7 @@ $base_url = base_url();
 <link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_there.css'))?>" rel="stylesheet">
 
 <script type="text/javascript"
-	  src="//maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBw8nAJOdLCqN3DuGZJKvY0idP_QWRR5WM&libraries=places"></script>
+	  src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;key=AIzaSyBw8nAJOdLCqN3DuGZJKvY0idP_QWRR5WM&amp;libraries=places"></script>
 <script src="<?=html_escape(base_url('js/bbs/google_map.js'))?>"></script>
 <!-- //게시판 추가 head_contents -->
 
