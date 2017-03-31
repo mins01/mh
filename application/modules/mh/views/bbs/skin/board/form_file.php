@@ -19,7 +19,7 @@ foreach($bf_rows as $r):
 				<a  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img src="<?=html_escape($r['thumbnail_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
 				title="<?=html_escape($r['bf_name'])?>"></a>
 				<? elseif($r['is_external']): ?>
-				<span class="text-danger"><a title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank">외부링크 <span  class="glyphicon glyphicon-share-alt"></span></a></span>
+				<span class="text-danger"><a class="text-overflow-ellipsis text-overflow-ellipsis-box" title="<?=html_escape($r['bf_save'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><span  class="glyphicon glyphicon-share-alt"></span> <?=html_escape($r['bf_save'])?></a></span>
 				<? else: ?>
 				<span class="text-danger">미리보기 지원되지 않는 파일</span>
 				<? endif;?>
