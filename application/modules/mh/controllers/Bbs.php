@@ -826,11 +826,14 @@ class Bbs extends MX_Controller {
 					if($this->bm_row['bm_use_file']=='1'){
 						if(isset($_FILES['upf'])) {
 							$bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
+						}
+						if(isset($_POST['ext_urls']) && isset($_POST['ext_urls_types'])) {
+							$bf_ext_r = $this->bf_m-> insert_external_url($b_idx,$_POST['ext_urls'],$_POST['ext_urls_types']);
+						}
+						if(isset($_FILES['upf']) || isset($_POST['ext_urls']) && isset($_POST['ext_urls_types'])) {
 							$this->bf_m->set_represent_by_b_idx($b_idx);
 						}
-						if(isset($_POST['ext_urls[]']) && isset($_POST['ext_urls_types[]'])) {
-							$bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
-						}
+						
 					}
 				}
 			break;

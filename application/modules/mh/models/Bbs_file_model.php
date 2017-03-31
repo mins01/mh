@@ -145,7 +145,7 @@ class Bbs_file_model extends CI_Model {
 	//-- 하나의 이미지 첨부파일을 대표 이미지로 설정
 	public function set_represent_by_b_idx($b_idx){
 		$this->db->from($this->tbl)->where('bf_isdel',0)->where('b_idx',$b_idx)->set('bf_represent',0)->update();
-		$this->db->from($this->tbl)->where('bf_isdel',0)->where('b_idx',$b_idx)->set('bf_represent',1)->like('bf_type','image','after')->limit(1)->update();
+		$this->db->from($this->tbl)->where('bf_isdel',0)->where('b_idx',$b_idx)->set('bf_represent',1)->like('bf_type','image','both')->limit(1)->update();
 		return true;
 	}
 	//-- 지정 첨부파일을 대표 이미지로 설정.
