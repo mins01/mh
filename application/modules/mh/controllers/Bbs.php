@@ -526,6 +526,11 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : {$b_row['b_title']}");
 		$this->config->set_item('layout_og_description', "읽기 : {$b_row['b_title']}");
 
+		//썸네일이 있을 경우 og 이미지를 추가한다.
+		if(isset($b_row['thumbnail_url'][0])){
+			$this->config->set_item('layout_og_image',$b_row['thumbnail_url']);
+		}
+
 		$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$b_idx);
 		$this->load->view($this->skin_path.'/read',array(
 			'mode'=>'read',
