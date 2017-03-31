@@ -64,7 +64,13 @@ class Bbs_file_model extends CI_Model {
 		
 	}
 	private function _extends_bf_row(& $bf_row){
-		$bf_row['is_image'] = preg_match('/\.(gif|jpg|jpeg|jpe|png)$/i',$bf_row['bf_name']);
+		
+		$bf_row['is_external'] = (strpos($bf_row['bf_name'],'external')===0);
+		if($bf_row['is_external']){
+			$bf_row['is_image'] = $bf_row['bf_name']=='external/image';
+		}else{
+			$bf_row['is_image'] = preg_match('/\.(gif|jpg|jpeg|jpe|png)$/i',$bf_row['bf_name']);	
+		}
 	}
 	
 	public function extends_save_dir($b_idx){
@@ -148,8 +154,31 @@ class Bbs_file_model extends CI_Model {
 		$this->db->from($this->tbl)->where('bf_isdel',0)->where('b_idx',$b_idx)->where('bf_idx',$bf_idx)->set('bf_represent',1)->update();
 		return true;
 	}
-	//-- 썸네일 설정
-	//--
+	
+	//-- 외부 url 설정
+	public function insert_external_url($b_idx,$ext_urls,$ext_url_types){
+		$rlt = array();
+		$this->msg = '';
+		foreach($ext_urls as $k => $ext_url){
+			if(!isset($ext_url[0])){continue;}
+			if(!isset($ext_url_types[$k][0])){continue;}
+			$ext_url_type = $ext_url_types[$k];
+			$bf_name = basename($ext_url);
+			// $bf_name = $ext_url_type;
+			$vals = array(
+				'b_idx' => $b_idx,
+				'bf_save' => $ext_url,
+				'bf_name' => $bf_name,
+				'bf_size' => 0,
+				'bf_type' => $ext_url_type,
+			);
+			$r = $this->insert_bf_row($vals);
+			$rlt[]=$vals['bf_save'].' : '.($r?'SUCCESS':'FAIL').' : '.$this->msg;
+		}
+		return $rlt;
+	}
+	
+	//-- 업로드
 	public function upload_files($b_idx,$files){
 		$rlt = array();
 		for($i=0,$m=count($files['name']);$i<$m;$i++){

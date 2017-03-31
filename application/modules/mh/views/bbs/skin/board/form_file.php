@@ -9,7 +9,7 @@
 foreach($bf_rows as $r):
 //print_r($r);
 ?>
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4  mode-read-file-item">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3  mode-read-file-item">
 		<div class="panel panel-default center-block" style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
 				<a title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['download_url'])?>"><?=html_escape($r['bf_name'])?></a>
@@ -18,6 +18,8 @@ foreach($bf_rows as $r):
 				<? if($r['is_image']): ?>
 				<a  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img src="<?=html_escape($r['thumbnail_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
 				title="<?=html_escape($r['bf_name'])?>"></a>
+				<? elseif($r['is_external']): ?>
+				<span class="text-danger"><a title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank">외부링크 <span  class="glyphicon glyphicon-share-alt"></span></a></span>
 				<? else: ?>
 				<span class="text-danger">미리보기 지원되지 않는 파일</span>
 				<? endif;?>
@@ -35,7 +37,7 @@ foreach($bf_rows as $r):
 endforeach;
 ?>	
 <? if($mode=='read' && count($bf_rows)==0): ?>
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4  mode-read-file-item">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3  mode-read-file-item">
 	첨부된 파일이 없습니다.
 	</div>
 <? endif; ?>
@@ -50,7 +52,7 @@ endforeach;
 <?
 		for($i=0,$m=$bm_row['bm_file_limit']-count($bf_rows);$i<$m;$i++): 
 ?>
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mode-form-file-item drag-and-drop-files title="드래그앤드롭으로 파일 첨부 가능">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 mode-form-file-item drag-and-drop-files" title="드래그앤드롭으로 파일 첨부 가능">
 		<div class="panel panel-primary center-block " style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
 				NEW FILE
@@ -62,6 +64,28 @@ endforeach;
 				<span class="btn-block btn btn-primary btn-file ">
 					<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" multiple onchange="bbs_form_file_item_oncahngeUpload(event)">
 				</span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 mode-form-file-item" title="드래그앤드롭으로 파일 첨부 가능">
+		<div class="panel panel-success center-block " style="max-width:310px">
+			<div class="panel-heading text-center  text-overflow-ellipsis">
+				EXTERNAL LINK/IMAGE
+			</div>
+			<div class="panel-body text-center">
+				<div class="img-preview"> - </div>
+			</div>
+			<div class="panel-footer text-center">
+				<div class="input-group">
+					<span class="input-group-btn">
+						<select class="form-control" name="ext_urls_types[]">
+							<option value="external/image">이미지</option>
+							<option value="external/url">링크</option>
+						</select>
+					</span>
+					<input type="text" name="ext_urls[]"  class="form-control" placeholder="http://~~~">
+				</div><!-- /input-group -->
 			</div>
 		</div>
 	</div>

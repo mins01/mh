@@ -164,7 +164,15 @@ class Bbs extends MX_Controller {
 
 		$bf_row['download_url'] = $this->base_url . '/download/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']); //강제로 다운로드 시킨다.
 		$bf_row['view_url'] = $bf_row['download_url'].'&inline=1'; //브라우저에서 보인다면 보여준다.
-		$bf_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
+		if($bf_row['is_external']){
+			$bf_row['thumbnail_url'] = $bf_row['bf_save'];
+			switch($bf_row['bf_type']){
+				case 'external/image':$bf_row['bf_name']='외부 이미지';break;
+				default:$bf_row['bf_name']='외부 링크';break;
+			}
+		}else{
+			$bf_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.	
+		}
 	}
 	private function extends_bf_rows(&$bf_rows,$b_row){
 		foreach($bf_rows as & $r){
@@ -571,6 +579,10 @@ class Bbs extends MX_Controller {
 		while(ob_get_level()>0 && ob_end_clean()){//출력 버퍼 삭제하고 종료.(모든 버퍼를 삭제한다.
 		}
 
+		if($bf_row['is_external']){
+			header('Location: '.$bf_row['bf_save'],true,301);
+			exit;
+		}
 		if($is_thumbnail ){
 			if($bf_row['is_image'] && $this->bf_m->thumbnail_by_bf_row($bf_row,$inline,$resume)){
 				exit();// 여기서 강제로 종료!
@@ -789,6 +801,9 @@ class Bbs extends MX_Controller {
 				$r = $this->bbs_m->update_b_row($b_idx,$post);
 				if($this->bm_row['bm_use_file']=='1'){
 					if(isset($_FILES['upf'])) $bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
+					if(isset($_POST['ext_urls']) && isset($_POST['ext_urls_types'])) {
+						$bf_ext_r = $this->bf_m-> insert_external_url($b_idx,$_POST['ext_urls'],$_POST['ext_urls_types']);
+					}
 					if($this->input->post('delf')){
 						$delf_r = $this->bf_m->delete_bf_rows_by_b_idx_bf_idxs($b_idx,$this->input->post('delf'));
 						//print_r($delf_r);
@@ -804,6 +819,9 @@ class Bbs extends MX_Controller {
 						if(isset($_FILES['upf'])) {
 							$bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
 							$this->bf_m->set_represent_by_b_idx($b_idx);
+						}
+						if(isset($_POST['ext_urls[]']) && isset($_POST['ext_urls_types[]'])) {
+							$bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
 						}
 					}
 				}
