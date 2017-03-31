@@ -80,8 +80,8 @@ endforeach;
 				<div class="input-group">
 					<span class="input-group-btn">
 						<select class="form-control" name="ext_urls_types[]">
-							<option value="external/image">이미지</option>
 							<option value="external/url">링크</option>
+							<option value="external/image">이미지</option>
 						</select>
 					</span>
 					<input type="text" name="ext_urls[]"  class="form-control" placeholder="http://~~~">

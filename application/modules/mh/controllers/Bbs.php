@@ -578,9 +578,10 @@ class Bbs extends MX_Controller {
 
 		while(ob_get_level()>0 && ob_end_clean()){//출력 버퍼 삭제하고 종료.(모든 버퍼를 삭제한다.
 		}
-
+var_dump($bf_row);
+exit;
 		if($bf_row['is_external']){
-			header('Location: '.$bf_row['bf_save'],true,301);
+			header('Location: '.$bf_row['bf_save'],true,302);
 			exit;
 		}
 		if($is_thumbnail ){

@@ -65,9 +65,9 @@ class Bbs_file_model extends CI_Model {
 	}
 	private function _extends_bf_row(& $bf_row){
 		
-		$bf_row['is_external'] = (strpos($bf_row['bf_name'],'external')===0);
+		$bf_row['is_external'] = (strpos($bf_row['bf_type'],'external')===0);
 		if($bf_row['is_external']){
-			$bf_row['is_image'] = $bf_row['bf_name']=='external/image';
+			$bf_row['is_image'] = $bf_row['bf_type']=='external/image';
 		}else{
 			$bf_row['is_image'] = preg_match('/\.(gif|jpg|jpeg|jpe|png)$/i',$bf_row['bf_name']);	
 		}
@@ -299,6 +299,10 @@ class Bbs_file_model extends CI_Model {
 	
 	//= 썸네일 출력
 	public function thumbnail_by_bf_row($bf_row,$inline=false,$resume=true,$debug=0){
+		if($bf_row['is_external']){
+			header('Location: '.$bf_row['bf_save'],true,302);
+			exit;
+		}
 		if(!is_file($bf_row['save_file'])){
 			$this->msg = '서버에 파일이 없습니다.';
 			return false;
