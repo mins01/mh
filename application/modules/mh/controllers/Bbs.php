@@ -443,7 +443,7 @@ class Bbs extends MX_Controller {
 		Array2XML::init('1.0', 'UTF-8');
 		$xml = Array2XML::createXML('rss', $rss_arr);
 		// header('Content-Type: application/xml');
-		header('Content-Type: application/rss+xml');
+		header('Content-Type: application/rss+xml; charset=utf-8');
 		echo $xml->saveXML();
 		return;
 	}
