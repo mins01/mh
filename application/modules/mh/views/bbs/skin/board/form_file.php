@@ -65,7 +65,10 @@ endforeach;
 			var $file_item = $(ta).parents(".mode-form-file-item");
 			var target = $(ta).find("option:selected").attr('data-target');
 			$($file_item).find('.mode-form-file-item-input').addClass('hide');
+			$($file_item).find('.mode-form-file-item-input input').prop('disabled',true);
 			$($file_item).find(target).removeClass('hide');
+			$($file_item).find(target).find('input').prop('disabled',false);
+
 		}
 	// -->
 	</script>
