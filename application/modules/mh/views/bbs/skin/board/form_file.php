@@ -5,7 +5,7 @@
 ?>
 <div class="row">
 <input type="hidden" name="bf_idx" value="" disabled>
-<? 
+<?
 foreach($bf_rows as $r):
 //print_r($r);
 ?>
@@ -35,23 +35,32 @@ foreach($bf_rows as $r):
 	</div>
 <?
 endforeach;
-?>	
+?>
 <? if($mode=='read' && count($bf_rows)==0): ?>
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3  mode-read-file-item">
 	첨부된 파일이 없습니다.
 	</div>
 <? endif; ?>
-<? 
-	if(preg_match('/^(edit|answer|write)$/',$mode)): 
+<?
+	if(preg_match('/^(edit|answer|write)$/',$mode)):
 ?>
 	<script type="text/javascript">
+	// <!--
 		$(function(){
 				init_drag_and_drop_file();
 		});
+		function select_file_form(ta){
+			var $file_item = $(ta).parents(".mode-form-file-item");
+			var target = $(ta).find("option:selected").attr('data-target');
+			$($file_item).find('.mode-form-file-item-input').addClass('hide');
+			$($file_item).find(target).removeClass('hide');
+		}
+	// -->
 	</script>
 <?
-		for($i=0,$m=$bm_row['bm_file_limit']-count($bf_rows);$i<$m;$i++): 
+		for($i=0,$m=$bm_row['bm_file_limit']-count($bf_rows);$i<$m;$i++):
 ?>
+<!--
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 mode-form-file-item drag-and-drop-files" title="드래그앤드롭으로 파일 첨부 가능">
 		<div class="panel panel-primary center-block " style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
@@ -67,31 +76,43 @@ endforeach;
 			</div>
 		</div>
 	</div>
-	
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 mode-form-file-item" title="드래그앤드롭으로 파일 첨부 가능">
-		<div class="panel panel-success center-block " style="max-width:310px">
+-->
+
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 mode-form-file-item" >
+		<div class="panel panel-primary center-block " style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
-				EXTERNAL LINK/IMAGE
+
+				<span class="input-group-btn">
+					<select class="form-control" name="ext_urls_types[<?=$i?>]" onchange="select_file_form(this)">
+						<option value="attach/file" data-target=".attach-file">첨부파일</option>
+						<option value="external/url" data-target=".external-url">외부링크</option>
+						<option value="external/image" data-target=".external-image">외부이미지</option>
+					</select>
+				</span>
+
 			</div>
-			<div class="panel-body text-center">
+
+			<div class="panel-body text-center mode-form-file-item-input  attach-file drag-and-drop-files " title="드래그앤드롭으로 파일 첨부 가능">
+				<div>
+					<span class="btn-block btn btn-primary btn-file ">
+						<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" multiple onchange="bbs_form_file_item_oncahngeUpload(event)">
+					</span>
+				</div>
 				<div class="img-preview"> - </div>
 			</div>
-			<div class="panel-footer text-center">
-				<div class="input-group">
-					<span class="input-group-btn">
-						<select class="form-control" name="ext_urls_types[]">
-							<option value="external/url">링크</option>
-							<option value="external/image">이미지</option>
-						</select>
-					</span>
-					<input type="text" name="ext_urls[]"  class="form-control" placeholder="http://~~~">
-				</div><!-- /input-group -->
+			<div class="panel-body text-center mode-form-file-item-input  external-image external-url  hide">
+				<div>
+					<div class="input-group">
+						<input type="text" name="ext_urls[<?=$i?>]"  class="form-control" placeholder="http://~~~">
+					</div>
+				</div>
 			</div>
+
 		</div>
 	</div>
-<? 
+<?
 		endfor;
-	endif; 
+	endif;
 ?>
 </div>
 <script>
@@ -105,14 +126,14 @@ endforeach;
 				for(var i=0,m=ta.files.length;i<m;i++){ //다중 셀렉트 가능.
 					var file = ta.files[i];
 					var num = i;
-					if(file.type.indexOf('image')===-1){ 
-						
+					if(file.type.indexOf('image')===-1){
+
 						if(preview.html().length>1){
 							$(preview).append('<hr>');
 						}
 						$(preview).append('<div class="text-danger">파일'+(num+1)+'</div><div>'+file.name+'</div><div>'+file.size+' Byte</div>');
-						
-						
+
+
 						continue;
 					}
 					(function(file,num){
@@ -147,7 +168,7 @@ endforeach;
 function init_drag_and_drop_file(){
 	$('.drag-and-drop-files').on("dragstart dragend dragover dragenter dragleave drag drop",function(evt){
 		console.log(evt.type);
-		evt.preventDefault(); 
+		evt.preventDefault();
 		evt.stopPropagation();
 	})
 	$('.drag-and-drop-files').on("drop",function(evt){
