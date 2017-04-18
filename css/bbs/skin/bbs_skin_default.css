@@ -190,3 +190,6 @@ span.bc-star-5::before{content:'★★★★★'}
 	width: 14px; height: 14px;
  	background-image: url("../../../img/feed-icon-14x14.png")
 }
+
+.div_iframe_htmlOgp{ border: 0px solid #eee;}
+.iframe_htmlOgp{width:100%; max-width:320px; height: 260px; border: 1px solid #eee;box-shadow: 2px 2px 5px #999;}

@@ -70,6 +70,9 @@ $route['_admin/(.*)'] = 'admin/$1';
 $route['bbs'] = 'mh/bbs/index';
 $route['bbs/(.*)'] = 'mh/bbs/index/$1';
 $route['bbs_comment/(.*)'] = 'mh/bbs_comment/index';
+$route['misc/(.*)'] = 'misc/$1'; //기타
+
+
 
 $route['sdgn'] = 'front_sdgn/index';
 $route['sdgn/(.*)'] = 'front_sdgn/$1';

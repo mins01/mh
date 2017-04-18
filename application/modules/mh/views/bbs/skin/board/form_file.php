@@ -3,24 +3,36 @@
 //$start_num,$count
 //print_r($bm_row);
 ?>
+<script>
+$(function(){
+	$('.iframe_htmlOgp').on('load',function(){
+		// console.log(this);
+		var h = $(this.contentWindow.document).find('.container-fluid').prop('scrollHeight');
+		this.style.height = (h+10)+'px';
+	})
+})
+</script>
 <div class="row">
 <input type="hidden" name="bf_idx" value="" disabled>
 <?
 foreach($bf_rows as $r):
 //print_r($r);
 ?>
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3  mode-read-file-item">
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4  mode-read-file-item">
 		<div class="panel panel-default center-block" style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
 				<a title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['download_url'])?>"><?=html_escape($r['bf_name'])?></a>
 			</div>
 			<div class="panel-body text-center">
-				<? if($r['is_image']): ?>
+				<? if($r['is_image']): //외부이미지 ?>
 				<a  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img src="<?=html_escape($r['thumbnail_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
 				title="<?=html_escape($r['bf_name'])?>"></a>
-				<? elseif($r['is_external']): ?>
+				<? elseif($r['is_external']): //외부링크 ?>
 				<span class="text-danger"><a class="text-overflow-ellipsis text-overflow-ellipsis-box" title="<?=html_escape($r['bf_save'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><span  class="glyphicon glyphicon-share-alt"></span> <?=html_escape($r['bf_save'])?></a></span>
-				<? else: ?>
+				<div class="div_iframe_htmlOgp">
+					<iframe class="iframe_htmlOgp" src="<?=SITE_URI_PREFIX?>misc/htmlOgp?url=<?=html_escape(urlencode($r['bf_save']))?>"></iframe>
+				</div>
+				<? else: //미리보기 불가 ?>
 				<span class="text-danger">미리보기 지원되지 않는 파일</span>
 				<? endif;?>
 			</div>
@@ -78,7 +90,7 @@ endforeach;
 	</div>
 -->
 
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 mode-form-file-item" >
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mode-form-file-item" >
 		<div class="panel panel-primary center-block " style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
 
