@@ -25,16 +25,25 @@ class Misc extends MX_Controller {
 			show_error("required url");
 		}
 		$this->load->library('Mproxy');
-		$res = $this->mproxy->get($url);
+		$opts = array();
+		$opts[CURLOPT_SSL_VERIFYPEER]=false;
+		$opts[CURLOPT_SSL_VERIFYHOST]=false;
 
-		// print_r($res['body']);
+		//($url,$cookieRaw=null,$headers=array(), $opts = array())
+		$res = $this->mproxy->get($url,null,array(),$opts);
+		// echo $url;
+		// print_r($res);
 		if(!isset($res['body'][0]) || stripos('html',$res['body'])!==false){
 			show_error("not html contents");
+			// exit;
 		}
 		$this->load->library('mh_util');
 		$opgs = $this->mh_util->parseOgp($res['body']);
 		// var_dump($opgs);
-
+		if(empty($opgs)){
+			show_error("not opg meta");
+			// exit;
+		}
 
 		//-- 웹 캐시 설정
 		$this->load->library('mheader');
