@@ -9,29 +9,35 @@
 	<style>
 	body{padding:5px; background-color: #fff; overflow: hidden;}
 	.og-image{max-width:100%;max-height:150px;}
+	a.url{display: block;}
 	</style>
 	</head>
 <body>
 	<div class="container-fluid">
 		<div class="row">
+			<a class="url" href="<?=html_escape($url)?>" target="_blank">
+				<div>
 			<?
 			if(isset($opgs['og:image'][0])){
 				$src = $opgs['og:image'];
-				?><div class="col-xs-12 text-center"><a href="<?=html_escape($url)?>" target="_blank"><img class="og-image"  src="<?=html_escape($src)?>"  class="img-rounded" alt="image"></a></div><?
+				?><div class="col-xs-12 text-center"><img class="og-image"  src="<?=html_escape($src)?>"  class="img-rounded" alt="image"></div><?
 			}
 			?>
 			<div class="col-xs-12  text-center">
 				<?
 				if(isset($opgs['og:site_name'][0])){
-					?><h3><a href="<?=html_escape($url)?>" target="_blank"><?=html_escape($opgs['og:site_name'])?></a></h3><?
+					?><h3><?=html_escape($opgs['og:site_name'])?></h3><?
 				}
 				?>
 				<?
 				if(isset($opgs['og:title'][0])){
-					?><h4><a href="<?=html_escape($url)?>" target="_blank"><?=html_escape($opgs['og:title'])?></a></h4><?
+					?><h4><?=html_escape($opgs['og:title'])?></h4><?
 				}
 				?>
+				</div>
+
 			</div>
+			</a>
 		</div>
 
 	</div>
