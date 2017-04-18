@@ -6,14 +6,20 @@
 <script>
 $(function(){
 	$('.iframe_htmlOgp').on('load',function(){
-		// console.log(this);
-		if($(this.contentWindow.document).find('.container-fluid').length>0){
-			var h = $(this.contentWindow.document).find('.container-fluid').prop('scrollHeight');
-			this.style.height = (h+10)+'px';
-		}else{
-			this.style.display = 'none';
-			$(this).parent().remove();
-		}
+		var fn = function(thisc){
+			return function(){
+				// console.log(this);
+				if($(thisc.contentWindow.document).find('.container-fluid').length>0){
+					var h = $(thisc.contentWindow.document).find('.container-fluid').prop('scrollHeight');
+					thisc.style.height = (h+10)+'px';
+					thisc.style.opacity = 1;
+				}else{
+					thisc.style.display = 'none';
+					$(thisc).parent().remove();
+				}
+			}
+		}(this);
+		setTimeout(fn,200)
 
 	})
 })
