@@ -157,4 +157,57 @@ class Mh_util{
 			return $str;
 		}
 	}
+	
+	/**
+	 * OGP parser
+	 * <meta property="og:title" content="공대여자 홈 : 메인">
+	 * <meta property="og:description" content="공대여자 홈 : 메인">
+	 * <meta name="og:image" content="http://www.mins01.com/img/logo.gif">
+	 * <meta property="og:image:width" content="190">
+	 * <meta property="og:image:height" content="70" />
+	 * <meta property="og:site_name" content="공대여자 홈" />
+	 * <meta property="og:type" content="website">
+
+	 */
+	static function parseOgp($content){
+		if(!class_exists('XML2Array')){
+			require_once(dirname(__FILE__).'XML2Array.php');
+		}
+		$doc = new DOMDocument();
+		@$doc->loadHTML($content);
+		
+		$meta_props = array('og', 'fb', 'twitter');
+		
+		$ogp = array();
+		
+		$metas = $doc->getElementsByTagName('meta'); 
+		
+		if(isset($metas->length) && $metas->length > 0){
+			for($i=0,$m=$metas->length;$i<$m;$i++){
+				$item = $metas->item($i);
+				$property = $item->getAttribute('property');
+				if(!isset($property[0])){
+					$property = $item->getAttribute('name');
+				}
+				if(!isset($property[0])){
+					continue;
+				}
+				$t = explode(':',$property);
+				if(!in_array($t[0],$meta_props)){
+					continue;
+				}
+				if(!isset($ogp[$property])){
+					$ogp[$property] = $item->getAttribute('content');	
+				}else if(!is_array($ogp[$property])){
+					$t = $ogp[$property];
+					$ogp[$property] = array();
+					$ogp[$property][] = $t;
+					$ogp[$property][] = $item->getAttribute('content');
+				}else{
+					$ogp[$property][] = $item->getAttribute('content');
+				}
+			}
+		}		
+		return $ogp;
+	}
 }

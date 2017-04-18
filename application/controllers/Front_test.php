@@ -33,6 +33,15 @@ class Front_test extends MX_Controller {
 		);
 		$this->load->view('/test/dec_enc_str',$data);
 	}
+	
+	public function parseOgp(){
+		$this->load->library('mh_util');
+		//file_get_contents("https://www.youtube.com/watch?v=EIGGsZZWzZA")
+		$content = file_get_contents("http://www.mins01.com/mh/tech/read/1070");
+		
+		$opgs = $this->mh_util->parseOgp($content);
+		var_dump($opgs);
+	}
 
 
 }
