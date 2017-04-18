@@ -7,8 +7,14 @@
 $(function(){
 	$('.iframe_htmlOgp').on('load',function(){
 		// console.log(this);
-		var h = $(this.contentWindow.document).find('.container-fluid').prop('scrollHeight');
-		this.style.height = (h+10)+'px';
+		if($(this.contentWindow.document).find('.container-fluid').length>0){
+			var h = $(this.contentWindow.document).find('.container-fluid').prop('scrollHeight');
+			this.style.height = (h+10)+'px';
+		}else{
+			this.style.display = 'none';
+			$(this).parent().remove();
+		}
+
 	})
 })
 </script>
@@ -29,9 +35,9 @@ foreach($bf_rows as $r):
 				title="<?=html_escape($r['bf_name'])?>"></a>
 				<? elseif($r['is_external']): //외부링크 ?>
 				<span class="text-danger"><a class="text-overflow-ellipsis text-overflow-ellipsis-box" title="<?=html_escape($r['bf_save'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><span  class="glyphicon glyphicon-share-alt"></span> <?=html_escape($r['bf_save'])?></a></span>
-				<!-- <div class="div_iframe_htmlOgp">
+				<div class="div_iframe_htmlOgp">
 					<iframe class="iframe_htmlOgp" src="<?=SITE_URI_PREFIX?>misc/htmlOgp?url=<?=html_escape(urlencode($r['bf_save']))?>"></iframe>
-				</div> -->
+				</div>
 				<? else: //미리보기 불가 ?>
 				<span class="text-danger">미리보기 지원되지 않는 파일</span>
 				<? endif;?>

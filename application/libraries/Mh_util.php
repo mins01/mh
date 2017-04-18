@@ -3,9 +3,9 @@
 * Mh_util
 */
 class Mh_util{
-	
-	
-	
+
+
+
 	static function cvt_html($text,$mode){
 		switch($mode){
 			case 'h':	//HTML
@@ -26,7 +26,7 @@ class Mh_util{
 		}
 		return $text;
 	}
-	
+
 	//=================
 	// 문자열 변환
 	//=================
@@ -36,7 +36,7 @@ class Mh_util{
 	*/
 	static function stringToText($str){
 		$search = array("\t",'&amp;');
-		$reaplce = array('&nbsp;&nbsp;&nbsp;&nbsp;','&');	
+		$reaplce = array('&nbsp;&nbsp;&nbsp;&nbsp;','&');
 		return str_replace($search,$reaplce, nl2br(htmlspecialchars($str)));
 	}
 	/** 문자열 변환 (STRING HTML)
@@ -53,10 +53,10 @@ class Mh_util{
 	* - (실제로는 HTML이다. <table>등에 적용하면 이상해짐!)
 	* @param string $str 입력문자열
 	* @return string PRE(HTML+BR)형식으로 바뀐 문자열(오토링크 처리)
-	*/	
+	*/
 	static function stringToPRE($str){
 		$search = array('<br>','<BR>',"\t");
-		$reaplce = array('<br />','<BR />','&nbsp;&nbsp;&nbsp;&nbsp;');	
+		$reaplce = array('<br />','<BR />','&nbsp;&nbsp;&nbsp;&nbsp;');
 		$str=nl2br(str_replace($search,$reaplce,$str));
 		return $str;
 	}
@@ -96,7 +96,7 @@ class Mh_util{
 			$str = preg_replace($p,$r,$str);
 		}
 		return $str;
-	}	
+	}
 	/** XSS Style 회피용
 	* @paran string $str 변환할 문자열
 	* @param array $rStyles 태그 배열
@@ -122,7 +122,7 @@ class Mh_util{
 	* @param int $type 변환타입 0(기본값)이면 <등을 &lt;로 바꾼다. 1이면 태그자체를 지운다. 2면 <>만 지운다.
 	* @return string 오토링크 처리된 문자열
 	*/
-	
+
 	static function convertTags($str,$rTags,$type=0){
 		$rTags = (count($rTags)>0)?array_merge(array('applet','base','basefont','bgsound','blink','body','embed','frame','frameset','head','html','ilayer','layer','link','meta','object','style','title','script','xml','xmp'),$rTags):array('applet','base','basefont','bgsound','blink','body','embed','frame','frameset','head','html','ilayer','iframe','layer','link','meta','object','style','title','script','xml','xmp');
 		foreach($rTags as $val){
@@ -157,7 +157,7 @@ class Mh_util{
 			return $str;
 		}
 	}
-	
+
 	/**
 	 * OGP parser
 	 * <meta property="og:title" content="공대여자 홈 : 메인">
@@ -173,15 +173,28 @@ class Mh_util{
 		if(!class_exists('XML2Array')){
 			require_once(dirname(__FILE__).'XML2Array.php');
 		}
-		$doc = new DOMDocument();
-		@$doc->loadHTML($content);
-		
+
+		$match = array();
+		preg_match_all('/<meta [^>]*>/',$content,$match);
+		// print_r($match);
+		$content = implode("\n",$match[0]);
+		$content = str_replace(array(' >','">'),array(' />','" />'),$content);
+		$content = '<root>'.$content.'</root>';
+		// $array = XML2Array::createArray('<root>'.$content.'</root>');
+		// print_r($array);
+
+		// var_dump($content);
+		// exit;
+		// $content = preg_replace('/((.*)<head|</head)/m',$content,'')
+		$doc = new DOMDocument('1.0','utf-8');
+		@$doc->loadXML($content);
+
 		$meta_props = array('og', 'fb', 'twitter');
-		
+
 		$ogp = array();
-		
-		$metas = $doc->getElementsByTagName('meta'); 
-		
+
+		$metas = $doc->getElementsByTagName('meta');
+
 		if(isset($metas->length) && $metas->length > 0){
 			for($i=0,$m=$metas->length;$i<$m;$i++){
 				$item = $metas->item($i);
@@ -197,7 +210,7 @@ class Mh_util{
 					continue;
 				}
 				if(!isset($ogp[$property])){
-					$ogp[$property] = $item->getAttribute('content');	
+					$ogp[$property] = $item->getAttribute('content');
 				}else if(!is_array($ogp[$property])){
 					$t = $ogp[$property];
 					$ogp[$property] = array();
@@ -207,7 +220,7 @@ class Mh_util{
 					$ogp[$property][] = $item->getAttribute('content');
 				}
 			}
-		}		
+		}
 		return $ogp;
 	}
 }
