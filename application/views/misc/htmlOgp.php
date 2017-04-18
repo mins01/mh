@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<style>
 	body{padding:5px; background-color: #fff; overflow: hidden;}
-	.og-image{max-width:100%;}
+	.og-image{max-width:100%;max-height:150px;}
 	</style>
 	</head>
 <body>
