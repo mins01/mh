@@ -19,7 +19,11 @@
 				<div>
 			<?
 			if(isset($opgs['og:image'][0])){
-				$src = $opgs['og:image'];
+				if(is_array($opgs['og:image'])){
+					$src = $opgs['og:image'][0];
+				}else{
+					$src = $opgs['og:image'];	
+				}
 				?><div class="col-xs-12 text-center"><img class="og-image"  src="<?=html_escape($src)?>"  class="img-rounded" alt="image"></div><?
 			}
 			?>
