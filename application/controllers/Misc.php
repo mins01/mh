@@ -59,18 +59,20 @@ class Misc extends MX_Controller {
 		$content = $res['body'];
 		$charset = 'utf-8';
 		$matches = array();
-		preg_match('/charset=([^\s\n]*)/',$res['header'],$matches);
+		preg_match('/charset=([^\s\n>"\']*)/',$res['header'],$matches);
 		if(isset($matches[1])){
 			$charset = $matches[1];
 		}else{
 			$matches = array();
-			preg_match('/charset=([^\s\n]*)/',$content,$matches);
+			preg_match('/charset=([^\s\n>]*)/',$content,$matches);
 			if(isset($matches[1])){
 				$charset = $matches[1];
 			}
 		}
+		$charset = str_replace(array("'",'"','>'),'',$charset);
 		// echo $charset;
 		$this->load->library('mh_util');
+
 		if($charset != 'utf-8'){
 			$content = iconv($charset,'utf-8',$content);
 		}
