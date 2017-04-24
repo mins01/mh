@@ -19,8 +19,8 @@
 				<div>
 			<?
 			if(isset($opgs['og:image'][0])){
-				if(is_array($opgs['og:image'])){
-					$src = $opgs['og:image'][0];
+				if(is_array($opgs['og:images'])){
+					$src = $opgs['og:images'][0];
 				}else{
 					$src = $opgs['og:image'];	
 				}

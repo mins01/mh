@@ -209,16 +209,12 @@ class Mh_util{
 				if(!in_array($t[0],$meta_props)){
 					continue;
 				}
-				if(!isset($ogp[$property])){
-					$ogp[$property] = $item->getAttribute('content');
-				}else if(!is_array($ogp[$property])){
-					$t = $ogp[$property];
-					$ogp[$property] = array();
-					$ogp[$property][] = $t;
-					$ogp[$property][] = $item->getAttribute('content');
-				}else{
-					$ogp[$property][] = $item->getAttribute('content');
+				if(!isset($ogp[$property.'s'])){
+					$ogp[$property.'s'] = array();
+					
 				}
+				$ogp[$property] = $item->getAttribute('content');
+				$ogp[$property.'s'][] = $item->getAttribute('content');
 			}
 		}
 		return $ogp;
