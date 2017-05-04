@@ -73,9 +73,13 @@ class Misc extends MX_Controller {
 		// echo $charset;
 		$this->load->library('mh_util');
 
-		if($charset != 'utf-8'){
-			$content = iconv($charset,'utf-8',$content);
+		if($charset == 'ks_c_5601-1987'){
+			$charset = 'uhc';
 		}
+		if($charset != 'utf-8'){
+			$content = iconv($charset,'utf-8//TRANSLIT',$content);
+		}
+		// echo $content ;
 		$opgs = $this->mh_util->parseOgp($content);
 		// var_dump($opgs);
 		if(empty($opgs)){

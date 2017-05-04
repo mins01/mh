@@ -175,10 +175,12 @@ class Mh_util{
 		}
 
 		$match = array();
-		preg_match_all('/<meta [^>]*>/',$content,$match);
+		preg_match_all('/<meta .*>/',$content,$match);
 		// print_r($match);
 		$content = implode("\n",$match[0]);
 		$content = str_replace(array(' >','">'),array(' />','" />'),$content);
+		// echo $content ;
+		// exit;
 		$content = '<root>'.$content.'</root>';
 		// $array = XML2Array::createArray('<root>'.$content.'</root>');
 		// print_r($array);

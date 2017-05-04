@@ -54,6 +54,9 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 		</div>
 
 	</div>
-
+	<!-- 
+	<? print_r($opgs); ?>
+	-->
 </body>
 </html>
+
