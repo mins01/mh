@@ -1,5 +1,14 @@
-<!doctype html>
-<html lang="ko">
+<?
+$ogp_url = $url;
+if($opgs['og:url']){
+	$ogp_url = $opgs['og:url'];
+}
+$ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
+
+// print_r($opgs);
+// exit;
+?><!doctype html>
+<html lang="<?=$ogp_locale?>">
 <head>
 	<title><?=isset($opgs['og:site_name'][0])?$opgs['og:site_name']:''?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -15,7 +24,7 @@
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<a class="url" href="<?=html_escape($url)?>" target="_blank">
+			<a class="url" href="<?=html_escape($ogp_url)?>" target="_blank">
 				<div>
 			<?
 			if(isset($opgs['og:image'][0])){
