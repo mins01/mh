@@ -103,12 +103,13 @@ class Bbs_model extends CI_Model {
 		if(!empty($opts['with_short_b_text'])){
 			$select.=",substr(b_text,1,500) as short_b_text";
 		}
+		$select.=", LEAST(CAST(length(b_gpos)/2 AS signed integer),10) AS depth" ;//$b_row['depth']= min(strlen($b_row['b_gpos'])/2,10);
 
 		//-- 마지막 처리
 		$this->db->select($select);
 	}
 
-	//-- 목록과 카운팅용
+	//-- 목록과 카운팅용, 기본 SELECT 부분 설정.
 	private function _apply_list_where($get,$opts=null){
 		$this->db->from($this->tbl.' as b');
 		if(isset($opts['wheres'])){
@@ -237,7 +238,7 @@ class Bbs_model extends CI_Model {
 		$b_rows = $this->db->get()->result_array();
 		// echo $this->db->last_query();
 
-		$this->extends_b_rows($b_rows);
+		// $this->extends_b_rows($b_rows);
 		return $b_rows;
 	}
 
@@ -323,7 +324,7 @@ class Bbs_model extends CI_Model {
 		//$this->db->limit($limit,$offset);
 
 		$b_rows = $this->db->get()->result_array();
-		$this->extends_b_rows($b_rows);
+		// $this->extends_b_rows($b_rows);
 		return $b_rows;
 	}
 	public function exnteds_b_rows_for_calendar(& $b_rows,$date_st,$date_ed){
@@ -402,19 +403,19 @@ class Bbs_model extends CI_Model {
 		$this->db->where('b_notice>',0); //공지만
 
 		$b_rows = $this->db->get()->result_array();
-		$this->extends_b_rows($b_rows);
+		// $this->extends_b_rows($b_rows);
 		return $b_rows;
 	}
 
-	private function extends_b_rows(& $b_rows){
-
-		foreach($b_rows as & $r){
-			$this->extends_b_row($r);
-		}
-	}
-	private function extends_b_row(& $b_row){
-		$b_row['depth']= min(strlen($b_row['b_gpos'])/2,10);
-	}
+	// private function extends_b_rows(& $b_rows){ //더이상 필요 없음, 쿼리에서 처리함
+	// 
+	// 	foreach($b_rows as & $r){
+	// 		$this->extends_b_row($r);
+	// 	}
+	// }
+	// private function extends_b_row(& $b_row){ //더이상 필요 없음, 쿼리에서 처리함
+	// 	$b_row['depth']= min(strlen($b_row['b_gpos'])/2,10);
+	// }
 	//-- 빈 게시물 만들기
 	public function generate_empty_b_row(){
 		// $sql="DESC {$this->tbl}";
@@ -469,7 +470,8 @@ class Bbs_model extends CI_Model {
 		$this->_apply_list_bm_row($this->bm_row,'b.*');
 		$this->db->where('b_id',$this->bm_row['b_id']);
 		//-- 필수 where절
-		return $this->db->where('b_isdel','0')->where('b.b_idx',$b_idx)->get()->row_array();
+		$row = $this->db->where('b_isdel','0')->where('b.b_idx',$b_idx)->get()->row_array();
+		return $row;
 	}
 	//-- 목록 갯수
 	public function count($get){
