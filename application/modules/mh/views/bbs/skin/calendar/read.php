@@ -131,6 +131,9 @@ if($d_day==0){
 		<? if($permission['list']): ?>
 		<a href="<?=html_escape($bbs_conf['list_url'])?>" class="btn btn-sm btn-primary glyphicon glyphicon-list"> 목록</a>
 		<? endif; ?>
+		<? if($permission['answer']): ?>
+		<a href="<?=html_escape($b_row['answer_url'])?>"  class="btn btn-sm btn-info glyphicon glyphicon-pencil"> 답변</a>
+		<? endif; ?>
 		<div class="btn-group" role="group" aria-label="">
 			
 			<? if($permission['edit']): ?>
