@@ -30,18 +30,26 @@ class Bbs_file_model extends CI_Model {
 			$this->error = '게시판 테이블 정보가 없습니다.';
 			return false;
 		}
-		$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_file';
+		$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_file bbsf';
 		$this->save_file_dir = realpath($this->file_dir.'/'.$this->bm_row['bm_table']);
 	}
 
 	public function select_by_bf_idx($bf_idx){
-		$bf_row = $this->db->from($this->tbl)->where('bf_isdel',0)->where('bf_idx',(int)$bf_idx)->get()->row_array();
+		$select = "bbsf.*
+			, IF(bf_type LIKE 'external/%',1,0) AS is_external
+			, IF(bf_type LIKE '%image%',1, IF(bf_name REGEXP '.(gif|jpg|jpeg|jpe|png)$',1,0) ) AS is_image
+		";
+		$bf_row = $this->db->select($select)->from($this->tbl)->where('bf_isdel',0)->where('bf_idx',(int)$bf_idx)->get()->row_array();
 		$this->extends_bf_row($bf_row);
 		return $bf_row;
 	}
 	
 	public function select_for_list($b_idx){
-		$bf_rows = $this->db->from($this->tbl)->where('bf_isdel',0)->where('b_idx',(int)$b_idx)->get()->result_array();
+		$select = "bbsf.*
+			, IF(bf_type LIKE 'external/%',1,0) AS is_external
+			, IF(bf_type LIKE '%image%',1, IF(bf_name REGEXP '.(gif|jpg|jpeg|jpe|png)$',1,0) ) AS is_image
+		";
+		$bf_rows = $this->db->select($select)->from($this->tbl)->where('bf_isdel',0)->where('b_idx',(int)$b_idx)->get()->result_array();
 		$this->extends_bf_rows($bf_rows);
 		return $bf_rows;
 	}
@@ -59,11 +67,12 @@ class Bbs_file_model extends CI_Model {
 		if(isset($bf_row['b_idx'])){
 			$save_dir = $this->extends_save_dir($bf_row['b_idx']);
 			$bf_row['save_file'] = $save_dir.'/'.$bf_row['bf_save'];
-			$this->_extends_bf_row($bf_row);
+			// $this->_extends_bf_row($bf_row);
 		}
 		
 	}
-	private function _extends_bf_row(& $bf_row){
+	
+	private function _extends_bf_row(& $bf_row){ //더이상 필요 없음, 쿼리에서 처리함.
 		
 		$bf_row['is_external'] = (strpos($bf_row['bf_type'],'external')===0);
 		if($bf_row['is_external']){
