@@ -30,17 +30,19 @@ class Bbs_file_model extends CI_Model {
 			$this->error = '게시판 테이블 정보가 없습니다.';
 			return false;
 		}
-		$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_file bbsf';
-		$this->save_file_dir = realpath($this->file_dir.'/'.$this->bm_row['bm_table']);
+		$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_file';
+		$this->save_file_dir = str_replace('\\','/',realpath($this->file_dir.'/'.$this->bm_row['bm_table']));
+		
 	}
 
 	public function select_by_bf_idx($bf_idx){
 		$select = "bbsf.*
 			, IF(bf_type LIKE 'external/%',1,0) AS is_external
 			, IF(bf_type LIKE '%image%',1, IF(bf_name REGEXP '.(gif|jpg|jpeg|jpe|png)$',1,0) ) AS is_image
+			, CONCAT('{$this->save_file_dir}/',FLOOR(b_idx/1000),'/',b_idx,'/',bf_save) AS save_file
 		";
-		$bf_row = $this->db->select($select)->from($this->tbl)->where('bf_isdel',0)->where('bf_idx',(int)$bf_idx)->get()->row_array();
-		$this->extends_bf_row($bf_row);
+		$bf_row = $this->db->select($select)->from($this->tbl.'  bbsf')->where('bf_isdel',0)->where('bf_idx',(int)$bf_idx)->get()->row_array();
+		// $this->extends_bf_row($bf_row); //더이상 필요 없음, 쿼리에서 처리함.
 		return $bf_row;
 	}
 	
@@ -48,39 +50,40 @@ class Bbs_file_model extends CI_Model {
 		$select = "bbsf.*
 			, IF(bf_type LIKE 'external/%',1,0) AS is_external
 			, IF(bf_type LIKE '%image%',1, IF(bf_name REGEXP '.(gif|jpg|jpeg|jpe|png)$',1,0) ) AS is_image
+			, CONCAT('{$this->save_file_dir}/',FLOOR(b_idx/1000),'/',b_idx,'/',bf_save) AS save_file
 		";
-		$bf_rows = $this->db->select($select)->from($this->tbl)->where('bf_isdel',0)->where('b_idx',(int)$b_idx)->get()->result_array();
-		$this->extends_bf_rows($bf_rows);
+		$bf_rows = $this->db->select($select)->from($this->tbl.'  bbsf')->where('bf_isdel',0)->where('b_idx',(int)$b_idx)->get()->result_array();
+		// $this->extends_bf_rows($bf_rows); //더이상 필요 없음, 쿼리에서 처리함.
 		return $bf_rows;
 	}
 
-	public function extends_bf_rows(& $bf_rows){
-		if(isset($bf_rows[0])){
-			$save_dir = $this->extends_save_dir($bf_rows[0]['b_idx']);
-		}
-		foreach($bf_rows as & $bf_row){
-			$bf_row['save_file'] = $save_dir.'/'.$bf_row['bf_save'];
-			$this->_extends_bf_row($bf_row);
-		}
-	}	
-	public function extends_bf_row(& $bf_row){
-		if(isset($bf_row['b_idx'])){
-			$save_dir = $this->extends_save_dir($bf_row['b_idx']);
-			$bf_row['save_file'] = $save_dir.'/'.$bf_row['bf_save'];
-			// $this->_extends_bf_row($bf_row);
-		}
-		
-	}
-	
-	private function _extends_bf_row(& $bf_row){ //더이상 필요 없음, 쿼리에서 처리함.
-		
-		$bf_row['is_external'] = (strpos($bf_row['bf_type'],'external')===0);
-		if($bf_row['is_external']){
-			$bf_row['is_image'] = $bf_row['bf_type']=='external/image';
-		}else{
-			$bf_row['is_image'] = preg_match('/\.(gif|jpg|jpeg|jpe|png)$/i',$bf_row['bf_name']);	
-		}
-	}
+	// public function extends_bf_rows(& $bf_rows){ //더이상 필요 없음, 쿼리에서 처리함.
+	// 	if(isset($bf_rows[0])){
+	// 		$save_dir = $this->extends_save_dir($bf_rows[0]['b_idx']);
+	// 	}
+	// 	foreach($bf_rows as & $bf_row){
+	// 		$bf_row['save_file'] = $save_dir.'/'.$bf_row['bf_save'];
+	// 		$this->_extends_bf_row($bf_row);
+	// 	}
+	// }	
+	// public function extends_bf_row(& $bf_row){ //더이상 필요 없음, 쿼리에서 처리함.
+	// 	if(isset($bf_row['b_idx'])){
+	// 		$save_dir = $this->extends_save_dir($bf_row['b_idx']);
+	// 		$bf_row['save_file'] = $save_dir.'/'.$bf_row['bf_save'];
+	// 		// $this->_extends_bf_row($bf_row);
+	// 	}
+	// 	
+	// }
+	// 
+	// private function _extends_bf_row(& $bf_row){ //더이상 필요 없음, 쿼리에서 처리함.
+	// 	
+	// 	$bf_row['is_external'] = (strpos($bf_row['bf_type'],'external')===0);
+	// 	if($bf_row['is_external']){
+	// 		$bf_row['is_image'] = $bf_row['bf_type']=='external/image';
+	// 	}else{
+	// 		$bf_row['is_image'] = preg_match('/\.(gif|jpg|jpeg|jpe|png)$/i',$bf_row['bf_name']);	
+	// 	}
+	// }
 	
 	public function extends_save_dir($b_idx){
 		return $this->save_file_dir.'/'.(floor($b_idx/1000)).'/'.$b_idx;
