@@ -1,6 +1,6 @@
 <?
 $ogp_url = $url;
-if($opgs['og:url']){
+if(isset($opgs['og:url'][0])){
 	$ogp_url = $opgs['og:url'];
 }
 $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
