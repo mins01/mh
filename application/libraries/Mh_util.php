@@ -178,7 +178,7 @@ class Mh_util{
 		preg_match_all('/<meta .*>/',$content,$match);
 		// print_r($match);
 		$content = implode("\n",$match[0]);
-		$content = str_replace(array(' >','">'),array(' />','" />'),$content);
+		$content = str_replace(array(' >','">','\'>'),array(' />','" />','\' />'),$content);
 		// echo $content ;
 		// exit;
 		$content = '<root>'.$content.'</root>';
