@@ -63,7 +63,7 @@ margin-left:-1em;
   vertical-align: top;
 }
 .mode-form-file-item{min-height: 170px;}
-.drag-and-drop-files{background-color: #f5f5f5;}
+.drag-and-drop-files{background-color: #f5f5f5; border:2px dashed #666;}
 /* 첨부파일 버튼으로 만들기 */
 .btn-file {
     position: relative;
@@ -87,7 +87,9 @@ margin-left:-1em;
 
 /* 첨부파일 미리보기용 */
 .img-preview{
-	max-height: 200px;
+	max-height: 240px;
+	min-height: 100px;
+	padding:5px 0;
   overflow: auto;}
 .img-preview img{max-width:95%}
 

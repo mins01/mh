@@ -122,10 +122,11 @@ endforeach;
 			<div class="panel-body text-center mode-form-file-item-input  attach-file drag-and-drop-files " title="드래그앤드롭으로 파일 첨부 가능">
 				<div>
 					<span class="btn-block btn btn-primary btn-file ">
-						<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" multiple onchange="bbs_form_file_item_oncahngeUpload(event)">
+						<!-- <span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" multiple onchange="bbs_form_file_item_oncahngeUpload(event)"> -->
+						<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" onchange="bbs_form_file_item_oncahngeUpload(event)">
 					</span>
 				</div>
-				<div class="img-preview"> - </div>
+				<div class="img-preview" >Select File... or Drop File...</div>
 			</div>
 			<div class="panel-body text-center mode-form-file-item-input  external-image external-url  hide">
 				<div>
@@ -168,6 +169,7 @@ endforeach;
 						fileReader.onload = function (event) {
 							var ta = event.target;
 							var img = new Image();
+							$(img).attr('data-num',num);
 							img.src = ta.result;
 							if(m>1){
 								if(preview.html().length>1){
@@ -201,7 +203,7 @@ function init_drag_and_drop_file(){
 	$('.drag-and-drop-files').on("drop",function(evt){
 		try{
 			$(this).find('input[type="file"]').prop('files',evt.originalEvent.dataTransfer.files)
-			$(this).find('input[type="file"]').trigger('change');
+			// $(this).find('input[type="file"]').trigger('change');
 		}catch(e){
 			//지원 안되는 브라우저
 		}
