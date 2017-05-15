@@ -810,7 +810,7 @@ class Bbs extends MX_Controller {
 				if($this->bm_row['bm_use_file']=='1'){
 					if(isset($_FILES['upf'])) $bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
 					if(isset($_POST['ext_urls']) && isset($_POST['ext_urls_types'])) {
-						$bf_ext_r = $this->bf_m-> insert_external_url($b_idx,$_POST['ext_urls'],$_POST['ext_urls_types']);
+						$bf_ext_r = $this->bf_m->insert_external_url($b_idx,$_POST['ext_urls'],$_POST['ext_urls_types']);
 					}
 					if($this->input->post('delf')){
 						$delf_r = $this->bf_m->delete_bf_rows_by_b_idx_bf_idxs($b_idx,$this->input->post('delf'));

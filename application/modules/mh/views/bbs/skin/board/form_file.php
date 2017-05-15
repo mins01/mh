@@ -114,6 +114,7 @@ endforeach;
 						<option value="attach/file" data-target=".attach-file">첨부파일</option>
 						<option value="external/url" data-target=".external-url">외부링크</option>
 						<option value="external/image" data-target=".external-image">외부이미지</option>
+						<option value="attach/dataurl" data-target=".attach-dataurl">데이터URL</option>
 					</select>
 				</span>
 
@@ -128,14 +129,13 @@ endforeach;
 				</div>
 				<div class="img-preview" >Select File... or Drop File...</div>
 			</div>
-			<div class="panel-body text-center mode-form-file-item-input  external-image external-url  hide">
+			<div class="panel-body text-center mode-form-file-item-input  external-image external-url attach-dataurl  hide">
 				<div>
 					<div class="input-group">
 						<input type="text" name="ext_urls[<?=$i?>]"  class="form-control" placeholder="http://~~~">
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 <?
