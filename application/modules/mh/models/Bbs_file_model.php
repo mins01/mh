@@ -18,7 +18,7 @@ class Bbs_file_model extends CI_Model {
 		$this->config->load('bbs');
 		$conf_bbs = $this->config->item('bbs');
 		$this->file_dir = $conf_bbs['file_dir'];
-		
+
 	}
 	public function hash($str){
 		return md5($str);
@@ -32,7 +32,7 @@ class Bbs_file_model extends CI_Model {
 		}
 		$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_file';
 		$this->save_file_dir = str_replace('\\','/',realpath($this->file_dir.'/'.$this->bm_row['bm_table']));
-		
+
 	}
 
 	public function select_by_bf_idx($bf_idx){
@@ -45,7 +45,7 @@ class Bbs_file_model extends CI_Model {
 		// $this->extends_bf_row($bf_row); //더이상 필요 없음, 쿼리에서 처리함.
 		return $bf_row;
 	}
-	
+
 	public function select_for_list($b_idx){
 		$select = "bbsf.*
 			, IF(bf_type LIKE 'external/%',1,0) AS is_external
@@ -65,26 +65,26 @@ class Bbs_file_model extends CI_Model {
 	// 		$bf_row['save_file'] = $save_dir.'/'.$bf_row['bf_save'];
 	// 		$this->_extends_bf_row($bf_row);
 	// 	}
-	// }	
+	// }
 	// public function extends_bf_row(& $bf_row){ //더이상 필요 없음, 쿼리에서 처리함.
 	// 	if(isset($bf_row['b_idx'])){
 	// 		$save_dir = $this->extends_save_dir($bf_row['b_idx']);
 	// 		$bf_row['save_file'] = $save_dir.'/'.$bf_row['bf_save'];
 	// 		// $this->_extends_bf_row($bf_row);
 	// 	}
-	// 	
+	//
 	// }
-	// 
+	//
 	// private function _extends_bf_row(& $bf_row){ //더이상 필요 없음, 쿼리에서 처리함.
-	// 	
+	//
 	// 	$bf_row['is_external'] = (strpos($bf_row['bf_type'],'external')===0);
 	// 	if($bf_row['is_external']){
 	// 		$bf_row['is_image'] = $bf_row['bf_type']=='external/image';
 	// 	}else{
-	// 		$bf_row['is_image'] = preg_match('/\.(gif|jpg|jpeg|jpe|png)$/i',$bf_row['bf_name']);	
+	// 		$bf_row['is_image'] = preg_match('/\.(gif|jpg|jpeg|jpe|png)$/i',$bf_row['bf_name']);
 	// 	}
 	// }
-	
+
 	public function extends_save_dir($b_idx){
 		return $this->save_file_dir.'/'.(floor($b_idx/1000)).'/'.$b_idx;
 	}
@@ -109,14 +109,14 @@ class Bbs_file_model extends CI_Model {
 		$arr = array();
 		$bf_idxs2 = array();
 		foreach($bf_rows as $k=>$bf_row){
-			$r = @$this->delete_file($bf_row['b_idx'],$bf_row['bf_save']); 
+			$r = @$this->delete_file($bf_row['b_idx'],$bf_row['bf_save']);
 			$arr[$bf_row['bf_idx']] = ($r?'SUCCESS':'FAIL').' : '.$this->msg;
 			$bf_idxs2[] = $bf_row['bf_idx'];
 		}
 		if(count($bf_idxs2)>0){
 			$this->db->from($this->tbl)->where('bf_isdel',0)->where_in('bf_idx',$bf_idxs2)->set('bf_isdel',1)->update();
 		}
-		
+
 		return $arr;
 	}
 	//-- b_idx,bf_idx
@@ -129,18 +129,18 @@ class Bbs_file_model extends CI_Model {
 		return $this->_delete_bf_rows($bf_rows);
 	}
 	//-- 폴더 강제 삭제
-	public static function delTree($dir) { 
+	public static function delTree($dir) {
 		if(!is_dir($dir)){return;}
-		$files = array_diff(scandir($dir), array('.','..')); 
-		foreach ($files as $file) { 
-		(is_dir("{$dir}/{$file}")) ? self::delTree("{$dir}/{$file}") : unlink("{$dir}/{$file}"); 
-		} 
-		return rmdir($dir); 
+		$files = array_diff(scandir($dir), array('.','..'));
+		foreach ($files as $file) {
+		(is_dir("{$dir}/{$file}")) ? self::delTree("{$dir}/{$file}") : unlink("{$dir}/{$file}");
+		}
+		return rmdir($dir);
 	}
 	//b_idx 관련 파일 모두 삭제!
 	public function delete_bf_rows_by_b_idx($b_idx){
 		$this->db->from($this->tbl)->where('bf_isdel',0)->where_in('b_idx',(int)$b_idx)->set('bf_isdel',1)->update();
-		
+
 		$save_dir = $this->extends_save_dir($b_idx);
 		self::delTree($save_dir);
 		return true;
@@ -166,30 +166,74 @@ class Bbs_file_model extends CI_Model {
 		$this->db->from($this->tbl)->where('bf_isdel',0)->where('b_idx',$b_idx)->where('bf_idx',$bf_idx)->set('bf_represent',1)->update();
 		return true;
 	}
-	
+
 	//-- 외부 url 설정
 	public function insert_external_url($b_idx,$ext_urls,$ext_url_types){
 		$rlt = array();
 		$this->msg = '';
+
 		foreach($ext_urls as $k => $ext_url){
 			if(!isset($ext_url[0])){continue;}
 			if(!isset($ext_url_types[$k][0])){continue;}
-			$ext_url_type = $ext_url_types[$k];
-			$bf_name = basename($ext_url);
+			if($ext_url_types[$k]=='attach/dataurl'){
+				$save_dir = $this->create_save_dir($b_idx);
+				$ext_url_type = $ext_url_types[$k];
+				$bf_name = '';
+				$bf_size = 0;
+				$bf_type = '';
+				$bf_save = $this->save_data_url($save_dir,$ext_url,$bf_name,$bf_type,$bf_size);
+				if(!$bf_save){
+					continue;
+				}
+			}else{
+				$ext_url_type = $ext_url_types[$k];
+				$bf_name = basename($ext_url);
+				$bf_size = 0;
+				$bf_type = $ext_url_type;
+				$bf_save = $ext_url;
+			}
+
 			// $bf_name = $ext_url_type;
 			$vals = array(
 				'b_idx' => $b_idx,
-				'bf_save' => $ext_url,
+				'bf_save' => $bf_save,
 				'bf_name' => $bf_name,
-				'bf_size' => 0,
-				'bf_type' => $ext_url_type,
+				'bf_size' => $bf_size,
+				'bf_type' => $bf_type,
 			);
 			$r = $this->insert_bf_row($vals);
 			$rlt[]=$vals['bf_save'].' : '.($r?'SUCCESS':'FAIL').' : '.$this->msg;
 		}
 		return $rlt;
 	}
-	
+	public function save_data_url($save_dir,$dataurl , &$bf_name , &$bf_type  , &$bf_size){
+		$pos = strpos($dataurl,'base64,')+7;
+		if($pos===false){
+			return false;
+		}
+		// echo $pos;
+		$header = substr($dataurl,0,$pos);
+		$bf_type = preg_replace('|^.*:(.*/.*);.*|','$1',$header);
+		if(!isset($bf_type[0])){
+			return false;
+		}
+		// echo '======='.$bf_type.'-------<br>';
+		$body = base64_decode(substr($dataurl,$pos));
+		if($body === false){
+			return false;
+		}
+		$bf_size = strlen($body);
+		$exp = preg_replace('|^.*/|','',$bf_type);
+		$bf_save = md5(microtime(true).rand(0,100000).$bf_size).'.'.$exp;
+		$save_path = $save_dir.'/'.$bf_save;
+		$r = file_put_contents($save_path,$body);
+		if($r === false){
+			return false;
+		}
+		$bf_name = 'du_'.date('YmdHis').'_'.rand(100,999).'.'.$exp;;
+		return $bf_save;
+	}
+
 	//-- 업로드
 	public function upload_files($b_idx,$files){
 		$rlt = array();
@@ -201,13 +245,13 @@ class Bbs_file_model extends CI_Model {
 				'error'=>$files['error'][$i],
 				'size'=>$files['size'][$i],
 			);
-			
+
 			$r = $this->upload_file($b_idx,$file);
 			$rlt[]=$file['name'].' : '.($r?'SUCCESS':'FAIL').' : '.$this->msg;
 		}
 		return $rlt;
 	}
-	
+
 	//-- 업로드
 	public function upload_file($b_idx,$file){
 		$this->msg = '';
@@ -247,8 +291,8 @@ class Bbs_file_model extends CI_Model {
 				return false;
 			break;
 		}
-		
-		if($file['size']==0){	
+
+		if($file['size']==0){
 			$this->msg = 'EMPTY FILE';
 			return false;
 		}
@@ -259,7 +303,7 @@ class Bbs_file_model extends CI_Model {
 			return false;
 		}
 		$pti['extension'] = strtolower($pti['extension']);
-			
+
 		$vals = array(
 			'b_idx' => $b_idx,
 			'bf_save' => time().'_'.md5($pti['filename']).'.'.$pti['extension'],
@@ -267,7 +311,7 @@ class Bbs_file_model extends CI_Model {
 			'bf_size' => $file['size'],
 			'bf_type' => $file['type'],
 		);
-		
+
 		$save_file = $save_dir.'/'.$vals['bf_save'];
 		if(!move_uploaded_file($file['tmp_name'], $save_file)){
 			$this->msg = 'UPLOAD FAIL';
@@ -276,7 +320,7 @@ class Bbs_file_model extends CI_Model {
 		chmod($save_file,0777);
 		return $this->insert_bf_row($vals);
 	}
-	
+
 	//== 이미지 리사이즈 출력
 	public function echo_image_resize($filePath,$new_width=200){
 		header('X-resized: 1');
@@ -291,7 +335,7 @@ class Bbs_file_model extends CI_Model {
 			case 'gif':$image = imagecreatefromgif($filePath); break;
 			case 'png':$image = imagecreatefrompng($filePath); break;
 		}
-		
+
 		if ($image) {
 			// Content type
 			// Get new dimensions
@@ -308,7 +352,7 @@ class Bbs_file_model extends CI_Model {
 		}
 		return true;
 	}
-	
+
 	//= 썸네일 출력
 	public function thumbnail_by_bf_row($bf_row,$inline=false,$resume=true,$debug=0){
 		if($bf_row['is_external']){
@@ -319,15 +363,15 @@ class Bbs_file_model extends CI_Model {
 			$this->msg = '서버에 파일이 없습니다.';
 			return false;
 		}
-		
-		
+
+
 		list($width, $height) = getimagesize($bf_row['save_file']);
 		if(!$width){
 			$this->msg = '서버에 파일이 없습니다.';
 			return false;
 		}
 
-		
+
 		//$config = array();
 		//$config['image_library'] = 'gd2';
 		//$config['source_image']	= $bf_row['save_file'];
@@ -337,15 +381,15 @@ class Bbs_file_model extends CI_Model {
 		//$config['width']	= 200;
 		// //$config['height']	= 200;
 		// //$config['thumb_marker']	= '_thumb';
-		//$config['dynamic_output']	= true;	
-		
+		//$config['dynamic_output']	= true;
+
 		// $this->load->library('image_lib',$config); //사용안함. 이미지 캐싱 처리에 문제.(304처리 불가!)
 		// if(!$this->image_lib->initialize($config)){
 			// echo $this->image_lib->display_errors();
 			// return false;
 		// }
 		header('x-thumbnail : 1');
-		//-- 웹 캐시 설정 		
+		//-- 웹 캐시 설정
 		$this->load->library('mheader');
 		$sec = 60*60*24; //하루. 더 길게해도 문제 없다.(파일 수정 기능이 없기 때문에)
 		$etag = date('Hi').ceil(date('s')/$sec);
@@ -353,9 +397,9 @@ class Bbs_file_model extends CI_Model {
 		$pif = pathinfo ($bf_row['bf_name']);
 		$fileName = 'thumb_'.$pif['filename'].'.jpg'; //jpg로 고정
 		if(!$inline) header("Content-Disposition: attachment; filename=\"{$fileName}\" "); //첨부파일로 처리 : 무조건 다운로드
-		else header("Content-Disposition: inline; filename=\"{$fileName}\" "); //가능하다면 직접 보여줌		
+		else header("Content-Disposition: inline; filename=\"{$fileName}\" "); //가능하다면 직접 보여줌
 		header('Content-type: image/jpeg');
-		
+
 		//$msgs = array();
 		if(false && MHeader::etag($etag)){ //etag는 사용하지 말자.
 		//$msgs[] = 'etag 동작';//실제 출력되지 않는다.(304 발생이 되기 때문에)
@@ -365,20 +409,20 @@ class Bbs_file_model extends CI_Model {
 			exit('lastModified 동작');
 		}
 		MHeader::expires($sec);
-		
-		
-		
+
+
+
 		// if($this->image_lib->resize()){
 			// return true;
 		// }
 		if($this->echo_image_resize($bf_row['save_file'],200)){
 			return true;
 		}else{
-			
+
 			$this->msg = $this->image_lib->display_errors();
 			return false;
 		}
-		
+
 	}
 	//= 첨부파일 출력
 	public function download_by_bf_row($bf_row,$inline=false,$resume=true,$debug=0){
@@ -388,16 +432,16 @@ class Bbs_file_model extends CI_Model {
 			return false;
 		}
 		//echo $bf_row['save_file'];
-		
+
 		//==== 이어받기
-		$seek_start = 0; 
-		$seek_end = 0; 
-		if(isset($_SERVER['HTTP_RANGE']) && $resume) { 
-			$seek_range = substr($_SERVER['HTTP_RANGE'] , 6);        
-			$range = explode( '-', $seek_range);        
-			if($range[0] > 0) { $seek_start = intval($range[0]); }        
-			if($range[1] > 0) { $seek_end  =  intval($range[1]); } 
-		} 		
+		$seek_start = 0;
+		$seek_end = 0;
+		if(isset($_SERVER['HTTP_RANGE']) && $resume) {
+			$seek_range = substr($_SERVER['HTTP_RANGE'] , 6);
+			$range = explode( '-', $seek_range);
+			if($range[0] > 0) { $seek_start = intval($range[0]); }
+			if($range[1] > 0) { $seek_end  =  intval($range[1]); }
+		}
 
 		//--- 정보정의
 		$file_type = isset($bf_row['bf_type']{0})?$bf_row['bf_type']:'application/octet-stream'; //파일타입
@@ -407,7 +451,7 @@ class Bbs_file_model extends CI_Model {
 		$save_file = $bf_row['save_file'];
 		$save_file_size = @filesize($save_file); //파일크기
 		$save_file_size = bcsub(sprintf("%u", $save_file_size),sprintf("%u", $seek_start)); //2~4G 지원용 : 크기 잘못 알아올 수 있음
-		
+
 		//--- 브라우저별 처리
 		if (preg_match('/Opera(\/| )([0-9].[0-9]{1,2})/', $_SERVER['HTTP_USER_AGENT']))	$UserBrowser = "Opera";
 		elseif (strpos($_SERVER['HTTP_USER_AGENT'],'Chrome'))	$UserBrowser = "Chrome";
@@ -415,10 +459,10 @@ class Bbs_file_model extends CI_Model {
 		elseif (strpos($_SERVER['HTTP_USER_AGENT'],'Safari')!==false)	$UserBrowser = "Safari";
 		elseif (strpos($_SERVER['HTTP_USER_AGENT'],'Firefox')!==false)	$UserBrowser = "Firefox";
 		else	$UserBrowser = '';
-		
+
 		//MSIE,Safari는 UTF-8로 된 파일이름의 다운로드에 문제가 있다.
 		//FF 에서는 UTF-8을 알아서 처리한다.
-		if($UserBrowser=='Safari'){ 
+		if($UserBrowser=='Safari'){
 			$file_name =  iconv('UTF-8','EUC-KR//IGNORE',$file_name);
 		}else if($UserBrowser=='IE'){
 			$file_name = rawurlencode($file_name);
@@ -428,7 +472,7 @@ class Bbs_file_model extends CI_Model {
 		$fp = fopen($save_file,'r+') ;
 		if ($fp) {
 			fseek($fp,$seek_start);
-			//-- 웹 캐시 설정 			
+			//-- 웹 캐시 설정
 			$sec = 60*60*24; //하루. 더 길게해도 문제 없다.(파일 수정 기능이 없기 때문에)
 			$etag = date('Hi').ceil(date('s')/$sec);
 
@@ -447,8 +491,8 @@ class Bbs_file_model extends CI_Model {
 			header("Content-type: {$file_type}");
 			if(!$inline) header("Content-Disposition: attachment; filename=\"{$file_name}\" "); //첨부파일로 처리 : 무조건 다운로드
 			else header("Content-Disposition: inline; filename=\"{$file_name}\" "); //가능하다면 직접 보여줌
-			header("Content-Transfer-Encoding: binary"); 
-			header("Content-Length: {$save_file_size}");			
+			header("Content-Transfer-Encoding: binary");
+			header("Content-Length: {$save_file_size}");
 			while (!feof($fp)) {
 				set_time_limit(30);	//타임아웃 30씩 :30초가 지났는데도 문제가 있다면 파일읽어오는 데 문제가 있다!
 				echo fgets($fp, 1024*1204*4); //메모리 제한 넘지 않는한 큰 숫자가 효과가 크다.
@@ -459,9 +503,9 @@ class Bbs_file_model extends CI_Model {
 			return false;
 		}
 		return true;
-		
+
 	}
-	
+
 	//다운로드 수 증가. (하루 한번 증가 시킴)
 	public function hitup($b_idx,$ip,$m_idx=0){
 		$tbl = $this->bm_row['tbl_hit'];
@@ -473,14 +517,14 @@ class Bbs_file_model extends CI_Model {
 		$bh_insert_date ='now()';
 		$bh_update_date ='now()';
 		$bh_hit_cnt = 1;
-		
+
 		$v_bh_update_date = $this->db->escape(date('Y-m-d 00:00:00'));
-		
+
 		$sql = "INSERT INTO {$tbl} (bh_parent_table,bh_parent_idx,bh_m_idx,bh_ip_number,bh_insert_date,bh_update_date,bh_hit_cnt)
 		values({$bh_parent_table},{$bh_parent_idx},{$bh_m_idx},{$bh_ip_number},{$bh_insert_date},{$bh_update_date},{$bh_hit_cnt})
-		ON DUPLICATE KEY UPDATE 
-			bh_hit_cnt = IF(bh_update_date < {$v_bh_update_date},bh_hit_cnt+1,bh_hit_cnt), 
-			bh_update_date = IF(bh_update_date < {$v_bh_update_date},now(),bh_update_date)  
+		ON DUPLICATE KEY UPDATE
+			bh_hit_cnt = IF(bh_update_date < {$v_bh_update_date},bh_hit_cnt+1,bh_hit_cnt),
+			bh_update_date = IF(bh_update_date < {$v_bh_update_date},now(),bh_update_date)
 		";
 		$this->db->query($sql);
 		return $this->db->affected_rows();

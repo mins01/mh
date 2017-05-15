@@ -171,7 +171,7 @@ class Bbs extends MX_Controller {
 				default:$bf_row['bf_name']='외부 링크';break;
 			}
 		}else{
-			$bf_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.	
+			$bf_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
 		}
 	}
 	private function extends_bf_rows(&$bf_rows,$b_row){
@@ -531,7 +531,7 @@ class Bbs extends MX_Controller {
 			$this->config->set_item('layout_og_image',$b_row['thumbnail_url']);
 			$this->config->set_item('layout_og_image_width','150');
 			$this->config->set_item('layout_og_image_height','150');
-			
+
 		}
 
 		$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$b_idx);
@@ -828,12 +828,12 @@ class Bbs extends MX_Controller {
 							$bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
 						}
 						if(isset($_POST['ext_urls']) && isset($_POST['ext_urls_types'])) {
-							$bf_ext_r = $this->bf_m-> insert_external_url($b_idx,$_POST['ext_urls'],$_POST['ext_urls_types']);
+							$bf_ext_r = $this->bf_m->insert_external_url($b_idx,$_POST['ext_urls'],$_POST['ext_urls_types']);
 						}
 						if(isset($_FILES['upf']) || isset($_POST['ext_urls']) && isset($_POST['ext_urls_types'])) {
 							$this->bf_m->set_represent_by_b_idx($b_idx);
 						}
-						
+
 					}
 				}
 			break;
