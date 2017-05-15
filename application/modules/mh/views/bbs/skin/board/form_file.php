@@ -110,7 +110,7 @@ endforeach;
 			<div class="panel-heading text-center  text-overflow-ellipsis">
 
 				<span class="input-group-btn">
-					<select class="form-control" name="ext_urls_types[<?=$i?>]" onchange="select_file_form(this)">
+					<select class="form-control ext_urls_types" name="ext_urls_types[<?=$i?>]" onchange="select_file_form(this)">
 						<option value="attach/file" data-target=".attach-file">첨부파일</option>
 						<option value="external/url" data-target=".external-url">외부링크</option>
 						<option value="external/image" data-target=".external-image">외부이미지</option>
@@ -127,12 +127,20 @@ endforeach;
 						<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" onchange="bbs_form_file_item_oncahngeUpload(event)">
 					</span>
 				</div>
-				<div class="img-preview" >Select File... or Drop File...</div>
+				<div class="img-preview img-preview-upload" >Select File... or Drop File...</div>
 			</div>
-			<div class="panel-body text-center mode-form-file-item-input  external-image external-url attach-dataurl  hide">
+			<div class="panel-body text-center mode-form-file-item-input  external-image external-url hide">
 				<div>
 					<div class="input-group">
-						<input type="text" name="ext_urls[<?=$i?>]"  class="form-control" placeholder="http://~~~">
+						<input type="text" name="ext_urls[<?=$i?>]"  class="form-control ext_urls" placeholder="http://~~~">
+					</div>
+				</div>
+			</div>
+			<div class="panel-body text-center mode-form-file-item-input attach-dataurl  hide">
+				<div>
+					<div class="img-preview img-preview-dataurl" >이미지 에디터를 사용해서만 처리됩니다.</div>
+					<div class="input-group">
+						<input type="hidden" name="ext_urls[<?=$i?>]"  class="form-control ext_urls ext_urls-dataurl" placeholder="data:~~~">
 					</div>
 				</div>
 			</div>
@@ -148,7 +156,7 @@ endforeach;
 	function bbs_form_file_item_oncahngeUpload(event){
 		try{
 			var ta = event.target;
-			var preview = $(ta).parents('.mode-form-file-item').find('.img-preview');
+			var preview = $(ta).parents('.mode-form-file-item').find('.img-preview-upload');
 			preview.html('');
 			if(ta.files.length > 0){ //파일 업로드가 있을 경우만
 				for(var i=0,m=ta.files.length;i<m;i++){ //다중 셀렉트 가능.
@@ -175,8 +183,15 @@ endforeach;
 								if(preview.html().length>1){
 									$(preview).append('<hr>');
 								}
-								$(preview).append('<div class="text-primary">파일'+(num+1)+'</div>');
 							}
+							$(preview).append('<div class="text-primary preview_text">파일'+(num+1)+' <a href="/WC2/WC2.html" target="_blank" class="btn btn-success btn-xs">수정</a></div>');
+
+
+							$(preview).find('.preview_text a.btn').get(0).onclick=function(img){
+								return function(){
+									set_wc2cb(img);
+								}
+							}(img);;
 							$(preview).append(img);
 						};
 						fileReader.readAsDataURL(file);
@@ -209,4 +224,26 @@ function init_drag_and_drop_file(){
 		}
 	})
 }
+function set_wc2cb(img){
+	WC2CB.img = img;
+}
+//웹 에디터 콜백
+var WC2CB = {
+	"img":null,
+	"getImage":function(){
+		return this.img;
+	},
+	"btnFileSaveCallback":function(win,wc2){
+		var dataUrl = wc2.activeWcb.toDataURL()
+		var $p = $(this.img).parents('.mode-form-file-item');
+		$p.find('select.ext_urls_types').val('attach/dataurl').get(0).onchange();
+		$p.find('input.ext_urls-dataurl').val(dataUrl);
+		// $p.find("img.attach-dataurl-dataurl").prop("src",dataUrl);
+		var img = new Image();
+		$(img).prop('src',dataUrl);
+		$p.find('.img-preview-dataurl').html("").append(img);
+		win.close();
+	}
+};
+
 </script>
