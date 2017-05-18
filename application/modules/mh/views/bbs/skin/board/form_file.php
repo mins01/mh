@@ -241,7 +241,18 @@ var WC2CB = {
 		// $p.find("img.attach-dataurl-dataurl").prop("src",dataUrl);
 		var img = new Image();
 		$(img).prop('src',dataUrl);
-		$p.find('.img-preview-dataurl').html("").append(img);
+		$p.find('.img-preview-dataurl').html("")
+		.append('<div class="text-primary preview_text">파일'+' <a href="/WC2/WC2.html" target="_blank" class="btn btn-success btn-xs">수정</a></div>')
+		.append(img);
+		
+		
+		
+		$p.find('.img-preview-dataurl .preview_text a.btn').get(0).onclick=function(img){
+			return function(){
+				set_wc2cb(img);
+			}
+		}(img);;
+		
 		win.close();
 	}
 };
