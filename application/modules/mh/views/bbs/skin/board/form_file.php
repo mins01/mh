@@ -235,7 +235,8 @@ var WC2CB = {
 		return this.img;
 	},
 	"btnFileSaveCallback":function(win,wc2){
-		var dataUrl = wc2.activeWcb.toDataURL()
+		// var dataUrl = wc2.activeWcb.toDataURL()
+		var dataUrl = wc2.getDataurlForFileSavePreview();
 		var $p = $(this.img).parents('.mode-form-file-item');
 		$p.find('select.ext_urls_types').val('attach/dataurl').get(0).onchange();
 		$p.find('input.ext_urls-dataurl').val(dataUrl);
@@ -245,15 +246,15 @@ var WC2CB = {
 		$p.find('.img-preview-dataurl').html("")
 		.append('<div class="text-primary preview_text">파일'+' <a href="/WC2/WC2.html" target="_blank" class="btn btn-success btn-xs">수정</a></div>')
 		.append(img);
-		
-		
-		
+
+
+
 		$p.find('.img-preview-dataurl .preview_text a.btn').get(0).onclick=function(img){
 			return function(){
 				set_wc2cb(img);
 			}
 		}(img);;
-		
+
 		win.close();
 	}
 };
