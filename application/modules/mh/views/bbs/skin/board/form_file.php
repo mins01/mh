@@ -24,7 +24,7 @@ $(function(){
 	})
 })
 </script>
-<div class="row">
+<div class="row bbs-files">
 <input type="hidden" name="bf_idx" value="" disabled>
 <?
 foreach($bf_rows as $r):
