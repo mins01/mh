@@ -29,7 +29,7 @@ class Crlud_test extends MX_Controller {
 	}
 	
 	public function index(){
-		$this->crlud->form = 'mcv_body';
+		$this->crlud->from = 'mcv_body';
 		$this->crlud->read_select = 'gr_nick,gr_game,gr_date';
 		// $this->crlud->show_fields = array('gr_nick','gr_game','gr_date');
 		$this->crlud->show_fields = array();
