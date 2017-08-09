@@ -6,6 +6,7 @@
 <form name="form_process" class="hide" action="?" method="get">
 
 </form>
+<button class="btn_submit hide">안보이는버튼</button>
 <script >
 var f = document.form_process;
 function act_form(btn){
