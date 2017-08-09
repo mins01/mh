@@ -29,7 +29,7 @@ function form_submit(evt){
 </script>
 <div class="table-responsive form-group-sm ">
 	
-	<form action="" method="post">
+	<form action="?" method="post">
 		<table class="table table-bordered table-hover table-condensed small">
 			<tr>
 				<th>-</th>
@@ -51,7 +51,7 @@ function form_submit(evt){
 			
 			<tr class="danger">
 				
-				<td>추가<input type="hidden" name="mode" value="process"/><input type="hidden" name="process" value="create"/></td>
+				<td>추가<input type="hidden" name="_mode" value="process"/><input type="hidden" name="_process" value="create"/></td>
 				<? foreach($show_fields as $show_field): 
 					if(!isset($field_rowss[$show_field])){
 						show_error($show_field.'는 지원되지 않습니다.');
@@ -90,7 +90,7 @@ function form_submit(evt){
 			
 			<tr class="success">
 			
-				<td>검색<input type="hidden" name="mode" disabled value=""/><input type="hidden" name="process" disabled value=""/></td>
+				<td>검색<input type="hidden" name="_mode" disabled value=""/><input type="hidden" name="_process" disabled value=""/></td>
 				<? foreach($show_fields as $show_field): 
 					if(!isset($field_rowss[$show_field])){
 						show_error($show_field.'는 지원되지 않습니다.');
@@ -129,7 +129,7 @@ function form_submit(evt){
 			<? foreach($rows as $row): ?>
 			<tr  data-method="post">			
 				
-				<td>수정<input type="hidden" name="mode" value="process"/><input type="hidden" name="process" disabled value="update"/></td>
+				<td>수정<input type="hidden" name="_mode" value="process"/><input type="hidden" name="_process" value="update"/></td>
 				<? foreach($show_fields as $show_field): 
 					if(!isset($field_rowss[$show_field])){
 						show_error($show_field.'는 지원되지 않습니다.');
@@ -137,7 +137,7 @@ function form_submit(evt){
 					$is_auto_increment = ($field_rowss[$show_field]['Extra'] == 'auto_increment');
 					$is_pk = in_array($show_field,$pks);
 					?>
-				<td><input type="text" <?=$is_auto_increment?'readonly  disabled':''?> <?= (!$is_auto_increment && $is_pk)?'required':''?> class="form-control" name="<?=html_escape($show_field)?>" value="<?=html_escape($row[$show_field])?>"  /></td>
+				<td><input type="text" <?=$is_auto_increment?'readonly ':''?> <?= ($is_pk)?'required':''?> class="form-control" name="<?=html_escape($show_field)?>" value="<?=html_escape($row[$show_field])?>"  /></td>
 				<? endforeach; ?>
 				<th><button type="submit" class="btn btn-default btn-xs">수정</button></th>					
 			

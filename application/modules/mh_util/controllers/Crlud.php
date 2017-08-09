@@ -28,35 +28,37 @@ class Crlud extends MX_Controller {
 	}
 	
 	public function index(){
-		$mode = $this->input->get_post('mode');
-		if($mode == 'process'){
+		$mode = $this->input->get_post('_mode');
+		// print_r($_POST);
+		if($mode == 'process'){			
 			return $this->process();	
 		}else{
 			return $this->view();	
 		}
 		
 	}
+	public function get_show_field($show_fields,$field_rowss){
+		if(count($show_fields)==0){
+			return array_keys($field_rowss);
+		}else{
+			return $show_fields;
+		}
+	}
 	
 	public function view(){
 		$field_rowss = $this->crlud_m->show_columns($this->from);
-		if(count($this->show_fields)==0){
-			$show_fields = array_keys($field_rowss);
-		}else{
-			$show_fields = $this->show_fields;
-		}
+		$show_fields = $this->get_show_field($this->show_fields,$field_rowss);
 		$get = array();
 		$wheres = array();
-		
 		foreach($show_fields as $k){
 			$get[$k]=$this->input->get($k);
 			if(isset($get[$k][0])){
 				$wheres[$k] = $get[$k];
 			}
-			
 		}
 	
 		$rows = $this->crlud_m->lists($this->from,implode(',',$show_fields),$wheres);
-		echo $this->db->last_query();
+		// echo $this->db->last_query();
 		// print_r($field_rowss);
 		// print_r($rows);
 		$data = array(
@@ -97,6 +99,48 @@ class Crlud extends MX_Controller {
 	
 	public function process(){
 		
+		$process = $this->input->post('_process');
+		
+		$referer = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
+		if(!isset($referer[0])){
+			show_error("잘못된 접근!");
+		}
+		
+		$field_rowss = $this->crlud_m->show_columns($this->from);
+		$show_fields = $this->get_show_field($this->show_fields,$field_rowss);
+		
+		switch($process){
+			case 'create':
+			// print_r($_POST);exit;
+				$sets = array();
+				foreach($show_fields as $k){
+					$sets[$k]=$this->input->post($k);
+				}	
+				$this->crlud_m->create($this->from,$sets);
+				// echo $this->db->last_query();
+				header('Location: '.$referer);
+				return;
+			break;
+			case 'update':
+			// print_r($_POST);exit;
+				$pks = $this->get_pk_from_field_rowss($field_rowss);
+				$sets = array();
+				$wheres = array();
+				foreach($show_fields as $k){
+					if(in_array($k,$pks)){
+						$wheres[$k]=$this->input->post($k);	
+					}else{
+						$sets[$k]=$this->input->post($k);	
+					}
+					
+				}	
+				$this->crlud_m->update($this->from,$wheres,$sets);
+				// echo $this->db->last_query();
+				
+				header('Location: '.$referer);
+				return;
+			break;
+		}
 	}
 }
 

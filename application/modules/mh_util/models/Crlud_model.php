@@ -12,7 +12,7 @@ class Crlud_model extends CI_Model {
 	}
 	
 	public function create($from,$sets){
-		
+		return $this->db->from($from)->set($sets)->insert();
 	}
 	public function read($from,$select='*',$wheres=array(),$group_by='',$order=''){
 		
@@ -20,8 +20,14 @@ class Crlud_model extends CI_Model {
 	public function lists($from,$select='*',$wheres=array(),$group_by='',$order='',$limit=10,$offset=0){
 		return $this->db->from($from)->select($select)->where($wheres)->group_by($group_by)->order_by($order)->limit($limit,$offset)->get()->result_array();
 	}
-	public function update($from,$sets,$wheres){
-		
+	public function update($from,$wheres,$sets){
+		if(count($wheres)==0){
+			return false;
+		}
+		if(count($sets)==0){
+			return false;
+		}
+		return $this->db->from($from)->where($wheres)->set($sets)->update();
 	}
 	public function delete($from,$wheres){
 		
