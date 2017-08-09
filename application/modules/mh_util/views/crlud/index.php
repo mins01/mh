@@ -137,7 +137,7 @@ function form_submit(evt){
 					$is_auto_increment = ($field_rowss[$show_field]['Extra'] == 'auto_increment');
 					$is_pk = in_array($show_field,$pks);
 					?>
-				<td><input type="text" <?=$is_auto_increment?'readonly ':''?> <?= ($is_pk)?'required':''?> class="form-control" name="<?=html_escape($show_field)?>" value="<?=html_escape($row[$show_field])?>"  /></td>
+				<td><input type="text" <?= ($is_pk)?'required readonly':''?> class="form-control" name="<?=html_escape($show_field)?>" value="<?=html_escape($row[$show_field])?>"  /></td>
 				<? endforeach; ?>
 				<th><button type="submit" class="btn btn-default btn-xs">수정</button></th>					
 			
@@ -153,7 +153,6 @@ function form_submit(evt){
 			</tr>
 			<? endif; ?>
 			
-		</table>
-		<button class="btn_submit hide">11</button>
+		</table>		
 	</form>
 </div>

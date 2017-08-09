@@ -10,6 +10,9 @@ class Mh_hook{
 	}
 	public function post(){
 		$layout_disable = $this->CI->config->item('layout_disable');
+		if(!isset($this->CI->layout)){
+			return;
+		}
 		if(!isset($layout_disable)){
 			$layout_disable = false;
 		}

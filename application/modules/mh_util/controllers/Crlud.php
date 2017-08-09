@@ -4,21 +4,21 @@
  */
 class Crlud extends MX_Controller {
 	// private $crlud_m = null;
-	private $from = 'mcv_body';
-	private $read_select = 'gr_nick,gr_game,gr_date';
+	public $from = 'mcv_body';
+	public $read_select = 'gr_nick,gr_game,gr_date';
 	// private $show_fields = array('gr_nick','gr_game','gr_date');
-	private $show_fields = array();
+	public $show_fields = array();
 	public $modul_path = 'mh_util';
 	public function __construct()
 	{
 		
 		
-		$this->config->load('conf_front'); // 프론트 사이트 설정
-
-		$this->load->module('mh/common');
-		$this->load->module('mh/layout');
-		// $this->config->set_item('layout_disable',true);
-		$this->config->set_item('layout_hide',1);
+		// $this->config->load('conf_front'); // 프론트 사이트 설정
+		// 
+		// $this->load->module('mh/common');
+		// $this->load->module('mh/layout');
+		// // $this->config->set_item('layout_disable',true);
+		// $this->config->set_item('layout_hide',1);
 		
 		$this->load->model($this->modul_path.'/crlud_model','crlud_m');
 		
@@ -26,17 +26,21 @@ class Crlud extends MX_Controller {
 		// $this->load->driver('cache', array('adapter' => 'file', 'backup' => 'file'));
 		//print_r($this->cache);
 	}
-	
 	public function index(){
+		return $this->action(false);
+		
+	}
+	public function action($return_view){
 		$mode = $this->input->get_post('_mode');
 		// print_r($_POST);
 		if($mode == 'process'){			
-			return $this->process();	
+			return $this->process($return_view);	
 		}else{
-			return $this->view();	
+			return $this->view($return_view);	
 		}
 		
-	}
+	}	
+	
 	public function get_show_field($show_fields,$field_rowss){
 		if(count($show_fields)==0){
 			return array_keys($field_rowss);
@@ -45,7 +49,7 @@ class Crlud extends MX_Controller {
 		}
 	}
 	
-	public function view(){
+	public function view($return_view){
 		$field_rowss = $this->crlud_m->show_columns($this->from);
 		$show_fields = $this->get_show_field($this->show_fields,$field_rowss);
 		$get = array();
@@ -69,7 +73,7 @@ class Crlud extends MX_Controller {
 			'pks'=>$this->get_pk_from_field_rowss($field_rowss),
 			'get'=>$get,
 		);
-		$this->load->view($this->modul_path.'/crlud/index',$data);
+		return $this->load->view($this->modul_path.'/crlud/index',$data,$return_view);
 	}
 	
 	public function get_pk_from_field_rowss($field_rowss){
@@ -81,23 +85,7 @@ class Crlud extends MX_Controller {
 		return $pks;
 	}
 	
-	public function create(){
-		
-	}
-	public function read(){
-		
-	}
-	public function update(){
-		
-	}
-	public function delete(){
-		
-	}
-	public function lists(){
-		
-	}
-	
-	public function process(){
+	public function process($return_view){
 		
 		$process = $this->input->post('_process');
 		
