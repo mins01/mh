@@ -127,7 +127,7 @@ function form_submit(evt){
 				<? endforeach; ?>
 				<th>-</th>
 			</tr>
-			<? foreach($rows as $row): ?>
+			<? foreach($rows as $k=>$row): ?>
 			<tr  data-method="post">			
 				
 				<td>수정<input type="hidden" name="_mode" value="process"/><input type="hidden" name="_process" value="update"/></td>
@@ -138,7 +138,19 @@ function form_submit(evt){
 					$is_auto_increment = ($field_rowss[$show_field]['Extra'] == 'auto_increment');
 					$is_pk = in_array($show_field,$pks);
 					?>
-				<td><input type="text" <?= ($is_pk)?'required readonly':''?> class="form-control" name="<?=html_escape($show_field)?>" value="<?=html_escape($row[$show_field])?>"  /></td>
+				<td>
+					<? if(strpos($field_rowss[$show_field]['Type'],'set(')===0): //set 타입일 경우 
+						$val = explode(',',$row[$show_field]);
+						$t = explode(',',str_replace(array('set(',"'",')'),array('','',''),$field_rowss[$show_field]['Type']));
+						foreach($t as $key):?>
+						<label><input type="checkbox" value="<?=html_escape($key)?>" name="<?=html_escape($show_field)?>[]" <?=in_array($key,$val)?'checked':''?>  ><?=html_escape($key)?></label> 
+						<?
+						endforeach;
+						?>
+					<? else:?>
+					<input type="text" <?= ($is_pk)?'required readonly':''?> class="form-control" name="<?=html_escape($show_field)?>" value="<?=html_escape($row[$show_field])?>"  />
+					<? endif; ?>
+				</td>
 				<? endforeach; ?>
 				<th><button type="submit" class="btn btn-default btn-xs">수정</button></th>					
 			

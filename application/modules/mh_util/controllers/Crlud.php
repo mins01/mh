@@ -4,7 +4,7 @@
  */
 class Crlud extends MX_Controller {
 	// private $crlud_m = null;
-	public $from = 'mcv_body';
+	public $from = '';
 	public $read_select = 'gr_nick,gr_game,gr_date';
 	// private $show_fields = array('gr_nick','gr_game','gr_date');
 	public $show_fields = array();
@@ -118,9 +118,11 @@ class Crlud extends MX_Controller {
 					if(in_array($k,$pks)){
 						$wheres[$k]=$this->input->post($k);	
 					}else{
-						$sets[$k]=$this->input->post($k);	
+						$sets[$k]=$this->input->post($k);
+						if(is_array($sets[$k])){
+							$sets[$k] = implode(',',$sets[$k]);
+						}
 					}
-					
 				}	
 				$this->crlud_m->update($this->from,$wheres,$sets);
 				// echo $this->db->last_query();
