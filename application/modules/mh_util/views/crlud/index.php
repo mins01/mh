@@ -61,7 +61,20 @@ function form_submit(evt){
 					$is_pk = in_array($show_field,$pks);
 					// $is_autoinc = $field_rowss[$show_field][]
 					?>
-				<td><input type="text" <?=$is_auto_increment?'readonly  disabled':''?> <?= (!$is_auto_increment && $is_pk)?'required':''?>  class="form-control" name="<?=html_escape($show_field)?>"  /></td>
+				<td>
+					<? if(strpos($field_rowss[$show_field]['Type'],'set(')===0): //set 타입일 경우 
+						$val = array();
+						$t = explode(',',str_replace(array('set(',"'",')'),array('','',''),$field_rowss[$show_field]['Type']));
+						foreach($t as $key):?>
+						<label><input type="checkbox" value="<?=html_escape($key)?>" name="<?=html_escape($show_field)?>[]" <?=in_array($key,$val)?'checked':''?>  ><?=html_escape($key)?></label> 
+						<?
+						endforeach;
+						?>
+					<? else:?>
+					<input type="text" <?=$is_auto_increment?'readonly  disabled':''?> <?= (!$is_auto_increment && $is_pk)?'required':''?>  class="form-control" name="<?=html_escape($show_field)?>"  />
+					<? endif; ?>
+				</td>
+				
 				<? endforeach; ?>
 				<th><button type="submit" class="btn btn-default btn-xs">추가</button></th>					
 				

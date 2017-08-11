@@ -103,6 +103,9 @@ class Crlud extends MX_Controller {
 				$sets = array();
 				foreach($show_fields as $k){
 					$sets[$k]=$this->input->post($k);
+					if(is_array($sets[$k])){
+						$sets[$k] = implode(',',$sets[$k]);
+					}
 				}	
 				$this->crlud_m->create($this->from,$sets);
 				// echo $this->db->last_query();
