@@ -40,7 +40,7 @@ if($mode=='write'||$mode=='answer'){
 					<input type="text" class="form-control"  name="b_link" aria-label="링크" placeholder="http://mins01.com/mh/" style="min-width:80px" value="<?=html_escape($b_row['b_link'])?>">
 				</div>
 				<? if($bm_row['bm_use_category']!='0'): ?>
-				<?=form_dropdown('b_category', $bm_row['categorys'], $b_row['b_category'], 'class="selectpicker show-tick" style="width:8em" data-width="100px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리" ')?>
+				<?=form_dropdown('b_category', $bm_row['categorys'], $b_row['b_category'], 'class="form-control show-tick" style="width:8em" data-width="100px" aria-label="카테고리 설정" title="카테고리"  data-header="카테고리" ')?>
 				<? endif; ?>
 				<? if($bm_row['bm_use_secret']=='1'): ?>
 				<div class="btn-group">
@@ -48,17 +48,17 @@ if($mode=='write'||$mode=='answer'){
 				</div>
 				<? endif; ?>
 				
-				<?=form_dropdown('b_html', $permission['admin']?$bbs_conf['b_htmls_for_admin']:$bbs_conf['b_htmls'], $b_row['b_html'], ' class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="글형식" title="글형식"  data-header="글형식"')?>
+				<?=form_dropdown('b_html', $permission['admin']?$bbs_conf['b_htmls_for_admin']:$bbs_conf['b_htmls'], $b_row['b_html'], ' class="form-control show-tick" style="width:6em" data-width="80px" aria-label="글형식" title="글형식"  data-header="글형식"')?>
 				
 				<?
 				if($permission['admin']){
-				echo form_dropdown('b_notice', $bbs_conf['b_notices'], $b_row['b_notice'], 'class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="공지설정" title="공지글" data-header="공지글 설정"');
+				echo form_dropdown('b_notice', $bbs_conf['b_notices'], $b_row['b_notice'], 'class="form-control show-tick" style="width:6em" data-width="80px" aria-label="공지설정" title="공지글" data-header="공지글 설정"');
 				}
 				?>
 				<div class="btn-group">
-					<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="none_geo" value="1" autocomplete="off" onclick="show_geo_form(true)"><div class="m-layout" data-label-on="지형정보on" data-label-off=""></div>
+					<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="none_geo" value="1" autocomplete="off" onclick="show_geo_form(true)"><div class="m-layout" data-label-on="날짜/지형on" data-label-off=""></div>
 					</label>
-					<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="none_geo" value="0" autocomplete="off"  onclick="show_geo_form(false)" checked=""><div class="m-layout" data-label-on="지형정보off" data-label-off=""></div>
+					<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="none_geo" value="0" autocomplete="off"  onclick="show_geo_form(false)" checked=""><div class="m-layout" data-label-on="날짜/지형off" data-label-off=""></div>
 					</label>
 				</div>
 			</li>

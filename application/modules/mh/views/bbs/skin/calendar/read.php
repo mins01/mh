@@ -39,6 +39,24 @@ if($d_day==0){
 		</div>
 		
 	</div>
+	<div class="text-right panel-body ">
+		
+		<? if($permission['list']): ?>
+		<a href="<?=html_escape($bbs_conf['list_url'])?>" class="btn btn-xs btn-primary glyphicon glyphicon-list"> 목록</a>
+		<? endif; ?>
+		<? if($permission['answer']): ?>
+		<a href="<?=html_escape($b_row['answer_url'])?>"  class="btn btn-xs btn-info glyphicon glyphicon-pencil"> 답변</a>
+		<? endif; ?>
+		<div class="btn-group" role="group" aria-label="">
+			
+			<? if($permission['edit']): ?>
+			<a href="<?=html_escape($b_row['edit_url'])?>"  class="btn btn-xs btn-warning glyphicon glyphicon-pencil"> 수정</a>
+			<? endif; ?>
+			<? if($permission['delete']): ?>
+			<a href="<?=html_escape($b_row['delete_url'])?>"  class="btn btn-xs btn-danger glyphicon glyphicon-remove"> 삭제</a>
+			<? endif; ?>
+		</div>
+	</div>
 	<ul class="list-group">
 		<li class="list-group-item form-inline">
 			<div class="input-group">
