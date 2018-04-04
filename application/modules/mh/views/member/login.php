@@ -35,7 +35,22 @@
 			</div>
 		</div>
 	</div>
-	
-	
+	<div class="panel-body" >
+		<div class="alert alert-danger text-center" role="alert" style="margin-bottom:5px;" ><b>주의 : 공개된 장소에서는 사용 완료 후 꼭 로그아웃을 하시기바랍니다.</b></div>
+		<ul  class="list-group">
+			<li  class="list-group-item active text-center">개인정보 오남용 피해예방 10계명 <a style="color:#fff;" target="_blank" class="glyphicon glyphicon-link text-primary" href="https://privacy.kisa.or.kr/kor/privacy/privacy03_new.jsp"></a></li>
+			<li  class="list-group-item">01. 개인정보처리방침 및 이용약관 꼼꼼히 살피기</li>
+			<li  class="list-group-item">02. 비밀번호는 문자와 숫자로 8자리 이상</li>
+			<li  class="list-group-item">03. 비밀번호는 주기적으로 변경하기</li>
+			<li  class="list-group-item">04. 회원가입은 주민번호 대신 I-PIN 사용</li>
+			<li  class="list-group-item">05. 명의도용확인 서비스 이용하여 가입정보 확인</li>
+			<li  class="list-group-item">06. 개인정보는 친구 에게도 알려주지 않기</li>
+			<li  class="list-group-item">07. P2P 공유폴더에 개인 정보 저장하지 않기</li>
+			<li  class="list-group-item">08. 금융거래는 PC방 에서 이용하지 않기</li>
+			<li  class="list-group-item">09. 출처가 불명확한  자료는 다운로드금지</li>
+			<li  class="list-group-item">10. 인정보 침해신고 적극 활용하기</li>
+		</ul>
+	</div>
 </div>
+
 </form>
