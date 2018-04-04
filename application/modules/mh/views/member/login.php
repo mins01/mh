@@ -48,7 +48,7 @@
 			<li  class="list-group-item">07. P2P 공유폴더에 개인 정보 저장하지 않기</li>
 			<li  class="list-group-item">08. 금융거래는 PC방 에서 이용하지 않기</li>
 			<li  class="list-group-item">09. 출처가 불명확한  자료는 다운로드금지</li>
-			<li  class="list-group-item">10. 인정보 침해신고 적극 활용하기</li>
+			<li  class="list-group-item">10. 개인정보 침해신고 적극 활용하기</li>
 		</ul>
 	</div>
 </div>
