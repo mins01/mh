@@ -14,6 +14,7 @@ class Member extends MX_Controller {
 	}
 	
 	public function login(){
+		 header("HTTP/1.1 401 Unauthorized");
 		$process = $this->input->post_get('process');
 		if($process && $process=='login'){
 			return $this->login_process();
