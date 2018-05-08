@@ -47,17 +47,18 @@ var wysiwyg = null;
 var mb_wysiwyg_url = "/web_work/mb_wysiwyg_dom";
 function createWysiwygObj(target){
 	try{
-		mb_wysiwyg_head_css = '<!-- 합쳐지고 최소화된 최신 CSS --> \
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> \
-			<!-- 부가적인 테마 --> \
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"> \
-			<link rel="stylesheet" href="/mh/css/bootstrap/bootstrap-select.min.css"> \
-			<link rel="stylesheet" href="/mh/css/mh.css"> \
-			<!-- 게시판 추가 head_contents --> \
-			<link href="http://wwwdev.mins01.com/mh/css/bbs/skin/bbs_skin_default.css" \ rel="stylesheet"> \
-			<!-- //게시판 추가 head_contents --> \
-			<style>body{padding:0 !important}</style> \
-		';
+		// mb_wysiwyg_head_css = '<!-- 합쳐지고 최소화된 최신 CSS --> \
+		// 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> \
+		// 	<!-- 부가적인 테마 --> \
+		// 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"> \
+		// 	<link rel="stylesheet" href="/mh/css/bootstrap/bootstrap-select.min.css"> \
+		// 	<link rel="stylesheet" href="/mh/css/mh.css"> \
+		// 	<!-- 게시판 추가 head_contents --> \
+		// 	<link href="/mh/css/bbs/skin/bbs_skin_default.css" \ rel="stylesheet"> \
+		// 	<!-- //게시판 추가 head_contents --> \
+		// 	<style>body{padding:0 !important}</style> \
+		// ';
+		mb_wysiwyg_head_css = $('.mb_wysiwyg_head_css').clone().wrapAll("<div/>").parent().html()
 		var wysiwyg = new mb_wysiwyg(target,'100%',300,'','mins가 만든 위지웍 에디터입니다.');
 		wysiwygs.push(wysiwyg);
 		wysiwyg.path = mb_wysiwyg_url;

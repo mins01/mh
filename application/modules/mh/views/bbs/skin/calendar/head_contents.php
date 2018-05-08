@@ -16,8 +16,8 @@ $base_url = base_url();
 
 
 <!-- //게시판 추가 head_contents -->
-<link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_default.css'))?>" rel="stylesheet">
-<link href="<?=html_escape(base_url('css/bbs/skin/calendar/bbs_skin_calendar.css'))?>" rel="stylesheet">
+<link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_default.css'))?>" rel="stylesheet"  class="mb_wysiwyg_head_css">
+<link href="<?=html_escape(base_url('css/bbs/skin/calendar/bbs_skin_calendar.css'))?>" rel="stylesheet"  class="mb_wysiwyg_head_css">
 <!-- for RSS -->
 <link rel="alternate" type="application/rss+xml" title="RSS : <?=$bm_row['bm_title']?>" href="<?=html_escape($bbs_conf['rss_url'])?>" />
 

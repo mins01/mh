@@ -12,8 +12,8 @@ $base_url = base_url();
 
 <link href="/web_work/mb_wysiwyg_dom/mb_wysiwyg.css" rel="stylesheet" type="text/css" />
 
-<link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_default.css'))?>" rel="stylesheet">
-<link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_there.css'))?>" rel="stylesheet">
+<link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_default.css'))?>" rel="stylesheet"  class="mb_wysiwyg_head_css">
+<link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_there.css'))?>" rel="stylesheet"  class="mb_wysiwyg_head_css">
 
 <script type="text/javascript"
 	  src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;key=AIzaSyBw8nAJOdLCqN3DuGZJKvY0idP_QWRR5WM&amp;libraries=places"></script>

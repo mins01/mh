@@ -45,7 +45,7 @@ class Custom extends MX_Controller {
 		$b_rowss = $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,5,30);
 		
 		$this->config->set_item('layout_head_contents',
-		'<link href="'.html_escape(base_url('css/bbs/skin/bbs_skin_default.css')).'" rel="stylesheet">'
+		'<link href="'.html_escape(base_url('css/bbs/skin/bbs_skin_default.css')).'" rel="stylesheet"  class="mb_wysiwyg_head_css">'
 		);
 		
 		//
