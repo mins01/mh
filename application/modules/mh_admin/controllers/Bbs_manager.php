@@ -122,7 +122,7 @@ class Bbs_manager extends MX_Controller {
 		
 		$permission = $this->get_permission_lists();
 		if(!$permission['list']){
-			show_error('권한이 없습니다.');
+			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 		
 		$get = $this->input->get();
@@ -207,7 +207,7 @@ class Bbs_manager extends MX_Controller {
 		$this->extends_b_row($b_row,$get);
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission['read']){
-			show_error('권한이 없습니다.');
+			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 		if($b_row['b_secret']=='1' && !$permission['mine']){
 			$b_pass = $this->input->post('b_pass');
@@ -281,7 +281,7 @@ class Bbs_manager extends MX_Controller {
 		
 		$permission = $this->get_permission_lists();
 		if(!$permission[$mode]){
-			show_error('권한이 없습니다.');
+			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 		//print_r($permission);
 		
@@ -343,7 +343,7 @@ class Bbs_manager extends MX_Controller {
 		
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission['delete']){
-			show_error('권한이 없습니다.');
+			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 
 		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
@@ -386,7 +386,7 @@ class Bbs_manager extends MX_Controller {
 		
 		$permission = $this->get_permission_lists();
 		if(!$permission[$process]){
-			show_error('권한이 없습니다.');
+			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 		
 		$this->config->set_item('layout_head_contents',$this->get_head_contents($process));

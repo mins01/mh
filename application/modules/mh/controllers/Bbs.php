@@ -242,7 +242,7 @@ class Bbs extends MX_Controller {
 			if($with_read){
 				return;
 			}else{
-				show_error('권한이 없습니다.');
+				show_error('권한이 없습니다.',403,'Permission denied');
 			}
 		}
 
@@ -325,7 +325,7 @@ class Bbs extends MX_Controller {
 			if($with_read){
 				return;
 			}else{
-				show_error('권한이 없습니다.');
+				show_error('권한이 없습니다.',403,'Permission denied');
 			}
 		}
 
@@ -390,7 +390,7 @@ class Bbs extends MX_Controller {
 			if($with_read){
 				return;
 			}else{
-				show_error('권한이 없습니다.');
+				show_error('권한이 없습니다.',403,'Permission denied');
 			}
 		}
 
@@ -497,7 +497,7 @@ class Bbs extends MX_Controller {
 		$this->extends_b_row($b_row,$get);
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission['read']){
-			show_error('권한이 없습니다.');
+			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 		if($b_row['b_secret']=='1' && !$permission['mine']){
 			$b_pass = $this->input->post('b_pass');
@@ -562,7 +562,7 @@ class Bbs extends MX_Controller {
 		$this->extends_b_row($b_row,$get);
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission['read']){
-			show_error('권한이 없습니다.');
+			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 		if(!$permission['down']){
 			show_error('내려받기 권한이 없습니다.');
@@ -662,7 +662,7 @@ class Bbs extends MX_Controller {
 
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission[$mode]){
-			show_error('권한이 없습니다.');
+			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 		//print_r($permission);
 
@@ -745,7 +745,7 @@ class Bbs extends MX_Controller {
 
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission['delete']){
-			show_error('권한이 없습니다.');
+			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 
 		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
@@ -795,7 +795,7 @@ class Bbs extends MX_Controller {
 
 		$permission = $this->get_permission_lists($b_row['m_idx']);
 		if(!$permission[$process]){
-			show_error('권한이 없습니다.');
+			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 
 		$this->config->set_item('layout_head_contents',$this->get_head_contents($process));
