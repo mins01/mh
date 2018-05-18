@@ -103,7 +103,7 @@
 					<? else: ?>
 					<p class="navbar-text text-right "><a href="<?=base_url('member/user_info')?>"><span class="glyphicon glyphicon-user"></span><?=html_escape($login_label)?></a>님 <button class="btn btn-info btn-xs" onclick="window.open('<?=base_url('member/logout')?>','_self')">로그아웃</button></p>
 					<? endif;?>
-				</>
+				</div>
 			</div><!--/.nav-collapse -->
 		</div>
 	</nav>
