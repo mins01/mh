@@ -80,7 +80,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/" style="margin: 0;padding: 3px"><img src="/img/logo.gif" style="max-height: 100%;"></a>
+				<a class="navbar-brand" href="/" style="margin: 0;padding: 3px"><img src="/img/logo.gif" style="max-height: 100%;" alt="logo image"></a>
 				<a class="navbar-brand hidden-sm hidden-md hidden-lg " href="<?=SITE_URI_PREFIX?>">메인</a>
 				<a class="navbar-brand hidden-sm hidden-md hidden-lg " href="<?=SITE_URI_PREFIX?>tech">기술</a>
 			</div>
