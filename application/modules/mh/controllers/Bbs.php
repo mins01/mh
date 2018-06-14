@@ -39,7 +39,7 @@ class Bbs extends MX_Controller {
 		$mode = isset($param[1][0])?$param[1]:'list';
 		$b_idx = isset($param[2][0])?$param[2]:'';
 		if(!isset($b_id[0])){
-			show_error('게시판 아이디가 없습니다.');
+			show_error('게시판 아이디가 없습니다.',400,'Bad Request');
 		}
 		$mode = $this->uri->segment(3,'list');//option
 		$b_idx = $this->uri->segment(4);//option
@@ -56,7 +56,7 @@ class Bbs extends MX_Controller {
 		$mode = isset($param[0][0])?$param[0]:'list';
 		$b_idx = isset($param[1][0])?$param[1]:'list';
 		if(!isset($b_id[0])){
-			show_error('게시판 아이디가 없습니다.');
+			show_error('게시판 아이디가 없습니다.',400,'Bad Request');
 		}
 		$this->set_base_url($base_url);
 		$this->action($b_id,$mode,$b_idx);
@@ -65,11 +65,11 @@ class Bbs extends MX_Controller {
 	public function action($b_id,$mode,$b_idx){
 		//-- 게시판 마스터 정보 가져오기
 		if(!isset($b_id)){
-			show_error('게시판 정보가 잘못되었습니다.');
+			show_error('게시판 정보가 잘못되었습니다.',400,'Bad Request');
 		}
 		$this->bm_row = $this->bm_m->get_bm_row($b_id);
 		if($this->bm_row['bm_open']!='1'){
-			show_error('사용 불가능한 게시판 입니다.');
+			show_error('사용 불가능한 게시판 입니다.',404,'File not found');
 		}
 		//print_r($conf['bm_row']);
 		$this->bbs_m->set_bm_row($this->bm_row); //여기서 모델에 사용할 게시판 아이디가 고정됨
@@ -86,7 +86,7 @@ class Bbs extends MX_Controller {
 
 
 		if(!method_exists($this,'mode_'.$mode)){
-			show_error('잘못된 모드입니다.');
+			show_error('잘못된 모드입니다.',400,'Bad Request');
 		}
 		$get = $this->input->get();
 		$this->bbs_conf['base_url'] = $this->base_url;
@@ -482,7 +482,7 @@ class Bbs extends MX_Controller {
 	}
 	public function mode_read($b_idx){
 		if(!$b_idx){
-			show_error('게시물 아이디가 없습니다');
+			show_error('게시물 아이디가 없습니다',400,'Bad Request');
 		}
 		$get = $this->input->get();
 		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
@@ -492,7 +492,7 @@ class Bbs extends MX_Controller {
 		$get['page']=$this->bbs_conf['page'];
 		$b_row = $this->bbs_m->select_by_b_idx($b_idx);
 		if(!$b_row){
-			show_error('데이터가 없습니다');
+			show_error('데이터가 없습니다',404,'File not found');
 		}
 		$this->extends_b_row($b_row,$get);
 		$permission = $this->get_permission_lists($b_row['m_idx']);
@@ -552,12 +552,12 @@ class Bbs extends MX_Controller {
 	}
 	private function _mode_download($b_idx,$is_thumbnail=false){
 		if(!$b_idx){
-			show_error('게시물 아이디가 없습니다');
+			show_error('게시물 아이디가 없습니다',400,'Bad Request');
 		}
 		$get = $this->input->get();
 		$b_row = $this->bbs_m->select_by_b_idx($b_idx);
 		if(!$b_row){
-			show_error('데이터가 없습니다');
+			show_error('데이터가 없습니다',404,'File not found');
 		}
 		$this->extends_b_row($b_row,$get);
 		$permission = $this->get_permission_lists($b_row['m_idx']);
@@ -565,7 +565,7 @@ class Bbs extends MX_Controller {
 			show_error('권한이 없습니다.',403,'Permission denied');
 		}
 		if(!$permission['down']){
-			show_error('내려받기 권한이 없습니다.');
+			show_error('내려받기 권한이 없습니다.',403,'Permission denied');
 		}
 		if($b_row['b_secret']=='1' && !$permission['mine']){
 			$b_pass = $this->input->post('b_pass');
@@ -581,7 +581,7 @@ class Bbs extends MX_Controller {
 		$bf_row = $this->bf_m->select_by_bf_idx($bf_idx);
 		//print_r($bf_row);
 		if(!isset($bf_row['bf_idx'])){
-			show_error('파일 데이터가 없습니다.');
+			show_error('파일 데이터가 없습니다.',404,'File not found');
 		}
 
 		while(ob_get_level()>0 && ob_end_clean()){//출력 버퍼 삭제하고 종료.(모든 버퍼를 삭제한다.
@@ -619,11 +619,11 @@ class Bbs extends MX_Controller {
 	}
 	public function mode_edit($b_idx){
 		if(!$b_idx){
-			show_error('게시물 아이디가 없습니다');
+			show_error('게시물 아이디가 없습니다',400,'Bad Request');
 		}
 		$b_row = $this->bbs_m->select_by_b_idx($b_idx);
 		if(!$b_row){
-			show_error('게시물이 없습니다');
+			show_error('게시물이 없습니다',404,'File not found');
 		}
 		$this->extends_b_row($b_row,$this->input->get());
 
@@ -633,11 +633,11 @@ class Bbs extends MX_Controller {
 
 	public function mode_answer($b_idx){
 		if(!$b_idx){
-			show_error('게시물 아이디가 없습니다');
+			show_error('게시물 아이디가 없습니다',400,'Bad Request');
 		}
 		$b_row = $this->bbs_m->select_by_b_idx($b_idx);
 		if(!$b_row){
-			show_error('게시물이 없습니다');
+			show_error('게시물이 없습니다',404,'File not found');
 		}
 		$b_row['m_idx'] = null;
 		$b_row['b_name'] = $this->common->get_login('m_nick');
@@ -730,11 +730,11 @@ class Bbs extends MX_Controller {
 
 	public function mode_delete($b_idx){
 		if(!$b_idx){
-			show_error('게시물 아이디가 없습니다');
+			show_error('게시물 아이디가 없습니다',400,'Bad Request');
 		}
 		$b_row = $this->bbs_m->select_by_b_idx($b_idx);
 		if(!$b_row){
-			show_error('게시물이 없습니다');
+			show_error('게시물이 없습니다',404,'File not found');
 		}
 
 
@@ -855,7 +855,7 @@ class Bbs extends MX_Controller {
 				$delf_r = $this->bf_m->set_represent_by_b_idx_bf_idx($b_idx,$this->input->post('bf_idx'));
 			break;
 			default:
-			show_error('허용되지 않는 요청');
+				show_error('허용되지 않는 요청');
 			break;
 		}
 

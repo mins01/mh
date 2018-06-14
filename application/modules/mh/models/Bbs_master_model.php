@@ -15,6 +15,9 @@ class Bbs_master_model extends CI_Model {
 	}
 	public function get_bm_row($b_id){
 		$bm_row = $this->db->from($this->tbl)->where('b_id',$b_id)->get()->row_array();
+		if(!isset($bm_row['bm_table'][0])){
+			return null;
+		}
 		$this->extends_bm_row($bm_row);
 		return $bm_row;
 	}
