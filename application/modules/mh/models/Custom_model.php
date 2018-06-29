@@ -27,16 +27,16 @@ class Custom_model extends CI_Model {
 			limit {$limit} 
 			";
 		}else{
-			$v_b_etc_0 = $this->db->escape(date('Y-m-d 00:00:00',time()-60*60*24*2));
-			$v_b_etc_1 = $this->db->escape(date('Y-m-d 00:00:00',time()+60*60*24*$day));
+			$v_b_date_st = $this->db->escape(date('Y-m-d 00:00:00',time()-60*60*24*2));
+			$v_b_date_ed = $this->db->escape(date('Y-m-d 00:00:00',time()+60*60*24*$day));
 		
 			$sql = "select {$v_select} from {$from} b
 			
 			where b_isdel=0 
-			and b_etc_0 >= {$v_b_etc_0}
-			and b_etc_1 <= {$v_b_etc_1}
+			and b_date_st >= {$v_b_date_st}
+			and b_date_ed <= {$v_b_date_ed}
 			and b_id = {$v_b_id}
-			order by b_etc_0 desc,b_etc_1 desc
+			order by b_date_st desc,b_date_ed desc
 			limit {$limit}
 			";
 			//echo $sql;
