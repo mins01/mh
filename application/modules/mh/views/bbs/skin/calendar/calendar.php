@@ -84,19 +84,19 @@ $today_date = date('Y-m-d');
 		<table class="table  table-condensed  table-striped table-calender" style="table-layout:fixed">
 			<colgroup>
 			
-				<col style="width:auto">
-				<col style="width:14.285714285714%">
-				<col style="width:14.285714285714%">
-				<col style="width:14.285714285714%">
-				<col style="width:14.285714285714%">
-				<col style="width:14.285714285714%">
-				<col style="width:14.285714285714%">
-				<col style="width:14.285714285714%">
-				<col style="width:auto">
+				<!-- <col style="width:auto"> -->
+				<col style="width:15%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:14%">
+				<col style="width:15%">
+				<!-- <col style="width:auto"> -->
 			</colgroup>
 			<thead>
 				<tr>
-					<th class="day-hide day-th day-th-w-hide">-</th>
+					<!-- <th class="day-hide day-th day-th-w-hide">-</th> -->
 					<th class="day-th day-th-w-0"><div class="day-th-label">일</div></th>
 					<th class="day-th day-th-w-1"><div class="day-th-label">월</div></th>
 					<th class="day-th day-th-w-2"><div class="day-th-label">화</div></th>
@@ -104,7 +104,7 @@ $today_date = date('Y-m-d');
 					<th class="day-th day-th-w-4"><div class="day-th-label">목</div></th>
 					<th class="day-th day-th-w-5"><div class="day-th-label">금</div></th>
 					<th class="day-th day-th-w-6"><div class="day-th-label">토</div></th>
-					<th class="day-hide day-th day-th-w-hide">-</th>
+					<!-- <th class="day-hide day-th day-th-w-hide">-</th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -114,7 +114,7 @@ $today_date = date('Y-m-d');
 				while($c_time < $v_time_ed && $limit_i--):
 				?>
 				<tr>
-					<td class="day-hide day-w-hide"></td>
+					<!-- <td class="day-hide day-w-hide"></td> -->
 					<?
 					
 					$tmp_get = $get;
@@ -185,7 +185,7 @@ $today_date = date('Y-m-d');
 					
 					endfor;
 					?>
-					<td class="day-hide day-w-hide"></td>
+					<!-- <td class="day-hide day-w-hide"></td> -->
 				</tr>
 				<? 
 				endwhile;
