@@ -17,6 +17,7 @@ class Custom_model extends CI_Model {
 		$v_select = "b_idx,b_id,b_gidx,b_gpos,b_pidx,b_insert_date,b_update_date
 		,b_isdel,m_idx,b_name,b_pass,b_ip,b_notice,b_secret,b_html
 		,b_link,b_category,b_title,b_etc_0,b_etc_1,b_etc_2,b_etc_3,b_etc_4
+		,b_date_st,b_date_ed
 		";
 		if($type==0){
 			$sql = "select {$v_select} from {$from} b

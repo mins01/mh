@@ -30,12 +30,12 @@
 								echo date('m-d H시',strtotime($b_row['b_insert_date']));
 								
 							}else{
-								if($tm < strtotime($b_row['b_etc_0'])){
-									echo date('m-d',strtotime($b_row['b_etc_0'])).'~';
-								}else if($tm > strtotime($b_row['b_etc_1'])){
+								if($tm < strtotime($b_row['b_date_st'])){
+									echo date('m-d',strtotime($b_row['b_date_st'])).'~';
+								}else if($tm > strtotime($b_row['b_date_ed'])){
 									echo 'END';
 								}else{
-									echo '~'.date('m-d',strtotime($b_row['b_etc_1']));
+									echo '~'.date('m-d',strtotime($b_row['b_date_ed']));
 								}
 								
 							}
