@@ -18,12 +18,12 @@
 				<form action="" class="form-inline text-center">
 					<div class="form-group">
 						<div class="input-group">
-							<div class="input-group-btn">
+							<!-- <div class="input-group-btn">
 								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
 								<option value="title" <?=$get['tq']=='title'?'selected':''?>>제목</option>
 								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>
 								</select>
-							</div>
+							</div> -->
 							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
 							<span class="input-group-btn">
 								<button type="submit" class="btn btn-default">검색</button>
@@ -98,12 +98,12 @@
 				<form action="" class="form-inline text-center">
 					<div class="form-group">
 						<div class="input-group">
-							<div class="input-group-btn">
+							<!-- <div class="input-group-btn">
 								<select name="tq" class="selectpicker show-tick" style="width:4em" data-width="80px" aria-label="검색대상" >
 								<option value="title" <?=$get['tq']=='title'?'selected':''?>>제목</option>
 								<option value="text" <?=$get['tq']=='text'?'selected':''?>>내용</option>
 								</select>
-							</div>
+							</div> -->
 							<input name="q" aria-label="검색어" type="search" class="form-control" placeholder="검색어" value="<?=html_escape(isset($get['q'])?$get['q']:'')?>">
 							<span class="input-group-btn">
 								<button type="submit" class="btn btn-default">검색</button>

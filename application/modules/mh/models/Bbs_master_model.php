@@ -56,7 +56,12 @@ class Bbs_master_model extends CI_Model {
 	//-- 목록과 카운팅용
 	private function _apply_list_where($get){
 		$this->db->from($this->tbl);
-		//$this->db->where('b_id',$get['b_id']);
+		// $this->db->where('b_id',$get['b_id']);
+		if(isset($get['q'][0])){
+			$this->db->or_like('b_id',$get['q']);
+			$this->db->or_like('bm_title',$get['q']);
+		}
+		
 		
 		return true;
 
@@ -88,7 +93,7 @@ class Bbs_master_model extends CI_Model {
 		$this->db->limit($limit,$offset);
 
 		$bm_rows = $this->db->get()->result_array();
-		//echo $this->db->last_query();
+		// echo $this->db->last_query();
 		$this->extends_bm_rows($bm_rows);
 		return $bm_rows;
 	}
