@@ -7,6 +7,7 @@ class Bbs extends MX_Controller {
 	private $skin_path = '';
 	private $base_url = '';
 	private $logedin = null;
+	private $tail_qs = '';// 명령용 URL뒤에 붙는 쿼리 스트링 (간략화 처리한다.)
 	public function __construct()
 	{
 				$this->load->helper('form');
@@ -62,6 +63,23 @@ class Bbs extends MX_Controller {
 		$this->action($b_id,$mode,$b_idx);
 	}
 
+	//URL 뒤에 붙을 쿼리 스트링 부분 처리. ?도 처리함
+	public function tail_querystring_from_get($get){
+		$t = $this->querystring_from_get($get);
+		return (isset($t[0])?'?':'').$t;
+	}
+	//URL 쿼리 스트링 간략화용 간략화용
+	public function querystring_from_get($get){
+		$get2 = $get;
+		if(isset($get2['page']['0']) && $get2['page']=='1'){unset($get2['page']);} //URL 간략화용
+		if(!isset($get2['ct']['0'])){unset($get2['ct']);unset($get['ct']);} 
+		if(!isset($get2['q']['0'])){unset($get2['tq']);unset($get2['q']);unset($get['tq']);unset($get['q']);} //URL 간략화용
+		if(strlen(implode('',array_values($get2)))===0){
+			return '';
+		}else{
+			return http_build_query($get);
+		}
+	}
 	public function action($b_id,$mode,$b_idx){
 		//-- 게시판 마스터 정보 가져오기
 		if(!isset($b_id)){
@@ -89,9 +107,14 @@ class Bbs extends MX_Controller {
 			show_error('잘못된 모드입니다.',400,'Bad Request');
 		}
 		$get = $this->input->get();
+		
+		$this->tail_qs = $this->tail_querystring_from_get($get); //여기서 한번만 한다!
+		
 		$this->bbs_conf['base_url'] = $this->base_url;
-		$this->bbs_conf['list_url'] = $this->base_url . "/list?".http_build_query($get);
-		$this->bbs_conf['write_url'] = $this->base_url . "/write?".http_build_query($get);
+		
+		$this->bbs_conf['list_url'] = $this->base_url . "/list".$this->tail_qs;
+		$this->bbs_conf['write_url'] = $this->base_url . "/write".$this->tail_qs;
+		
 		$get2 = array();
 		$get2['lm'] = 'rss';
 		$this->bbs_conf['rss_url'] = $this->base_url . "/list?".http_build_query($get2);
@@ -132,14 +155,13 @@ class Bbs extends MX_Controller {
 		);
 	}
 	private function extends_b_row(& $b_row,$get){
-
-		$b_row['read_url'] = $this->base_url . '/read/'.$b_row['b_idx'].'?'.http_build_query($get);
-
-		$b_row['answer_url'] = $this->base_url . '/answer/'.$b_row['b_idx'].'?'.http_build_query($get);
-
-		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_row['b_idx'].'?'.http_build_query($get);
-
-		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx'].'?'.http_build_query($get);
+		unset($get['b_idx']);	
+		$b_row['read_url'] = $this->base_url . '/read/'.$b_row['b_idx'].$this->tail_qs;
+		$b_row['answer_url'] = $this->base_url . '/answer/'.$b_row['b_idx'].$this->tail_qs;
+		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_row['b_idx'].$this->tail_qs;
+		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx']	.$this->tail_qs;
+		$b_row['write_url'] = $this->base_url . '/write'.$this->tail_qs; //사용안됨
+		
 
 		if(!empty($b_row['bf_idx'])){
 			$b_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($b_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
@@ -151,9 +173,9 @@ class Bbs extends MX_Controller {
 			$b_row['is_new'] = false;
 		}
 
-		unset($get['b_idx']);
+		
 
-		$b_row['write_url'] = $this->base_url . '/write?'.http_build_query($get);
+		
 	}
 	private function extends_b_rows(&$b_rows,$get){
 		foreach($b_rows as & $r){
