@@ -49,7 +49,30 @@ class Misc extends MX_Controller {
 		$opts[CURLOPT_SSL_VERIFYHOST]=false;
 
 		//($url,$cookieRaw=null,$headers=array(), $opts = array())
+		// $url='//test.com/index.php?123=312';
+		// URL에 생략된 것 처리
+		$t = parse_url($url);
+		// var_dump($t);
+		if(!isset($t['host'][0])){
+			$t['host'] = isset($_SERVER['HTTP_HOST'][0])?$_SERVER['HTTP_HOST']:'';
+		}
+		if(!isset($t['scheme'][0])){
+			if(strpos($url,'//')===0){
+				$t['scheme'] = isset($_SERVER['HTTPS'][0])?'https':'http';
+			}else{
+				$t['scheme'] = 'http';
+			}
+			
+		}
+		$url = unparse_url($t);
+		// 
+		// 
+		// var_dump($t);
+		// var_dump($url);
+		// exit;
+		
 		$res = $this->mproxy->get($url,null,array(),$opts);
+		
 		// echo $url;
 		// print_r($res);
 		if(!isset($res['body'][0]) || stripos('html',$res['body'])!==false){
