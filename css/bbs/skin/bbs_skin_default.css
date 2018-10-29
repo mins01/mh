@@ -98,10 +98,33 @@ margin-left:-1em;
 .floating_label_parent{position:relative;}
 .floating_label{position:absolute;top:5px; right:5px;}
 .floating_label > .label{cursor:default;}
-.floating_label > .bf_cnt{background-color:#933;}
-.floating_label > .bc_cnt{background-color:#396;}
-.floating_label > .is_new{background-color:#E8A437;}
-.floating_label > .b_secret{background-color:#EA4D3C;}
+.bf_cnt{background-color:#933;}
+.bc_cnt{background-color:#396;}
+.is_new{background-color:#E8A437;}
+.b_secret{background-color:#EA4D3C;}
+
+/* 게시글제목 등(1줄짜리) flex 처리*/
+.text-flex-box{
+	display: flex;
+	flex:1 1 0%;
+	justify-content: center;
+	overflow: hidden;
+}
+.text-flex-main{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	flex: 1 1 0;
+}
+.text-flex-sub{
+	flex: 0 0 auto;
+}
+.text-flex-sub-right{
+	padding-left: 0.5em;
+}
+.text-flex-sub-left{
+	padding-right: 0.5em;
+}
 
 /* 목록용 썸네일 박스 */
 .thumbnail-div{height:170px; padding:5px;}

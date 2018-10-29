@@ -17,14 +17,14 @@
 	$v_url = base_url($mn_url);
 	?>
 	<div class="col-sm-6 col-md-4">
-		<ul class="list-group">
+		<div class="list-group">
 			<a class="list-group-item list-group-item-success" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?></a>
 			<? foreach($b_row as $b_row): 
 				$url = base_url($mn_url.'/read/'.$b_row['b_idx']);
 			?>
-			<li class="list-group-item text-overflow-ellipsis floating_label_parent">
-				<a href="<?=html_escape($url)?>"><?=html_escape($b_row['b_title'])?></a>
-				<div class="floating_label">
+			<a class="list-group-item text-flex-box"  href="<?=html_escape($url)?>">
+				<span class="text-flex-main text-primary"><?=html_escape($b_row['b_title'])?></span>
+				<div class="text-flex-sub text-flex-sub-right">
 					<? if($b_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
 					<span class=" label label-info" title="새글"><?
 							if($date_type==0){
@@ -42,9 +42,9 @@
 							}
 						?></span>
 				</div>
-			</li>
+			</a>
 			<? endforeach;?>
-		</ul>
+		</div>
 	</div>
 <? endforeach; ?>
 </div>
@@ -63,20 +63,20 @@
 	$v_url = base_url($mn_url);
 	?>
 	<div class="col-sm-6 col-md-4">
-		<ul class="list-group">
+		<div class="list-group">
 			<a class="list-group-item list-group-item-info" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?></a>
 			<? foreach($bc_row as $bc_row): 
 				$url = base_url($mn_url.'/read/'.$bc_row['b_idx']);
 			?>
-			<li class="list-group-item text-overflow-ellipsis floating_label_parent">
-				<a href="<?=html_escape($url)?>"><?=html_escape($bc_row['bc_comment'])?></a>
-				<div class="floating_label">
+			<a href="<?=html_escape($url)?>" class="list-group-item text-flex-box">
+				<span class="text-flex-main text-primary" ><?=html_escape($bc_row['bc_comment'])?></span>
+				<div class="text-flex-sub text-flex-sub-right">
 					<? if($bc_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
 					<span class=" label label-info" title="새글"><? echo date('m-d H시',strtotime($bc_row['bc_insert_date'])); ?></span>
 				</div>
-			</li>
+			</a>
 			<? endforeach;?>
-		</ul>
+		</div>
 	</div>
 <? endforeach; ?>
 </div>
