@@ -25,6 +25,7 @@
 			<li class="list-group-item text-overflow-ellipsis floating_label_parent">
 				<a href="<?=html_escape($url)?>"><?=html_escape($b_row['b_title'])?></a>
 				<div class="floating_label">
+					<? if($b_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
 					<span class=" label label-info" title="새글"><?
 							if($date_type==0){
 								echo date('m-d H시',strtotime($b_row['b_insert_date']));
@@ -70,9 +71,8 @@
 			<li class="list-group-item text-overflow-ellipsis floating_label_parent">
 				<a href="<?=html_escape($url)?>"><?=html_escape($bc_row['bc_comment'])?></a>
 				<div class="floating_label">
-					<span class=" label label-info" title="새글"><?
-							echo date('m-d H시',strtotime($bc_row['bc_insert_date']));
-						?></span>
+					<? if($bc_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
+					<span class=" label label-info" title="새글"><? echo date('m-d H시',strtotime($bc_row['bc_insert_date'])); ?></span>
 				</div>
 			</li>
 			<? endforeach;?>

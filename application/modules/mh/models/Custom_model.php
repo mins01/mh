@@ -73,7 +73,9 @@ class Custom_model extends CI_Model {
 		$from_data = DB_PREFIX.'bbs_'.$table.'_data';
 		$v_b_insert_date = $this->db->escape(date('Y-m-d 00:00:00',time()-60*60*24*$day));
 		$v_b_id = $this->db->escape($b_id);
-		$v_select = "b_id,bc.*
+		$v_select = "b_id,b_secret,
+		bc_idx,bc.b_idx,bc.m_idx,bc_name,bc_title,bc_number,bc_insert_date,bc_update_date
+		,if(b_secret!='0','#SECRET#',bc_comment) bc_comment
 		";
 		$sql = "select {$v_select} from {$from} bc
 		JOIN {$from_data} b on(b_id={$v_b_id} and b.b_idx=bc.b_idx)
@@ -90,7 +92,7 @@ class Custom_model extends CI_Model {
 			$sqls[] = '('.$this->last_bbs_comment_sql($v[0],$v[1],$limit,$day,$v[2]).')';
 		}
 		$sql = implode("\nUNION ALL\n",$sqls);
-		//echo $sql;
+		// echo $sql;
 		$query = $this->db->query($sql);
 		$rowss = array();
 		$rows = $query->result_array();
