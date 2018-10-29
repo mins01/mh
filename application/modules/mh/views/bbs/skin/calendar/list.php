@@ -39,12 +39,12 @@
 		//print_r($r);
 		?>
 			<tr class="bbs-notice info <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
-				<td class="text-center hidden-xs">공지</td>
-				<td class="bbs-title text-overflow-ellipsis floating_label_parent">
-					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
-					<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
+				<td class="text-center hidden-xs"><span class="label label-danger">공지</span></td>
+				<td class="bbs-title text-flex-box">
+					<? if(isset($b_row['b_category'])): ?><span class="label label-primary text-flex-sub text-flex-sub-left"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
+					<span class="text-flex-main"><a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a></span>
 
-					<div class="floating_label">
+					<span class="text-flex-sub text-flex-sub-right">
 						<? if(($b_row['is_new'])): ?>
 							<span class="is_new label label-default" title="새글">new</span>
 						<? endif; ?>
@@ -58,7 +58,7 @@
 						<? if(!empty($b_row['bc_cnt'])): ?>
 							<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
 						<? endif; ?>
-					</div>
+					</span>
 
 				</td>
 				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
@@ -77,11 +77,11 @@
 		?>
 			<tr class="bbs-dpeth bbs-dpeth-<?=$b_row['depth']?> <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 				<td class="text-center hidden-xs"><?=$start_num--?></td>
-				<td class="bbs-title text-overflow-ellipsis floating_label_parent">
-					<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
-					<a href="<?=html_escape($b_row['read_url'])?>" ><?=html_escape($b_row['b_title'])?></a>
+				<td class="bbs-title text-flex-box">
+					<? if(isset($b_row['b_category'])): ?><span class="label label-primary text-flex-sub text-flex-sub-left"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
+					<span class="text-flex-main"><a href="<?=html_escape($b_row['read_url'])?>" ><?=html_escape($b_row['b_title'])?></a></span>
 
-					<div class="floating_label">
+					<span class="text-flex-sub text-flex-sub-right">
 						<? if(($b_row['is_new'])): ?>
 							<span class="is_new label label-default" title="새글">new</span>
 						<? endif; ?>
@@ -95,7 +95,7 @@
 						<? if(!empty($b_row['bc_cnt'])): ?>
 							<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
 						<? endif; ?>
-					</div>
+					</span>
 
 				</td>
 				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>

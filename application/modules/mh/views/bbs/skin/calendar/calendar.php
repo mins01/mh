@@ -34,12 +34,11 @@ $today_date = date('Y-m-d');
 	<? 
 	if(count($b_n_rows)>0): 
 	?>
-
 		<table class="table table-condensed" style="table-layout:fixed">
 			<tr >
 				<th class="text-center hidden-xs" width="80">No</th>
 				<th class="text-center">제목</th>
-				<th class="text-center" width="80">작성자</th>
+				<th class="text-center hidden-xs hidden-sm" width="80">작성자</th>
 				<th class="text-center hidden-xs hidden-sm"  width="120">등록</th>
 				<th class="text-center hidden-xs hidden-sm"  width="40">조회</th>
 			</tr>
@@ -47,12 +46,13 @@ $today_date = date('Y-m-d');
 			//print_r($r);
 			?>
 				<tr class="bbs-notice info <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
-					<td class="text-center hidden-xs">공지</td>
-					<td class="bbs-title text-overflow-ellipsis floating_label_parent">
-						<? if(isset($b_row['b_category'])): ?><span class="label label-primary"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
-						<a href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
+					<td class="text-center hidden-xs"><span class="label label-danger">공지</span></td>
+					<td class="bbs-title text-flex-box">
 						
-						<div class="floating_label">
+						<? if(isset($b_row['b_category'])): ?><span class="label label-primary text-flex-sub text-flex-sub-left"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
+						<a class="text-flex-main" href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
+					
+						<span class="text-flex-sub text-flex-sub-right">
 							<? if(($b_row['is_new'])): ?>
 								<span class="is_new label label-default" title="새글">new</span>
 							<? endif; ?>
@@ -62,14 +62,14 @@ $today_date = date('Y-m-d');
 							<? if(!empty($b_row['bf_cnt'])): ?>
 								<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
 							<? endif; ?>
-							
+					
 							<? if(!empty($b_row['bc_cnt'])): ?>
 								<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
 							<? endif; ?>
-						</div>
+						</span>
 					
 					</td>
-					<td class="text-center"><?=html_escape($b_row['b_name'])?></td>
+					<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['b_name'])?></td>
 					<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
 					<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['bh_cnt'])?></td>
 

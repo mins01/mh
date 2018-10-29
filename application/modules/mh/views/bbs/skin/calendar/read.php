@@ -20,12 +20,12 @@ if($d_day==0){
 
 
 <div class="panel panel-default <?=$b_row['b_notice']>0?'bbs-notice':''?> bbs-mode-read">
-	<div class="panel-heading floating_label_parent">
-		<h3 class="panel-title text-center bbs-title "><?=html_escape($b_row['b_title'])?>
-		<div class="clearfix"></div>
+	<div class="panel-heading text-flex-box">
+		<h3 class="panel-title text-center bbs-title text-flex-main ">
+			<span><?=html_escape($b_row['b_title'])?></span>
 		</h3>
 		
-		<div class="floating_label">
+		<div class="text-flex-sub text-flex-sub-right">
 			<? if(($b_row['is_new'])): ?>
 				<span class="is_new label label-default" title="새글">new</span>
 			<? endif; ?>

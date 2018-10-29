@@ -24,7 +24,7 @@
 			?>
 			<a class="list-group-item text-flex-box"  href="<?=html_escape($url)?>">
 				<span class="text-flex-main text-primary"><?=html_escape($b_row['b_title'])?></span>
-				<div class="text-flex-sub text-flex-sub-right">
+				<span class="text-flex-sub text-flex-sub-right">
 					<? if($b_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
 					<span class=" label label-info" title="새글"><?
 							if($date_type==0){
@@ -41,7 +41,7 @@
 								
 							}
 						?></span>
-				</div>
+				</span>
 			</a>
 			<? endforeach;?>
 		</div>
@@ -70,10 +70,10 @@
 			?>
 			<a href="<?=html_escape($url)?>" class="list-group-item text-flex-box">
 				<span class="text-flex-main text-primary" ><?=html_escape($bc_row['bc_comment'])?></span>
-				<div class="text-flex-sub text-flex-sub-right">
+				<span class="text-flex-sub text-flex-sub-right">
 					<? if($bc_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
 					<span class=" label label-info" title="새글"><? echo date('m-d H시',strtotime($bc_row['bc_insert_date'])); ?></span>
-				</div>
+				</span>
 			</a>
 			<? endforeach;?>
 		</div>
