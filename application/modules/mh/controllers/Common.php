@@ -52,12 +52,16 @@ class Common extends MX_Controller {
 		return true;
 	}
 	public function get_verify_key($server){
-		return md5($server['HTTP_HOST'].
+		$key = md5($server['HTTP_HOST'].
 		$server['HTTP_USER_AGENT'].
-		$server['HTTP_ACCEPT'].
 		$server['HTTP_ACCEPT_ENCODING'].
-		$server['HTTP_ACCEPT_LANGUAGE'].
-		$server['SERVER_PROTOCOL']);
+		$server['HTTP_ACCEPT_LANGUAGE']);
+		// echo $server['HTTP_HOST'].
+		// $server['HTTP_USER_AGENT'].
+		// $server['HTTP_ACCEPT_ENCODING'].
+		// $server['HTTP_ACCEPT_LANGUAGE'];
+		// echo $key;
+		return $key;
 	}
 	private function init_login(){
 		$v = $this->input->post_get('enc_m_row'); //json 호출등에서 값이 있다면 자동으로 로그인 된 것으로 처리한다.

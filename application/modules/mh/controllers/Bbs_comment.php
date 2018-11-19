@@ -132,7 +132,7 @@ class Bbs_comment extends MX_Controller {
 			'bc_rows'=>$this->data_list($b_idx,$get),
 			'permission'=>$permission,
 		);
-		$this->db->last_query();
+		// $this->db->last_query();
 		$this->print_json($json);
 		return;
 	}
