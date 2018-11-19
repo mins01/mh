@@ -51,7 +51,14 @@ class Common extends MX_Controller {
 		}
 		return true;
 	}
-	
+	public function get_verify_key($server){
+		return md5($server['HTTP_HOST'].
+		$server['HTTP_USER_AGENT'].
+		$server['HTTP_ACCEPT'].
+		$server['HTTP_ACCEPT_ENCODING'].
+		$server['HTTP_ACCEPT_LANGUAGE'].
+		$server['SERVER_PROTOCOL']);
+	}
 	private function init_login(){
 		$v = $this->input->post_get('enc_m_row'); //json 호출등에서 값이 있다면 자동으로 로그인 된 것으로 처리한다.
 		if(isset($v)){
@@ -64,10 +71,17 @@ class Common extends MX_Controller {
 			}
 		}
 		
-
+		
 		if(isset($v)){
-			$this->m_row = $this->dec_str($v);
+			$m_row = $this->dec_str($v);
+			if(!isset($m_row['vk'][0])){ //인증키 체크
+				return false;
+			}else if($m_row['vk'] != $this->get_verify_key($_SERVER)){
+				return false;
+			}
+			$this->m_row = $m_row;
 		}
+		// print_r($m_row);		exit;
 	}
 	//m_row에서 로그인할 때 쓸 필드만 추려낸다.
 	public function filter_login_from_m_row($m_row){
@@ -80,7 +94,7 @@ class Common extends MX_Controller {
 	}
 	public function set_login($m_row){
 		$m_row = $this->filter_login_from_m_row($m_row);
-
+		$m_row['vk'] = $this->get_verify_key($_SERVER);
 		switch(LOGIN_TYPE){
 			case 'cookie':
 				$this->set_login_at_cookie($this->enc_str($m_row));
