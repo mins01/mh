@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//== ¸Þ´º °ü¸® ¸ðµ¨
+//== ë©”ë‰´ ê´€ë¦¬ ëª¨ë¸
 
 define('MH_LOG_STORE_FILE',1);
 define('MH_LOG_STORE_DB',2);
