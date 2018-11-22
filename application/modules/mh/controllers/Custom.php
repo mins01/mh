@@ -42,7 +42,7 @@ class Custom extends MX_Controller {
 			// $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,5,30),
 			//$this->custom_m->last_bbs_rowss($calendar_tbl_b_ids,5,30)
 			// );
-		$b_rowss = $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,5,30);
+		$b_rowss = $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,50,30);
 		
 		$this->config->set_item('layout_head_contents',
 		'<link href="'.html_escape(base_url('css/bbs/skin/bbs_skin_default.css')).'" rel="stylesheet"  class="mb_wysiwyg_head_css">'
@@ -59,7 +59,7 @@ class Custom extends MX_Controller {
 			//array('test','test','테스트'),
 			//array('mine','diff','틀린그림찾기'),
 		);
-		$bc_rowss = $this->custom_m->last_bbs_comment_rowss($bc_tbl_b_ids,5,120);
+		$bc_rowss = $this->custom_m->last_bbs_comment_rowss($bc_tbl_b_ids,50,30);
 		
 		
 		
