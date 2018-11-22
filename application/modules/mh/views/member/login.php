@@ -15,7 +15,7 @@
 		<div class="form-group">
 			<label for="b_id" class="col-sm-2 control-label">아이디</label>
 			<div class="col-sm-10">
-				<input type="text" name="m_id" class="form-control" id="m_id" value="<?=set_value('m_id'); ?>" placeholder="아이디">
+				<input type="text" name="m_id" class="form-control" id="m_id" value="<?=set_value('m_id'); ?>" placeholder="아이디" required>
 				<?php echo form_error('m_id'); ?>
 			</div>
 		</div>
@@ -23,7 +23,7 @@
 		<div class="form-group">
 			<label for="b_pass" class="col-sm-2 control-label">비밀번호</label>
 			<div class="col-sm-10">
-				<input type="password" name="m_pass" class="form-control" id="m_pass" placeholder="비밀번호">
+				<input type="password" name="m_pass" class="form-control" id="m_pass" placeholder="비밀번호" required>
 				<?php echo form_error('m_pass'); ?>
 			</div>
 		</div>
