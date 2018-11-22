@@ -20,11 +20,10 @@ class Member extends MX_Controller {
 			return $this->login_process();
 		}
 		
-		$ret_url = $this->input->post('ret_url');
+		$ret_url = $this->input->post_get('ret_url');
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
 		}
-		
 		$data = array(
 			'ret_url' => $ret_url,
 		);
@@ -43,12 +42,10 @@ class Member extends MX_Controller {
 		$m_id = $this->input->post('m_id');
 		$m_pass = $this->input->post('m_pass');
 		
-		$ret_url = $this->input->post('ret_url');
+		$ret_url = $this->input->post_get('ret_url');
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
-		}
-		
-		
+		}		
 		$this->form_validation->set_rules('m_id', '아이디', 'required|min_length[1]|max_length[100]');
 		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[1]|max_length[40]');
 		if ($this->form_validation->run() == FALSE){
@@ -61,7 +58,8 @@ class Member extends MX_Controller {
 		
 		$res = $this->process_login_process($m_id,$m_pass);
 		if($res['is_error']){
-			$this->login_process_end($res['is_error'],$res['msg']);
+			$fail_url = '?ret_url='.urlencode($ret_url);
+			$this->login_process_end($res['is_error'],$res['msg'],$fail_url);
 		}else{
 			$m_row = $res['m_row'];
 			$this->common->set_login($m_row);
@@ -79,7 +77,6 @@ class Member extends MX_Controller {
 		$res['get'] = $_GET;
 		$res['m_nick'] = isset($res['m_row']['m_nick'])?$res['m_row']['m_nick']:null;
 		if(isset($res['m_row'])){
-			
 			$res['enc_m_row'] = $this->common->enc_str($this->common->filter_login_from_m_row($res['m_row']));
 		}
 		unset($res['m_row']);
