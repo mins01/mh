@@ -117,6 +117,9 @@ margin-left:-1em;
 	flex: 0 1 auto;
 	min-width: 2em;
 }
+.text-flex-main-fullsize{
+	flex: 1 1 auto;
+}
 .text-flex-sub{
 	flex: 0 0 auto;
 }
