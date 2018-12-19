@@ -106,15 +106,16 @@ margin-left:-1em;
 /* 게시글제목 등(1줄짜리) flex 처리*/
 .text-flex-box{
 	display: flex;
-	flex:1 1 0%;
-	justify-content: center;
+	/* flex:1 1 0%; */
+	justify-content: left;
 	overflow: hidden;
 }
 .text-flex-main{
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
-	flex: 1 1 0;
+	flex: 0 1 auto;
+	min-width: 2em;
 }
 .text-flex-sub{
 	flex: 0 0 auto;
