@@ -20,8 +20,8 @@ if($d_day==0){
 
 
 <div class="panel panel-default <?=$b_row['b_notice']>0?'bbs-notice':''?> bbs-mode-read">
-	<div class="panel-heading text-flex-box">
-		<h3 class="panel-title text-center bbs-title text-flex-main ">
+	<div class="panel-heading text-flex-box  text-flex-center">
+		<h3 class="panel-title text-center bbs-title text-flex-main">
 			<span><?=html_escape($b_row['b_title'])?></span>
 		</h3>
 		

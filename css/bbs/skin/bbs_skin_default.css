@@ -106,9 +106,12 @@ margin-left:-1em;
 /* 게시글제목 등(1줄짜리) flex 처리*/
 .text-flex-box{
 	display: flex;
-	/* flex:1 1 0%; */
-	justify-content: left;
+	justify-content:flex-start;
 	overflow: hidden;
+}
+.text-flex-center{
+	justify-content:center;
+	align-items: center;
 }
 .text-flex-main{
 	white-space: nowrap;
