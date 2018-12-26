@@ -159,7 +159,19 @@
 							</div>
 						</div>
 						<div class="col-md-6">
-							
+							<div class="form-group">
+								<? 
+									$t_label='TAG 사용?';
+									$t_col = 'bm_use_tag';
+								?>
+								<label class="col-sm-3 control-label"><?=($t_label)?></label>
+								<div class="col-sm-9">
+									<div class="btn-group" data-toggle="buttons">
+									<?=print_onoff($t_col,$bm_row[$t_col])?>
+									</div>
+									<div class="text-danger"> *tag로 검색 시 목록타입(정렬)은 작성 순서로 강제 변경됨! (성능 이슈 때문에)</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					

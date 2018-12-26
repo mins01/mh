@@ -13,6 +13,7 @@
 				<option value="tt" <?=$get['tq']=='tt'?'selected':''?>>제목+내용</option>
 				<? if($bm_row['bm_use_comment']){ ?><option value="ttc" <?=$get['tq']=='ttc'?'selected':''?>>제목+내용+코멘트</option><? } ?>
 				<option value="name" <?=$get['tq']=='name'?'selected':''?>>작성자</option>
+				<? if($bm_row['bm_use_tag']!='0'): ?><option value="tag" <?=$get['tq']=='tag'?'selected':''?>>태그</option><? endif;?>
 				</select>
 				
 			</div>

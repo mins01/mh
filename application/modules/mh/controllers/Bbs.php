@@ -15,6 +15,7 @@ class Bbs extends MX_Controller {
 		$this->load->model('mh/bbs_master_model','bm_m');
 		$this->load->model('mh/bbs_model','bbs_m');
 		$this->load->model('mh/bbs_file_model','bf_m');
+		$this->load->model('mh/bbs_tag_model','bt_m');
 
 		$this->load->module('mh/layout');
 		$this->load->module('mh/common');
@@ -92,6 +93,7 @@ class Bbs extends MX_Controller {
 		//print_r($conf['bm_row']);
 		$this->bbs_m->set_bm_row($this->bm_row); //여기서 모델에 사용할 게시판 아이디가 고정됨
 		$this->bf_m->set_bm_row($this->bm_row);
+		$this->bt_m->set_bm_row($this->bm_row);
 		$this->skin_path = 'mh/bbs/skin/'.$this->bm_row['bm_skin'];
 
 		$this->bbs_conf['page'] = (int)$this->input->get('page',1);
@@ -281,6 +283,7 @@ class Bbs extends MX_Controller {
 				$get,array('date_st'=>$date_st,'date_ed'=>$date_ed)
 				);
 		$b_rows = $this->bbs_m->select_for_calendar($v_get);
+		// echo $this->db->last_query();
 		$b_rowss = $this->bbs_m->exnteds_b_rows_for_calendar($b_rows,$date_st,$date_ed);
 
 		$get2 = $this->input->get();
@@ -359,7 +362,8 @@ class Bbs extends MX_Controller {
 		$get['page']=$this->bbs_conf['page'];
 		$order_by = isset($opt['order_by'])?$opt['order_by']:'';
 		$b_rows = $this->bbs_m->select_for_list($get,$order_by);
-
+		//echo $this->db->last_query();
+		
 		$get2 = $this->input->get();
 		$this->extends_b_rows($b_rows,$get2);
 		$b_n_rows = $this->bbs_m->select_for_notice_list($get);
@@ -556,6 +560,12 @@ class Bbs extends MX_Controller {
 
 		}
 
+		// $this->bt_m->pickup_tags('하루');
+		// $r = $this->bt_m->pickup_tags('하루 #이틀 #삼-일 #사_일 #[오]일');
+		// print_r($r);
+		// exit;
+		// $this->bt_m->pickup_tags($b_row['b_text']);
+
 		$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$b_idx);
 		$this->load->view($this->skin_path.'/read',array(
 			'mode'=>'read',
@@ -566,7 +576,9 @@ class Bbs extends MX_Controller {
 			'html_comment'=>($this->bm_row['bm_use_comment']=='1')?$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url),true):'',
 			'permission'=>$permission,
 			'view_form_file'=>$view_form_file,
+			'bt_rows'=>$this->select_tags($b_idx),
 		));
+		// echo $this->db->last_query();
 
 		if($this->bm_row['bm_read_with_list']=='1'){
 			$this->mode_list($b_idx,true);
@@ -839,6 +851,8 @@ class Bbs extends MX_Controller {
 						//print_r($delf_r);
 					}
 				}
+				// $this->delete_tags($b_idx);
+				if(isset($post['b_text'][0])){$this->apply_tags($b_idx,$post,'update');}
 			break;
 			case 'write':
 
@@ -858,6 +872,7 @@ class Bbs extends MX_Controller {
 
 					}
 				}
+				if(isset($post['b_text'][0])){$this->apply_tags($b_idx,$post,'insert');}
 			break;
 			case 'answer':
 				$this->extends_b_row_for_m_row($post);
@@ -867,11 +882,13 @@ class Bbs extends MX_Controller {
 						if(isset($_FILES['upf'])) $bf_r = $this->bf_m->upload_files($b_idx,$_FILES['upf']);
 					}
 				}
+				if(isset($post['b_text'][0])){$this->apply_tags($b_idx,$post,'insert');}
 			break;
 			case 'delete':
 				$r = $this->bbs_m->delete_b_row($b_idx);
 				$delf_r = $this->bf_m->delete_bf_rows_by_b_idx($b_idx);
 				$b_idx = $r;
+				if(isset($post['b_text'][0])){$this->apply_tags($b_idx,$post,'delete');}
 			break;
 			case 'set_represent':
 				$delf_r = $this->bf_m->set_represent_by_b_idx_bf_idx($b_idx,$this->input->post('bf_idx'));
@@ -906,5 +923,26 @@ class Bbs extends MX_Controller {
 		));
 
 	}
-
+	
+	public function select_tags($b_idx){
+		if($this->bm_row['bm_use_tag']!='0'){
+			return $this->bt_m->select_by_b_idx($b_idx);
+		}
+		return null;
+	}
+	public function apply_tags($b_idx,$b_row,$mode="update"){
+		if($this->bm_row['bm_use_tag']!='0'){
+			// $tags = $this->bt_m->pickup_tags('#'.$b_row['b_category'].' '.strip_tags($b_row['b_text'])); //카테고리도 기본으로 넣는 경우
+			$tags = $this->bt_m->pickup_tags(strip_tags($b_row['b_text']));
+			if($mode=='update' ||$mode=='delete'){
+				$this->bt_m->delete_by_b_idx($b_idx,$tags);	
+			}
+			if($mode=='update' ||$mode=='insert'){
+				foreach($tags as $tag){
+					$this->bt_m->insert($b_idx,$tag);
+				}
+			}
+		}
+		
+	}
 }

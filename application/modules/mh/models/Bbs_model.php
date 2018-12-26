@@ -111,6 +111,12 @@ class Bbs_model extends CI_Model {
 
 	//-- 목록과 카운팅용, 기본 SELECT 부분 설정.
 	private function _apply_list_where($get,$opts=null){
+		
+		$order_by = is_string($opts)?$opts:null;
+		if(isset($opts['order_by'])){
+			$order_by = $opts['order_by'];
+		}
+		
 		$this->db->from($this->tbl.' as b');
 		if(isset($opts['wheres'])){
 			$this->db->where($opts['wheres']);	
@@ -128,7 +134,7 @@ class Bbs_model extends CI_Model {
 
 		if(isset($get['q'][0]) && strlen(trim($get['q']))>0){
 			$get['q'] = trim($get['q']);
-			$v_q = preg_split('/\s+/',$get['q']);
+			$v_q = array_unique(preg_split('/\s+/',$get['q']));
 			switch($get['tq']){
 				case 'title':
 					$this->db->group_start();
@@ -190,12 +196,32 @@ class Bbs_model extends CI_Model {
 						}
 					$this->db->group_end();
 				break;
+				case 'tag':
+					foreach($v_q as $k=>$v){
+						$ali = 'bt'.$k;
+						$v_tag = $this->db->escape($v,true);
+						$this->db->join($this->tblname('tag',$ali), "{$ali}.b_idx = b.b_idx and {$ali}.bt_tag={$v_tag} ");
+					}
+					$order_by = 'bt0.b_idx desc';
+				break;
 			}
+			
+
 		}
 		//-- 카테고리
 		if(isset($get['ct'][0])){
 			$this->db->where('b_category',$get['ct']);
 		}
+		//-- 정렬
+		if(!isset($order_by[0])){
+			switch($this->bm_row['bm_list_type']){
+				case '0':$this->db->order_by('b_gidx,b_gpos');break;
+				case '1':$this->db->order_by('b.b_idx desc');break;
+			}
+		}else{
+			$this->db->order_by($order_by);
+		}
+		
 		return true;
 
 	}
@@ -213,25 +239,13 @@ class Bbs_model extends CI_Model {
 
 	//일반 목록용
 	public function select_for_list($get,$opts=null){
-		$order_by = is_string($opts)?$opts:null;
-		if(isset($opts['order_by'])){
-			$order_by = $opts['order_by'];
-		}
-
 		if(!$this->_apply_list_where($get,$opts)){
 			return false;
 		}
+
 		$this->_apply_list_bm_row($this->bm_row,null,false,$opts);
 
-		//-- 정렬
-		if(!isset($order_by[0])){
-			switch($this->bm_row['bm_list_type']){
-				case '0':$this->db->order_by('b_gidx,b_gpos');break;
-				case '1':$this->db->order_by('b.b_idx desc');break;
-			}
-		}else{
-			$this->db->order_by($order_by);
-		}
+		
 		list($limit,$offset) = $this->get_limit_offset($get['page']);
 		$this->db->limit($limit,$offset);
 

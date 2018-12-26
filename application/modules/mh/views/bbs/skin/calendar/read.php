@@ -119,6 +119,13 @@ if($d_day==0){
 			</div>
 			
 		</li>
+		<? if(isset($bt_rows[0])): ?>
+		<li class="list-group-item form-inline text-right">
+			<? foreach($bt_rows as $bt_row): ?>
+				<a class="btn btn-link btn-xs" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_row['bt_tag']))?>">#<?=html_escape($bt_row['bt_tag'])?></a>
+			<? endforeach; ?>
+		</li>
+		<? endif; ?>
 		<? if(isset($b_row['b_etc_3'][0]) && !empty($b_row['b_num_0']) && !empty($b_row['b_num_1'])):?>
 		<li class="list-group-item">
 			<div id="google_map_canvas" style="height:300px"></div>

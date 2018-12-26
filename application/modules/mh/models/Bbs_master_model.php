@@ -28,6 +28,7 @@ class Bbs_master_model extends CI_Model {
 		$bm_row['tbl_file']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_file';
 		$bm_row['tbl_comment']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_comment';
 		$bm_row['tbl_hit']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_hit';
+		$bm_row['tbl_tag']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_tag';
 	}
 	public function extends_bm_rows(& $bm_rows){
 		foreach($bm_rows as $k=> &$bm_row){
