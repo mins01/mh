@@ -89,11 +89,14 @@
 							<span class="b_secret label label-default" title="비밀">S</span>
 						<? endif; ?>
 						<? if(!empty($b_row['bf_cnt'])): ?>
-							<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
+							<span class="bf_cnt label label-default" title="file: <?=$b_row['bf_cnt']?>"><?=$b_row['bf_cnt']?></span>
 						<? endif; ?>
 
 						<? if(!empty($b_row['bc_cnt'])): ?>
-							<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
+							<span class="bc_cnt label label-default" title="comment: <?=$b_row['bc_cnt']?>"><?=$b_row['bc_cnt']?></span>
+						<? endif; ?>
+						<? if(!empty($b_row['bt_cnt'])): ?>
+							<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>"><?=$b_row['bt_cnt']?></span>
 						<? endif; ?>
 					</span>
 
