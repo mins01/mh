@@ -23,7 +23,8 @@
 						<div class="col-sm-6">테이블:댓글</div>
 						<div class="col-sm-6">테이블:첨부파일</div>
 						<div class="col-sm-6">테이블:조회</div>
-						<div class="col-sm-12">첨부파일경로</div>
+						<div class="col-sm-6">테이블:태그</div>
+						<div class="col-sm-6">첨부파일경로</div>
 					</div>
 				</div>
 			</li>
@@ -42,23 +43,23 @@
 					</div>
 					
 					<div class="col-md-8">
-						<? foreach(array('tbl_data','tbl_comment','tbl_file','tbl_hit') as $t): ?>
+						<? foreach(array('tbl_data','tbl_comment','tbl_file','tbl_hit','tbl_tag') as $t): ?>
 							<div class="col-sm-6">
 							<?
 							if(!isset($btm_row[$t][0])):
 							?>
-							<span class="label label-danger">error</span> <?=$t?>??
+							<span class="label label-danger">error</span> <?=html_escape($t)?> : <?=html_escape($btm_row[$t])?>
 							<?
 							else:
 							?>
 							<span class="label label-success">ok</span>
-							<?=html_escape($btm_row['tbl_data'])?>
+							<?=html_escape($t)?> : <?=html_escape($btm_row[$t])?>
 							<?
 							endif;
 							?>
 							</div>
 						<? endforeach; ?>
-						<div class="col-sm-12">
+						<div class="col-sm-6">
 						<span class=" label <?=!$btm_row['file_dir_exists']?'label-danger':'label-success'?>"><?=html_escape($btm_row['file_dir_exists']?'ok':'error')?></span>
 						<?=html_escape($btm_row['file_dir'])?></div>
 					</div>

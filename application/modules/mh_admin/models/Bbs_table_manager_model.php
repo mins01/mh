@@ -51,6 +51,7 @@ class Bbs_table_manager_model extends CI_Model {
 		$btm_row['tbl_comment'] ='';
 		$btm_row['tbl_file'] ='';
 		$btm_row['tbl_hit'] ='';
+		$btm_row['tbl_tag'] ='';
 		foreach($tables as $table){
 			$match = array();
 			if(preg_match('/^'.DB_PREFIX.'bbs_'.$tbl_id.'_(.+)$/',$table,$match)){
@@ -66,6 +67,7 @@ class Bbs_table_manager_model extends CI_Model {
 		&& isset($btm_row['tbl_comment'][0])
 		&& isset($btm_row['tbl_file'][0])
 		&& isset($btm_row['tbl_hit'][0])
+		&& isset($btm_row['tbl_tag'][0])
 		&& $btm_row['file_dir_exists']
 		){
 			$btm_row['status']='ok';
@@ -81,7 +83,7 @@ class Bbs_table_manager_model extends CI_Model {
 			return false;
 		}
 		$btm_row = $this->select_by_tbl_id($tbl_id);
-		$arr = array('data','comment','file','hit');
+		$arr = array('data','comment','file','hit','tag');
 		foreach($arr as $tbl_type){
 			if(!isset($btm_row['tbl_'.$tbl_type][0])){
 				$this->msg='대상 테이블명 없음';
@@ -111,7 +113,7 @@ class Bbs_table_manager_model extends CI_Model {
 	
 	public function drop_tables($tbl_id){
 		$btm_row = $this->select_by_tbl_id($tbl_id);
-		$arr = array('data','comment','file','hit');
+		$arr = array('data','comment','file','hit','tag');
 		foreach($arr as $tbl_type){
 			if(!isset($btm_row['tbl_'.$tbl_type][0])){
 				//$this->msg='대상 테이블명 없음';
