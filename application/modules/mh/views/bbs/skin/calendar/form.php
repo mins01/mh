@@ -102,7 +102,15 @@ if($mode=='write'||$mode=='answer'){
 			<li	 class="list-group-item  for-geo-form">
 				<div id="google_map_canvas" style="height:300px"></div>
 			</li>
-			
+			<? if($bm_row['bm_use_tag']): ?>
+				<li class="list-group-item">
+					<div class="input-group">
+						<div class="input-group-addon">Tag</div>
+						<input type="text" maxlength="200" class="form-control" id="bt_tags_string" name="bt_tags_string" placeholder="tags (separator = ',',';',whitespace)" value="<?=html_escape(implode(' ',$bt_tags))?>">	
+					</div>
+					
+				</li>
+			<? endif; ?>
 			<? if(isset($view_form_file[0])): ?>
 			<li class="list-group-item form-inline bbs-mode-read-file">
 				<?=$view_form_file?>

@@ -119,13 +119,13 @@ if($d_day==0){
 			</div>
 			
 		</li>
-		<? if(isset($bt_rows[0])): ?>
+		<? if(isset($bt_tags[0])): ?>
 		<li class="list-group-item form-inline text-right">
 			<? if(!empty($b_row['bt_cnt'])): ?>
 				<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>">tag: <?=$b_row['bt_cnt']?></span>
 			<? endif; ?>
-			<? foreach($bt_rows as $bt_row): ?>
-				<a class="btn btn-link btn-xs" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_row['bt_tag']))?>">#<?=html_escape($bt_row['bt_tag'])?></a>
+			<? foreach($bt_tags as $bt_tag): ?>
+				<a class="btn btn-link btn-xs" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
 			<? endforeach; ?>
 		</li>
 		<? endif; ?>

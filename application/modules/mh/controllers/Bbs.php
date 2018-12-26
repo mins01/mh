@@ -576,7 +576,7 @@ class Bbs extends MX_Controller {
 			'html_comment'=>($this->bm_row['bm_use_comment']=='1')?$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url),true):'',
 			'permission'=>$permission,
 			'view_form_file'=>$view_form_file,
-			'bt_rows'=>$this->select_tags($b_idx),
+			'bt_tags'=>$this->select_tags($b_row['b_idx']), //내부에서 자동 if 처리함
 		));
 		// echo $this->db->last_query();
 
@@ -759,6 +759,7 @@ class Bbs extends MX_Controller {
 		'input_b_pass'=>isset($b_row['b_pass'][0]) || !$this->logedin, //비밀번호를 입력 받아야하는가?
 		'permission'=>$permission,
 		'view_form_file'=>$view_form_file,
+		'bt_tags'=>$this->select_tags($b_row['b_idx']), //내부에서 자동 if처리함
 		));
 	}
 
@@ -926,14 +927,15 @@ class Bbs extends MX_Controller {
 	
 	public function select_tags($b_idx){
 		if($this->bm_row['bm_use_tag']!='0'){
-			return $this->bt_m->select_by_b_idx($b_idx);
+			return $this->bt_m->bt_tags_by_b_idx($b_idx);
 		}
 		return null;
 	}
 	public function apply_tags($b_idx,$b_row,$mode="update"){
 		if($this->bm_row['bm_use_tag']!='0'){
 			// $tags = $this->bt_m->pickup_tags('#'.$b_row['b_category'].' '.strip_tags($b_row['b_text'])); //카테고리도 기본으로 넣는 경우
-			$tags = $this->bt_m->pickup_tags($b_row['b_text']);
+			// $tags = $this->bt_m->pickup_tags($b_row['b_text']); //old
+			$tags = $this->bt_m->split_tags_string($b_row['bt_tags_string']); 
 			$tags = array_slice($tags,0,20); // 태그는 20개 까지만
 			
 			if($mode=='update' ||$mode=='delete'){

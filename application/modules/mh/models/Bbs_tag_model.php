@@ -45,6 +45,16 @@ class Bbs_tag_model extends CI_Model {
 		$select = "bt.bt_tag";
 		return $this->db->select($select)->from($this->tbl.'  bt')->where('b_idx',(int)$b_idx)->where('bt_isdel',0)->get()->result_array();
 	}
+	public function bt_tags_by_b_idx($b_idx)
+	{
+		$select = "bt.bt_tag";
+		$rows = $this->db->select($select)->from($this->tbl.'  bt')->where('b_idx',(int)$b_idx)->where('bt_isdel',0)->get()->result_array();
+		$rs = array();
+		foreach($rows as $r){
+			$rs[]=$r['bt_tag'];
+		}
+		return $rs;
+	}
 	//=== insert
 	public function insert($b_idx,$bt_tag)
 	{
@@ -66,11 +76,26 @@ class Bbs_tag_model extends CI_Model {
 		return $this->db->from($this->tbl)->set('bt_isdel',1)->set('bt_delete_date','now()',false)->where('b_idx',(int)$b_idx)->update();
 	}
 	//=== util 
+	/**
+	 * pickup_tags 문자열에서 #~~~ 를 추출
+	 * @param  [type] $str [description]
+	 * @return [type]      [description]
+	 */
 	public function pickup_tags($str){
 		$str = preg_replace ('/<[^>]*>/', ' ', $str);
 		$matched = array();
 		preg_match_all('/(?:#)([^\t\s\n\x00-\x2C\x2E-\x2F\x3A-\x40\x5B-\x5E\x60\x7B~\x7F]{1,30})/u',$str,$matched);
 		// print_r($matched);
 		return isset($matched[1])?array_map('strtolower',array_unique($matched[1])):array();
+	}
+	/**
+	 * 문자열에서 빈칸이나 , 등을 기준으로 태그를 추출
+	 * @param  [type] $bt_tags_string [description]
+	 * @return [type]                 [description]
+	 */
+	public function split_tags_string($bt_tags_string){
+		$matched = array();
+		preg_match_all('/([^#\t\s\n\x00-\x2C\x2E-\x2F\x3A-\x40\x5B-\x5E\x60\x7B~\x7F]{1,30})/u',strtolower($bt_tags_string),$matched);
+		return isset($matched[1])?array_unique($matched[1]):array();
 	}
 }
