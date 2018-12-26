@@ -69,7 +69,7 @@ class Bbs_tag_model extends CI_Model {
 	public function pickup_tags($str){
 		$str = preg_replace ('/<[^>]*>/', ' ', $str);
 		$matched = array();
-		preg_match_all('/(?:#)([^\t\s\n\x00-\x2C\x2E-\x2F\x3A-\x40\x5B-\x5E\x60\x7B~\x7F]{1,10})/u',$str,$matched);
+		preg_match_all('/(?:#)([^\t\s\n\x00-\x2C\x2E-\x2F\x3A-\x40\x5B-\x5E\x60\x7B~\x7F]{1,30})/u',$str,$matched);
 		// print_r($matched);
 		return isset($matched[1])?array_map('strtolower',array_unique($matched[1])):array();
 	}
