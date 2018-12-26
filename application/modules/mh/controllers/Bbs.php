@@ -935,7 +935,7 @@ class Bbs extends MX_Controller {
 		if($this->bm_row['bm_use_tag']!='0'){
 			// $tags = $this->bt_m->pickup_tags('#'.$b_row['b_category'].' '.strip_tags($b_row['b_text'])); //카테고리도 기본으로 넣는 경우
 			// $tags = $this->bt_m->pickup_tags($b_row['b_text']); //old
-			$tags = $this->bt_m->split_tags_string($b_row['bt_tags_string']); 
+			$tags = $this->bt_m->split_tags_string($b_row['b_category'].' '.$b_row['bt_tags_string']);  //기본으로 카테고리도 태그에 넣는다.
 			$tags = array_slice($tags,0,20); // 태그는 20개 까지만
 			
 			if($mode=='update' ||$mode=='delete'){
