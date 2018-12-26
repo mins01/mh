@@ -85,6 +85,10 @@ class Bbs_model extends CI_Model {
 		if($bm_row['bm_use_comment']=='1' && empty($opts['no_bc_cnt'])){
 			$select.=',(select count(*) from '.$this->tblname('comment','bc2').' where bc2.b_idx=b.b_idx and bc_isdel=0) as bc_cnt';
 		}
+		// 태그 사용중인가?
+		if($bm_row['bm_use_tag']=='1' && empty($opts['no_bt_cnt'])){
+			$select.=',(select count(*) from '.$this->tblname('tag','bt2').' where bt2.b_idx=b.b_idx and bt_isdel=0) as bt_cnt';
+		}
 		// 조인 부분
 		if($bm_row['bm_use_thumbnail']=='1'){
 			$this->db->join($this->tblname('file','bf'),'bf.b_idx=b.b_idx and bf_isdel=0 and bf_represent = 1','left');
