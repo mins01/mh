@@ -33,17 +33,17 @@ class Bbs_tag_model extends CI_Model {
 	public function select_by_bt_idx($bt_idx)
 	{
 		$select = "bt.*";
-		return $this->db->select($select)->from($this->tbl.'  bt')->where('bt_idx',(int)$bt_idx)->get()->result_array();
+		return $this->db->select($select)->from($this->tbl.'  bt')->where('bt_idx',(int)$bt_idx)->where('bt_is_del',0)->get()->result_array();
 	}
 	public function select_by_bt_tag($bt_tag)
 	{
 		$select = "bt.b_idx";
-		return $this->db->select($select)->from($this->tbl.'  bt')->where('bt_tag',$bt_tag)->get()->result_array();
+		return $this->db->select($select)->from($this->tbl.'  bt')->where('bt_tag',$bt_tag)->where('bt_is_del',0)->get()->result_array();
 	}
 	public function select_by_b_idx($b_idx)
 	{
 		$select = "bt.bt_tag";
-		return $this->db->select($select)->from($this->tbl.'  bt')->where('b_idx',(int)$b_idx)->get()->result_array();
+		return $this->db->select($select)->from($this->tbl.'  bt')->where('b_idx',(int)$b_idx)->where('bt_is_del',0)->get()->result_array();
 	}
 	//=== insert
 	public function insert($b_idx,$bt_tag)
