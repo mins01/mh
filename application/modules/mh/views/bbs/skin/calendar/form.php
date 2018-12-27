@@ -102,11 +102,11 @@ if($mode=='write'||$mode=='answer'){
 			<li	 class="list-group-item  for-geo-form">
 				<div id="google_map_canvas" style="height:300px"></div>
 			</li>
-			<? if($bm_row['bm_use_tag']): ?>
+			<? if($bm_row['bm_use_tag']!='0'): ?>
 				<li class="list-group-item">
 					<div class="input-group">
 						<div class="input-group-addon">Tag</div>
-						<input type="text" maxlength="200" class="form-control" id="bt_tags_string" name="bt_tags_string" placeholder="tags (separator = ',',';',whitespace)" value="<?=html_escape(implode(' ',$bt_tags))?>">	
+						<input type="text" maxlength="200" class="form-control" <?=$bm_row['bm_use_tag']=='2'?'required':''?> pattern="^[^\s\t]+$"   id="bt_tags_string" name="bt_tags_string" placeholder="tags (separator = ',',';',whitespace)" value="<?=html_escape(implode(' ',$bt_tags))?>">	
 					</div>
 					
 				</li>

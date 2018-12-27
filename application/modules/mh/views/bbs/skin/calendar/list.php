@@ -77,28 +77,46 @@
 		?>
 			<tr class="bbs-dpeth bbs-dpeth-<?=$b_row['depth']?> <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 				<td class="text-center hidden-xs"><?=$start_num--?></td>
-				<td class="bbs-title text-flex-box">
-					<? if(isset($b_row['b_category'][0])): ?><span class="text-flex-sub text-flex-sub-left"><span class="label label-primary "><?=html_escape($b_row['b_category'])?></span></span><? endif; ?>
-					<span class="text-flex-main"><a href="<?=html_escape($b_row['read_url'])?>" ><?=html_escape($b_row['b_title'])?></a></span>
-
-					<span class="text-flex-sub text-flex-sub-right">
-						<? if(($b_row['is_new'])): ?>
-							<span class="is_new label label-default" title="새글">new</span>
-						<? endif; ?>
-						<? if(($b_row['b_secret'])): ?>
-							<span class="b_secret label label-default" title="비밀">S</span>
-						<? endif; ?>
-						<? if(!empty($b_row['bf_cnt'])): ?>
-							<span class="bf_cnt label label-default" title="file: <?=$b_row['bf_cnt']?>"><?=$b_row['bf_cnt']?></span>
-						<? endif; ?>
-
-						<? if(!empty($b_row['bc_cnt'])): ?>
-							<span class="bc_cnt label label-default" title="comment: <?=$b_row['bc_cnt']?>"><?=$b_row['bc_cnt']?></span>
-						<? endif; ?>
-						<? if(!empty($b_row['bt_cnt'])): ?>
-							<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>"><?=$b_row['bt_cnt']?></span>
-						<? endif; ?>
-					</span>
+				<td class="">
+					<div class="bbs-title text-flex-box">
+						<? if(isset($b_row['b_category'][0])): ?><span class="text-flex-sub text-flex-sub-left"><span class="label label-primary "><?=html_escape($b_row['b_category'])?></span></span><? endif; ?>
+						<span class="text-flex-main"><a href="<?=html_escape($b_row['read_url'])?>" ><?=html_escape($b_row['b_title'])?></a></span>
+						<span class="text-flex-sub text-flex-sub-right">
+							<? if(($b_row['is_new'])): ?>
+								<span class="is_new label label-default" title="새글">new</span>
+							<? endif; ?>
+							<? if(($b_row['b_secret'])): ?>
+								<span class="b_secret label label-default" title="비밀">S</span>
+							<? endif; ?>
+							<? if(!empty($b_row['bf_cnt'])): ?>
+								<span class="bf_cnt label label-default" title="file: <?=$b_row['bf_cnt']?>"><?=$b_row['bf_cnt']?></span>
+							<? endif; ?>
+	
+							<? if(!empty($b_row['bc_cnt'])): ?>
+								<span class="bc_cnt label label-default" title="comment: <?=$b_row['bc_cnt']?>"><?=$b_row['bc_cnt']?></span>
+							<? endif; ?>
+							<? /*if(!empty($b_row['bt_cnt'])): ?>
+								<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>"><?=$b_row['bt_cnt']?></span>
+							<? endif;*/ ?>
+						</span>	
+					</div>
+					<? 
+					if(!empty($b_row['bt_tags_string'])): 
+						?>
+						<div class="bt_tags">
+							<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>">tag:<?=$b_row['bt_cnt']?></span>
+						<?
+						foreach(explode(',',$b_row['bt_tags_string']) as $bt_tag):
+							?>
+							<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
+							<? 
+						endforeach;
+						?>
+						</div>
+						<?
+					endif; 
+					?>
+					
 
 				</td>
 				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>

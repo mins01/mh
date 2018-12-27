@@ -203,7 +203,7 @@ span.bc-star-5::before{content:'★★★★★'}
 
 
 /**
-* 달력 폼용
+* 위치 정보용
 */
 .for-geo-form{}
 .for-geo-hide .for-geo-form{display:none;}
@@ -226,3 +226,18 @@ span.bc-star-5::before{content:'★★★★★'}
 
 .div_iframe_htmlOgp{ border: 0px solid #eee;}
 .iframe_htmlOgp{width:100%; max-width:320px; height: 260px; border: 1px solid #eee;box-shadow: 2px 2px 5px #999; opacity: 0}
+
+
+/**
+ * 태그 관련
+ */
+.bt_tags{
+	font-size:8px;
+	margin-top:1px;
+}
+.bt_tags > .bt_tag{
+	display: inline-block;
+	font-size: inherit;
+	
+	margin: 0.1em 0.1em;
+}

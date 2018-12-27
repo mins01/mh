@@ -120,13 +120,11 @@ if($d_day==0){
 			
 		</li>
 		<? if(isset($bt_tags[0])): ?>
-		<li class="list-group-item form-inline text-right">
-			<? if(!empty($b_row['bt_cnt'])): ?>
-				<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>">tag: <?=$b_row['bt_cnt']?></span>
-			<? endif; ?>
-			<? foreach($bt_tags as $bt_tag): ?>
-				<a class="btn btn-link btn-xs" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
-			<? endforeach; ?>
+		<li class="list-group-item form-inline text-right bt_tags">
+			<span class="bt_cnt label label-default" title="tag: <?=count($bt_tags)?>">tag:<?=count($bt_tags)?></span>
+				<? foreach($bt_tags as $bt_tag): ?>
+					<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
+				<? endforeach;?>
 		</li>
 		<? endif; ?>
 		<? if(isset($b_row['b_etc_3'][0]) && !empty($b_row['b_num_0']) && !empty($b_row['b_num_1'])):?>

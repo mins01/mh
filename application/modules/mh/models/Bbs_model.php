@@ -86,8 +86,10 @@ class Bbs_model extends CI_Model {
 			$select.=',(select count(*) from '.$this->tblname('comment','bc2').' where bc2.b_idx=b.b_idx and bc_isdel=0) as bc_cnt';
 		}
 		// 태그 사용중인가?
-		if($bm_row['bm_use_tag']=='1' && empty($opts['no_bt_cnt'])){
+		if($bm_row['bm_use_tag']!='0' && empty($opts['no_bt_cnt'])){
 			$select.=',(select count(*) from '.$this->tblname('tag','bt2').' where bt2.b_idx=b.b_idx and bt_isdel=0) as bt_cnt';
+			$select.=",(SELECT GROUP_CONCAT(bt_tag) FROM mh_bbs_def_tag AS bt2 WHERE bt2.b_idx=b.b_idx AND bt_isdel=0 ) AS bt_tags_string";
+
 		}
 		// 조인 부분
 		if($bm_row['bm_use_thumbnail']=='1'){
