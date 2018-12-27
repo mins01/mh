@@ -66,9 +66,9 @@ if($d_day==0){
 			
 			<p class="pull-right form-control-static">
 				<? if(isset($b_row['b_link'][0])): ?>
-					<a class="label label-info glyphicon glyphicon-link" href="<?=html_escape($b_row['b_link'])?>" target="_blank">링크</a>
+					<a class="label label-success glyphicon glyphicon-link" href="<?=html_escape($b_row['b_link'])?>" target="_blank">링크</a>
 				<? endif; ?>
-				<? if(isset($b_row['b_category'][0])): ?>
+				<? if($bm_row['bm_use_category']!=0 && isset($b_row['b_category'][0])): ?>
 					<span class="label label-primary">카테고리:<?=html_escape($b_row['b_category'])?></span>
 				<? endif; ?>
 				<? if($b_row['b_secret']=='1'): ?>
@@ -120,7 +120,7 @@ if($d_day==0){
 			
 		</li>
 		<? if(isset($bt_tags[0])): ?>
-		<li class="list-group-item form-inline text-right bt_tags">
+		<li class="list-group-item form-inline text-right bt_tags  text-right">
 			<span class="bt_cnt label label-default" title="tag: <?=count($bt_tags)?>">tag:<?=count($bt_tags)?></span>
 				<? foreach($bt_tags as $bt_tag): ?>
 					<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>

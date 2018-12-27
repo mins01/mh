@@ -61,11 +61,15 @@ class Bbs_model extends CI_Model {
 		if(!isset($select[0])){
 			$select = 'b.b_idx,b_id,b_gidx,b_gpos,b_pidx,b_insert_date,b_update_date,b_isdel
 			,b.m_idx
-			,b_name,b_ip,b_notice,b_secret,b_html,b_link,b_category,b_title
+			,b_name,b_ip,b_notice,b_secret,b_html,b_link,b_title
 			,b_date_st,b_date_ed
 			,b_etc_0,b_etc_1,b_etc_2,b_etc_3,b_etc_4
 			,b_num_0,b_num_1,b_num_2,b_num_3,b_num_4';
 		}
+		if($bm_row['bm_use_category']!='0'){
+			$select.=',b.b_category';
+		}
+		
 		// switch($bm_row['bm_list_type']){
 			// case '0': //일반 게시물
 
@@ -88,7 +92,7 @@ class Bbs_model extends CI_Model {
 		// 태그 사용중인가?
 		if($bm_row['bm_use_tag']!='0' && empty($opts['no_bt_cnt'])){
 			$select.=',(select count(*) from '.$this->tblname('tag','bt2').' where bt2.b_idx=b.b_idx and bt_isdel=0) as bt_cnt';
-			$select.=",(SELECT GROUP_CONCAT(bt_tag) FROM mh_bbs_def_tag AS bt2 WHERE bt2.b_idx=b.b_idx AND bt_isdel=0 ) AS bt_tags_string";
+			$select.=",(SELECT GROUP_CONCAT(bt_tag) FROM ".$this->tblname('tag','bt2')." WHERE bt2.b_idx=b.b_idx AND bt_isdel=0 ) AS bt_tags_string";
 
 		}
 		// 조인 부분

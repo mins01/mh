@@ -232,12 +232,16 @@ span.bc-star-5::before{content:'★★★★★'}
  * 태그 관련
  */
 .bt_tags{
-	font-size:8px;
-	margin-top:1px;
+ 
+ text-overflow: ellipsis;
+ font-size: 8px;
+ margin-top: 1px;
+ overflow-x: hidden;
+ white-space: nowrap;
 }
 .bt_tags > .bt_tag{
-	display: inline-block;
-	font-size: inherit;
-	
-	margin: 0.1em 0.1em;
+ display: inline-block;
+ font-size: inherit;
+ 
+ margin: 0.1em 0.1em;
 }
