@@ -28,7 +28,13 @@ class Bbs_tag_model extends CI_Model {
 		}
 		$this->tbl = DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_tag';
 	}
-	
+	public function tblname($tblname,$alias=''){
+		//return DB_PREFIX.'bbs_'.$this->bm_row['bm_table'].'_'.$tblname.(isset($alias[0])?' as '.$alias:'');
+		if(isset($this->bm_row['tbl_'.$tblname])){
+			return $this->bm_row['tbl_'.$tblname].(isset($alias[0])?' as '.$alias:'');
+		}
+		return null;
+	}
 	//=== select
 	public function select_by_bt_idx($bt_idx)
 	{
@@ -54,6 +60,15 @@ class Bbs_tag_model extends CI_Model {
 			$rs[]=$r['bt_tag'];
 		}
 		return $rs;
+	}
+	public function bt_tags_by_b_id($b_id)
+	{
+		$tbl_b = $this->tblname('data');
+		$v_b_id = $this->db->escape($b_id);
+		$sql = "SELECT bt.bt_tag FROM `{$this->tbl}` bt JOIN `{$tbl_b}` b ON(bt.b_idx = b.b_idx AND b.b_id={$v_b_id})
+						GROUP BY bt_tag
+						ORDER BY bt_tag";
+		return $this->db->query($sql)->result_array();
 	}
 	//=== insert
 	public function insert($b_idx,$bt_tag)

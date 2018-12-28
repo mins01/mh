@@ -106,7 +106,7 @@ if($mode=='write'||$mode=='answer'){
 				<li class="list-group-item">
 					<div class="input-group">
 						<div class="input-group-addon">Tag</div>
-						<div class="multipleInputBox form-control" style="height:auto" data-removeEmptyBox data-inputBoxType="text"  data-min="1" data-max="10"  data-autoAddInputBox data-autoRemoveInputBox data-prefix="#" data-separator=" " >
+						<div class="multipleInputBox form-control" style="height:auto" data-removeEmptyBox data-inputBoxType="custom"  data-min="1" data-max="10"  data-autoAddInputBox data-autoRemoveInputBox data-prefix="#" data-separator=" " >
 							<input type="hidden" maxlength="200" class="form-control multipleInputBox-sync" <?=$bm_row['bm_use_tag']=='2'?'required':''?>  id="bt_tags_string" name="bt_tags_string" placeholder="tags (separator = ',',';',whitespace)" value="<?=html_escape(implode(' ',$bt_tags))?>">	
 						</div>
 						
@@ -130,6 +130,13 @@ if($mode=='write'||$mode=='answer'){
 		</div>
 	</div>
 	</form>
+	<datalist id="tag_lists">
+		<option value="Internet Explorer"></option>
+		<option value="Firefox"></option>
+		<option value="Chrome"></option>
+		<option value="Opera"></option>
+		<option value="Safari"></option>
+	</datalist>
 </div>
 
 
@@ -173,12 +180,37 @@ if(on_geo){
 </script>
 <script>
 $(function(){
-	
+	// multipleInputBox 초기화
 	$(".multipleInputBox").each(function(idx,el){
 		var cfg = {}
-		cfg.customInputBox = '<input type="text" maxlength="30" placeholder="input here" />';
+		cfg.customInputBox = '<input type="text" maxlength="30" list="tag_lists" placeholder="tag" />';
 		var t = MultipleInputBox(el,cfg);
 	})
-	
+	// 태그 르시트 갱신
+	var url = <?=json_encode($bbs_conf['tag_lists_url'])?>;
+	var post_data = null;
+	$.ajax({
+		url: url,
+		type: 'GET', //GET
+		dataType: 'json', //xml, json, script, jsonp, or html
+		data: post_data,
+	})
+	.done(function(rData) { //통신 성공 시 호출
+		$tag_lists = $('#tag_lists');
+		$tag_lists.html('');
+		for(var i=0,m=rData.length;i<m;i++){
+			var v = rData[i];
+			$tag_lists.append('<option value="'+v+'"></option>')
+		}
+		// console.log(rData);
+		console.log("tag_lists success");
+		
+	})
+	.fail(function() { //통신 실패 시 호출
+		console.log("tag_lists error");
+	})
+	.always(function() { //성공/실패 후 호출.
+		console.log("tag_lists complete");
+	});
 })
 </script>

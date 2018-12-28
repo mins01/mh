@@ -116,6 +116,7 @@ class Bbs extends MX_Controller {
 		
 		$this->bbs_conf['list_url'] = $this->base_url . "/list".$this->tail_qs;
 		$this->bbs_conf['write_url'] = $this->base_url . "/write".$this->tail_qs;
+		$this->bbs_conf['tag_lists_url'] = $this->base_url . "/tag_lists";
 		
 		$get2 = array();
 		$get2['lm'] = 'rss';
@@ -473,6 +474,27 @@ class Bbs extends MX_Controller {
 		echo $xml->saveXML();
 		return;
 	}
+	
+	public function mode_tag_lists($b_idx){
+		header('Content-Type: application/json');
+		$t = 60*10;
+		header("Expires: ".gmdate("D, d M Y H:i:s", time()+$t)." GMT");
+		header("Cache-Control: public, max-age = {$t}");
+		$this->config->set_item('layout_disable',true);
+		$rows = $this->bt_m->bt_tags_by_b_id($this->bm_row['b_id']);
+		// print_r($rows);
+		$json = array();
+		foreach($rows as $r){
+			if(strlen($r['bt_tag'])==0) continue;
+			$json[]=$r['bt_tag'];
+		}
+		if(defined('JSON_UNESCAPED_UNICODE')){
+			echo json_encode($json,JSON_UNESCAPED_UNICODE);
+		}else{
+			echo json_encode($json);
+		}
+	}
+	
 	//비밀번호 필수 체크 : false: fail, true: OK
 	private function required_password($b_row,$b_pass,$title='비밀번호 확인',$sub_title=''){
 		if($this->common->get_login('is_admin')){
