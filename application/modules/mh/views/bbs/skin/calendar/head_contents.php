@@ -9,8 +9,11 @@ $base_url = base_url();
 <script type="text/javascript" src="/web_work/js/_M/UI/_M.UI.js"></script>
 <link rel="stylesheet" type="text/css" href="/web_work/js/_M/UI/POPLAYER/_M.UI.POPLAYER.css"/>
 <script type="text/javascript" src="/web_work/js/_M/UI/POPLAYER/_M.UI.POPLAYER.js"></script>
-
 <link href="/web_work/mb_wysiwyg_dom/mb_wysiwyg.css" rel="stylesheet" type="text/css" />
+
+<!-- MultipleInputBox -->
+<link rel="stylesheet" type="text/css" href="<?=html_escape(base_url('etcmodule/ui_MultipleInputBox/MultipleInputBox.css'))?>"/>
+<script src="<?=html_escape(base_url('etcmodule/ui_MultipleInputBox/MultipleInputBox.js'))?>"></script>
 
 
 

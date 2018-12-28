@@ -1,6 +1,6 @@
 RewriteEngine On
 RewriteBase /
-RewriteCond $1 !^(index\.php|img|captcha|data|include|uploads|robots\.txt|doc)
+RewriteCond $1 !^(index\.php|img|captcha|data|etcmodule|include|uploads|robots\.txt|doc)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /mh/index.php/$1 [L]

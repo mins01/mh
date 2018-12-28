@@ -106,7 +106,10 @@ if($mode=='write'||$mode=='answer'){
 				<li class="list-group-item">
 					<div class="input-group">
 						<div class="input-group-addon">Tag</div>
-						<input type="text" maxlength="200" class="form-control" <?=$bm_row['bm_use_tag']=='2'?'required':''?>  id="bt_tags_string" name="bt_tags_string" placeholder="tags (separator = ',',';',whitespace)" value="<?=html_escape(implode(' ',$bt_tags))?>">	
+						<div class="multipleInputBox form-control" data-inputBoxType="text"  data-min="1" data-max="10"  data-autoAddInputBox data-autoRemoveInputBox data-prefix="#" data-separator=" " >
+							<input type="hidden" maxlength="200" class="form-control multipleInputBox-sync" <?=$bm_row['bm_use_tag']=='2'?'required':''?>  id="bt_tags_string" name="bt_tags_string" placeholder="tags (separator = ',',';',whitespace)" value="<?=html_escape(implode(' ',$bt_tags))?>">	
+						</div>
+						
 					</div>
 					
 				</li>
@@ -168,7 +171,14 @@ if(on_geo){
 }
 //-->
 </script>
-
-
-
-
+<script>
+$(function(){
+	
+	$(".multipleInputBox").each(function(idx,el){
+		var cfg = {}
+		cfg.customInputBox = '<input type="text" maxlength="30" placeholder="input here" />';
+		var t = MultipleInputBox(el,cfg);
+	})
+	
+})
+</script>
