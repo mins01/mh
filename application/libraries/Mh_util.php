@@ -177,10 +177,11 @@ class Mh_util{
 		$match = array();
 		preg_match_all('@<meta [^>]*/?>@m',$content,$match);
 		// echo $content;
-		// print_r($match);
+		// print_r($match[0]);
 		foreach ($match[0] as $key => $v) {
 			$ts=array();
-			preg_match_all('/(name|property|content)=(?:"|\')([^"\']+)(?:"|\')/',$v,$ts,PREG_SET_ORDER);
+			preg_match_all('/(name|property|content)(?:\s*)=(?:\s*)(?:"|\')([^"\']+)(?:"|\')/',$v,$ts,PREG_SET_ORDER);
+			// print_r($ts);
 			$meta = array();
 			foreach($ts as $t ){
 				$meta[$t[1]] = $t[2];
@@ -188,6 +189,7 @@ class Mh_util{
 			$property = isset($meta['property'])?$meta['property']:(isset($meta['name'])?$meta['name']:'');
 			if(!isset($property[0])) continue;
 			if(strpos($property,'og')===0 ||strpos($property,'fb')===0 ||strpos($property,'twitter')===0 ){
+				// print_r($meta);
 				if(!isset($ogp[$property])){
 					$ogp[$property]=$meta['content'];
 					$ogp[$property.'s'] = array();
