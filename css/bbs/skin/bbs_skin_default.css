@@ -224,8 +224,17 @@ span.bc-star-5::before{content:'★★★★★'}
  	background-image: url("../../../img/feed-icon-14x14.png")
 }
 
+.file-item .panel-heading{
+	padding:5px;
+}
+.file-item .panel-body{
+	padding:5px;
+}
 .div_iframe_htmlOgp{ border: 0px solid #eee;}
-.iframe_htmlOgp{width:100%; max-width:320px; height: 260px; border: 1px solid #eee;box-shadow: 2px 2px 5px #999; opacity: 0}
+.iframe_htmlOgp{
+	width:100%; max-width:320px; height: 0px; border: 1px solid #eee; opacity: 0; display: block;
+	transition: all 0.5s ease-out;
+}
 
 
 /**
