@@ -76,9 +76,9 @@ class Bbs_tag_model extends CI_Model {
 		$this->db->from($this->tbl)
 		->set('b_idx',(int)$b_idx)
 		->set('bt_tag',$bt_tag)
-		->set('bt_insert_date','now()',false);
+		->set('bt_update_date','now()',false);
 		// ->insert();		
-		$sql = $this->db->get_compiled_insert() . ' ON DUPLICATE KEY UPDATE bt_insert_date = now(),bt_isdel=0, bt_update_count = bt_update_count +1';
+		$sql = $this->db->get_compiled_insert() . ' ON DUPLICATE KEY UPDATE bt_isdel=0';
 		$this->db->query($sql);
 		return $this->db->insert_id();
 	}	
@@ -88,7 +88,7 @@ class Bbs_tag_model extends CI_Model {
 		if(count($bt_tags)>0){
 			$this->db->where_not_in('bt_tag',$bt_tags);
 		}
-		return $this->db->from($this->tbl)->set('bt_isdel',1)->set('bt_delete_date','now()',false)->where('b_idx',(int)$b_idx)->update();
+		return $this->db->from($this->tbl)->set('bt_isdel',1)->where('bt_isdel',0)->where('b_idx',(int)$b_idx)->update();
 	}
 	//=== util 
 	/**
