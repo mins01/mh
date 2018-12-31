@@ -89,6 +89,15 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 					</div>
 				</div>
 			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"><a href="<?=dirname(dirname($conf['base_url']))?>/sitemap/google" target="_blank">Sitemap</a>에 표시</label>
+				<div class="col-sm-4">
+					<div class="btn-group form-control-static" >
+						<label ><input type="radio" placeholder="mn_hide_sitemap" ng-model="selected_obj.mn_hide_sitemap" value="0" ng-checked="selected_obj.mn_hide_sitemap=='0'" ng-disabled="selected_obj.mn_lock=='1'">사용</label>
+						<label ><input type="radio" placeholder="mn_hide_sitemap" ng-model="selected_obj.mn_hide_sitemap" value="1" ng-checked="selected_obj.mn_hide_sitemap=='1'" ng-disabled="selected_obj.mn_lock=='1'">금지</label>
+					</div>
+				</div>
+			</div>
 			<hr>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">모듈</label>

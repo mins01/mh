@@ -74,7 +74,7 @@ class Bbs_master_model extends CI_Model {
 		}
 		$this->db->order_by('b_id');
 		$bm_rows = $this->db->get()->result_array();
-		//echo $this->db->last_query();
+		// echo $this->db->last_query();
 		//$this->extends_bm_rows($bm_rows);
 		foreach($bm_rows as $r){
 			$rt[$r['b_id']] = $r['bm_title'];

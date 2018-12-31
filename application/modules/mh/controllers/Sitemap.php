@@ -43,7 +43,8 @@ class Sitemap extends MX_Controller {
 		$lastmod = date('Y-m-d');
 		$http_domain = (!empty($_SERVER['HTTPS'])?'https://':'http://').$_SERVER['HTTP_HOST'];
 		foreach($menu_rows[0]['child'] as $row){
-			if($row['mn_hide'] && !$row['mn_use']){continue;}
+			if($row['mn_hide']=='1' || !$row['mn_use']){continue;}
+			if($row['mn_hide_sitemap']=='1' || !$row['mn_use']){continue;}
 			// print_r($row);
 			$rr['url'][]=array(
 			'loc'=>array('@value'=>$http_domain.$row['url'],
