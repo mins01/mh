@@ -17,8 +17,13 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<style>
 	body{padding:5px; background-color: #fff; overflow: hidden;}
-	.og-image{max-width:100%;max-height:150px;}
+	.og-image{max-width:100%;max-height:100px;}
 	a.url{display: block;}
+	.text-ellipsis{text-overflow: ellipsis; white-space: nowrap; width: 100%; overflow: hidden;}
+	.og-site_name{font-size:larger}
+	.og-title{}
+	
+	
 	</style>
 	</head>
 <body>
@@ -28,23 +33,19 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 				<div>
 			<?
 			if(isset($opgs['og:image'][0])){
-				if(is_array($opgs['og:images'])){
-					$src = $opgs['og:images'][0];
-				}else{
-					$src = $opgs['og:image'];	
-				}
-				?><div class="col-xs-12 text-center"><img class="og-image"  src="<?=html_escape($src)?>"  class="img-rounded" alt="image"></div><?
+				$src = $opgs['og:image'];
+				?><div class="text-center"><img class="og-image"  src="<?=html_escape($src)?>"  class="img-rounded" alt="image"></div><?
 			}
 			?>
-			<div class="col-xs-12  text-center">
+			<div class=" text-center">
 				<?
 				if(isset($opgs['og:site_name'][0])){
-					?><h3><?=html_escape($opgs['og:site_name'])?></h3><?
+					?><div class="og-site_name text-ellipsis"><?=html_escape($opgs['og:site_name'])?></div><?
 				}
 				?>
 				<?
 				if(isset($opgs['og:title'][0])){
-					?><h4><?=html_escape($opgs['og:title'])?></h4><?
+					?><div class="og-title text-ellipsis"><?=html_escape($opgs['og:title'])?></div><?
 				}
 				?>
 				</div>

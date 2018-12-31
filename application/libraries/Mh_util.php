@@ -170,53 +170,29 @@ class Mh_util{
 
 	 */
 	static function parseOgp($content){
-		if(!class_exists('XML2Array')){
-			require_once(dirname(__FILE__).'XML2Array.php');
-		}
-
-		$match = array();
-		preg_match_all('/<meta .*>/',$content,$match);
-		// print_r($match);
-		$content = implode("\n",$match[0]);
-		$content = str_replace(array(' >','">','\'>'),array(' />','" />','\' />'),$content);
-		// echo $content ;
-		// exit;
-		$content = '<root>'.$content.'</root>';
-		// $array = XML2Array::createArray('<root>'.$content.'</root>');
-		// print_r($array);
-
-		// var_dump($content);
-		// exit;
-		// $content = preg_replace('/((.*)<head|</head)/m',$content,'')
-		$doc = new DOMDocument('1.0','utf-8');
-		@$doc->loadXML($content);
-
-		$meta_props = array('og', 'fb', 'twitter');
-
+		// if(!class_exists('XML2Array')){
+		// 	require_once(dirname(__FILE__).'XML2Array.php');
+		// }
 		$ogp = array();
-
-		$metas = $doc->getElementsByTagName('meta');
-
-		if(isset($metas->length) && $metas->length > 0){
-			for($i=0,$m=$metas->length;$i<$m;$i++){
-				$item = $metas->item($i);
-				$property = $item->getAttribute('property');
-				if(!isset($property[0])){
-					$property = $item->getAttribute('name');
-				}
-				if(!isset($property[0])){
-					continue;
-				}
-				$t = explode(':',$property);
-				if(!in_array($t[0],$meta_props)){
-					continue;
-				}
-				if(!isset($ogp[$property.'s'])){
+		$match = array();
+		preg_match_all('@<meta [^>]*/?>@m',$content,$match);
+		// echo $content;
+		// print_r($match);
+		foreach ($match[0] as $key => $v) {
+			$ts=array();
+			preg_match_all('/(name|property|content)=(?:"|\')([^"\']+)(?:"|\')/',$v,$ts,PREG_SET_ORDER);
+			$meta = array();
+			foreach($ts as $t ){
+				$meta[$t[1]] = $t[2];
+			}
+			$property = isset($meta['property'])?$meta['property']:(isset($meta['name'])?$meta['name']:'');
+			if(!isset($property[0])) continue;
+			if(strpos($property,'og')===0 ||strpos($property,'fb')===0 ||strpos($property,'twitter')===0 ){
+				if(!isset($ogp[$property])){
+					$ogp[$property]=$meta['content'];
 					$ogp[$property.'s'] = array();
-					
 				}
-				$ogp[$property] = $item->getAttribute('content');
-				$ogp[$property.'s'][] = $item->getAttribute('content');
+				$ogp[$property.'s'][]=$meta['content'];
 			}
 		}
 		return $ogp;
