@@ -106,4 +106,14 @@ class Custom_model extends CI_Model {
 		return $rowss;
 	}
 	
+	public function last_bbs_tags($bm_table,$b_id,$limit,$limit2){
+		$v_b_id = $this->db->escape($b_id);
+		$v_limit = $this->db->escape((int)$limit);
+		$v_limit2 = $this->db->escape((int)$limit2);
+		$sql = "SELECT bt_tag,COUNT(*) cnt 
+		FROM (SELECT b.b_idx FROM `mh_bbs_{$bm_table}_data` b  WHERE b_id={$v_b_id} ORDER BY  b.b_gidx LIMIT {$v_limit}) b 
+		JOIN `mh_bbs_tech_tag` bt USING(b_idx) GROUP BY bt_tag  ORDER BY cnt DESC limit {$v_limit2}";
+		return $this->db->query($sql)->result_array();
+	}
+	
 }

@@ -62,6 +62,8 @@ class Custom extends MX_Controller {
 		$bc_rowss = $this->custom_m->last_bbs_comment_rowss($bc_tbl_b_ids,50,30);
 		
 		
+		$bt_rowss = array();
+		$bt_rowss[] = array('tech','tech',0,'기술','tech',$this->custom_m->last_bbs_tags('tech','tech',100,10));
 		
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','');
@@ -70,6 +72,7 @@ class Custom extends MX_Controller {
 			'b_rowss'=>$b_rowss,
 			'bc_tbl_b_ids'=>$bc_tbl_b_ids,
 			'bc_rowss'=>$bc_rowss,
+			'bt_rowss'=>$bt_rowss,
 			));
 	}
 	
