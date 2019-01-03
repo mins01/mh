@@ -14,13 +14,13 @@
 	$date_type = $v[2];
 	$mn_url = $v[4];
 	$k = $b_id;
-	$b_row = isset($b_rowss[$k])?$b_rowss[$k]:array();
+	$b_rows = isset($b_rowss[$k])?$b_rowss[$k]:array();
 	$v_url = base_url($mn_url);
 	?>
 	<div class="col-sm-6 col-md-4">
 		<div class="list-group">
 			<a class="list-group-item list-group-item-success" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?> 최근 글</a>
-			<? foreach($b_row as $b_row): 
+			<? foreach($b_rows as $b_row): 
 				$url = base_url($mn_url.'/read/'.$b_row['b_idx']);
 			?>
 			<a class="list-group-item text-flex-box"  href="<?=html_escape($url)?>">
@@ -45,6 +45,7 @@
 				</span>
 			</a>
 			<? endforeach;?>
+			<? if(count($b_rows)==0):?><div class="list-group-item text-center">최근 내용이 없습니다.</div><? endif;?>
 		</div>
 	</div>
 <? endforeach; ?>
@@ -76,6 +77,7 @@
 				</span>
 			</a>
 			<? endforeach;?>
+			<? if(count($bc_rows)==0):?><div class="list-group-item text-center">최근 내용이 없습니다.</div><? endif;?>
 		</div>
 	</div>
 <? endforeach; ?>
@@ -95,7 +97,7 @@
 	?>
 	<div class="col-sm-6 col-md-4">
 		<div class="list-group">
-			<a class="list-group-item list-group-item-warning" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?> 최그 태그</a>
+			<a class="list-group-item list-group-item-warning" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?> 최근 태그</a>
 			<? foreach($bt_rows as $bt_row): 
 				$url = base_url($mn_url).'/list?tq=tag&q='.urlencode($bt_row['bt_tag']);
 			?>
@@ -106,6 +108,7 @@
 				</span>
 			</a>
 			<? endforeach;?>
+			<? if(count($bt_rows)==0):?><div class="list-group-item text-center">최근 내용이 없습니다.</div><? endif;?>
 		</div>
 	</div>
 <? endforeach; ?>
