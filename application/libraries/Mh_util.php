@@ -191,10 +191,10 @@ class Mh_util{
 			if(strpos($property,'og')===0 ||strpos($property,'fb')===0 ||strpos($property,'twitter')===0 ){
 				// print_r($meta);
 				if(!isset($ogp[$property])){
-					$ogp[$property]=$meta['content'];
+					$ogp[$property]=isset($meta['content'])?$meta['content']:'';
 					$ogp[$property.'s'] = array();
 				}
-				$ogp[$property.'s'][]=$meta['content'];
+				$ogp[$property.'s'][]=isset($meta['content'])?$meta['content']:'';
 			}
 		}
 		return $ogp;
