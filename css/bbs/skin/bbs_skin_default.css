@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+
+.p-5px{padding:5px;}
+
 .bbs-notice> .bbs-title{font-weight:bold;}
 
 .bbs-dpeth .bbs-title a::before{
@@ -263,3 +266,4 @@ span.bc-star-5::before{content:'★★★★★'}
  
  margin: 0.1em 0.1em;
 }
+

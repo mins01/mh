@@ -16,6 +16,10 @@ if($mode=='write'||$mode=='answer'){
 		<div class="panel-heading">
 			<input type="text" required maxlength="200" class="form-control" id="b_title" name="b_title" placeholder="글제목" value="<?=html_escape($b_row['b_title'])?>">
 		</div>
+		<div class="panel-body text-right  p-5px">
+		<button type="submit" class="btn btn-xs btn-primary glyphicon glyphicon-ok"> 확인</button>
+		<button type="button" onclick="history.back()" class="btn btn-xs btn-danger glyphicon glyphicon-remove"> 취소</button>
+		</div>
 		<ul class="list-group">
 			
 			<li class="list-group-item form-inline">

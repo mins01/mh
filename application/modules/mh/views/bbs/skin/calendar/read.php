@@ -39,7 +39,7 @@ if($d_day==0){
 		</div>
 		
 	</div>
-	<div class="text-right panel-body ">
+	<div class="text-right panel-body p-5px ">
 		
 		<? if($permission['list']): ?>
 		<a href="<?=html_escape($bbs_conf['list_url'])?>" class="btn btn-xs btn-primary glyphicon glyphicon-list"> 목록</a>
