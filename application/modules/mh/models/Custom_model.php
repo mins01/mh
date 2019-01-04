@@ -110,9 +110,9 @@ class Custom_model extends CI_Model {
 		$v_b_id = $this->db->escape($b_id);
 		$v_limit = $this->db->escape((int)$limit);
 		$v_limit2 = $this->db->escape((int)$limit2);
-		$sql = "SELECT bt_tag,COUNT(*) cnt 
+		$sql = "SELECT bt_tag,(SELECT COUNT(*) FROM `mh_bbs_{$bm_table}_tag` bt2 WHERE bt2.bt_tag=bt.bt_tag AND bt2.bt_isdel=0) cnt,MAX(bt_update_date) bt_update_date
 		FROM (SELECT b.b_idx FROM `mh_bbs_{$bm_table}_data` b  WHERE b_id={$v_b_id} ORDER BY  b.b_gidx LIMIT {$v_limit}) b 
-		JOIN `mh_bbs_tech_tag` bt USING(b_idx) GROUP BY bt_tag  ORDER BY cnt DESC limit {$v_limit2}";
+		JOIN `mh_bbs_{$bm_table}_tag` bt USING(b_idx) where bt.bt_isdel=0 GROUP BY bt_tag  ORDER BY b_idx DESC limit {$v_limit2}";
 		return $this->db->query($sql)->result_array();
 	}
 	

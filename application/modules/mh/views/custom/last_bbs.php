@@ -73,7 +73,7 @@
 				<span class="text-flex-main text-flex-main-fullsize text-primary" ><?=html_escape($bc_row['bc_comment'])?></span>
 				<span class="text-flex-sub text-flex-sub-right">
 					<? if($bc_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
-					<span class=" label label-info" title="새글"><? echo date('m-d H시',strtotime($bc_row['bc_insert_date'])); ?></span>
+					<span class=" label label-info"><? echo date('m-d H시',strtotime($bc_row['bc_insert_date'])); ?></span>
 				</span>
 			</a>
 			<? endforeach;?>
@@ -105,7 +105,9 @@
 				<span class="text-flex-main text-flex-main-fullsize text-primary" ><?=html_escape($bt_row['bt_tag'])?></span>
 				<span class="text-flex-sub text-flex-sub-right">
 					<span class=" label label-warning" title=""><?=html_escape($bt_row['cnt'])?></span>
+					<span class=" label label-info"><? echo date('m-d H시',strtotime($bt_row['bt_update_date'])); ?></span>
 				</span>
+				
 			</a>
 			<? endforeach;?>
 			<? if(count($bt_rows)==0):?><div class="list-group-item text-center">최근 내용이 없습니다.</div><? endif;?>
