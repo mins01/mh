@@ -572,7 +572,7 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','read : '.$b_row['b_title'].' : '.$this->bm_row['bm_title'].' '.$this->sumup_tags($bt_tags,' ','#'));
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : {$b_row['b_title']}");
-		$this->config->set_item('layout_og_description', "읽기 : {$b_row['b_title']}".' '.$this->sumup_tags($bt_tags));
+		$this->config->set_item('layout_og_description', "읽기 : {$b_row['b_title']}".' '.$this->sumup_tags($bt_tags,' ','#'));
 		$this->config->set_item('layout_keywords', $this->sumup_tags($bt_tags,',',''));
 		
 
