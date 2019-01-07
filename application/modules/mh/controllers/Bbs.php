@@ -570,10 +570,10 @@ class Bbs extends MX_Controller {
 		$this->bbs_m->hitup($b_row['b_idx'],$_SERVER['REMOTE_ADDR'],$this->common->get_login('m_idx'));
 		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
 		$this->config->set_item('layout_hide',false);
-		$this->config->set_item('layout_title','read : '.$b_row['b_title'].' : '.$this->bm_row['bm_title'].' '.$this->sumup_tags($bt_tags));
+		$this->config->set_item('layout_title','read : '.$b_row['b_title'].' : '.$this->bm_row['bm_title'].' '.$this->sumup_tags($bt_tags,' ','#'));
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : {$b_row['b_title']}");
 		$this->config->set_item('layout_og_description', "읽기 : {$b_row['b_title']}".' '.$this->sumup_tags($bt_tags));
-		$this->config->set_item('layout_keywords', implode(',',$bt_tags));
+		$this->config->set_item('layout_keywords', $this->sumup_tags($bt_tags,',',''));
 		
 
 		//썸네일이 있을 경우 og 이미지를 추가한다.
@@ -766,10 +766,10 @@ class Bbs extends MX_Controller {
 
 		$this->config->set_item('layout_head_contents',$this->get_head_contents($mode));
 		$this->config->set_item('layout_hide',false);
-		$this->config->set_item('layout_title',''.$mode.' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title'].' '.$this->sumup_tags($bt_tags));
+		$this->config->set_item('layout_title',''.$mode.' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title'].' '.$this->sumup_tags($bt_tags,' ','#'));
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 작성폼");
 		$this->config->set_item('layout_og_description', "작성폼");
-		$this->config->set_item('layout_keywords', implode(',',$bt_tags));
+		$this->config->set_item('layout_keywords', $this->sumup_tags($bt_tags,',',''));
 
 		$this->load->view($this->skin_path.'/form',array(
 		'b_row' => $b_row,
@@ -950,11 +950,11 @@ class Bbs extends MX_Controller {
 
 	}
 
-	public function sumup_tags($tags){
+	public function sumup_tags($tags,$separator=' ',$prefix=''){
 		if(!$tags){
 			return '';
 		}else{
-			return '#'.implode(' #',$tags);
+			return $prefix.implode($separator.$prefix,$tags);
 		}
 	}	
 	public function select_tags($b_idx){
