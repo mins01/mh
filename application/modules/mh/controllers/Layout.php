@@ -25,8 +25,8 @@ class Layout extends MX_Controller {
 		$conf['logedin'] = $this->config->item('layout_logedin');
 		$conf['login_label'] = $this->common->get_login('m_nick');
 		$conf['login_info']	=	 $this->common->get_login();
-
-
+		
+		$conf['layout_keywords'] = $this->config->item('layout_keywords');
 		$conf['layout_og_title'] = $this->config->item('layout_og_title');
 		$conf['layout_og_description'] = $this->config->item('layout_og_description');
 		$conf['layout_og_image'] = $this->config->item('layout_og_image');

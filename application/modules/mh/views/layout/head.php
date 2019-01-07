@@ -9,7 +9,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<meta name="description" content="<?=html_escape($title)?>" />
-	<meta name="keywords" content="공대여자,웹,프로그래밍,DB,PHP,MySQL,ORACLE" />
+	<meta name="keywords" content="<?=html_escape($layout_keywords)?>" />
 	<meta name="classification" content="웹 프로그래밍" />
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />

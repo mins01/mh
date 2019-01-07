@@ -12,8 +12,10 @@ $config['db']= array(
 'prefix'=>'',//현재 사용안함.
 );
 
-//--- layout용 head.php 속 meta-og 용
 
+//--- layout용 head
+$config['layout_keywords'] = '공대여자,웹,프로그래밍,DB,PHP,MySQL,ORACLE';
+//--- layout용 head.php 속 meta-og 용
 $config['layout_og_title'] = '공대여자 홈';
 $config['layout_og_description'] = '공대여자 홈';
 $config['layout_og_image'] = 'http://www.mins01.com/img/logo.gif';

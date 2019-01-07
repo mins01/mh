@@ -566,13 +566,15 @@ class Bbs extends MX_Controller {
 			$view_form_file = '';
 		}
 
+		$bt_tags = $this->select_tags($b_row['b_idx']); //내부에서 자동 if 처리함
 		$this->bbs_m->hitup($b_row['b_idx'],$_SERVER['REMOTE_ADDR'],$this->common->get_login('m_idx'));
-
 		$this->config->set_item('layout_head_contents',$this->get_head_contents('read'));
 		$this->config->set_item('layout_hide',false);
-		$this->config->set_item('layout_title','read : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
+		$this->config->set_item('layout_title','read : '.$b_row['b_title'].' : '.$this->bm_row['bm_title'].' '.$this->sumup_tags($bt_tags));
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : {$b_row['b_title']}");
-		$this->config->set_item('layout_og_description', "읽기 : {$b_row['b_title']}");
+		$this->config->set_item('layout_og_description', "읽기 : {$b_row['b_title']}".' '.$this->sumup_tags($bt_tags));
+		$this->config->set_item('layout_keywords', implode(',',$bt_tags));
+		
 
 		//썸네일이 있을 경우 og 이미지를 추가한다.
 		if(isset($b_row['thumbnail_url'][0])){
@@ -598,7 +600,7 @@ class Bbs extends MX_Controller {
 			'html_comment'=>($this->bm_row['bm_use_comment']=='1')?$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url),true):'',
 			'permission'=>$permission,
 			'view_form_file'=>$view_form_file,
-			'bt_tags'=>$this->select_tags($b_row['b_idx']), //내부에서 자동 if 처리함
+			'bt_tags'=>$bt_tags,
 		));
 		// echo $this->db->last_query();
 
@@ -739,10 +741,6 @@ class Bbs extends MX_Controller {
 
 		$this->extends_b_row($b_row,$get);
 
-		$this->config->set_item('layout_head_contents',$this->get_head_contents($mode));
-		$this->config->set_item('layout_hide',false);
-		$this->config->set_item('layout_title',''.$mode.' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title']);
-
 		if(isset($post['b_pass'])){
 			$b_row['b_pass'] = $post['b_pass'];
 		}else{
@@ -764,9 +762,14 @@ class Bbs extends MX_Controller {
 		}else{
 			$view_form_file = '';
 		}
+		$bt_tags = $this->select_tags($b_row['b_idx']); //내부에서 자동 if처리함
 
+		$this->config->set_item('layout_head_contents',$this->get_head_contents($mode));
+		$this->config->set_item('layout_hide',false);
+		$this->config->set_item('layout_title',''.$mode.' : '.$b_row['b_title'].' : '.$this->bm_row['bm_title'].' '.$this->sumup_tags($bt_tags));
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 작성폼");
 		$this->config->set_item('layout_og_description', "작성폼");
+		$this->config->set_item('layout_keywords', implode(',',$bt_tags));
 
 		$this->load->view($this->skin_path.'/form',array(
 		'b_row' => $b_row,
@@ -781,7 +784,7 @@ class Bbs extends MX_Controller {
 		'input_b_pass'=>isset($b_row['b_pass'][0]) || !$this->logedin, //비밀번호를 입력 받아야하는가?
 		'permission'=>$permission,
 		'view_form_file'=>$view_form_file,
-		'bt_tags'=>$this->select_tags($b_row['b_idx']), //내부에서 자동 if처리함
+		'bt_tags'=>$bt_tags,
 		));
 	}
 
@@ -946,7 +949,14 @@ class Bbs extends MX_Controller {
 		));
 
 	}
-	
+
+	public function sumup_tags($tags){
+		if(!$tags){
+			return '';
+		}else{
+			return '#'.implode(' #',$tags);
+		}
+	}	
 	public function select_tags($b_idx){
 		if($this->bm_row['bm_use_tag']!='0'){
 			return $this->bt_m->bt_tags_by_b_idx($b_idx);
