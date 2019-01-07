@@ -119,14 +119,6 @@ if($d_day==0){
 			</div>
 			
 		</li>
-		<? if(isset($bt_tags[0])): ?>
-		<li class="list-group-item form-inline text-right bt_tags  text-right">
-			<span class="bt_cnt label label-default" title="tag: <?=count($bt_tags)?>">tag:<?=count($bt_tags)?></span>
-				<? foreach($bt_tags as $bt_tag): ?>
-					<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
-				<? endforeach;?>
-		</li>
-		<? endif; ?>
 		<? if(isset($b_row['b_etc_3'][0]) && !empty($b_row['b_num_0']) && !empty($b_row['b_num_1'])):?>
 		<li class="list-group-item">
 			<div id="google_map_canvas" style="height:300px"></div>
@@ -149,8 +141,19 @@ if($d_day==0){
 		</li>
 		<? endif; ?>
 	</ul>
-	<div class="panel-body contents-area" style="min-height:200px">
-		<?=mh_util::cvt_html($b_row['b_text'],$b_row['b_html'])?>
+	<div class="panel-body" style="min-height:200px">
+		<? if(isset($bt_tags[0])): ?>
+		<div class=" text-right bt_tags  text-right">
+			<span class="bt_cnt label label-default" title="tag: <?=count($bt_tags)?>">tag:<?=count($bt_tags)?></span>
+				<? foreach($bt_tags as $bt_tag): ?>
+					<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
+				<? endforeach;?>
+		</div>
+		<? endif; ?>
+		<div class="contents-area">
+				<?=mh_util::cvt_html($b_row['b_text'],$b_row['b_html'])?>
+		</div>
+		
 	</div>
 	<div class="panel-footer text-right">
 		
