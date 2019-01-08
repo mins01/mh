@@ -210,7 +210,7 @@ class Bbs_model extends CI_Model {
 					foreach($v_q as $k=>$v){
 						$ali = 'bt'.$k;
 						$v_tag = $this->db->escape($v,true);
-						$this->db->join($this->tblname('tag',$ali), "{$ali}.b_idx = b.b_idx and {$ali}.bt_tag={$v_tag} ");
+						$this->db->join($this->tblname('tag',$ali), "{$ali}.b_idx = b.b_idx and {$ali}.bt_isdel=0 and {$ali}.bt_tag={$v_tag} ");
 					}
 					$order_by = 'bt0.b_idx desc';
 				break;
