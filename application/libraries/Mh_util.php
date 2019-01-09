@@ -173,7 +173,12 @@ class Mh_util{
 		// if(!class_exists('XML2Array')){
 		// 	require_once(dirname(__FILE__).'XML2Array.php');
 		// }
+		
 		$ogp = array();
+		$metas = array();
+		$match = array();
+		preg_match('@<title[^>]*>(.*)</title>@m',$content,$match);
+		$metas['title'] = isset($match[1])?$match[1]:'no-title';
 		$match = array();
 		preg_match_all('@<meta [^>]*/?>@m',$content,$match);
 		// echo $content;
@@ -194,8 +199,18 @@ class Mh_util{
 					$ogp[$property]=isset($meta['content'])?$meta['content']:'';
 					$ogp[$property.'s'] = array();
 				}
+				
 				$ogp[$property.'s'][]=isset($meta['content'])?$meta['content']:'';
+			}else{
+				$metas[$property]=isset($meta['content'])?$meta['content']:'';
 			}
+		}
+		// print_r($metas);
+		if(!isset($ogp['og:title']) && isset($metas['title'])){
+			$ogp['og:title'] = $metas['title'];
+		}
+		if(!isset($ogp['og:description']) && isset($metas['description'])){
+			$ogp['og:description'] = $metas['description'];
 		}
 		return $ogp;
 	}

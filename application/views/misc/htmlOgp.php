@@ -22,7 +22,7 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 	.text-ellipsis{text-overflow: ellipsis; white-space: nowrap; width: 100%; overflow: hidden;}
 	.og-site_name{font-size:larger}
 	.og-title{}
-	
+	.og-description{font-size:smaller}
 	
 	</style>
 	</head>
@@ -46,6 +46,11 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 				<?
 				if(isset($opgs['og:title'][0])){
 					?><div class="og-title text-ellipsis"><?=html_escape($opgs['og:title'])?></div><?
+				}
+				?>
+				<?
+				if(isset($opgs['og:description'][0])){
+					?><div class="og-description text-ellipsis"><?=html_escape($opgs['og:description'])?></div><?
 				}
 				?>
 				</div>
