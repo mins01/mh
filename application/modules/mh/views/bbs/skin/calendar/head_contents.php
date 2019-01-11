@@ -32,13 +32,12 @@ $base_url = base_url();
 <script src="<?=html_escape(base_url('js/bbs/comment.js'))?>"></script>
 <? endif; ?>
 
+<script src="<?=html_escape(base_url('js/bbs/script.js'))?>"></script>
 <? if($mode=='write' || $mode=='edit' || $mode=='answer'): ?>
 
 <link href="/web_work/mb_wysiwyg_dom/bootstrap.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/web_work/mb_wysiwyg_dom/mb_wysiwyg.js"></script>
 <script type="text/javascript" src="/web_work/mb_wysiwyg_dom/set.toolbar.js"></script>
-
-<script src="<?=html_escape(base_url('js/bbs/script.js'))?>"></script>
 
 <script src="<?=html_escape(base_url('js/mh_gps.js'))?>"></script>
 

@@ -95,3 +95,30 @@ function submitWysiwyg(){
 	}
 }
 
+function load_tag_lists(url){
+	// var url = <?=json_encode($bbs_conf['tag_lists_url'])?>;
+	var post_data = null;
+	$.ajax({
+		url: url,
+		type: 'GET', //GET
+		dataType: 'json', //xml, json, script, jsonp, or html
+		data: post_data,
+	})
+	.done(function(rData) { //통신 성공 시 호출
+		$tag_lists = $('datalist.tag_lists');
+		$tag_lists.html('');
+		for(var i=0,m=rData.length;i<m;i++){
+			var v = rData[i];
+			$tag_lists.append('<option value="'+v+'"></option>')
+		}
+		// console.log(rData);
+		console.log("tag_lists success");
+		
+	})
+	.fail(function() { //통신 실패 시 호출
+		console.log("tag_lists error");
+	})
+	.always(function() { //성공/실패 후 호출.
+		console.log("tag_lists complete");
+	});
+}

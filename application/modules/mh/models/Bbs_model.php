@@ -141,7 +141,7 @@ class Bbs_model extends CI_Model {
 		$this->db->where('b_isdel','0');
 
 		//-- 검색어
-
+		$str_tag = '';
 		if(isset($get['q'][0]) && strlen(trim($get['q']))>0){
 			$get['q'] = trim($get['q']);
 			$v_q = array_unique(preg_split('/\s+/',$get['q']));
@@ -207,17 +207,26 @@ class Bbs_model extends CI_Model {
 					$this->db->group_end();
 				break;
 				case 'tag':
-					foreach($v_q as $k=>$v){
-						$ali = 'bt'.$k;
-						$v_tag = $this->db->escape($v,true);
-						$this->db->join($this->tblname('tag',$ali), "{$ali}.b_idx = b.b_idx and {$ali}.bt_isdel=0 and {$ali}.bt_tag={$v_tag} ");
-					}
-					$order_by = 'bt0.b_idx desc';
+					$str_tag .= $get['q'];
 				break;
 			}
-			
-
 		}
+
+		//-- 태그 동작
+		if(isset($get['tag'][0])){
+			$str_tag .=' '.$get['tag'];
+		}
+
+		if(isset($str_tag[0])){
+			$tags = split_tags_string($str_tag);
+			foreach($tags as $k=>$v){
+				$ali = 'bt'.$k;
+				$v_tag = $this->db->escape($v,true);
+				$this->db->join($this->tblname('tag',$ali), "{$ali}.b_idx = b.b_idx and {$ali}.bt_isdel=0 and {$ali}.bt_tag={$v_tag} ");
+			}
+			$order_by = 'bt0.b_idx desc';	
+		}
+
 		//-- 카테고리
 		if(isset($get['ct'][0])){
 			$this->db->where('b_category',$get['ct']);

@@ -66,6 +66,7 @@ class Bbs_tag_model extends CI_Model {
 		$tbl_b = $this->tblname('data');
 		$v_b_id = $this->db->escape($b_id);
 		$sql = "SELECT bt.bt_tag FROM `{$this->tbl}` bt JOIN `{$tbl_b}` b ON(bt.b_idx = b.b_idx AND b.b_id={$v_b_id})
+						where bt.bt_isdel=0
 						GROUP BY bt_tag
 						ORDER BY bt_tag";
 		return $this->db->query($sql)->result_array();
@@ -109,8 +110,9 @@ class Bbs_tag_model extends CI_Model {
 	 * @return [type]                 [description]
 	 */
 	public function split_tags_string($bt_tags_string){
-		$matched = array();
-		preg_match_all('/([^#\t\s\n\x00-\x2C\x2E-\x2F\x3A-\x40\x5B-\x5E\x60\x7B~\x7F]{1,30})/u',strtolower($bt_tags_string),$matched);
-		return isset($matched[1])?array_unique($matched[1]):array();
+		return split_tags_string($bt_tags_string);
+		// $matched = array();
+		// preg_match_all('/([^#\t\s\n\x00-\x2C\x2E-\x2F\x3A-\x40\x5B-\x5E\x60\x7B~\x7F]{1,30})/u',strtolower($bt_tags_string),$matched);
+		// return isset($matched[1])?array_unique($matched[1]):array();
 	}
 }

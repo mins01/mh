@@ -1,6 +1,28 @@
 <form action="<?=html_escape($bbs_conf['base_url'])?>/list" class="form-inline text-center form-search">
 	<? if(isset($get['lm'])): ?><input type="hidden" name="lm" value="<?=html_escape($get['lm'])?>"><? endif; ?>
+	<? if($bm_row['bm_use_tag']!='0'): ?>
+	<datalist class="tag_lists" id="tag_lists">
+		<option value="tag_elements"></option>
+	</datalist>
+	<script>
+	$(function(){
+		if(!$('datalist.tag_lists').get(0).load){
+			$('datalist.tag_lists').get(0).load = true;
+			var tag_lists_url = <?=json_encode($bbs_conf['tag_lists_url'])?>;
+			load_tag_lists(tag_lists_url)	
+		}
+		
+	})
+	</script>
+	<div class="input-group">
+		<span class="input-group-addon">
+			tag
+		</span>
+		<input name="tag" list="tag_lists" aria-label="tag" type="search" class="form-control " placeholder="tag" value="<?=html_escape(isset($get['tag'])?$get['tag']:'')?>">
+	</div><!-- /input-group -->
+	<? endif;?>
 	<div class="form-group">
+
 		<div class="input-group">
 			<div class="input-group-btn">
 			
