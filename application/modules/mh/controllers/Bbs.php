@@ -74,6 +74,7 @@ class Bbs extends MX_Controller {
 		$get2 = $get;
 		if(isset($get2['page']['0']) && $get2['page']=='1'){unset($get2['page']);} //URL 간략화용
 		if(!isset($get2['ct']['0'])){unset($get2['ct']);unset($get['ct']);} 
+		if(!isset($get2['tag']['0'])){unset($get2['tag']);unset($get['tag']);} 
 		if(!isset($get2['q']['0'])){unset($get2['tq']);unset($get2['q']);unset($get['tq']);unset($get['q']);} //URL 간략화용
 		if(strlen(implode('',array_values($get2)))===0){
 			return '';
