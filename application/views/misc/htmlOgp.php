@@ -40,17 +40,17 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 			<div class=" text-center">
 				<?
 				if(isset($opgs['og:site_name'][0])){
-					?><div class="og-site_name text-ellipsis"><?=html_escape($opgs['og:site_name'])?></div><?
+					?><div class="og-site_name text-ellipsis" title="<?=html_escape($opgs['og:site_name'])?>"><?=html_escape($opgs['og:site_name'])?></div><?
 				}
 				?>
 				<?
 				if(isset($opgs['og:title'][0])){
-					?><div class="og-title text-ellipsis"><?=html_escape($opgs['og:title'])?></div><?
+					?><div class="og-title text-ellipsis" title="<?=html_escape($opgs['og:title'])?>"><?=html_escape($opgs['og:title'])?></div><?
 				}
 				?>
 				<?
 				if(isset($opgs['og:description'][0])){
-					?><div class="og-description text-ellipsis"><?=html_escape($opgs['og:description'])?></div><?
+					?><div class="og-description text-ellipsis" title="<?=html_escape($opgs['og:description'])?>"><?=html_escape($opgs['og:description'])?></div><?
 				}
 				?>
 				</div>
