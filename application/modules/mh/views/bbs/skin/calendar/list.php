@@ -41,10 +41,10 @@
 			<tr class="bbs-notice info <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 				<td class="text-center hidden-xs"><span class="label label-danger">공지</span></td>
 				<td class="">
-					<div class="bbs-title text-flex-box">
-						<? if(isset($b_row['b_category'][0])): ?><span class="text-flex-sub text-flex-sub-left"><span class="label label-primary "><?=html_escape($b_row['b_category'])?></span></span><? endif; ?>
-						<span class="text-flex-main"><a href="<?=html_escape($b_row['read_url'])?>" ><?=html_escape($b_row['b_title'])?></a></span>
-						<span class="text-flex-sub text-flex-sub-right">
+					<div class="bbs-flex-box">
+						<? if(isset($b_row['b_category'][0])): ?><span class="bbs-flex-sub bbs-flex-sub-left"><span class="label label-primary "><?=html_escape($b_row['b_category'])?></span></span><? endif; ?>
+						<span class="bbs-title "><a href="<?=html_escape($b_row['read_url'])?>" ><?=html_escape($b_row['b_title'])?></a></span>
+						<span class="bbs-info-labels bbs-flex-sub bbs-flex-sub-right">
 							<? if(($b_row['is_new'])): ?>
 								<span class="is_new label label-default" title="새글">new</span>
 							<? endif; ?>
@@ -99,10 +99,10 @@
 			<tr class="bbs-dpeth bbs-dpeth-<?=$b_row['depth']?> <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 				<td class="text-center hidden-xs"><?=$start_num--?></td>
 				<td class="">
-					<div class="bbs-title text-flex-box">
-						<? if(isset($b_row['b_category'][0])): ?><span class="text-flex-sub text-flex-sub-left"><span class="label label-primary "><?=html_escape($b_row['b_category'])?></span></span><? endif; ?>
-						<span class="text-flex-main"><a href="<?=html_escape($b_row['read_url'])?>" ><?=html_escape($b_row['b_title'])?></a></span>
-						<span class="text-flex-sub text-flex-sub-right">
+					<div class="bbs-flex-box">
+						<? if(isset($b_row['b_category'][0])): ?><span class="bbs-flex-sub bbs-flex-sub-left"><span class="label label-primary "><?=html_escape($b_row['b_category'])?></span></span><? endif; ?>
+						<span class="bbs-title "><a href="<?=html_escape($b_row['read_url'])?>" ><?=html_escape($b_row['b_title'])?></a></span>
+						<span class="bbs-info-labels bbs-flex-sub bbs-flex-sub-right">
 							<? if(($b_row['is_new'])): ?>
 								<span class="is_new label label-default" title="새글">new</span>
 							<? endif; ?>

@@ -23,9 +23,9 @@
 			<? foreach($b_rows as $b_row): 
 				$url = base_url($mn_url.'/read/'.$b_row['b_idx']);
 			?>
-			<a class="list-group-item text-flex-box"  href="<?=html_escape($url)?>">
-				<span class="text-flex-main text-flex-main-fullsize text-primary"><?=html_escape($b_row['b_title'])?></span>
-				<span class="text-flex-sub text-flex-sub-right">
+			<a class="list-group-item bbs-flex-box"  href="<?=html_escape($url)?>">
+				<span class="bbs-flex-main bbs-flex-main-fullsize text-primary"><?=html_escape($b_row['b_title'])?></span>
+				<span class="bbs-flex-sub bbs-flex-sub-right">
 					<? if($b_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
 					<span class=" label label-info" title="새글"><?
 							if($date_type==0){
@@ -69,9 +69,9 @@
 			<? foreach($bc_rows as $bc_row): 
 				$url = base_url($mn_url.'/read/'.$bc_row['b_idx']);
 			?>
-			<a href="<?=html_escape($url)?>" class="list-group-item text-flex-box">
-				<span class="text-flex-main text-flex-main-fullsize text-primary" ><?=html_escape($bc_row['bc_comment'])?></span>
-				<span class="text-flex-sub text-flex-sub-right">
+			<a href="<?=html_escape($url)?>" class="list-group-item bbs-flex-box">
+				<span class="bbs-flex-main bbs-flex-main-fullsize text-primary" ><?=html_escape($bc_row['bc_comment'])?></span>
+				<span class="bbs-flex-sub bbs-flex-sub-right">
 					<? if($bc_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
 					<span class=" label label-info"><? echo date('m-d H시',strtotime($bc_row['bc_insert_date'])); ?></span>
 				</span>
@@ -101,9 +101,9 @@
 			<? foreach($bt_rows as $bt_row): 
 				$url = base_url($mn_url).'/list?tq=tag&q='.urlencode($bt_row['bt_tag']);
 			?>
-			<a href="<?=html_escape($url)?>" class="list-group-item text-flex-box">
-				<span class="text-flex-main text-flex-main-fullsize text-primary" ><?=html_escape($bt_row['bt_tag'])?></span>
-				<span class="text-flex-sub text-flex-sub-right">
+			<a href="<?=html_escape($url)?>" class="list-group-item bbs-flex-box">
+				<span class="bbs-flex-main bbs-flex-main-fullsize text-primary" ><?=html_escape($bt_row['bt_tag'])?></span>
+				<span class="bbs-flex-sub bbs-flex-sub-right">
 					<span class=" label label-warning" title=""><?=html_escape($bt_row['cnt'])?></span>
 					<span class=" label label-info"><? echo date('m-d H시',strtotime($bt_row['bt_update_date'])); ?></span>
 				</span>
