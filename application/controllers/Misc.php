@@ -74,9 +74,11 @@ class Misc extends MX_Controller {
 		$res = $this->mproxy->get($url,null,array(),$opts);
 		
 		// echo $url;
-		// print_r($res);
-		if(!isset($res['body'][0]) || stripos('html',$res['body'])!==false){
-			show_error("not html contents");
+		// print_r($res);exit;
+		if($res['errorno']!=0 ){
+			show_error($res['errormsg'],$res['httpcode'],$res['errormsg']);
+		}else if(!isset($res['body'][0]) || stripos('html',$res['body'])!==false){
+			show_error('not html contents');
 			// exit;
 		}
 		$content = $res['body'];
