@@ -44,7 +44,7 @@ foreach($bf_rows as $r):
 				<a  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img src="<?=html_escape($r['thumbnail_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
 				title="<?=html_escape($r['bf_name'])?>"></a>
 				<? elseif($r['is_external']): //외부링크 ?>
-				<span class="text-danger"><a class="text-overflow-ellipsis text-overflow-ellipsis-box" title="<?=html_escape($r['bf_save'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><span  class="glyphicon glyphicon-share-alt"></span> <?=html_escape($r['bf_save'])?></a></span>
+				<span class="text-danger"><a class="text-overflow-ellipsis text-overflow-ellipsis-box" title="<?=html_escape($r['bf_save'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank">🔗 <?=html_escape($r['bf_save'])?></a></span>
 				<div class="div_iframe_htmlOgp">
 					<iframe class="iframe_htmlOgp pre-hide" src="<?=SITE_URI_PREFIX?>misc/htmlOgp?url=<?=html_escape(urlencode($r['bf_save']))?>"></iframe>
 				</div>

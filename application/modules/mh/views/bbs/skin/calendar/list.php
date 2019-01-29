@@ -6,8 +6,8 @@
 
 <nav class="text-right">
 	게시물 : <?=$count?> (<?=$max_page?> page)
-	<a href="?lm=calendar" type="button" class="btn btn-link btn-xs"><span class="glyphicon glyphicon-calendar"></span>달력형</a>
-	<a target="_blank" href="<?=html_escape($bbs_conf['rss_url'])?>" type="button" class="btn btn-link btn-xs"><span class="glyphicon bbs_feed_icon_14x14"></span>RSS</a>
+	<a href="?lm=calendar" type="button" class="btn btn-link btn-xs">📅 달력형</a>
+	<a target="_blank" href="<?=html_escape($bbs_conf['rss_url'])?>" type="button" class="btn btn-link btn-xs"><span class="glyphicon bbs_feed_icon_14x14"></span> RSS</a>
 </nav>
 <div class="panel panel-default bbs-mode-list">
 	<!-- Default panel contents -->
