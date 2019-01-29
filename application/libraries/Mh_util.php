@@ -162,7 +162,7 @@ class Mh_util{
 	 * OGP parser
 	 * <meta property="og:title" content="공대여자 홈 : 메인">
 	 * <meta property="og:description" content="공대여자 홈 : 메인">
-	 * <meta name="og:image" content="http://www.mins01.com/img/logo.gif">
+	 * <meta property="og:image" content="http://www.mins01.com/img/logo.gif">
 	 * <meta property="og:image:width" content="190">
 	 * <meta property="og:image:height" content="70" />
 	 * <meta property="og:site_name" content="공대여자 홈" />

@@ -45,7 +45,7 @@
 	<? endif; ?>
 	<? if(isset($layout_og_description[0])) : ?><meta property="og:description" content="<?=html_escape($layout_og_description)?>">
 	<? endif; ?>
-	<? if(isset($layout_og_image[0])) : ?><meta name="og:image" content="<?=html_escape($layout_og_image)?>">
+	<? if(isset($layout_og_image[0])) : ?><meta property="og:image" content="<?=html_escape($layout_og_image)?>">
 	<? endif; ?>
 	<? if(isset($layout_og_image_width[0])) : ?><meta property="og:image:width" content="<?=html_escape($layout_og_image_width)?>">
 	<? endif; ?>
