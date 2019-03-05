@@ -77,7 +77,7 @@ if($d_day==0){
 				<? if($b_row['b_notice']>0): ?>
 					<span class="label label-danger">공지글</span>
 				<? endif; ?>
-				<span class="label label-info ">작성 : <?=html_escape(date('m-d H:i',strtotime($b_row['b_insert_date'])))?></span>
+				<time class="label label-info " datetime="<?=html_escape(bbs_date_former('Y-m-d H:i:s',$b_row['b_insert_date']))?>">작성 : <?=html_escape(date('m-d H:i',strtotime($b_row['b_insert_date'])))?></time>
 				<span class="label label-info ">조회 : <?=html_escape(isset($b_row['bh_cnt'][0])?$b_row['bh_cnt']:'0')?></span>
 			</p>
 			<span class="clearfix"></span>
@@ -88,9 +88,9 @@ if($d_day==0){
 				<span class="form-control"><?=$period?>일간</span>
 			</div>
 			<div class="input-group input-daterange">
-				<span class="form-control" ><?=html_escape($b_row['b_date_st'])?></span>
+				<time class="form-control" datetime="<?=html_escape($b_row['b_date_st'])?>" ><?=html_escape($b_row['b_date_st'])?></time>
 				<span class="input-group-addon">-</span>
-				<span class="form-control" ><?=html_escape($b_row['b_date_ed'])?></span>
+				<time class="form-control" datetime="<?=html_escape($b_row['b_date_st'])?>"  ><?=html_escape($b_row['b_date_ed'])?></time>
 			</div>
 			<? if(isset($b_row['b_etc_3'][0])): ?>
 			<div class="input-group ">

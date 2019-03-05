@@ -81,6 +81,7 @@ $today_date = date('Y-m-d');
 	endif;
 	?>
 	<div class="">
+		<time style="hide" datetime="<?=html_escape(bbs_date_former('Y-m',$v_date_st))?>"></time>
 		<table class="table  table-condensed  table-striped table-calender" style="table-layout:fixed">
 			<colgroup>
 			

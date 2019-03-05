@@ -84,11 +84,11 @@
 				</td>
 				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
 				<?
-				$t = $b_row['b_date_st']!=$b_row['b_date_ed']?'b_date_st_ed':'b_date';
+				$t = $b_row['b_date_st']!=$b_row['b_date_ed']?'b_date_st_ed':'';
 				?>
-				<td class="text-center <?=$t?>"><?
-				echo '<span class="b_date_st">',html_escape(bbs_date_former('y-m-d',$b_row['b_date_st'])),'</span>';
-				echo '<span class="b_date_ed">',html_escape(bbs_date_former('m-d',$b_row['b_date_ed'])),'</span>';
+				<td class="text-center b_date <?=$t?>"><?
+				echo '<time class="b_date_st" datetime="',html_escape(bbs_date_former('Y-m-d',$b_row['b_date_st'])),'">',html_escape(bbs_date_former('y-m-d',$b_row['b_date_st'])),'</time>';
+				echo '<time class="b_date_ed" datetime="',html_escape(bbs_date_former('Y-m-d',$b_row['b_date_ed'])),'">',html_escape(bbs_date_former('m-d',$b_row['b_date_ed'])),'</time>';
 				?></td>
 				<td class="text-center hidden-xs hidden-sm"><small><?=html_escape($b_row['bh_cnt'])?></small></td>
 			</tr>
@@ -142,11 +142,11 @@
 				</td>
 				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
 				<?
-				$t = $b_row['b_date_st']!=$b_row['b_date_ed']?'b_date_st_ed':'b_date';
+				$t = $b_row['b_date_st']!=$b_row['b_date_ed']?'b_date_st_ed':'';
 				?>
-				<td class="text-center <?=$t?>"><?
-				echo '<span class="b_date_st">',html_escape(bbs_date_former('y-m-d',$b_row['b_date_st'])),'</span>';
-				echo '<span class="b_date_ed">',html_escape(bbs_date_former('m-d',$b_row['b_date_ed'])),'</span>';
+				<td class="text-center b_date <?=$t?>"><?
+				echo '<time class="b_date_st" datetime="',html_escape(bbs_date_former('Y-m-d',$b_row['b_date_st'])),'">',html_escape(bbs_date_former('y-m-d',$b_row['b_date_st'])),'</time>';
+				echo '<time class="b_date_ed" datetime="',html_escape(bbs_date_former('Y-m-d',$b_row['b_date_ed'])),'">',html_escape(bbs_date_former('m-d',$b_row['b_date_ed'])),'</time>';
 				?></td>
 				<td class="text-center hidden-xs hidden-sm"><small><?=html_escape($b_row['bh_cnt'])?></small></td>
 			</tr>
