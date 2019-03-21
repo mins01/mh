@@ -99,7 +99,7 @@
 		<div class="list-group">
 			<a class="list-group-item list-group-item-warning" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?> 최근 태그</a>
 			<? foreach($bt_rows as $bt_row): 
-				$url = base_url($mn_url).'/list?tq=tag&q='.urlencode($bt_row['bt_tag']);
+				$url = base_url($mn_url).'/list?tag='.urlencode($bt_row['bt_tag']);
 			?>
 			<a href="<?=html_escape($url)?>" class="list-group-item bbs-flex-box">
 				<span class="bbs-flex-main bbs-flex-main-fullsize text-primary" ><?=html_escape($bt_row['bt_tag'])?></span>

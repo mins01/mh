@@ -71,7 +71,7 @@
 						<?
 						foreach(explode(',',$b_row['bt_tags_string']) as $bt_tag):
 							?>
-							<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
+							<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tag=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
 							<? 
 						endforeach;
 						?>
@@ -129,7 +129,7 @@
 						<?
 						foreach(explode(',',$b_row['bt_tags_string']) as $bt_tag):
 							?>
-							<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
+							<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tag=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
 							<? 
 						endforeach;
 						?>

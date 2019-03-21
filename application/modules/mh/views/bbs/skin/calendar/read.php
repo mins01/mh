@@ -146,7 +146,7 @@ if($d_day==0){
 		<div class=" text-right bt_tags  text-right">
 			<span class="bt_cnt label label-default" title="tag: <?=count($bt_tags)?>">tag:<?=count($bt_tags)?></span>
 				<? foreach($bt_tags as $bt_tag): ?>
-					<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tq=tag&q=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
+					<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tag=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
 				<? endforeach;?>
 		</div>
 		<? endif; ?>
