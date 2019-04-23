@@ -13,6 +13,7 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 	<title><?=isset($opgs['og:site_name'][0])?$opgs['og:site_name']:''?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<base href="<?=html_escape($ogp_url)?>" />
 	<!-- 합쳐지고 최소화된 최신 CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<style>
