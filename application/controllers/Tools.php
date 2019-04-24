@@ -39,7 +39,7 @@ WebCanvas2 (Web Image Editor) 웹 이미지 에디터
 					b_text AS 'contents'
 					FROM `mh_bbs_tech_data` b 
 					WHERE b_isdel = 0 AND b_secret=0
-					
+					-- and b.b_idx = 1268
 					ORDER BY  b_idx DESC
 					LIMIT 500;
 					");
@@ -53,19 +53,24 @@ WebCanvas2 (Web Image Editor) 웹 이미지 에디터
 					}
 				}
 				private function removeSpanDiv($str){
-					return preg_replace('~<div[^>]*>|</div[^>]*>|<span[^>]*>|</span[^>]*>~', '', $str);
+					$str = preg_replace('~<div[^>]*>|<span[^>]*>|</span[^>]*>~iu', '', $str);
+					// return $str;
+					return preg_replace('~</div>|</p[^>]*>~iu', "\n\n", $str);
 				}
 				private function toPostsMd($row){
 					$arr = array();
 					$arr[] = '---';
 					$arr[] = 'title: "'.$row['title'].'"';
 					$arr[] = 'date: '.$row['date'];
-					$arr[] = 'categories: ['.$row['categories'].']';
+					// $arr[] = 'categories: ['.$row['categories'].']';
+					$arr[] = 'categories: ';
 					$arr[] = '---';
+					$arr[] ="  ";
 					// $arr[] = strip_tags(html2markdown(htmlspecialchars_decode(htmlspecialchars_decode($row['contents'],ENT_HTML5))));
-					$arr[] = ($this->removeSpanDiv(htmlspecialchars_decode(html2markdown(htmlspecialchars_decode($row['contents'],ENT_HTML5)))));
-					$arr[] ="";
+					$arr[] = html2markdown($this->removeSpanDiv(($row['contents'])));
+					$arr[] ="  ***";
 					$arr[] ="[🔗link](http://www.mins01.com/mh/tech/read/{$row['b_idx']})";
+					
 					
 					return implode("\n",$arr);
 				}
