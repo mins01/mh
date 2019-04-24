@@ -81,8 +81,10 @@ $route['crlud_test'] = 'mh_util/crlud_test';
 $route['crlud'] = 'mh_util/crlud';
 
 
+if(!is_cli()){
+	$route['(.*)'] = 'front/$1';	
+}
 
-$route['(.*)'] = 'front/$1';
 
 
 

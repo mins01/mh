@@ -45,3 +45,4 @@ application/logs/*
 _files/*
 _logs/*
 /_cache
+_temp/*

@@ -11,19 +11,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |	http://codeigniter.com/user_guide/general/hooks.html
 |
 */
-
-$hook['pre_controller'] = array(
-	'class'    => 'Mh_hook',
-	'function' => 'pre',
-	'filename' => 'Mh_hook.php',
-	'filepath' => 'hooks',
-	'params'   => array()
-);
-
-$hook['post_controller'] = array(
-	'class'    => 'Mh_hook',
-	'function' => 'post',
-	'filename' => 'Mh_hook.php',
-	'filepath' => 'hooks',
-	'params'   => array()
-);
+if(is_cli()){
+	
+}else{
+	$hook['pre_controller'] = array(
+		'class'    => 'Mh_hook',
+		'function' => 'pre',
+		'filename' => 'Mh_hook.php',
+		'filepath' => 'hooks',
+		'params'   => array()
+	);
+	
+	$hook['post_controller'] = array(
+		'class'    => 'Mh_hook',
+		'function' => 'post',
+		'filename' => 'Mh_hook.php',
+		'filepath' => 'hooks',
+		'params'   => array()
+	);	
+}

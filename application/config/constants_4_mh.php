@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-if($_SERVER['REMOTE_ADDR']=='121.189.37.55'){ //과도 접근자.
+if(isset($_SERVER['REMOTE_ADDR'][0]) && $_SERVER['REMOTE_ADDR']=='121.189.37.55'){ //과도 접근자.
 	header('Location: http://www.police.go.kr');
 	exit('');
 }
@@ -18,7 +18,7 @@ define('DB_PREFIX', 'mh_'); // DB 접두사
 define('HASH_KEY','mh'); //해시용 추가 문자열. 한번 설정 후 바꾸면 안됩니다!
 
 define('IS_DEV', preg_match('/^[^\/]*dev[^\/]*\./',$http_host));
-define('IS_ADMIN', preg_match('|^'.SITE_URI_PREFIX.ADMIN_URI_PREFIX.'|',$_SERVER['REQUEST_URI']));
+define('IS_ADMIN', preg_match('|^'.SITE_URI_PREFIX.ADMIN_URI_PREFIX.'|',(isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'')));
 
 if(IS_DEV){
 	define('LOGIN_NAME','SESD_MH');
