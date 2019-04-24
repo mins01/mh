@@ -39,6 +39,7 @@ WebCanvas2 (Web Image Editor) 웹 이미지 에디터
 					b_text AS 'contents'
 					FROM `mh_bbs_tech_data` b 
 					WHERE b_isdel = 0 AND b_secret=0
+					
 					ORDER BY  b_idx DESC
 					LIMIT 500;
 					");
@@ -51,6 +52,9 @@ WebCanvas2 (Web Image Editor) 웹 이미지 에디터
 						file_put_contents($path,$filecontent);
 					}
 				}
+				private function removeSpanDiv($str){
+					return preg_replace('~<div[^>]*>|</div[^>]*>|<span[^>]*>|</span[^>]*>~', '', $str);
+				}
 				private function toPostsMd($row){
 					$arr = array();
 					$arr[] = '---';
@@ -58,7 +62,8 @@ WebCanvas2 (Web Image Editor) 웹 이미지 에디터
 					$arr[] = 'date: '.$row['date'];
 					$arr[] = 'categories: ['.$row['categories'].']';
 					$arr[] = '---';
-					$arr[] = strip_tags(html2markdown($row['contents']));
+					// $arr[] = strip_tags(html2markdown(htmlspecialchars_decode(htmlspecialchars_decode($row['contents'],ENT_HTML5))));
+					$arr[] = ($this->removeSpanDiv(htmlspecialchars_decode(html2markdown(htmlspecialchars_decode($row['contents'],ENT_HTML5)))));
 					$arr[] ="";
 					$arr[] ="[🔗link](http://www.mins01.com/mh/tech/read/{$row['b_idx']})";
 					
