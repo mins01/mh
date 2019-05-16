@@ -28,7 +28,8 @@ WebCanvas2 (Web Image Editor) 웹 이미지 에디터
 
 				 */
 				
-				public function savePostsMdFromBbs(){
+				public function savePostsMdFromBbs($limit=500){
+          $v_limit = $this->db->escape((int)$limit);
 					$query = $this->db->query("
 					SELECT 
 					b.b_idx,
@@ -42,7 +43,7 @@ WebCanvas2 (Web Image Editor) 웹 이미지 에디터
 					WHERE b_isdel = 0 AND b_secret=0
 					-- and b.b_idx = 1268
 					ORDER BY  b_idx DESC
-					LIMIT 500;
+					LIMIT {$v_limit};
 					");
 					$rows = $query->result_array();
 					foreach ($rows as $key => $row) {
