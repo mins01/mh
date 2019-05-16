@@ -50,7 +50,8 @@ WebCanvas2 (Web Image Editor) 웹 이미지 에디터
 						$filecontent = $this->toPostsMd($row);
 						// echo $row['filename'],"\n";
 						// echo $filecontent;
-						$path = APPPATH.'/../_temp/'.$row['filename'];
+						// $path = APPPATH.'/../_temp/'.$row['filename'];
+						$path = realpath (APPPATH.'/../../../mins01.github.io/_posts/').'/'.$row['filename'];
 						file_put_contents($path,$filecontent);
 					}
 				}
