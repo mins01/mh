@@ -17,10 +17,9 @@
 		</div>
 	</footer>
 <?=$tail_contents?>
-<div style="width:300px;margin:2px auto" class="google_ad"><?=GoogleAds::print_google_adsense_300x250()?></div>
+<div style="width:300px;margin:2px auto" class="google_ad"><script>
+ForGoogle.ads.ads300x250()
+</script></div>
 <? endif; ?>
-<?
-GoogleAds::print_google_analytics()
-?>
 </body>
 </html>

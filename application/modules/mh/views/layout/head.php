@@ -14,6 +14,10 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+	<script src="http://www.mins01.com/js/ForGoogle.js"></script>
+	<!-- google analytics -->
+	<script>ForGoogle.analytics()</script>
+
 	<!-- 합쳐지고 최소화된 최신 CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" class="mb_wysiwyg_head_css">
 	<!-- 부가적인 테마 -->
@@ -108,7 +112,9 @@
 		</div>
 	</nav>
 
-	<div style="width:320px;margin:2px auto" class="google_ad"><?=GoogleAds::print_google_adsense_320x50()?></div>
+	<div style="width:300px;margin:2px auto" class="google_ad"><script>
+	ForGoogle.ads.ads300x50()
+	</script></div>
 
 	<div class="container-fluid contents">
 
