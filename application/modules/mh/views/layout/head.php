@@ -112,8 +112,8 @@
 		</div>
 	</nav>
 
-	<div style="width:300px;margin:2px auto" class="google_ad"><script>
-	ForGoogle.ads.ads300x50()
+	<div style="width:320px;margin:2px auto" class="google_ad"><script>
+	ForGoogle.ads.ads320x50()
 	</script></div>
 
 	<div class="container-fluid contents">
