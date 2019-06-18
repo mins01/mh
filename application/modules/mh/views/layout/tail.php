@@ -14,12 +14,12 @@
 			</small>
 			</div>
 			
+			<div style="margin:2px auto" class="google_ad"><script>
+			ForGoogle.ads.adsReactive02()
+			</script></div>
 		</div>
 	</footer>
 <?=$tail_contents?>
-<div style="margin:2px auto" class="google_ad"><script>
-ForGoogle.ads.adsReactive02()
-</script></div>
 <? endif; ?>
 </body>
 </html>
