@@ -17,8 +17,8 @@
 		</div>
 	</footer>
 <?=$tail_contents?>
-<div style="width:300px;margin:2px auto" class="google_ad"><script>
-ForGoogle.ads.ads300x250()
+<div style="margin:2px auto" class="google_ad"><script>
+ForGoogle.ads.adsReactive02()
 </script></div>
 <? endif; ?>
 </body>
