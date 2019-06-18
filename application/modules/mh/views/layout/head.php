@@ -14,7 +14,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<script src="http://www.mins01.com/js/ForGoogle.js"></script>
+	<script src="http://www.mins01.com/js/ForGoogle.js?t=20190618"></script>
 	<!-- google analytics -->
 	<script>ForGoogle.analytics()</script>
 
