@@ -1,4 +1,9 @@
 <?php
+if($_SERVER['HTTP_HOST']!='www.mins01.com' && $_SERVER['HTTP_HOST']!='wwwdev.mins01.com'){
+	header('Location: http://www.mins01.com'.$_SERVER['REQUEST_URI']);
+	exit();
+}
+
 /**
  * CodeIgniter
  *
