@@ -83,28 +83,28 @@ $today_date = date('Y-m-d');
 	<div class="">
 		<time style="hide" datetime="<?=html_escape(bbs_date_former('Y-m',$v_date_st))?>"></time>
 		<table class="table  table-condensed  table-striped table-calender" style="table-layout:fixed">
-			<colgroup>
+			<!-- <colgroup> -->
 			
 				<!-- <col style="width:auto"> -->
+				<!-- <col style="width:14.285%;width:calc(100%/7)">
 				<col style="width:14.285%;width:calc(100%/7)">
 				<col style="width:14.285%;width:calc(100%/7)">
 				<col style="width:14.285%;width:calc(100%/7)">
 				<col style="width:14.285%;width:calc(100%/7)">
 				<col style="width:14.285%;width:calc(100%/7)">
-				<col style="width:14.285%;width:calc(100%/7)">
-				<col style="width:14.285%;width:calc(100%/7)">
+				<col style="width:14.285%;width:calc(100%/7)"> -->
 				<!-- <col style="width:auto"> -->
-			</colgroup>
+			<!-- </colgroup> -->
 			<thead>
 				<tr>
 					<!-- <th class="day-hide day-th day-th-w-hide">-</th> -->
-					<th class="day-th day-th-w-0"><div class="day-th-label">일</div></th>
-					<th class="day-th day-th-w-1"><div class="day-th-label">월</div></th>
-					<th class="day-th day-th-w-2"><div class="day-th-label">화</div></th>
-					<th class="day-th day-th-w-3"><div class="day-th-label">수</div></th>
-					<th class="day-th day-th-w-4"><div class="day-th-label">목</div></th>
-					<th class="day-th day-th-w-5"><div class="day-th-label">금</div></th>
-					<th class="day-th day-th-w-6"><div class="day-th-label">토</div></th>
+					<th style="width:14.285%;width:calc(100%/7)" class="day-th day-th-w-0"><div class="day-th-label">일</div></th>
+					<th style="width:14.285%;width:calc(100%/7)" class="day-th day-th-w-1"><div class="day-th-label">월</div></th>
+					<th style="width:14.285%;width:calc(100%/7)" class="day-th day-th-w-2"><div class="day-th-label">화</div></th>
+					<th style="width:14.285%;width:calc(100%/7)" class="day-th day-th-w-3"><div class="day-th-label">수</div></th>
+					<th style="width:14.285%;width:calc(100%/7)" class="day-th day-th-w-4"><div class="day-th-label">목</div></th>
+					<th style="width:14.285%;width:calc(100%/7)" class="day-th day-th-w-5"><div class="day-th-label">금</div></th>
+					<th style="width:auto" class="day-th day-th-w-6"><div class="day-th-label">토</div></th>
 					<!-- <th class="day-hide day-th day-th-w-hide">-</th> -->
 				</tr>
 			</thead>
