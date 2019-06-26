@@ -160,6 +160,7 @@ class Bbs_master_model extends CI_Model {
 			'bm_bc_lv_edit'=>'',
 			'bm_bc_lv_delete'=>'',
 			'bm_bc_lv_answer'=>'',
+			'bm_use_tag'=>'0',
 		);
 		return $bm_row;
 	}
