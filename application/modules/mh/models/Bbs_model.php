@@ -368,29 +368,28 @@ class Bbs_model extends CI_Model {
 	public function exnteds_b_rows_for_calendar(& $b_rows,$date_st,$date_ed){
 		$b_rowss = array();
 		$b_rowss['maxlength'] = 0;
-		$orders = array();
-		$b_etc_1s = array();
+		// $b_etc_1s = array();
 		$time_st = strtotime($date_st);
 		$time_ed = strtotime($date_ed);
 		$w_st = date('w',$time_st);
 		$time_st = $time_st-$w_st*86400;
-		$orders_org = array();
-		$maxlength = 3;
+		$orders = array();
+		$maxlength = 3; //달력의 1일의 최대 높이
 		
+		// 글의 순서 정의. 기간이 겹치면 순서 중복 불가! 기간이 안겹치면 순서 중복 가능.
 		foreach($b_rows as & $b_row){
 			$n = 0;
-			foreach($orders_org as $k => $v){
+			foreach($orders as $k => $v){
 				if($b_row['b_date_ed']>=$v[0] && $b_row['b_date_st']<=$v[1]){
 						$n++;
 				}
 			}
 			$maxlength = max($maxlength,$n);
-			$orders_org[$b_row['b_idx']] = array($b_row['b_date_st'],$b_row['b_date_ed'],$n);
+			$orders[$b_row['b_idx']] = array($b_row['b_date_st'],$b_row['b_date_ed'],$n);
 		}
-		$maxlength++;
-		// print_r($maxlength);
+		$b_rowss['maxlength'] = $maxlength+1;
 		
-		
+		// 날짜 기준으로 글넣기 (길이,순서 포함)
 		while($time_st<=$time_ed){
 			$t_a = date('Y-m-d',$time_st);
 			$t_b = date('Y-m-d',$time_st+86400*6);
@@ -407,15 +406,10 @@ class Bbs_model extends CI_Model {
 					$v_dt_ed = min($t_b,$b_row['b_date_ed']);
 					$v_len = floor((strtotime($v_dt_ed)-strtotime($v_dt_st))/86400)+1;
 					
-					// $b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']]);
-					$b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders_org[$b_row['b_idx']][2]);
-					$b_etc_1s[$b_row['b_idx']] = $b_row['b_date_ed'];
-				}else{
-					unset($orders[$b_row['b_idx']]);
+					$b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']][2]);
 				}
 			}
 		}
-		$b_rowss['maxlength'] = $maxlength;
 		return $b_rowss;
 	}
 
