@@ -365,27 +365,6 @@ class Bbs_model extends CI_Model {
 		// $this->extends_b_rows($b_rows);
 		return $b_rows;
 	}
-	public function exnteds_b_rows_for_calendar_x(& $b_rows,$date_st,$date_ed){
-		$b_rowss = array();
-		$time_st = strtotime($date_st);
-		$time_ed = strtotime($date_ed);
-		// 날짜를 7일 단위로 자르기
-		$date_ws = array();
-		$time_i = $time_st;
-		
-		while($time_st<=$time_ed){
-			$t_a = date('Y-m-d',$time_st);
-			$t_b = date('Y-m-d',$time_st+86400*6);
-			$time_st+=86400*7;
-			$b_rowss[$t_a] = array();
-			foreach ($b_rows as & $b_row) {
-				if($b_row['b_date_ed']>=$t_a && $b_row['b_date_st']<=$t_b){// 해당 날짜에 포함되는 b_row인가?
-					// $b_rowss[$t_a][] =  array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']]);
-				}
-			}
-		}
-
-	}
 	public function exnteds_b_rows_for_calendar(& $b_rows,$date_st,$date_ed){
 		$b_rowss = array();
 		$b_rowss['maxlength'] = 0;
