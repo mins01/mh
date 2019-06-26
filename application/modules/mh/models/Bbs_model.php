@@ -341,7 +341,11 @@ class Bbs_model extends CI_Model {
 	}
 	//달력 목록용
 	public function select_for_calendar($get){
-		if(!$this->_apply_list_where($get)){
+		$opts = array(
+			'order_by'=>'b.b_date_st,b.b_date_ed'
+			
+		);
+		if(!$this->_apply_list_where($get,$opts)){
 			return false;
 		}
 		if(!isset($get['date_ed']) || !isset($get['date_st'])){
@@ -352,13 +356,35 @@ class Bbs_model extends CI_Model {
 
 
 		$this->db->where('b_date_st <=',$get['date_ed'])->where('b_date_ed >=',$get['date_st']);
-		$this->db->order_by('b.b_date_st,b.b_date_ed');
+		// $this->db->order_by('b.b_date_st,b.b_date_ed');
 		//list($limit,$offset) = $this->get_limit_offset($get['page']);
 		//$this->db->limit($limit,$offset);
 
 		$b_rows = $this->db->get()->result_array();
+		// echo $this->db->last_query();
 		// $this->extends_b_rows($b_rows);
 		return $b_rows;
+	}
+	public function exnteds_b_rows_for_calendar_x(& $b_rows,$date_st,$date_ed){
+		$b_rowss = array();
+		$time_st = strtotime($date_st);
+		$time_ed = strtotime($date_ed);
+		// 날짜를 7일 단위로 자르기
+		$date_ws = array();
+		$time_i = $time_st;
+		
+		while($time_st<=$time_ed){
+			$t_a = date('Y-m-d',$time_st);
+			$t_b = date('Y-m-d',$time_st+86400*6);
+			$time_st+=86400*7;
+			$b_rowss[$t_a] = array();
+			foreach ($b_rows as & $b_row) {
+				if($b_row['b_date_ed']>=$t_a && $b_row['b_date_st']<=$t_b){// 해당 날짜에 포함되는 b_row인가?
+					// $b_rowss[$t_a][] =  array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']]);
+				}
+			}
+		}
+
 	}
 	public function exnteds_b_rows_for_calendar(& $b_rows,$date_st,$date_ed){
 		$b_rowss = array();
@@ -369,6 +395,23 @@ class Bbs_model extends CI_Model {
 		$time_ed = strtotime($date_ed);
 		$w_st = date('w',$time_st);
 		$time_st = $time_st-$w_st*86400;
+		$orders_org = array();
+		$maxlength = 3;
+		
+		foreach($b_rows as & $b_row){
+			$n = 0;
+			foreach($orders_org as $k => $v){
+				if($b_row['b_date_ed']>=$v[0] && $b_row['b_date_st']<=$v[1]){
+						$n++;
+				}
+			}
+			$maxlength = max($maxlength,$n);
+			$orders_org[$b_row['b_idx']] = array($b_row['b_date_st'],$b_row['b_date_ed'],$n);
+		}
+		$maxlength++;
+		// print_r($maxlength);
+		
+		
 		while($time_st<=$time_ed){
 			$t_a = date('Y-m-d',$time_st);
 			$t_b = date('Y-m-d',$time_st+86400*6);
@@ -382,45 +425,18 @@ class Bbs_model extends CI_Model {
 					}else{
 						$v_dt_st = $t_a;
 					}
-
-					// 기간 지난 것 삭제
-					unset($orders[$b_row['b_idx']]);
-					foreach($orders as $v_b_idx => $v_order){
-						if($b_etc_1s[$v_b_idx]<$v_dt_st){
-							unset($orders[$v_b_idx]);
-						}
-					}
-					//순서 찾기
-					if(!isset($orders[$b_row['b_idx']])){
-						if(count($orders)==0){
-							$orders[$b_row['b_idx']] = 0;
-						}else{
-							$t = max($orders)+1;;
-							for($i=0,$m=max($orders);$i<$m;$i++){
-								if(!in_array($i,$orders)){
-									$t = $i;
-									break;
-								}
-							}
-							$orders[$b_row['b_idx']] = $t;
-						}
-						$b_rowss['maxlength'] = max($b_rowss['maxlength'],count($orders));
-					}
-
-					if(!isset($b_rowss[$v_dt_st])){
-						$b_rowss[$v_dt_st] = array();
-					}
 					$v_dt_ed = min($t_b,$b_row['b_date_ed']);
 					$v_len = floor((strtotime($v_dt_ed)-strtotime($v_dt_st))/86400)+1;
-
-					$b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']]);
+					
+					// $b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']]);
+					$b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders_org[$b_row['b_idx']][2]);
 					$b_etc_1s[$b_row['b_idx']] = $b_row['b_date_ed'];
 				}else{
 					unset($orders[$b_row['b_idx']]);
 				}
 			}
 		}
-
+		$b_rowss['maxlength'] = $maxlength;
 		return $b_rowss;
 	}
 
