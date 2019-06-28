@@ -5,6 +5,9 @@
 	</div><!-- /.container-fluid -->
 	<footer>
 		<div class="container-fluid" style="background-color:#fff;color:#999">
+			<div style="margin:2px auto" class="google_ad"><script>
+			ForGoogle.ads.adsReactive02()
+			</script></div>
 			<div class="text-right"> 
 			<small>
 			[{elapsed_time} sec]/[{memory_usage} Byte]
@@ -14,9 +17,7 @@
 			</small>
 			</div>
 			
-			<div style="margin:2px auto" class="google_ad"><script>
-			ForGoogle.ads.adsReactive02()
-			</script></div>
+			
 		</div>
 	</footer>
 <?=$tail_contents?>
