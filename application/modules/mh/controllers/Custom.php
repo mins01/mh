@@ -31,6 +31,7 @@ class Custom extends MX_Controller {
 		$bbs_tbl_b_ids = array(
 			array('tech','tech',0,'기술','tech'),
 			array('mine','calendar',1,'일정','calendar'),
+			array('mine','freegame',1,'무료게임','freegame'),
 			array('mine','mono',0,'잡담','mono'),
 			array('test','free',0,'자유','free'),
 			// array('mine','guest',0,'방명록','guest'),
