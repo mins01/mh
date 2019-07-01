@@ -30,10 +30,19 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<a class="url" href="<?=html_escape($ogp_url)?>" target="_blank">
+			<a class="url" href="<?=html_escape($ogp_url)?>" target="_blank" >
 				<div>
 			<?
-			if(isset($opgs['og:image'][0])){
+			if(isset($opgs['og:video:url'][0])){
+				$poster = isset($opgs['og:image'][0])?'poster="'.html_escape($opgs['og:image']).'"':'';
+			?>
+			<div class="text-center">
+				<iframe width="100%" height="150px" border="0" src="<?=html_escape($opgs['og:video:url'])?>" style="border-style:none;">
+				  Your browser does not support the iframe tag.
+				</iframe>
+			</div>
+			<?
+			}else if(isset($opgs['og:image'][0])){
 				$src = $opgs['og:image'];
 				?><div class="text-center"><img class="og-image"  src="<?=html_escape($src)?>"  class="img-rounded" alt="image"></div><?
 			}
