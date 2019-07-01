@@ -157,7 +157,7 @@ class Mh_util{
 			return $str;
 		}
 	}
-
+	
 	/**
 	 * OGP parser
 	 * <meta property="og:title" content="공대여자 홈 : 메인">
@@ -196,21 +196,21 @@ class Mh_util{
 			if(strpos($property,'og')===0 ||strpos($property,'fb')===0 ||strpos($property,'twitter')===0 ){
 				// print_r($meta);
 				if(!isset($ogp[$property])){
-					$ogp[$property]=isset($meta['content'])?$meta['content']:'';
+					$ogp[$property]=isset($meta['content'])?htmlspecialchars_decode($meta['content']):'';
 					$ogp[$property.'s'] = array();
 				}
 				
-				$ogp[$property.'s'][]=isset($meta['content'])?$meta['content']:'';
+				$ogp[$property.'s'][]=isset($meta['content'])?htmlspecialchars_decode($meta['content']):'';
 			}else{
-				$metas[$property]=isset($meta['content'])?$meta['content']:'';
+				$metas[$property]=isset($meta['content'])?htmlspecialchars_decode($meta['content']):'';
 			}
 		}
 		// print_r($metas);
 		if(!isset($ogp['og:title']) && isset($metas['title'])){
-			$ogp['og:title'] = $metas['title'];
+			$ogp['og:title'] = htmlspecialchars_decode($metas['title']);
 		}
 		if(!isset($ogp['og:description']) && isset($metas['description'])){
-			$ogp['og:description'] = $metas['description'];
+			$ogp['og:description'] = htmlspecialchars_decode($metas['description']);
 		}
 		return $ogp;
 	}
