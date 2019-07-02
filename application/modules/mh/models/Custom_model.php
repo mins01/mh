@@ -34,13 +34,13 @@ class Custom_model extends CI_Model {
 			$sql = "select {$v_select} from {$from} b
 			
 			where b_isdel=0 
-			and b_date_st >= {$v_b_date_st}
-			and b_date_ed <= {$v_b_date_ed}
+			and b_date_st <= {$v_b_date_ed}
+			and b_date_ed >= {$v_b_date_st}
 			and b_id = {$v_b_id}
 			order by b_date_st desc,b_date_ed desc
 			limit {$limit}
 			";
-			//echo $sql;
+			// echo $sql;
 		}
 		return $sql;
 	}
