@@ -95,6 +95,7 @@ class Misc extends MX_Controller {
 			}
 		}
 		$charset = str_replace(array("'",'"','>'),'',$charset);
+		$charset = strtolower($charset);
 		// echo $charset;
 		$this->load->library('mh_util');
 
@@ -103,7 +104,7 @@ class Misc extends MX_Controller {
 		}
 		if($charset != 'utf-8'){
 			// echo $charset;
-			$content = iconv($charset,'UTF-8//IGNORE',$content);
+			$content = @iconv($charset,'UTF-8//IGNORE',$content);
 			// echo $content;
 		}
 		// echo $content ;
