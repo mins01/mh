@@ -25,7 +25,7 @@
 						<div class="clearfix"></div>
 					</dt>
 					<dd class="bc_comment" ng-hide="form.mode=='edit' &amp;&amp; form.bc_idx==bc_row.bc_idx"
-					ng-bind-html="bc_row.bc_comment | linky | nl2br | space2nbsp"></dd>
+					ng-bind-html="bc_row.bc_comment | linky:'_blank' | nl2br | space2nbsp"></dd>
 				</dl>
 			</div>
 		</li>
