@@ -4,7 +4,7 @@ if(isset($opgs['og:url'][0])){
 	$ogp_url = $opgs['og:url'];
 }
 $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
-
+$href = isset($_GET['href'][0])?$_GET['href']:null;
 // print_r($opgs);
 // exit;
 ?><!doctype html>
@@ -18,7 +18,7 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<style>
 	html{padding:0;margin:0;height: 100%;}
-	body{padding:0;margin: 0; background-color: #fff; overflow: hidden; height:100%;}
+	body{padding:0;margin: 0; background-color: #000; overflow: hidden; height:100%;}
 	.og-image{width:100%;height:100%; position: fixed;top:0;left: 0;right: 0;bottom: 0; z-index: 10;}
 	a.url{display: block; position: relative; color: #000}
 	.text-ellipsis{text-overflow: ellipsis; white-space: nowrap; width: 100%; overflow: hidden;}
@@ -30,8 +30,12 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 	</head>
 <body>
 	<div class="">
+			<? if(isset($href[0])): ?>
+			<a class="url" href="<?=html_escape($href)?>" target="_parent" > 
+			<? else: ?>
 			<a class="url" href="<?=html_escape($ogp_url)?>" target="_blank" >
-				<div>
+			<? endif;?>
+			<div>
 			<?
 			if(isset($opgs['og:video:url'][0])){
 				$poster = isset($opgs['og:image'][0])?'poster="'.html_escape($opgs['og:image']).'"':'';
