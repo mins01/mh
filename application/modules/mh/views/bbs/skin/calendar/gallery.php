@@ -105,7 +105,22 @@
 								<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
 							<? endif; ?>
 						</div>
-						
+						<? 
+						if(!empty($b_row['bt_tags_string'])): 
+							?>
+							<div class="bt_tags text-right">
+								<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>">tag:<?=$b_row['bt_cnt']?></span>
+							<?
+							foreach(explode(',',$b_row['bt_tags_string']) as $bt_tag):
+								?>
+								<a class="bt_tag label  label-success" href="<?=html_escape($bbs_conf['base_url'])?>/list?tag=<?=html_escape(urlencode($bt_tag))?>">#<?=html_escape($bt_tag)?></a>
+								<? 
+							endforeach;
+							?>
+							</div>
+							<?
+						endif; 
+						?>
 					</div>
 					
 				</div>
