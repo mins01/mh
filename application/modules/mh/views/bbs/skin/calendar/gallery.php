@@ -80,7 +80,7 @@
 						<a href="<?=html_escape($b_row['read_url'])?>">
 							<div class="text-center thumbnail-box img-rounded" >
 								<? if(isset($b_row['thumbnail_url'][0])): ?>
-									<? if($b_row['is_external']):?>
+									<? if($b_row['is_external'] && !$b_row['is_image']): ?>
 									<div class="div_iframe_htmlOgp">
 										<iframe class="iframe_htmlOgp pre-hide" src="<?=SITE_URI_PREFIX?>misc/htmlOgp?url=<?=html_escape(urlencode($b_row['thumbnail_url']))?>"></iframe>
 									</div>

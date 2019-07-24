@@ -83,10 +83,7 @@ class Bbs_model extends CI_Model {
 		// }
 		// 첨부파일 사용중인가?
 		if($bm_row['bm_use_file']=='1'){
-			$select.=",(select count(*) from ".$this->tblname('file','bf2')." where bf2.b_idx=b.b_idx and bf_isdel=0) as bf_cnt
-			, IF(bf_type LIKE 'external/%',1,0) AS is_external
-			, IF(bf_type LIKE '%image%',1, IF(bf_name REGEXP '.(gif|jpg|jpeg|jpe|png)$',1,0) ) AS is_image
-			";
+			$select.=',(select count(*) from '.$this->tblname('file','bf2').' where bf2.b_idx=b.b_idx and bf_isdel=0) as bf_cnt';
 		}
 		// 리플 사용중인가?
 		if($bm_row['bm_use_comment']=='1' && empty($opts['no_bc_cnt'])){
@@ -102,6 +99,7 @@ class Bbs_model extends CI_Model {
 		if($bm_row['bm_use_thumbnail']=='1'){
 			$this->db->join($this->tblname('file','bf'),'bf.b_idx=b.b_idx and bf_isdel=0 and bf_represent = 1','left');
 			$select.=',bf.bf_idx,bf.bf_name,bf.bf_save,bf.bf_size,bf.bf_type,bf.bf_represent';
+			$select.=", IF(bf_type LIKE 'external/%',1,0) AS is_external , IF(bf_type LIKE '%image%',1, IF(bf_name REGEXP '.(gif|jpg|jpeg|jpe|png)$',1,0) ) AS is_image";
 		}
 		// 조회수
 		if(!$no_bh_hit_cnt){
