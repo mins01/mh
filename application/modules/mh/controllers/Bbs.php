@@ -73,8 +73,8 @@ class Bbs extends MX_Controller {
 	public function querystring_from_get($get){
 		$get2 = $get;
 		if(isset($get2['page']['0']) && $get2['page']=='1'){unset($get2['page']);} //URL 간략화용
-		if(!isset($get2['ct']['0'])){unset($get2['ct']);unset($get['ct']);} 
-		if(!isset($get2['tag']['0'])){unset($get2['tag']);unset($get['tag']);} 
+		if(!isset($get2['ct']['0'])){unset($get2['ct']);unset($get['ct']);}
+		if(!isset($get2['tag']['0'])){unset($get2['tag']);unset($get['tag']);}
 		if(!isset($get2['q']['0'])){unset($get2['tq']);unset($get2['q']);unset($get['tq']);unset($get['q']);} //URL 간략화용
 		if(strlen(implode('',array_values($get2)))===0){
 			return '';
@@ -110,15 +110,15 @@ class Bbs extends MX_Controller {
 			show_error('잘못된 모드입니다.',400,'Bad Request');
 		}
 		$get = $this->input->get();
-		
+
 		$this->tail_qs = $this->tail_querystring_from_get($get); //여기서 한번만 한다!
-		
+
 		$this->bbs_conf['base_url'] = $this->base_url;
-		
+
 		$this->bbs_conf['list_url'] = $this->base_url . "/list".$this->tail_qs;
 		$this->bbs_conf['write_url'] = $this->base_url . "/write".$this->tail_qs;
 		$this->bbs_conf['tag_lists_url'] = $this->base_url . "/tag_lists";
-		
+
 		$get2 = array();
 		$get2['lm'] = 'rss';
 		$this->bbs_conf['rss_url'] = $this->base_url . "/list?".http_build_query($get2);
@@ -159,26 +159,26 @@ class Bbs extends MX_Controller {
 		);
 	}
 	private function extends_b_row(& $b_row,$get){
-		unset($get['b_idx']);	
+		unset($get['b_idx']);
 		$b_row['read_url'] = $this->base_url . '/read/'.$b_row['b_idx'].$this->tail_qs;
 		$b_row['answer_url'] = $this->base_url . '/answer/'.$b_row['b_idx'].$this->tail_qs;
 		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_row['b_idx'].$this->tail_qs;
 		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx']	.$this->tail_qs;
 		$b_row['write_url'] = $this->base_url . '/write'.$this->tail_qs; //사용안됨
 		$b_row['thumbnail_url'] = null;
-		
+
 		if(!empty($b_row['bf_idx'])){
 			if($b_row['is_external']){ //외부 링크인 경우
-				if($b_row['is_image']){ 
+				if($b_row['is_image']){
 					$b_row['thumbnail_url'] = $b_row['bf_save'];
 				}else{
 					$b_row['thumbnail_url'] = $b_row['bf_save'];
 				}
 			}else{
-				if($b_row['is_image']){ 
-					$b_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($b_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.		
+				if($b_row['is_image']){
+					$b_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($b_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
 				}else{
-					
+
 				}
 			}
 		}
@@ -189,9 +189,9 @@ class Bbs extends MX_Controller {
 			$b_row['is_new'] = false;
 		}
 
-		
 
-		
+
+
 	}
 	private function extends_b_rows(&$b_rows,$get){
 		foreach($b_rows as & $r){
@@ -258,20 +258,28 @@ class Bbs extends MX_Controller {
 			$lm = null;
 		}
 
-		if(!isset($lm)){
+		if(!isset($lm[0])){
 			$lm = $this->bm_row['bm_list_def'];
 		}
 
 
+		switch($lm){
+			case 'calendar':
+				return $this->mode_list_for_calendar($b_idx,$with_read);
+			break;
+			case 'list':
+				return $this->mode_list_for_default($b_idx,$with_read);
+			break;
+			case 'gallery':
+				return $this->mode_list_for_gallery($b_idx,$with_read);
+			break;
+			case 'rss':
+				return $this->mode_list_for_rss();
+			break;
+			default:
+				show_error('잘못된 요청입니다.',400,'Bad Request');
+			break;
 
-		if($lm=='calendar'){
-			return $this->mode_list_for_calendar($b_idx,$with_read);
-		}else if($lm=='list'||$lm=='gallery'){
-			return $this->mode_list_for_default($b_idx,$with_read);
-		}else if($lm=='rss'){
-			return $this->mode_list_for_rss();
-		}else{
-			return $this->mode_list_for_default($b_idx,$with_read);
 		}
 	}
 	public function mode_list_for_calendar($b_idx=null,$with_read=false){
@@ -377,7 +385,7 @@ class Bbs extends MX_Controller {
 		$order_by = isset($opt['order_by'])?$opt['order_by']:'';
 		$b_rows = $this->bbs_m->select_for_list($get,$order_by);
 		//echo $this->db->last_query();
-		
+
 		$get2 = $this->input->get();
 		$this->extends_b_rows($b_rows,$get2);
 		$b_n_rows = $this->bbs_m->select_for_notice_list($get);
@@ -401,15 +409,7 @@ class Bbs extends MX_Controller {
 			$this->config->set_item('layout_og_description', "목록 {$get['page']} page");
 		}
 
-		$lm = $this->input->get('lm');
-
-		if($lm=='rss' && $with_read){
-			$lm = 'list';
-		}
-
-		if(!isset($lm)){
-			$lm = $this->bm_row['bm_list_def'];
-		}
+		$lm = isset($opt['lm'][0])?$opt['lm']:'list';
 
 		$this->load->view($this->skin_path.'/'.$lm,array(
 		'b_rows' => $b_rows,
@@ -431,7 +431,10 @@ class Bbs extends MX_Controller {
 		$this->_mode_list($b_idx,$with_read,$opt);
 	}
 	public function mode_list_for_default($b_idx=null,$with_read=false){
-		$this->_mode_list($b_idx,$with_read);
+		$this->_mode_list($b_idx,$with_read,array('lm'=>'list'));
+	}
+	public function mode_list_for_gallery($b_idx=null,$with_read=false){
+		$this->_mode_list($b_idx,$with_read,array('lm'=>'gallery'));
 	}
 	public function mode_list_for_rss(){
 		$permission = $this->get_permission_lists();
@@ -496,7 +499,7 @@ class Bbs extends MX_Controller {
 		echo $xml->saveXML();
 		return;
 	}
-	
+
 	public function mode_tag_lists($b_idx){
 		header('Content-Type: application/json');
 		$t = 60*10;
@@ -516,7 +519,7 @@ class Bbs extends MX_Controller {
 			echo json_encode($json);
 		}
 	}
-	
+
 	//비밀번호 필수 체크 : false: fail, true: OK
 	private function required_password($b_row,$b_pass,$title='비밀번호 확인',$sub_title=''){
 		if($this->common->get_login('is_admin')){
@@ -596,7 +599,7 @@ class Bbs extends MX_Controller {
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : {$b_row['b_title']}");
 		$this->config->set_item('layout_og_description', "읽기 : {$b_row['b_title']}".' '.$this->sumup_tags($bt_tags,' ','#'));
 		$this->config->set_item('layout_keywords', $this->sumup_tags($bt_tags,',',''));
-		
+
 
 		//썸네일이 있을 경우 og 이미지를 추가한다.
 		if(isset($b_row['thumbnail_url'][0])){
@@ -978,7 +981,7 @@ class Bbs extends MX_Controller {
 		}else{
 			return $prefix.implode($separator.$prefix,$tags);
 		}
-	}	
+	}
 	public function select_tags($b_idx){
 		if($this->bm_row['bm_use_tag']!='0'){
 			return $this->bt_m->bt_tags_by_b_idx($b_idx);
@@ -991,9 +994,9 @@ class Bbs extends MX_Controller {
 			// $tags = $this->bt_m->pickup_tags($b_row['b_text']); //old
 			$tags = $this->bt_m->split_tags_string((isset($b_row['b_category'][0])?$b_row['b_category'].' ':'').$b_row['bt_tags_string']);  //기본으로 카테고리도 태그에 넣는다.
 			$tags = array_slice($tags,0,20); // 태그는 20개 까지만
-			
+
 			if($mode=='update' ||$mode=='delete'){
-				$this->bt_m->delete_by_b_idx($b_idx,$tags);	
+				$this->bt_m->delete_by_b_idx($b_idx,$tags);
 			}
 			if($mode=='update' ||$mode=='insert'){
 				foreach($tags as $tag){
@@ -1001,6 +1004,6 @@ class Bbs extends MX_Controller {
 				}
 			}
 		}
-		
+
 	}
 }
