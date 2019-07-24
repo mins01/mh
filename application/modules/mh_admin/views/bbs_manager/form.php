@@ -154,7 +154,7 @@
 								?>
 								<label class="col-sm-3 control-label"><?=($t_label)?></label>
 								<div class="col-sm-9">
-								<?=form_dropdown($t_col, array('list'=>'일반게시판','calendar'=>'달력'), $bm_row[$t_col], ' class="selectpicker show-tick" style="width:4em" data-width="120px" aria-label="'.$t_label.'" title="'.$t_label.'"  data-header="'.$t_label.'"')?>
+								<?=form_dropdown($t_col, array('list'=>'일반게시판','calendar'=>'달력','gallery'=>'갤러리'), $bm_row[$t_col], ' class="selectpicker show-tick" style="width:4em" data-width="120px" aria-label="'.$t_label.'" title="'.$t_label.'"  data-header="'.$t_label.'"')?>
 								</div>
 							</div>
 						</div>

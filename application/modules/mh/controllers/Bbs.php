@@ -254,7 +254,7 @@ class Bbs extends MX_Controller {
 
 		if($lm=='calendar'){
 			return $this->mode_list_for_calendar($b_idx,$with_read);
-		}else if($lm=='list'){
+		}else if($lm=='list'||$lm=='gallery'){
 			return $this->mode_list_for_default($b_idx,$with_read);
 		}else if($lm=='rss'){
 			return $this->mode_list_for_rss();
@@ -389,8 +389,9 @@ class Bbs extends MX_Controller {
 			$this->config->set_item('layout_og_description', "목록 {$get['page']} page");
 		}
 
+		$lm = $this->bm_row['bm_list_def'];
 
-		$this->load->view($this->skin_path.'/list',array(
+		$this->load->view($this->skin_path.'/'.$lm,array(
 		'b_rows' => $b_rows,
 		'b_n_rows'=>$b_n_rows,
 		'bm_row' => $this->bm_row,
