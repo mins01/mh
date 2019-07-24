@@ -19,6 +19,7 @@ $today_date = date('Y-m-d');
 -->
 <div class="text-right">
 	<a href="?lm=list" type="button" class="btn btn-link btn-xs"><span class="glyphicon glyphicon-list"></span>목록형</a>
+	<a href="?lm=gallery" type="button" class="btn btn-link btn-xs">📷 갤러리형</a>
 </div>
 <div class="panel panel-default bbs-mode-list">
 	

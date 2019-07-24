@@ -165,10 +165,22 @@ class Bbs extends MX_Controller {
 		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_row['b_idx'].$this->tail_qs;
 		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx']	.$this->tail_qs;
 		$b_row['write_url'] = $this->base_url . '/write'.$this->tail_qs; //사용안됨
+		$b_row['thumbnail_url'] = null;
 		
-
 		if(!empty($b_row['bf_idx'])){
-			$b_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($b_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
+			if($b_row['is_external']){ //외부 링크인 경우
+				if($b_row['is_image']){ 
+					$b_row['thumbnail_url'] = $b_row['bf_save'];
+				}else{
+					$b_row['thumbnail_url'] = $b_row['bf_save'];
+				}
+			}else{
+				if($b_row['is_image']){ 
+					$b_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($b_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.		
+				}else{
+					
+				}
+			}
 		}
 
 		if(isset($b_row['b_insert_date'][0]) && time()-strtotime($b_row['b_insert_date'])<$this->bm_row['bm_new']){
@@ -389,7 +401,15 @@ class Bbs extends MX_Controller {
 			$this->config->set_item('layout_og_description', "목록 {$get['page']} page");
 		}
 
-		$lm = $this->bm_row['bm_list_def'];
+		$lm = $this->input->get('lm');
+
+		if($lm=='rss' && $with_read){
+			$lm = 'list';
+		}
+
+		if(!isset($lm)){
+			$lm = $this->bm_row['bm_list_def'];
+		}
 
 		$this->load->view($this->skin_path.'/'.$lm,array(
 		'b_rows' => $b_rows,

@@ -3,7 +3,10 @@
 //$start_num,$count
 //print_r($b_rows);
 ?>
-
+<div class="text-right">
+	<a href="?lm=list" type="button" class="btn btn-link btn-xs"><span class="glyphicon glyphicon-list"></span>목록형</a>
+	<a href="?lm=calendar" type="button" class="btn btn-link btn-xs">📅 달력형</a>
+</div>
 <div class="panel panel-default bbs-mode-list">
 
 	<!-- Default panel contents -->
@@ -67,7 +70,7 @@
 		<div class="row">
 		<? 
 		foreach($b_rows as $b_row):
-		//print_r($r);
+		// print_r($b_row);
 		?>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 				<div class="panel panel-default center-block" style="max-width:300px;">
@@ -77,7 +80,14 @@
 						<a href="<?=html_escape($b_row['read_url'])?>">
 							<div class="text-center thumbnail-box img-rounded" >
 								<? if(isset($b_row['thumbnail_url'][0])): ?>
-									<img class="img-rounded" src="<?=html_escape($b_row['thumbnail_url'])?>">
+									<? if($b_row['is_external']):?>
+									<div class="div_iframe_htmlOgp">
+										<iframe class="iframe_htmlOgp pre-hide" src="<?=SITE_URI_PREFIX?>misc/htmlOgp?url=<?=html_escape(urlencode($b_row['thumbnail_url']))?>"></iframe>
+									</div>
+									<? else:?>
+										<img class="img-rounded" src="<?=html_escape($b_row['thumbnail_url'])?>">
+									<? endif; ?>
+									
 								<? else: ?>
 									<div class="no-thumbnail"></div>
 								<? endif; ?>

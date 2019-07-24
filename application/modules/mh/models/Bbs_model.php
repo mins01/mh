@@ -83,7 +83,10 @@ class Bbs_model extends CI_Model {
 		// }
 		// 첨부파일 사용중인가?
 		if($bm_row['bm_use_file']=='1'){
-			$select.=',(select count(*) from '.$this->tblname('file','bf2').' where bf2.b_idx=b.b_idx and bf_isdel=0) as bf_cnt';
+			$select.=",(select count(*) from ".$this->tblname('file','bf2')." where bf2.b_idx=b.b_idx and bf_isdel=0) as bf_cnt
+			, IF(bf_type LIKE 'external/%',1,0) AS is_external
+			, IF(bf_type LIKE '%image%',1, IF(bf_name REGEXP '.(gif|jpg|jpeg|jpe|png)$',1,0) ) AS is_image
+			";
 		}
 		// 리플 사용중인가?
 		if($bm_row['bm_use_comment']=='1' && empty($opts['no_bc_cnt'])){

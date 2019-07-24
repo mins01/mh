@@ -3,31 +3,7 @@
 //$start_num,$count
 //print_r($bm_row);
 ?>
-<script>
-$(function(){
-	$('.iframe_htmlOgp').on('load',function(){
-		var fn = function(thisc){
-			return function(){
-				// console.log(this);
-				if($(thisc.contentWindow.document).find('.container-fluid').length>0){
-					var h = $(thisc.contentWindow.document).find('.container-fluid').prop('scrollHeight');
-					$(thisc).removeClass('pre-hide');
-					thisc.style.height = (h+10)+'px';
-					thisc.style.opacity = 1;
-					thisc.style.zIndex = 1;	
-					
-				}else{
-					thisc.style.display = 'none';
-					$(thisc).parent().remove();
-					
-				}
-			}
-		}(this);
-		setTimeout(fn,200)
 
-	})
-})
-</script>
 <div class="row bbs-files">
 <input type="hidden" name="bf_idx" value="" disabled>
 <?
@@ -56,7 +32,8 @@ foreach($bf_rows as $r):
 			<div class="panel-footer text-center">
 				<label><input type="checkbox" name="delf[]" value="<?=$r['bf_idx']?>" > <span class="glyphicon glyphicon-floppy-remove"></span> 삭제</label>
 				<? if($r['bf_represent']):?>  / <button type="button" disabled class="btn btn-success btn-xs">대표이미지</button>
-				<? elseif($r['is_image']):?>  / <button type="button" onclick="return set_represent(this.form,<?=$r['bf_idx']?>)" class="btn btn-info btn-xs">대표이미지설정</button><? endif; ?>
+				<? elseif($r['is_image'] || $r['is_external']):?>  / <button type="button" onclick="return set_represent(this.form,<?=$r['bf_idx']?>)" class="btn btn-info btn-xs">대표이미지설정</button><? endif; ?>
+				
 			</div>
 			<? endif; ?>
 		</div>

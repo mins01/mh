@@ -122,3 +122,28 @@ function load_tag_lists(url){
 		console.log("tag_lists complete");
 	});
 }
+
+
+$(function(){
+	$('.iframe_htmlOgp').on('load',function(){
+		var fn = function(thisc){
+			return function(){
+				// console.log(this);
+				if($(thisc.contentWindow.document).find('.container-fluid').length>0){
+					var h = $(thisc.contentWindow.document).find('.container-fluid').prop('scrollHeight');
+					$(thisc).removeClass('pre-hide');
+					thisc.style.height = (h+10)+'px';
+					thisc.style.opacity = 1;
+					thisc.style.zIndex = 1;	
+					
+				}else{
+					thisc.style.display = 'none';
+					$(thisc).parent().remove();
+					
+				}
+			}
+		}(this);
+		setTimeout(fn,200)
+
+	})
+})
