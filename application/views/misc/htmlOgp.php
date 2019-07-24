@@ -17,19 +17,19 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 	<!-- 합쳐지고 최소화된 최신 CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<style>
-	body{padding:5px; background-color: #fff; overflow: hidden;}
-	.og-image{max-width:100%;max-height:100px;}
-	a.url{display: block;}
+	html{padding:0;margin:0;height: 100%;}
+	body{padding:0;margin: 0; background-color: #fff; overflow: hidden; height:100%;}
+	.og-image{width:100%;height:100%; position: fixed;top:0;left: 0;right: 0;bottom: 0; z-index: 10;}
+	a.url{display: block; position: relative; color: #000}
 	.text-ellipsis{text-overflow: ellipsis; white-space: nowrap; width: 100%; overflow: hidden;}
 	.og-site_name{font-size:larger}
 	.og-title{}
 	.og-description{font-size:smaller}
-	
+	.box-info{position: fixed;top: auto;bottom: 0;right:0;left:0; background-color: rgba(255,255,255,0.8);z-index: 20;}
 	</style>
 	</head>
 <body>
-	<div class="container-fluid">
-		<div class="row">
+	<div class="">
 			<a class="url" href="<?=html_escape($ogp_url)?>" target="_blank" >
 				<div>
 			<?
@@ -47,7 +47,7 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 				?><div class="text-center"><img class="og-image"  src="<?=html_escape($src)?>"  class="img-rounded" alt="image"></div><?
 			}
 			?>
-			<div class=" text-center">
+			<div class="text-center box-info">
 				<?
 				if(isset($opgs['og:site_name'][0])){
 					?><div class="og-site_name text-ellipsis" title="<?=html_escape($opgs['og:site_name'])?>"><?=html_escape($opgs['og:site_name'])?></div><?
@@ -67,7 +67,7 @@ $ogp_locale = isset($ogp['og:locale'][0])?$ogp['og:locale']:'';
 
 			</div>
 			</a>
-		</div>
+		
 
 	</div>
 	<!-- 

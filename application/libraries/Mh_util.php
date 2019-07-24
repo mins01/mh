@@ -196,21 +196,21 @@ class Mh_util{
 			if(strpos($property,'og')===0 ||strpos($property,'fb')===0 ||strpos($property,'twitter')===0 ){
 				// print_r($meta);
 				if(!isset($ogp[$property])){
-					$ogp[$property]=isset($meta['content'])?htmlspecialchars_decode($meta['content']):'';
+					$ogp[$property]=isset($meta['content'])?htmlspecialchars_decode(html_entity_decode($meta['content'],ENT_QUOTES)):'';
 					$ogp[$property.'s'] = array();
 				}
 				
-				$ogp[$property.'s'][]=isset($meta['content'])?htmlspecialchars_decode($meta['content']):'';
+				$ogp[$property.'s'][]=isset($meta['content'])?htmlspecialchars_decode(html_entity_decode($meta['content'],ENT_QUOTES)):'';
 			}else{
-				$metas[$property]=isset($meta['content'])?htmlspecialchars_decode($meta['content']):'';
+				$metas[$property]=isset($meta['content'])?htmlspecialchars_decode(html_entity_decode($meta['content'],ENT_QUOTES)):'';
 			}
 		}
 		// print_r($metas);
 		if(!isset($ogp['og:title']) && isset($metas['title'])){
-			$ogp['og:title'] = htmlspecialchars_decode($metas['title']);
+			$ogp['og:title'] = htmlspecialchars_decode(html_entity_decode($metas['title'],ENT_QUOTES));
 		}
 		if(!isset($ogp['og:description']) && isset($metas['description'])){
-			$ogp['og:description'] = htmlspecialchars_decode($metas['description']);
+			$ogp['og:description'] = htmlspecialchars_decode(html_entity_decode($metas['description'],ENT_QUOTES));
 		}
 		return $ogp;
 	}

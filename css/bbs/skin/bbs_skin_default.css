@@ -238,14 +238,10 @@ span.bc-star-5::before{content:'★★★★★'}
 }
 .iframe_htmlOgp{
 	box-sizing: content-box;
-	width:100%; max-width:320px; height: 0px; border: 0px solid #eee; opacity: 0; display: block;
-	transition: opacity 0.5s ease-out, height 0.5s ease-out;
-	z-index: -1;
-	
+	width:100%; max-width:320px; max-height: 320px; border: 0px solid #eee; display: block;
+	transition: opacity 0.5s ease-out, height 0.5s ease-out;	
 }
-.iframe_htmlOgp.pre-hide{
-	position: absolute;top:-9999;left:-9999;
-}
+
 
 
 /**
