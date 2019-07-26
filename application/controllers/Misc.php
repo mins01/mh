@@ -111,7 +111,8 @@ class Misc extends MX_Controller {
 		$opgs = $this->mh_util->parseOgp($content);
 		// var_dump($opgs);
 		if(empty($opgs)){
-			show_error("not opg meta");
+			$opgs['title']='not opg meta!';
+			// show_error("not opg meta");
 			// exit;
 		}
 

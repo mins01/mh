@@ -178,7 +178,7 @@ class Mh_util{
 		$metas = array();
 		$match = array();
 		preg_match('@<title[^>]*>(.*)</title>@m',$content,$match);
-		$metas['title'] = isset($match[1])?$match[1]:'no-title';
+		$metas['title'] = isset($match[1][0])?$match[1]:'no-title';
 		$match = array();
 		preg_match_all('@<meta [^>]*/?>@m',$content,$match);
 		// echo $content;
@@ -206,12 +206,14 @@ class Mh_util{
 			}
 		}
 		// print_r($metas);
-		if(!isset($ogp['og:title']) && isset($metas['title'])){
-			$ogp['og:title'] = htmlspecialchars_decode(html_entity_decode($metas['title'],ENT_QUOTES));
+		$ogp['title'] = htmlspecialchars_decode(html_entity_decode($metas['title'],ENT_QUOTES));
+		if(!isset($ogp['og:title'])){
+			$ogp['og:title'] = $ogp['title'];
 		}
 		if(!isset($ogp['og:description']) && isset($metas['description'])){
 			$ogp['og:description'] = htmlspecialchars_decode(html_entity_decode($metas['description'],ENT_QUOTES));
 		}
+		
 		return $ogp;
 	}
 }
