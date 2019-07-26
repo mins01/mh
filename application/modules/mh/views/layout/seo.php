@@ -1,3 +1,5 @@
+
+
 <!-- meta seo -->
 	<? if(isset($layout_og_title[0])) : ?><meta property="og:title" content="<?=html_escape($layout_og_title)?>">
 	<? endif; ?>
@@ -16,3 +18,4 @@
 	
 	<link rel="canonical" href="<?=html_escape($canonical_url)?>">
 <!-- //meta seo -->
+
