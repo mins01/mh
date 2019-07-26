@@ -34,10 +34,16 @@ $href = isset($_GET['href'][0])?$_GET['href']:null;
 	.full-stretch{
 		 position: fixed;top:0;left: 0;right: 0;bottom: 0;
 	}
+	.hover-sacleUp{
+			transition: transform  0.5s ease-out;
+	}
+	.hover-scaleUp-parent:hover .hover-sacleUp{
+		transform: scale(2);
+	}
 	</style>
 	</head>
 <body>
-	<div class="">
+	<div class="hover-scaleUp-parent">
 			<? if(isset($href[0])): ?>
 			<a class="url" href="<?=html_escape($href)?>" target="_parent" > 
 			<? else: ?>
@@ -56,10 +62,10 @@ $href = isset($_GET['href'][0])?$_GET['href']:null;
 			<?
 			elseif(isset($opgs['og:image'][0])):
 				$src = $opgs['og:image'];
-				?><img class="og-image full-stretch"  src="<?=html_escape($src)?>"  class="img-rounded" alt="image"><?
+				?><img class="og-image full-stretch hover-sacleUp"  src="<?=html_escape($src)?>" alt="image"><?
 			else:
 				?>
-				<div class="text-center flex-center-center full-stretch"><div class="og-site_name text-ellipsis" style="font-size:20px;color:#fff;" title="<?=html_escape($opgs['title'])?>"><?=html_escape($opgs['title'])?></div></div>
+				<div class="text-center flex-center-center full-stretch hover-sacleUp"><div class="og-site_name text-ellipsis" style="font-size:20px;color:#fff;" title="<?=html_escape($opgs['title'])?>"><?=html_escape($opgs['title'])?></div></div>
 				<?
 			endif;
 			?>

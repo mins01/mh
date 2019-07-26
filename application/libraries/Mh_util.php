@@ -169,7 +169,7 @@ class Mh_util{
 	 * <meta property="og:type" content="website">
 
 	 */
-	static function parseOgp($content){
+	static function parseOgp($content,$url=''){
 		// if(!class_exists('XML2Array')){
 		// 	require_once(dirname(__FILE__).'XML2Array.php');
 		// }
@@ -178,7 +178,7 @@ class Mh_util{
 		$metas = array();
 		$match = array();
 		preg_match('@<title[^>]*>(.*)</title>@m',$content,$match);
-		$metas['title'] = isset($match[1][0])?$match[1]:'no-title';
+		$metas['title'] = isset($match[1][0])?$match[1]:$url;
 		$match = array();
 		preg_match_all('@<meta [^>]*/?>@m',$content,$match);
 		// echo $content;
