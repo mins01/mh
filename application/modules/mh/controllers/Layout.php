@@ -11,10 +11,17 @@ class Layout extends MX_Controller {
 		// print_r($this->config);
 		$this->prefix_title = $this->config->item('prefix_title','layout');
 		$this->suffix_title = $this->config->item('suffix_title','layout');
+		$this->load->helper('url');
+
 	}
 	
-	public function get_conf_from_config(){
-		$conf = array();
+	public function get_conf_from_config($reload=false){
+		static $conf = array();
+		if(!$reload && count( $conf)>0){
+			// echo 'no-reload';
+			return $conf;
+		}
+		
 		$conf['menu_tree'] = $this->config->item('menu_tree');
 		$conf['menu_rows'] = $this->config->item('menu_rows');
 		$conf['menu'] = $this->config->item('menu');
@@ -46,6 +53,12 @@ class Layout extends MX_Controller {
 			$conf['head_contents'].="\n".$current_menu['mn_head_contents'];
 			$conf['top_html'] = $current_menu['mn_top_html'];
 		}
+		$conf['current_url'] = current_url();
+		if(preg_match('|/list|', $conf['current_url'])){
+			$conf['canonical_url'] = $conf['current_url'];
+		}else{
+			$conf['canonical_url'] = preg_replace('/\?.*$/', '', $conf['current_url']);
+		}
 		
 		return $conf;
 	}
@@ -58,7 +71,9 @@ class Layout extends MX_Controller {
 		}else{
 			$conf['title'] = $this->prefix_title . $conf['title']. $this->suffix_title;
 		}
+
 		
+		$conf['seo_contents'] = $this->load->view('mh/layout/seo',$conf,true);
 		
 		return $this->load->view('mh/layout/head',$conf,true);
 	}
