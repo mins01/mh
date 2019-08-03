@@ -69,7 +69,7 @@ class Bbs_model extends CI_Model {
 		if($bm_row['bm_use_category']!='0'){
 			$select.=',b.b_category';
 		}
-		
+
 		// switch($bm_row['bm_list_type']){
 			// case '0': //일반 게시물
 
@@ -122,15 +122,15 @@ class Bbs_model extends CI_Model {
 
 	//-- 목록과 카운팅용, 기본 SELECT 부분 설정.
 	private function _apply_list_where($get,$opts=null){
-		
+
 		$order_by = is_string($opts)?$opts:null;
 		if(isset($opts['order_by'])){
 			$order_by = $opts['order_by'];
 		}
-		
+
 		$this->db->from($this->tbl.' as b');
 		if(isset($opts['wheres'])){
-			$this->db->where($opts['wheres']);	
+			$this->db->where($opts['wheres']);
 		}
 		//-- 게시판 아이디
 		if(!isset($this->bm_row['b_id'])){
@@ -225,7 +225,7 @@ class Bbs_model extends CI_Model {
 				$v_tag = $this->db->escape($v,true);
 				$this->db->join($this->tblname('tag',$ali), "{$ali}.b_idx = b.b_idx and {$ali}.bt_isdel=0 and {$ali}.bt_tag={$v_tag} ");
 			}
-			$order_by = 'bt0.b_idx desc';	
+			$order_by = 'bt0.b_idx desc';
 		}
 
 		//-- 카테고리
@@ -241,7 +241,7 @@ class Bbs_model extends CI_Model {
 		}else{
 			$this->db->order_by($order_by);
 		}
-		
+
 		return true;
 
 	}
@@ -265,7 +265,7 @@ class Bbs_model extends CI_Model {
 
 		$this->_apply_list_bm_row($this->bm_row,null,false,$opts);
 
-		
+
 		list($limit,$offset) = $this->get_limit_offset($get['page']);
 		$this->db->limit($limit,$offset);
 
@@ -344,7 +344,7 @@ class Bbs_model extends CI_Model {
 	public function select_for_calendar($get){
 		$opts = array(
 			'order_by'=>'b.b_date_st,b.b_date_ed'
-			
+
 		);
 		if(!$this->_apply_list_where($get,$opts)){
 			return false;
@@ -375,21 +375,38 @@ class Bbs_model extends CI_Model {
 		$w_st = date('w',$time_st);
 		$time_st = $time_st-$w_st*86400;
 		$orders = array();
+		$dates = array();
 		$maxlength = 3; //달력의 1일의 최대 높이
-		
+
 		// 글의 순서 정의. 기간이 겹치면 순서 중복 불가! 기간이 안겹치면 순서 중복 가능.
 		foreach($b_rows as & $b_row){
 			$n = 0;
+			$nCnt = 0;
+			$tArr = array();
 			foreach($orders as $k => $v){
-				if($b_row['b_date_ed']>=$v[0] && $b_row['b_date_st']<=$v[1]){
-						$n++;
+
+				if($v[0] <= $b_row['b_date_ed'] && $b_row['b_date_st'] <= $v[1]){
+
+					$nCnt++;
+					$tArr[]=$v[2];
 				}
 			}
+			// print_r($tArr);
+			if(count($tArr)==0){
+				$n=0;
+			}else{
+				for($i=0,$m=$nCnt;in_array($i,$tArr);$i++){
+
+				}
+				$n = $i;
+			}
+
+
 			$maxlength = max($maxlength,$n);
 			$orders[$b_row['b_idx']] = array($b_row['b_date_st'],$b_row['b_date_ed'],$n);
 		}
 		$b_rowss['maxlength'] = $maxlength+1;
-		
+
 		// 날짜 기준으로 글넣기 (길이,순서 포함)
 		while($time_st<=$time_ed){
 			$t_a = date('Y-m-d',$time_st);
@@ -406,11 +423,12 @@ class Bbs_model extends CI_Model {
 					}
 					$v_dt_ed = min($t_b,$b_row['b_date_ed']);
 					$v_len = floor((strtotime($v_dt_ed)-strtotime($v_dt_st))/86400)+1;
-					
+
 					$b_rowss[$v_dt_st][] = array('b_row'=>&$b_row,'len'=>$v_len,'order'=>$orders[$b_row['b_idx']][2]);
 				}
 			}
 		}
+		// print_r($b_rowss);
 		return $b_rowss;
 	}
 
@@ -431,7 +449,7 @@ class Bbs_model extends CI_Model {
 	}
 
 	// private function extends_b_rows(& $b_rows){ //더이상 필요 없음, 쿼리에서 처리함
-	// 
+	//
 	// 	foreach($b_rows as & $r){
 	// 		$this->extends_b_row($r);
 	// 	}
