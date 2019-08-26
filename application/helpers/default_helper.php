@@ -7,6 +7,21 @@ function mh_base_url($url){
 		return base_url($url);
 	}
 }
+function mh_get_url($url,$get,$appendArr=''){
+	// parse_str($appendStr, $appendArr);
+	
+	$get = remove_empty(array_merge($get,$appendArr));
+	return $url.'?'.http_build_query($get);
+}
+
+function remove_empty($array) {
+  return array_filter($array, '_remove_empty_internal');
+}
+
+function _remove_empty_internal($value) {
+  return !empty($value) || $value === 0;
+}
+
 
 function generate_paging($get,$max_page,$uri='',$i_conf=array()){
 	$conf = array_merge(array(
