@@ -96,7 +96,6 @@ function submitWysiwyg(){
 }
 
 function load_tag_lists(url){
-	// var url = <?=json_encode($bbs_conf['tag_lists_url'])?>;
 	var post_data = null;
 	$.ajax({
 		url: url,
@@ -105,7 +104,7 @@ function load_tag_lists(url){
 		data: post_data,
 	})
 	.done(function(rData) { //통신 성공 시 호출
-		$tag_lists = $('datalist.tag_lists');
+		$tag_lists = $('datalist#tag_lists');
 		$tag_lists.html('');
 		for(var i=0,m=rData.length;i<m;i++){
 			var v = rData[i];

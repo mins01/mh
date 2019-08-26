@@ -134,7 +134,7 @@ if($mode=='write'||$mode=='answer'){
 		</div>
 	</div>
 	</form>
-	<datalist id="tag_lists">
+	<datalist class="tag_lists" id="tag_lists">
 		<option value="tag_elements"></option>
 	</datalist>
 </div>
