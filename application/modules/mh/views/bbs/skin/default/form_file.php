@@ -104,7 +104,7 @@ endforeach;
 			<div class="panel-body text-center mode-form-file-item-input  attach-file drag-and-drop-files " title="드래그앤드롭으로 파일 첨부 가능">
 				<div>
 					<span class="btn-block btn btn-primary btn-file ">
-						<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" multiple onchange="bbs_form_file_item_oncahngeUpload(event)">
+						<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" multiple onchange="bbs_form_file_item_oncahngeUpload(this)">
 						<!-- <span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" onchange="bbs_form_file_item_oncahngeUpload(event)"> -->
 					</span>
 				</div>
@@ -134,9 +134,9 @@ endforeach;
 </div>
 <script>
 //첨부파일 미리보기 처리
-	function bbs_form_file_item_oncahngeUpload(event){
+	function bbs_form_file_item_oncahngeUpload(input_file){
 		try{
-			var ta = event.target;
+			var ta = input_file;
 			var preview = $(ta).parents('.mode-form-file-item').find('.img-preview-upload');
 			preview.html('');
 			if(ta.files.length > 0){ //파일 업로드가 있을 경우만
@@ -192,15 +192,16 @@ endforeach;
  */
 function init_drag_and_drop_file(){
 	$('.drag-and-drop-files').on("dragstart dragend dragover dragenter dragleave drag drop",function(evt){
-		console.log(evt.type);
+		// console.log(evt.type);
 		evt.preventDefault();
 		evt.stopPropagation();
 	})
 	$('.drag-and-drop-files').on("drop",function(evt){
 		try{
-			console.log(evt.originalEvent.dataTransfer.files);
+			// console.log(evt.originalEvent.dataTransfer.files);
 			$(this).find('input[type="file"]').prop('files',evt.originalEvent.dataTransfer.files)
 			// $(this).find('input[type="file"]').trigger('change');
+			bbs_form_file_item_oncahngeUpload($(this).find('input[type="file"]').get(0))
 		}catch(e){
 			//지원 안되는 브라우저
 		}
