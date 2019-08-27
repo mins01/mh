@@ -54,20 +54,25 @@ border-bottom-width: 0px !important;
 td.day-td.day-td-today{
 
 }
-td.day-td.day-td-today>.day:before{
+td.day-td.day-td-today>.day::before{
 	content:"오늘";
 	position:absolute;
 	font-size:10px;
 	margin:3px;
+	padding:3px;
 	font-weight:bold;
-	color:#FF921E;
+	color:#fff;
+	top:0;right:0;bottom:0;left:0;
+	background-color: #ee583a;
+	border-radius: 10px;
 }
+
 td.day-td.day-td-today>.day>.day-label{
 	/* border-radius: 0% 0% 0.5em 1em; */
 	/* line-height: 2em; */
-	background-color:#ee583a;
+	/* background-color:#ee583a;
 	color:#fff;
-	border-bottom: solid #ee583a 8px;
+	border-bottom: solid #ee583a 8px; */
 	
 }
 
