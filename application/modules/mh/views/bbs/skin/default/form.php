@@ -59,22 +59,19 @@ if($mode=='write'||$mode=='answer'){
 				echo form_dropdown('b_notice', $bbs_conf['b_notices'], $b_row['b_notice'], 'class="form-control show-tick" style="width:6em" data-width="80px" aria-label="공지설정" title="공지글" data-header="공지글 설정"');
 				}
 				?>
-				<div class="btn-group">
-					<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="none_geo" value="1" autocomplete="off" onclick="show_geo_form(true)"><div class="m-layout" data-label-on="날짜/지형on" data-label-off=""></div>
-					</label>
-					<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="none_geo" value="0" autocomplete="off"  onclick="show_geo_form(false)" checked=""><div class="m-layout" data-label-on="날짜/지형off" data-label-off=""></div>
-					</label>
-				</div>
-			</li>
-			<li class="list-group-item form-inline for-geo-form">
 				<div class="input-group input-daterange">
 					<div class="input-group-addon">날짜</div>
 					<input type="text" class="form-control"  name="b_date_st" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_st'])?>">
 					<div class="input-group-addon">-</div>
 					<input type="text" class="form-control"  name="b_date_ed" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_ed'])?>">
 				</div>
+				<div class="btn-group">
+					<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="none_geo" value="1" autocomplete="off" onclick="show_geo_form(true)"><div class="m-layout" data-label-on="지도on" data-label-off=""></div>
+					</label>
+					<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="none_geo" value="0" autocomplete="off"  onclick="show_geo_form(false)" checked=""><div class="m-layout" data-label-on="지도off" data-label-off=""></div>
+					</label>
+				</div>
 			</li>
-
 			<li class="list-group-item  for-geo-form">
 				<div class="input-group">
 						<div class="input-group-addon">주소</div>
