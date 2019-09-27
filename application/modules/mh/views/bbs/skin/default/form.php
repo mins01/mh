@@ -66,9 +66,9 @@ if($mode=='write'||$mode=='answer'){
 					<input type="text" class="form-control"  name="b_date_ed" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_ed'])?>">
 				</div>
 				<div class="btn-group">
-					<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="none_geo" value="1" autocomplete="off" onclick="show_geo_form(true)"><div class="m-layout" data-label-on="지도on" data-label-off=""></div>
+					<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="none_geo" value="1" autocomplete="off" onclick="show_geo_form(true)"><div class="m-layout" data-label-on="지도 on" data-label-off="on"></div>
 					</label>
-					<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="none_geo" value="0" autocomplete="off"  onclick="show_geo_form(false)" checked=""><div class="m-layout" data-label-on="지도off" data-label-off=""></div>
+					<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="none_geo" value="0" autocomplete="off"  onclick="show_geo_form(false)" checked=""><div class="m-layout" data-label-on="지도 off" data-label-off="off"></div>
 					</label>
 				</div>
 			</li>

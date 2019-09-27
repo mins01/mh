@@ -146,23 +146,25 @@ function exit_json($res){
 }
 
 // onoff
-function print_onoff($name,$val,$label_on='사용',$label_off='금지'){
+function print_onoff($name,$val,$label_on='사용',$label_off='금지',$label=''){
+	if(isset($label[0])) $label .= ' ';
 	?>
-	<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="<?=html_escape($name)?>" value="1" autocomplete="off" <?=$val=='1'?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label_on)?>" data-label-off=""></div>
+	<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="<?=html_escape($name)?>" value="1" autocomplete="off" <?=$val=='1'?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label.$label_on)?>" data-label-off="<?=html_escape($label_on)?>"></div>
 	</label>
-	<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="<?=html_escape($name)?>" value="0" autocomplete="off" <?=!$val?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label_off)?>" data-label-off=""></div>
+	<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="<?=html_escape($name)?>" value="0" autocomplete="off" <?=!$val?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label.$label_off)?>" data-label-off="<?=html_escape($label_off)?>"></div>
 	</label>
 	<?
 }
 
 // onoff
-function print_onoff_type2($name,$val,$label_on='사용',$label_off='금지',$label_require='필수'){
+function print_onoff_type2($name,$val,$label_on='사용',$label_off='금지',$label_require='필수',$label=''){
+	if(isset($label[0])) $label .= ' ';
 	?>
-	<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="<?=html_escape($name)?>" value="1" autocomplete="off" <?=$val=='1'?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label_on)?>" data-label-off=""></div>
+	<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="<?=html_escape($name)?>" value="1" autocomplete="off" <?=$val=='1'?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label.$label_on)?>" data-label-off="<?=html_escape($label_on)?>"></div>
 	</label>
-	<label class="m-onoff m-onoff-danger m-with-label btn btn-danger"><input type="radio" name="<?=html_escape($name)?>" value="2" autocomplete="off" <?=$val=='2'?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label_require)?>" data-label-off=""></div>
+	<label class="m-onoff m-onoff-danger m-with-label btn btn-danger"><input type="radio" name="<?=html_escape($name)?>" value="2" autocomplete="off" <?=$val=='2'?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label.$label_require)?>" data-label-off="<?=html_escape($label_require)?>"></div>
 	</label>
-	<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="<?=html_escape($name)?>" value="0" autocomplete="off" <?=!$val?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label_off)?>" data-label-off=""></div>
+	<label class="m-onoff m-onoff-warning m-with-label btn btn-warning"><input type="radio" name="<?=html_escape($name)?>" value="0" autocomplete="off" <?=!$val?'checked':''?>><div class="m-layout" data-label-on="<?=html_escape($label.$label_off)?>" data-label-off="<?=html_escape($label_off)?>"></div>
 	</label>
 	<?
 }
