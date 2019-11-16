@@ -62,17 +62,18 @@ class Misc extends MX_Controller {
 			}else{
 				$t['scheme'] = 'http';
 			}
-			
+
 		}
 		$url = unparse_url($t);
-		// 
-		// 
+		//
+		//
 		// var_dump($t);
 		// var_dump($url);
 		// exit;
-		
+		$this->mproxy->conn_timeout = 60;
+		$this->mproxy->exec_timeout = 60;
 		$res = $this->mproxy->get($url,null,array(),$opts);
-		
+
 		// echo $url;
 		// print_r($res);exit;
 		if($res['errorno']!=0 ){
