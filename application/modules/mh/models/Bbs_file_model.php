@@ -94,6 +94,7 @@ class Bbs_file_model extends CI_Model {
 			$this->msg ='MKDIR FAIL : '.$save_dir;
 			return false;
 		}
+		chmod($save_dir,0777);
 		return realpath($save_dir);
 	}
 	public function insert_bf_row($sets){
