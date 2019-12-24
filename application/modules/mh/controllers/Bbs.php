@@ -35,6 +35,7 @@ class Bbs extends MX_Controller {
 	public function set_base_url($base_url){
 		$this->base_url = $base_url;
 		$this->bbs_m->set_base_url($base_url);
+		$this->bf_m->set_base_url($base_url);
 	}
 	// /bbs로 접근할 경우, 맨 처음은 b_id가 된다.
 	public function index($param){
@@ -201,22 +202,24 @@ class Bbs extends MX_Controller {
 	}
 	private function extends_bf_row(& $bf_row,$b_row){
 
-		$bf_row['download_url'] = $this->base_url . '/download/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']); //강제로 다운로드 시킨다.
-		$bf_row['view_url'] = $bf_row['download_url'].'&inline=1'; //브라우저에서 보인다면 보여준다.
-		if($bf_row['is_external']){
-			$bf_row['thumbnail_url'] = $bf_row['bf_save'];
-			switch($bf_row['bf_type']){
-				case 'external/image':$bf_row['bf_name']='외부 이미지';break;
-				default:$bf_row['bf_name']='외부 링크';break;
-			}
-		}else{
-			$bf_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
-		}
+		// 모델쪽으로 옮김 전부 모델 쪽으로 옮김. 즉 이거 할 필요 없음
+		// $bf_row['download_url'] = $this->base_url . '/download/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']); //강제로 다운로드 시킨다.
+		// $bf_row['view_url'] = $bf_row['download_url'].'&inline=1'; //브라우저에서 보인다면 보여준다.
+		// if($bf_row['is_external']){
+		// 	// $bf_row['thumbnail_url'] = $bf_row['bf_save'];
+		// 	// switch($bf_row['bf_type']){
+		// 	// 	case 'external/image':$bf_row['bf_name']='외부 이미지';break;
+		// 	// 	default:$bf_row['bf_name']='외부 링크';break;
+		// 	// }
+		// }else{
+		// 	// $bf_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
+		// }
+		// print_r($bf_row);
 	}
 	private function extends_bf_rows(&$bf_rows,$b_row){
-		foreach($bf_rows as & $r){
-			$this->extends_bf_row($r,$b_row);
-		}
+		// foreach($bf_rows as & $r){
+		// 	$this->extends_bf_row($r,$b_row);
+		// }
 	}
 
 	private function get_bf_rows_by_b_row(&$b_row){

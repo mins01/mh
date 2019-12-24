@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //-- 게시판 모델
 
 class Bbs_file_model extends CI_Model {
+	private $base_url = '';
 	public $bm_row = array();
 	public $error = '';
 	private $tbl = '';
@@ -19,6 +20,9 @@ class Bbs_file_model extends CI_Model {
 		$conf_bbs = $this->config->item('bbs');
 		$this->file_dir = $conf_bbs['file_dir'];
 
+	}
+	public function set_base_url($base_url){
+		$this->base_url = $base_url;
 	}
 	public function hash($str){
 		return md5($str);
@@ -51,7 +55,12 @@ class Bbs_file_model extends CI_Model {
 			, IF(bf_type LIKE 'external/%',1,0) AS is_external
 			, IF(bf_type LIKE '%image%',1, IF(bf_name REGEXP '.(gif|jpg|jpeg|jpe|png)$',1,0) ) AS is_image
 			, CONCAT('{$this->save_file_dir}/',FLOOR(b_idx/1000),'/',b_idx,'/',bf_save) AS save_file
+			, CONCAT('{$this->base_url}/download/{$b_idx}?bf_idx=',bf_idx) AS download_url
+			, CONCAT('{$this->base_url}/download/{$b_idx}?bf_idx=',bf_idx,'&inline=1') AS view_url
+			, IF(bf_type LIKE 'external/%',bf_save,IF(bf_type LIKE '%image%',concat('{$this->base_url}/thumbnail/{$b_idx}?bf_idx=',bf_idx,'&inline=1'),'')) AS thumbnail_url
+			, IF(bf_type LIKE 'external/%',1,0) AS is_external
 		";
+		
 		$bf_rows = $this->db->select($select)->from($this->tbl.'  bbsf')->where('bf_isdel',0)->where('b_idx',(int)$b_idx)->get()->result_array();
 		// $this->extends_bf_rows($bf_rows); //더이상 필요 없음, 쿼리에서 처리함.
 		return $bf_rows;
@@ -188,7 +197,8 @@ class Bbs_file_model extends CI_Model {
 				}
 			}else{
 				$ext_url_type = $ext_url_types[$k];
-				$bf_name = basename($ext_url);
+				// $bf_name = basename($ext_url);
+				$bf_name = $ext_url_type=='external/image'?'외부이미지':'외부링크';
 				$bf_size = 0;
 				$bf_type = $ext_url_type;
 				$bf_save = $ext_url;
