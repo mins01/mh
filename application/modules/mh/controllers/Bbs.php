@@ -182,15 +182,13 @@ class Bbs extends MX_Controller {
 				}
 			}
 		}
-
-		if(isset($b_row['b_insert_date'][0]) && time()-strtotime($b_row['b_insert_date'])<$this->bm_row['bm_new']){
-			$b_row['is_new'] = true;
-		}else{
-			$b_row['is_new'] = false;
-		}
-
-
-
+		
+		// 모델 쪽으로 옮김
+		// if(isset($b_row['b_insert_date'][0]) && time()-strtotime($b_row['b_insert_date'])<$this->bm_row['bm_new']){
+		// 	$b_row['is_new'] = true;
+		// }else{
+		// 	$b_row['is_new'] = false;
+		// }
 
 	}
 	private function extends_b_rows(&$b_rows,$get){

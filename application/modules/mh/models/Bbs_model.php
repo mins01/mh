@@ -116,6 +116,9 @@ class Bbs_model extends CI_Model {
 		}
 		$select.=", LEAST(CAST(length(b_gpos)/2 AS signed integer),10) AS depth" ;//$b_row['depth']= min(strlen($b_row['b_gpos'])/2,10);
 
+		$is_new_date = date('Y-m-d H:i:s',time()-$this->bm_row['bm_new']);
+		$select.=", if(b_insert_date >='{$is_new_date}',1,0)  AS is_new" ;//is_new
+
 		//-- 마지막 처리
 		$this->db->select($select);
 	}
