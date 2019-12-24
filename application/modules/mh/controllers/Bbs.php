@@ -34,6 +34,7 @@ class Bbs extends MX_Controller {
 
 	public function set_base_url($base_url){
 		$this->base_url = $base_url;
+		$this->bbs_m->set_base_url($base_url);
 	}
 	// /bbs로 접근할 경우, 맨 처음은 b_id가 된다.
 	public function index($param){
@@ -165,23 +166,25 @@ class Bbs extends MX_Controller {
 		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_row['b_idx'].$this->tail_qs;
 		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx']	.$this->tail_qs;
 		$b_row['write_url'] = $this->base_url . '/write'.$this->tail_qs; //사용안됨
-		$b_row['thumbnail_url'] = null;
-
-		if(!empty($b_row['bf_idx'])){
-			if($b_row['is_external']){ //외부 링크인 경우
-				if($b_row['is_image']){
-					$b_row['thumbnail_url'] = $b_row['bf_save'];
-				}else{
-					$b_row['thumbnail_url'] = $b_row['bf_save'];
-				}
-			}else{
-				if($b_row['is_image']){
-					$b_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($b_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
-				}else{
-
-				}
-			}
-		}
+		// 모델 쪽으로 옮김
+		// $b_row['thumbnail_url'] = null;
+		// 
+		// // 모델 쪽으로 옮김
+		// if(!empty($b_row['bf_idx'])){
+		// 	if($b_row['is_external']){ //외부 링크인 경우
+		// 		if($b_row['is_image']){
+		// 			$b_row['thumbnail_url'] = $b_row['bf_save'];
+		// 		}else{
+		// 			$b_row['thumbnail_url'] = $b_row['bf_save'];
+		// 		}
+		// 	}else{
+		// 		if($b_row['is_image']){
+		// 			$b_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($b_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
+		// 		}else{
+		// 
+		// 		}
+		// 	}
+		// }
 		
 		// 모델 쪽으로 옮김
 		// if(isset($b_row['b_insert_date'][0]) && time()-strtotime($b_row['b_insert_date'])<$this->bm_row['bm_new']){

@@ -7,6 +7,7 @@ class Bbs_model extends CI_Model {
 	public $bm_row = array();
 	public $error = '';
 	private $tbl = '';
+	private $base_url = '';
 	private $fields= array(
 		'b_idx','b_id','b_gidx','b_gpos','b_pidx',
 		//'b_insert_date','b_update_date',
@@ -24,6 +25,9 @@ class Bbs_model extends CI_Model {
 		// Call the CI_Model constructor
 		parent::__construct();
 
+	}
+	public function set_base_url($base_url){
+		$this->base_url = $base_url;
 	}
 	public function hash($str){
 		return md5($str);
@@ -100,6 +104,7 @@ class Bbs_model extends CI_Model {
 			$this->db->join($this->tblname('file','bf'),'bf.b_idx=b.b_idx and bf_isdel=0 and bf_represent = 1','left');
 			$select.=',bf.bf_idx,bf.bf_name,bf.bf_save,bf.bf_size,bf.bf_type,bf.bf_represent';
 			$select.=", IF(bf_type LIKE 'external/%',1,0) AS is_external , IF(bf_type LIKE '%image%',1, IF(bf_name REGEXP '.(gif|jpg|jpeg|jpe|png)$',1,0) ) AS is_image";
+			$select.=", IF(bf_type LIKE 'external/%',bf_save,IF(bf_type LIKE '%image%',concat('{$this->base_url}/thumbnail/',b.b_idx,'?bf_idx=',bf.bf_idx,'&inline=1'),'')) AS thumbnail_url";
 		}
 		// 조회수
 		if(!$no_bh_hit_cnt){
