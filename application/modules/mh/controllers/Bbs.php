@@ -169,7 +169,7 @@ class Bbs extends MX_Controller {
 		$b_row['write_url'] = $this->base_url . '/write'.$this->tail_qs; //사용안됨
 		// 모델 쪽으로 옮김
 		// $b_row['thumbnail_url'] = null;
-		// 
+		//
 		// // 모델 쪽으로 옮김
 		// if(!empty($b_row['bf_idx'])){
 		// 	if($b_row['is_external']){ //외부 링크인 경우
@@ -182,11 +182,11 @@ class Bbs extends MX_Controller {
 		// 		if($b_row['is_image']){
 		// 			$b_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($b_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
 		// 		}else{
-		// 
+		//
 		// 		}
 		// 	}
 		// }
-		
+
 		// 모델 쪽으로 옮김
 		// if(isset($b_row['b_insert_date'][0]) && time()-strtotime($b_row['b_insert_date'])<$this->bm_row['bm_new']){
 		// 	$b_row['is_new'] = true;
@@ -228,6 +228,7 @@ class Bbs extends MX_Controller {
 		return $bf_rows;
 	}
 
+	// @deprecated
 	private function get_bf_row_by_b_row($b_row){
 		$bf_rows = $this->bf_m->select_for_list($b_row['b_idx']);
 		$this->extends_bf_rows($bf_rows,$b_row);
@@ -297,7 +298,7 @@ class Bbs extends MX_Controller {
 		}
 
 		$get = $this->input->get();
-		$dt = $this->input->get('dt');
+		// $dt = $this->input->get('dt');
 		if(!isset($get['tq'])){ $get['tq'] = null; }
 		if(!isset($get['q'])){ $get['q'] = null; }
 		if(!isset($get['ct'])){ $get['ct'] = null; }
