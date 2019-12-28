@@ -164,6 +164,7 @@ class Bbs extends MX_Controller {
 		unset($get['b_idx']);
 		$b_row['read_url'] = $this->base_url . '/read/'.$b_row['b_idx'].$this->tail_qs;
 		$b_row['answer_url'] = $this->base_url . '/answer/'.$b_row['b_idx'].$this->tail_qs;
+		$b_row['copy_url'] = $this->base_url . '/write/'.$b_row['b_idx'].$this->tail_qs;
 		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_row['b_idx'].$this->tail_qs;
 		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx']	.$this->tail_qs;
 		$b_row['write_url'] = $this->base_url . '/write'.$this->tail_qs; //사용안됨
@@ -737,9 +738,15 @@ class Bbs extends MX_Controller {
 
 		$this->_mode_form($b_row,'answer');
 	}
-	public function mode_write(){
-		$b_row = $this->bbs_m->generate_empty_b_row();
-		$b_row['b_name']=$this->common->get_login('m_nick');
+	public function mode_write($b_idx=null){
+		if(!$b_idx){
+			$b_row = $this->bbs_m->generate_empty_b_row();
+		}else{
+			$b_row = $this->bbs_m->select_by_b_idx($b_idx);
+			$b_row['m_idx'] = null;
+			$b_row['b_name'] = $this->common->get_login('m_nick');
+			$b_row['b_insert_date'] = null;
+		}
 		$this->extends_b_row($b_row,$this->input->get());
 
 		$this->_mode_form($b_row,'write');

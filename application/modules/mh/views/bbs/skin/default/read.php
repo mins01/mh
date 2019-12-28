@@ -24,7 +24,7 @@ if($d_day==0){
 		<h3 class="text-center bbs-title bbs-text-border-fff">
 			<?=html_escape($b_row['b_title'])?>
 		</h3>
-		
+
 		<div class="bbs-info-labels bbs-flex-sub bbs-flex-sub-right">
 			<? if(($b_row['is_new'])): ?>
 				<span class="is_new label label-default" title="새글">new</span>
@@ -32,23 +32,26 @@ if($d_day==0){
 			<? if(!empty($b_row['bf_cnt'])): ?>
 				<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
 			<? endif; ?>
-			
+
 			<? if(!empty($b_row['bc_cnt'])): ?>
 				<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
 			<? endif; ?>
 		</div>
-		
+
 	</div>
 	<div class="text-right panel-body p-5px ">
-		
+
 		<? if($permission['list']): ?>
 		<a href="<?=html_escape($bbs_conf['list_url'])?>" class="btn btn-xs btn-primary glyphicon glyphicon-list"> 목록</a>
 		<? endif; ?>
 		<? if($permission['answer']): ?>
 		<a href="<?=html_escape($b_row['answer_url'])?>"  class="btn btn-xs btn-info glyphicon glyphicon-pencil"> 답변</a>
 		<? endif; ?>
+		<? if($permission['read'] && $permission['write']): ?>
+		<a href="<?=html_escape($b_row['copy_url'])?>"  class="btn btn-xs btn-success glyphicon glyphicon-pencil"> 복사</a>
+		<? endif; ?>
 		<div class="btn-group" role="group" aria-label="">
-			
+
 			<? if($permission['edit']): ?>
 			<a href="<?=html_escape($b_row['edit_url'])?>"  class="btn btn-xs btn-warning glyphicon glyphicon-pencil"> 수정</a>
 			<? endif; ?>
@@ -63,7 +66,7 @@ if($d_day==0){
 				<span class="input-group-addon" >작성자</span>
 				<span class="form-control" ><?=html_escape($b_row['b_name'])?></span>
 			</div>
-			
+
 			<p class="pull-right form-control-static">
 				<? if(isset($b_row['b_link'][0])): ?>
 					<a class="label label-success glyphicon glyphicon-link" href="<?=html_escape($b_row['b_link'])?>" target="_blank">링크</a>
@@ -100,7 +103,7 @@ if($d_day==0){
 					<button type="button" class="btn btn-success" onclick="showMapByAddress('<?=html_escape($b_row['b_etc_3'])?>','<?=html_escape($b_row['b_num_0'])?>','<?=html_escape($b_row['b_num_1'])?>')">장소확인</button>
 				</div>
 			</div>
-			
+
 			<? if(isset($b_row['b_num_0'][0])):
 				$lat = rawurlencode($b_row['b_num_0']);
 				$lng = rawurlencode($b_row['b_num_1']);
@@ -112,12 +115,12 @@ if($d_day==0){
 			</div>
 			<? endif; ?>
 			<? endif; ?>
-				
+
 			<div class="input-group hide">
 				<span class="input-group-addon">좌표</span>
 				<span class="form-control"><?=html_escape($b_row['b_etc_4'])?></span>
 			</div>
-			
+
 		</li>
 		<? if(isset($b_row['b_etc_3'][0]) && !empty($b_row['b_num_0']) && !empty($b_row['b_num_1'])):?>
 		<li class="list-group-item">
@@ -133,8 +136,8 @@ if($d_day==0){
 			</script>
 		</li>
 		<? endif; ?>
-		
-		
+
+
 		<? if(isset($view_form_file[0])): ?>
 		<li class="list-group-item form-inline bbs-mode-read-file">
 			<?=$view_form_file?>
@@ -150,22 +153,25 @@ if($d_day==0){
 				<? endforeach;?>
 		</div>
 		<? endif; ?>
-		
+
 		<div class="contents-area">
 				<?=mh_util::cvt_html($b_row['b_text'],$b_row['b_html'])?>
 		</div>
-		
+
 	</div>
 	<div class="panel-footer text-right">
-		
+
 		<? if($permission['list']): ?>
 		<a href="<?=html_escape($bbs_conf['list_url'])?>" class="btn btn-sm btn-primary glyphicon glyphicon-list"> 목록</a>
 		<? endif; ?>
 		<? if($permission['answer']): ?>
 		<a href="<?=html_escape($b_row['answer_url'])?>"  class="btn btn-sm btn-info glyphicon glyphicon-pencil"> 답변</a>
 		<? endif; ?>
+		<? if($permission['read'] && $permission['write']): ?>
+		<a href="<?=html_escape($b_row['copy_url'])?>"  class="btn btn-sm btn-success glyphicon glyphicon-pencil"> 복사</a>
+		<? endif; ?>
 		<div class="btn-group" role="group" aria-label="">
-			
+
 			<? if($permission['edit']): ?>
 			<a href="<?=html_escape($b_row['edit_url'])?>"  class="btn btn-sm btn-warning glyphicon glyphicon-pencil"> 수정</a>
 			<? endif; ?>
@@ -173,9 +179,9 @@ if($d_day==0){
 			<a href="<?=html_escape($b_row['delete_url'])?>"  class="btn btn-sm btn-danger glyphicon glyphicon-remove"> 삭제</a>
 			<? endif; ?>
 		</div>
-		
-	
-	
+
+
+
 	</div>
 </div>
 
