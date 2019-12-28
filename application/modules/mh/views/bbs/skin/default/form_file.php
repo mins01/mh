@@ -2,13 +2,15 @@
 //$bm_row,$b_row
 //$start_num,$count
 //print_r($bm_row);
+$current_i = 0;
 ?>
 
 <div class="row bbs-files">
 <input type="hidden" name="bf_idx" value="" disabled>
 <?
+// print_r($bf_rows);
 foreach($bf_rows as $r):
-//print_r($r);
+	if(!isset($r['b_idx'][0])){ continue; }
 ?>
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4  mode-read-file-item">
 		<div class="panel panel-default center-block file-item" style="max-width:310px">
@@ -33,12 +35,13 @@ foreach($bf_rows as $r):
 				<label><input type="checkbox" name="delf[]" value="<?=$r['bf_idx']?>" > <span class="glyphicon glyphicon-floppy-remove"></span> 삭제</label>
 				<? if($r['bf_represent']):?>  / <button type="button" disabled class="btn btn-success btn-xs">대표이미지</button>
 				<? elseif($r['is_image'] || $r['is_external']):?>  / <button type="button" onclick="return set_represent(this.form,<?=$r['bf_idx']?>)" class="btn btn-info btn-xs">대표이미지설정</button><? endif; ?>
-				
+
 			</div>
 			<? endif; ?>
 		</div>
 	</div>
 <?
+	$current_i++;
 endforeach;
 ?>
 <? if($mode=='read' && count($bf_rows)==0): ?>
@@ -52,7 +55,10 @@ endforeach;
 	<script type="text/javascript">
 	// <!--
 		$(function(){
-				init_drag_and_drop_file();
+			init_drag_and_drop_file();
+			$('.ext_urls_types').each(function(el,idx){
+				select_file_form(this);
+			})
 		});
 		function select_file_form(ta){
 			var $file_item = $(ta).parents(".mode-form-file-item");
@@ -66,26 +72,22 @@ endforeach;
 	// -->
 	</script>
 <?
-		for($i=0,$m=$bm_row['bm_file_limit']-count($bf_rows);$i<$m;$i++):
+		for($i=$current_i,$m=$bm_row['bm_file_limit'];$i<$m;$i++):
+			$urls_types = '';
+			$ext_urls = '';
+			if(isset($bf_rows[$i])){
+				if($bf_rows[$i]['bf_type'] == 'external/url'){
+					$ext_urls = $bf_rows[$i]['bf_save'];
+					$urls_types = $bf_rows[$i]['bf_type'];
+				}elseif($bf_rows[$i]['bf_type'] == 'external/image'){
+					$ext_urls = $bf_rows[$i]['bf_save'];
+					$urls_types = $bf_rows[$i]['bf_type'];
+				}else{
+					$ext_urls = $bf_rows[$i]['download_url'];
+					$urls_types = 'external/url';
+				}
+			}
 ?>
-<!--
-	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 mode-form-file-item drag-and-drop-files" title="드래그앤드롭으로 파일 첨부 가능">
-		<div class="panel panel-primary center-block " style="max-width:310px">
-			<div class="panel-heading text-center  text-overflow-ellipsis">
-				NEW FILE
-			</div>
-			<div class="panel-body text-center">
-				<div class="img-preview">Select File... or Drop File...</div>
-			</div>
-			<div class="panel-footer text-center">
-				<span class="btn-block btn btn-primary btn-file ">
-					<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" multiple onchange="bbs_form_file_item_oncahngeUpload(event)">
-				</span>
-			</div>
-		</div>
-	</div>
--->
-
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mode-form-file-item" >
 		<div class="panel panel-primary center-block " style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
@@ -93,15 +95,15 @@ endforeach;
 				<span class="input-group-btn">
 					<select class="form-control ext_urls_types" name="ext_urls_types[<?=$i?>]" onchange="select_file_form(this)">
 						<option value="attach/file" data-target=".attach-file">첨부파일</option>
-						<option value="external/url" data-target=".external-url">외부링크</option>
-						<option value="external/image" data-target=".external-image">외부이미지</option>
+						<option value="external/url" data-target=".external-url" <?=$urls_types=='external/url'?'selected="selected"':''?>>외부링크</option>
+						<option value="external/image" data-target=".external-image" <?=$urls_types=='external/image'?'selected="selected"':''?>>외부이미지</option>
 						<option value="attach/dataurl" data-target=".attach-dataurl">데이터URL</option>
 					</select>
 				</span>
 
 			</div>
 
-			<div class="panel-body text-center mode-form-file-item-input  attach-file drag-and-drop-files " title="드래그앤드롭으로 파일 첨부 가능">
+			<div class="panel-body text-center mode-form-file-item-input  attach-file drag-and-drop-files" title="드래그앤드롭으로 파일 첨부 가능">
 				<div>
 					<span class="btn-block btn btn-primary btn-file ">
 						<span class="glyphicon glyphicon-floppy-open"></span> 파일 선택...<input type="file" name="upf[]" multiple onchange="bbs_form_file_item_oncahngeUpload(this)">
@@ -113,7 +115,7 @@ endforeach;
 			<div class="panel-body text-center mode-form-file-item-input  external-image external-url hide">
 				<div>
 					<div class="input-group">
-						<input type="text" name="ext_urls[<?=$i?>]"  class="form-control ext_urls" placeholder="http://~~~">
+						<input type="text" name="ext_urls[<?=$i?>]"  class="form-control ext_urls" placeholder="http://~~~" value="<?=$ext_urls?>">
 					</div>
 				</div>
 			</div>

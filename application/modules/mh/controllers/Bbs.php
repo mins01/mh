@@ -202,32 +202,15 @@ class Bbs extends MX_Controller {
 			$this->extends_b_row($r,$get);
 		}
 	}
-	private function extends_bf_row(& $bf_row,$b_row){
-
-		// 모델쪽으로 옮김 전부 모델 쪽으로 옮김. 즉 이거 할 필요 없음
-		// $bf_row['download_url'] = $this->base_url . '/download/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']); //강제로 다운로드 시킨다.
-		// $bf_row['view_url'] = $bf_row['download_url'].'&inline=1'; //브라우저에서 보인다면 보여준다.
-		// if($bf_row['is_external']){
-		// 	// $bf_row['thumbnail_url'] = $bf_row['bf_save'];
-		// 	// switch($bf_row['bf_type']){
-		// 	// 	case 'external/image':$bf_row['bf_name']='외부 이미지';break;
-		// 	// 	default:$bf_row['bf_name']='외부 링크';break;
-		// 	// }
-		// }else{
-		// 	// $bf_row['thumbnail_url'] = $this->base_url . '/thumbnail/'.urlencode($b_row['b_idx']).'?bf_idx='.urlencode($bf_row['bf_idx']).'&inline=1'; //브라우저에서 보인다면 보여준다.
-		// }
-		// print_r($bf_row);
-	}
-	private function extends_bf_rows(&$bf_rows,$b_row){
-		// foreach($bf_rows as & $r){
-		// 	$this->extends_bf_row($r,$b_row);
-		// }
-	}
-
 	private function get_bf_rows_by_b_row(&$b_row){
 		$bf_rows = $this->bf_m->select_for_list($b_row['b_idx']);
-		$this->extends_bf_rows($bf_rows,$b_row);
 		return $bf_rows;
+	}
+	private function empty_idx_bf_rows(&$bf_rows){
+		foreach ($bf_rows as & $r) {
+			$r['b_idx'] = '';
+			$r['bf_idx'] = '';
+		}
 	}
 
 	// @deprecated
@@ -716,9 +699,8 @@ class Bbs extends MX_Controller {
 			show_error('게시물이 없습니다',404,'File not found');
 		}
 		$this->extends_b_row($b_row,$this->input->get());
-
-
-		$this->_mode_form($b_row,'edit');
+		$bf_rows = $this->get_bf_rows_by_b_row($b_row);
+		$this->_mode_form($b_row,'edit',$bf_rows);
 	}
 
 	public function mode_answer($b_idx){
@@ -743,18 +725,24 @@ class Bbs extends MX_Controller {
 		if(!isset($b_idx)){
 			$b_row = $this->bbs_m->generate_empty_b_row();
 			$this->extends_b_row($b_row,$this->input->get());
+			$b_row['b_name'] = $this->common->get_login('m_nick');
+			$bf_rows = array();
 		}else{
 			$b_row = $this->bbs_m->select_by_b_idx($b_idx);
 			$this->extends_b_row($b_row,$this->input->get());
+			$bf_rows = $this->get_bf_rows_by_b_row($b_row);
+			$this->empty_idx_bf_rows($bf_rows);
+			// print_r($bf_rows);
 			$b_row['b_idx'] = null;
 			$b_row['m_idx'] = null;
 			$b_row['b_name'] = $this->common->get_login('m_nick');
 			$b_row['b_insert_date'] = null;
+			// print_r($b_row);			exit;
 		}
-		$this->_mode_form($b_row,'write');
+		$this->_mode_form($b_row,'write',$bf_rows);
 	}
 
-	private function _mode_form($b_row,$mode){
+	private function _mode_form($b_row,$mode,$bf_rows=array()){
 		//print_r($conf);
 
 		$permission = $this->get_permission_lists($b_row['m_idx']);
@@ -796,7 +784,7 @@ class Bbs extends MX_Controller {
 				'bm_row' => $this->bm_row,
 				'bbs_conf'=>$this->bbs_conf,
 				'permission'=>$permission,
-				'bf_rows'=>($mode=='edit')?$this->get_bf_rows_by_b_row($b_row):array(),
+				'bf_rows'=>$bf_rows,
 			),true);
 		}else{
 			$view_form_file = '';
