@@ -700,7 +700,8 @@ class Bbs extends MX_Controller {
 		}
 		$this->extends_b_row($b_row,$this->input->get());
 		$bf_rows = $this->get_bf_rows_by_b_row($b_row);
-		$this->_mode_form($b_row,'edit',$bf_rows);
+		$bt_tags = $this->select_tags($b_row['b_idx']); //내부에서 자동 if처리함
+		$this->_mode_form($b_row,'edit',$bf_rows,$bt_tags);
 	}
 
 	public function mode_answer($b_idx){
@@ -718,8 +719,10 @@ class Bbs extends MX_Controller {
 		$b_row['b_title'] = 'RE:'.$b_row['b_title'];
 		$b_row['b_text'] = $b_row['b_text']."\n=-----------------=\n";
 		$this->extends_b_row($b_row,$this->input->get());
+		$bt_tags = $this->select_tags($b_row['b_idx']); //내부에서 자동 if처리함
 
-		$this->_mode_form($b_row,'answer');
+
+		$this->_mode_form($b_row,'answer',array(),$bt_tags);
 	}
 	public function mode_write($b_idx=null){
 		if(!isset($b_idx)){
@@ -727,10 +730,12 @@ class Bbs extends MX_Controller {
 			$this->extends_b_row($b_row,$this->input->get());
 			$b_row['b_name'] = $this->common->get_login('m_nick');
 			$bf_rows = array();
+			$bt_tags = array();
 		}else{
 			$b_row = $this->bbs_m->select_by_b_idx($b_idx);
 			$this->extends_b_row($b_row,$this->input->get());
 			$bf_rows = $this->get_bf_rows_by_b_row($b_row);
+			$bt_tags = $this->select_tags($b_row['b_idx']); //내부에서 자동 if처리함
 			$this->empty_idx_bf_rows($bf_rows);
 			// print_r($bf_rows);
 			$b_row['b_idx'] = null;
@@ -739,10 +744,10 @@ class Bbs extends MX_Controller {
 			$b_row['b_insert_date'] = null;
 			// print_r($b_row);			exit;
 		}
-		$this->_mode_form($b_row,'write',$bf_rows);
+		$this->_mode_form($b_row,'write',$bf_rows,$bt_tags);
 	}
 
-	private function _mode_form($b_row,$mode,$bf_rows=array()){
+	private function _mode_form($b_row,$mode,$bf_rows=array(),$bt_tags=array()){
 		//print_r($conf);
 
 		$permission = $this->get_permission_lists($b_row['m_idx']);
@@ -789,7 +794,7 @@ class Bbs extends MX_Controller {
 		}else{
 			$view_form_file = '';
 		}
-		$bt_tags = $this->select_tags($b_row['b_idx']); //내부에서 자동 if처리함
+		// $bt_tags = $this->select_tags($b_row['b_idx']); //내부에서 자동 if처리함
 
 		$this->config->set_item('layout_head_contents',$this->get_head_contents($mode));
 		$this->config->set_item('layout_hide',false);
