@@ -58,7 +58,7 @@ class Bbs extends MX_Controller {
 		$base_url = $conf['base_url'];
 		$b_id = $conf['menu']['mn_arg1'];
 		$mode = isset($param[0][0])?$param[0]:'list';
-		$b_idx = isset($param[1][0])?$param[1]:'list';
+		$b_idx = isset($param[1][0])?$param[1]:null;
 		if(!isset($b_id[0])){
 			show_error('게시판 아이디가 없습니다.',400,'Bad Request');
 		}
@@ -161,12 +161,13 @@ class Bbs extends MX_Controller {
 		);
 	}
 	private function extends_b_row(& $b_row,$get){
-		unset($get['b_idx']);
-		$b_row['read_url'] = $this->base_url . '/read/'.$b_row['b_idx'].$this->tail_qs;
-		$b_row['answer_url'] = $this->base_url . '/answer/'.$b_row['b_idx'].$this->tail_qs;
-		$b_row['copy_url'] = $this->base_url . '/write/'.$b_row['b_idx'].$this->tail_qs;
-		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_row['b_idx'].$this->tail_qs;
-		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_row['b_idx']	.$this->tail_qs;
+		$b_idx = isset($b_row['b_idx'])?$b_row['b_idx']:(isset($get['b_idx'])?$get['b_idx']:'');
+		// unset($get['b_idx']);
+		$b_row['read_url'] = $this->base_url . '/read/'.$b_idx.$this->tail_qs;
+		$b_row['answer_url'] = $this->base_url . '/answer/'.$b_idx.$this->tail_qs;
+		$b_row['copy_url'] = $this->base_url . '/write/'.$b_idx.$this->tail_qs;
+		$b_row['edit_url'] = $this->base_url . '/edit/'.$b_idx.$this->tail_qs;
+		$b_row['delete_url'] = $this->base_url . '/delete/'.$b_idx.$this->tail_qs;
 		$b_row['write_url'] = $this->base_url . '/write'.$this->tail_qs; //사용안됨
 		// 모델 쪽으로 옮김
 		// $b_row['thumbnail_url'] = null;
@@ -739,16 +740,17 @@ class Bbs extends MX_Controller {
 		$this->_mode_form($b_row,'answer');
 	}
 	public function mode_write($b_idx=null){
-		if(!$b_idx){
+		if(!isset($b_idx)){
 			$b_row = $this->bbs_m->generate_empty_b_row();
+			$this->extends_b_row($b_row,$this->input->get());
 		}else{
 			$b_row = $this->bbs_m->select_by_b_idx($b_idx);
+			$this->extends_b_row($b_row,$this->input->get());
+			$b_row['b_idx'] = null;
 			$b_row['m_idx'] = null;
 			$b_row['b_name'] = $this->common->get_login('m_nick');
 			$b_row['b_insert_date'] = null;
 		}
-		$this->extends_b_row($b_row,$this->input->get());
-
 		$this->_mode_form($b_row,'write');
 	}
 
