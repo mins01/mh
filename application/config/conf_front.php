@@ -12,6 +12,9 @@ $config['db']= array(
 'prefix'=>'',//현재 사용안함.
 );
 
+//-- 레이아웃용 view 파일 설정
+$config['layout_view_head'] = 'head';
+$config['layout_view_tail'] = 'tail';
 
 //--- layout용 head
 $config['layout_keywords'] = '공대여자,웹,프로그래밍,DB,PHP,MySQL,ORACLE';

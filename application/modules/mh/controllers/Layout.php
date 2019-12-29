@@ -14,14 +14,16 @@ class Layout extends MX_Controller {
 		$this->load->helper('url');
 
 	}
-	
+
 	public function get_conf_from_config($reload=false){
 		static $conf = array();
 		if(!$reload && count( $conf)>0){
 			// echo 'no-reload';
 			return $conf;
 		}
-		
+
+		$conf['view_head'] = $this->config->item('layout_view_head');
+		$conf['view_tail'] = $this->config->item('layout_view_tail');
 		$conf['menu_tree'] = $this->config->item('menu_tree');
 		$conf['menu_rows'] = $this->config->item('menu_rows');
 		$conf['menu'] = $this->config->item('menu');
@@ -32,7 +34,7 @@ class Layout extends MX_Controller {
 		$conf['logedin'] = $this->config->item('layout_logedin');
 		$conf['login_label'] = $this->common->get_login('m_nick');
 		$conf['login_info']	=	 $this->common->get_login();
-		
+
 		$conf['layout_keywords'] = $this->config->item('layout_keywords');
 		$conf['layout_og_title'] = $this->config->item('layout_og_title');
 		$conf['layout_og_description'] = $this->config->item('layout_og_description');
@@ -59,37 +61,37 @@ class Layout extends MX_Controller {
 		}else{
 			$conf['canonical_url'] = preg_replace('/\?.*$/', '', $conf['current_url']);
 		}
-		
+
 		return $conf;
 	}
 
 	public function layout_head($conf=array()){
 		$conf = array_merge($this->get_conf_from_config(),$conf);
-		
+
 		if(!isset($conf['title'][0])){
 			$conf['title'] = $this->prefix_title . $conf['menu']['mn_text']. $this->suffix_title;
 		}else{
 			$conf['title'] = $this->prefix_title . $conf['title']. $this->suffix_title;
 		}
 
-		
+
 		$conf['seo_contents'] = $this->load->view('mh/layout/seo',$conf,true);
-		
-		return $this->load->view('mh/layout/head',$conf,true);
+
+		return $this->load->view('mh/layout/'.$conf['view_head'],$conf,true);
 	}
 	public function layout_tail($conf = array()){
 		$conf = array_merge($this->get_conf_from_config(),$conf);
-		
-		return $this->load->view('mh/layout/tail',$conf,true);
+
+		return $this->load->view('mh/layout/'.$conf['view_tail'],$conf,true);
 	}
-	
-	
-	
-	
+
+
+
+
 	public function head($conf = array()){
 		print_r(debug_backtrace());
 		exit('x');
-		
+
 		echo $this->layout_head($conf);
 	}
 	public function tail($conf = array()){
@@ -97,9 +99,3 @@ class Layout extends MX_Controller {
 	}
 
 }
-
-
-
-
-
-
