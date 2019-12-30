@@ -150,7 +150,7 @@
 								?>
 								<label class="col-sm-3 control-label"><?=($t_label)?></label>
 								<div class="col-sm-9">
-								<?=form_dropdown($t_col, array('list'=>'목록','lastread'=>'마지마글읽기'), $bm_row[$t_col], ' class="selectpicker show-tick" style="width:4em" data-width="120px" aria-label="'.$t_label.'" title="'.$t_label.'"  data-header="'.$t_label.'"')?>
+								<?=form_dropdown($t_col, array('list'=>'목록','lastread'=>'마지막글읽기'), $bm_row[$t_col], ' class="selectpicker show-tick" style="width:4em" data-width="120px" aria-label="'.$t_label.'" title="'.$t_label.'"  data-header="'.$t_label.'"')?>
 								</div>
 								<div class="text-danger"> * 게시판에 mode(동작) 지정 없는 경우</div>
 							</div>
