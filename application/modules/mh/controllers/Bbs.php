@@ -40,7 +40,7 @@ class Bbs extends MX_Controller {
 	// /bbs로 접근할 경우, 맨 처음은 b_id가 된다.
 	public function index($param){
 		$b_id = isset($param[0][0])?$param[0]:'';
-		$mode = isset($param[1][0])?$param[1]:'list';
+		$mode = isset($param[1][0])?$param[1]:'';
 		$b_idx = isset($param[2][0])?$param[2]:'';
 		if(!isset($b_id[0])){
 			show_error('게시판 아이디가 없습니다.',400,'Bad Request');
@@ -57,7 +57,7 @@ class Bbs extends MX_Controller {
 	public function index_as_front($conf,$param){
 		$base_url = $conf['base_url'];
 		$b_id = $conf['menu']['mn_arg1'];
-		$mode = isset($param[0][0])?$param[0]:'list';
+		$mode = isset($param[0][0])?$param[0]:'';
 		$b_idx = isset($param[1][0])?$param[1]:null;
 		if(!isset($b_id[0])){
 			show_error('게시판 아이디가 없습니다.',400,'Bad Request');
@@ -92,6 +92,9 @@ class Bbs extends MX_Controller {
 		$this->bm_row = $this->bm_m->get_bm_row($b_id);
 		if($this->bm_row['bm_open']!='1'){
 			show_error('사용 불가능한 게시판 입니다.',404,'File not found');
+		}
+		if(!isset($mode[0])){
+			$mode = $this->bm_row['bm_mode_def'];
 		}
 		//print_r($conf['bm_row']);
 		$this->bbs_m->set_bm_row($this->bm_row); //여기서 모델에 사용할 게시판 아이디가 고정됨
@@ -543,6 +546,25 @@ class Bbs extends MX_Controller {
 			)
 			,true);
 	}
+
+	public function mode_lastread($b_idx){
+		$get = $this->input->get();
+		if(!isset($get['page']) || !is_numeric($get['page']) || $get['page']<1){ $get['page'] = 1; }
+		if(!isset($get['tq'])){ $get['tq'] = ''; }
+		if(!isset($get['q'])){ $get['q'] = ''; }
+		if(!isset($get['ct'])){ $get['ct'] = ''; }
+		$get['page']=1;
+		$order_by = isset($opt['order_by'])?$opt['order_by']:'';
+		$b_rows = $this->bbs_m->select_for_list($get,$order_by);
+		$b_idx = isset($b_rows[0]['b_idx'][0])?$b_rows[0]['b_idx']:null;
+		if(!$b_idx){
+			$this->mode_list();
+		}else{
+			$this->mode_read($b_idx);
+		}
+
+	}
+
 	public function mode_read($b_idx){
 		if(!$b_idx){
 			show_error('게시물 아이디가 없습니다',400,'Bad Request');
