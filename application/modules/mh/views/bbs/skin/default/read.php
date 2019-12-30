@@ -47,9 +47,6 @@ if($d_day==0){
 		<? if($permission['answer']): ?>
 		<a href="<?=html_escape($b_row['answer_url'])?>"  class="btn btn-xs btn-info glyphicon glyphicon-pencil"> 답변</a>
 		<? endif; ?>
-		<? if($permission['read'] && $permission['write']): ?>
-		<a href="<?=html_escape($b_row['copy_url'])?>"  class="btn btn-xs btn-success glyphicon glyphicon-pencil"> 복사</a>
-		<? endif; ?>
 		<div class="btn-group" role="group" aria-label="">
 
 			<? if($permission['edit']): ?>
@@ -59,6 +56,10 @@ if($d_day==0){
 			<a href="<?=html_escape($b_row['delete_url'])?>"  class="btn btn-xs btn-danger glyphicon glyphicon-remove"> 삭제</a>
 			<? endif; ?>
 		</div>
+
+		<? if($permission['admin']): ?>
+		<a href="<?=html_escape($b_row['copy_url'])?>"  class="btn btn-xs btn-success glyphicon glyphicon-pencil"> 복사</a>
+		<? endif; ?>
 	</div>
 	<ul class="list-group">
 		<li class="list-group-item form-inline">
@@ -167,11 +168,8 @@ if($d_day==0){
 		<? if($permission['answer']): ?>
 		<a href="<?=html_escape($b_row['answer_url'])?>"  class="btn btn-sm btn-info glyphicon glyphicon-pencil"> 답변</a>
 		<? endif; ?>
-		<? if($permission['read'] && $permission['write']): ?>
-		<a href="<?=html_escape($b_row['copy_url'])?>"  class="btn btn-sm btn-success glyphicon glyphicon-pencil"> 복사</a>
-		<? endif; ?>
-		<div class="btn-group" role="group" aria-label="">
 
+		<div class="btn-group" role="group" aria-label="">
 			<? if($permission['edit']): ?>
 			<a href="<?=html_escape($b_row['edit_url'])?>"  class="btn btn-sm btn-warning glyphicon glyphicon-pencil"> 수정</a>
 			<? endif; ?>
@@ -179,6 +177,9 @@ if($d_day==0){
 			<a href="<?=html_escape($b_row['delete_url'])?>"  class="btn btn-sm btn-danger glyphicon glyphicon-remove"> 삭제</a>
 			<? endif; ?>
 		</div>
+		<? if($permission['admin']): ?>
+		<a href="<?=html_escape($b_row['copy_url'])?>"  class="btn btn-sm btn-success glyphicon glyphicon-pencil"> 복사</a>
+		<? endif; ?>
 
 
 
