@@ -35,7 +35,7 @@ class Bbs_master_model extends CI_Model {
 			$this->extends_bm_row($bm_row);
 		}
 	}
-	
+
 	//페이지 값으로 limit와 offset 계산 (사용안함.)
 	public function get_offset($page,$limit=5){
 		if(!isset($page) || !is_numeric($page) || $page < 0){
@@ -47,13 +47,13 @@ class Bbs_master_model extends CI_Model {
 		$offset = ($page-1)*$limit;
 		return $offset;
 	}
-	
+
 	//-- 시작 번호 계산
 	public function get_start_num($cnt,$get,$limit){
 		$offset = get_offset_by_page($get['page'],$limit);
 		return $cnt - $offset;
 	}
-	
+
 	//-- 목록과 카운팅용
 	private function _apply_list_where($get){
 		$this->db->from($this->tbl);
@@ -62,12 +62,12 @@ class Bbs_master_model extends CI_Model {
 			$this->db->or_like('b_id',$get['q']);
 			$this->db->or_like('bm_title',$get['q']);
 		}
-		
-		
+
+
 		return true;
 
 	}
-	
+
 	public function select_for_list_for_menu(){
 		if(!$this->_apply_list_where(array())){
 			return false;
@@ -81,7 +81,7 @@ class Bbs_master_model extends CI_Model {
 		}
 		return $rt;
 	}
-	
+
 	//목록용
 	public function select_for_list($get,$limit=5,$offset=0){
 		if(!$this->_apply_list_where($get)){
@@ -89,7 +89,7 @@ class Bbs_master_model extends CI_Model {
 		}
 
 		$this->db->order_by('b_id');
-		
+
 		//list($limit,$offset) = $this->get_limit_offset($get['page']);
 		$this->db->limit($limit,$offset);
 
@@ -138,7 +138,8 @@ class Bbs_master_model extends CI_Model {
 			'bm_category'=>'',
 			'bm_use_category'=>'',
 			'bm_list_type'=>'',
-			'bm_list_def'=>'',
+			'bm_list_def'=>'list',
+			'bm_mode_def'=>'list',
 			'bm_use_file'=>'',
 			'bm_file_limit'=>'2',
 			'bm_use_thumbnail'=>'',
@@ -205,10 +206,10 @@ class Bbs_master_model extends CI_Model {
 			if(preg_match("/{$pt}/",$r,$matches)){
 				$arr[] = $matches[1];
 			}
-			
+
 		}
 		return array_combine ( $arr , $arr );
 	}
-	
-	
+
+
 }
