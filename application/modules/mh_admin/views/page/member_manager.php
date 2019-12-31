@@ -39,7 +39,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 								,
 								<span ng-show="m_row.m_isout==0" class="ng-hide label label-info">사용중</span>
 								<span ng-show="m_row.m_isout==1" class="ng-hide label label-default">탈퇴됨</span>
-							
+
 							</td>
 							<td  class="text-center" ng-bind="m_row.m_insert_date"></td>
 							<th  class="text-center" ><button ng-click="go_url({mode:'update',m_idx:m_row.m_idx})" class="btn btn-default btn-xs">상세</button></th>
@@ -68,7 +68,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 					</div>
 				</form>
 				</div>
-				<ul class="pagination">					
+				<ul class="pagination">
 					<li ng-class="{'active': (p==page)}" ng-repeat="p in pagination_nums track by $index"><a title="{{p}} page" href="javascript:void(0)" ng-click="go_url({mode:'list',page:p})" aria-label="{{p}} page" ng-bind="p"></a></li>
 				</ul>
 			</div>
@@ -99,12 +99,12 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 							<input type="radio" value="1"  ng-model="selected_m_row.m_isout">탈퇴회원
 							</label>
 						</div>
-						
+
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">m_pass <input type="checkbox" ng-checked="able_change_m_pass" ng-click="able_change_m_pass=!able_change_m_pass"></label>
 						<div class="col-sm-4">
-							<input type="password" maxlength="20" ng-disabled="!able_change_m_pass" class="form-control" name="m_pass" placeholder="m_pass" ng-model="selected_m_row.m_pass">
+							<input type="password" maxlength="40" ng-disabled="!able_change_m_pass" class="form-control" name="m_pass" placeholder="m_pass" ng-model="selected_m_row.m_pass">
 						</div>
 						<label class="col-sm-2 control-label">m_level</label>
 						<div class="col-sm-4 form-control-static">
@@ -113,7 +113,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 							, <label><input type="radio" value="1" ng-model="selected_m_row.m_level">일반회원</label>
 							, <label><input type="radio" value="99" ng-model="selected_m_row.m_level">관리자</label>
 						</div>
-						
+
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">m_email</label>
@@ -131,7 +131,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 			</div>
 		</div>
 	</div>
-	
+
 </div>
 
 
@@ -143,7 +143,7 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 		$scope.json_url = json_url;
 		//$scope.call_first();
 	}
-	
+
 	$scope.mode = 'list'
 	$scope.limit = 15;
 	$scope.page = 1;
@@ -159,7 +159,7 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 		page:1,
 		mode:'list',
 	}
-	
+
 	$scope.go_url = function(i_args){
 		var args = $location.search();
 		angular.extend(args, i_args);
@@ -175,7 +175,7 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 	}
 	$scope.action = function(event){
 		//console.log("route changed in parent");
-		var args = $location.search();	
+		var args = $location.search();
 		if(!args.mode){ args.mode = 'list'}
 		$scope.mode = args.mode;
 		if(args.tq){
@@ -196,12 +196,12 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 			break;
 		}
 	}
-	$scope.$on('$locationChangeStart', function(event) { 
+	$scope.$on('$locationChangeStart', function(event) {
     $scope.action(event)
 	});
 
-	
-	
+
+
 	$scope.get_m_row_by_m_idx = function(m_idx){
 		for(var i=0,m=$scope.m_rows.length;i<m;i++){
 			if($scope.m_rows[i].m_idx == m_idx){
@@ -227,7 +227,7 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 		console.log(t0,t1);
 		console.log($scope.pagination_nums);
 	}
-	
+
 	//통신 결과처리:성공
 	$scope.callback_success = function(data, status, headers, config){
 		$scope.able_change_m_pass = false;
@@ -253,7 +253,7 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 		$scope.bc_rows =[];
 		$scope.m_row = [];
 	}
-		
+
 	//데이터초기처리
 	// $scope.call_first = function(){
 		// var args = $location.search();
@@ -349,7 +349,7 @@ memmngApp.controller('listCtrl', ['$scope','$http','$httpParamSerializer','$loca
 		.success($scope.callback_success)
 		.error($scope.callback_error);
 	}
-	
+
 }]);
 memmngApp.config(function($locationProvider) {
   $locationProvider.html5Mode(false).hashPrefix('!');
