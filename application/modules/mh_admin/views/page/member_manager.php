@@ -104,7 +104,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 					<div class="form-group">
 						<label class="col-sm-2 control-label">m_pass <input type="checkbox" ng-checked="able_change_m_pass" ng-click="able_change_m_pass=!able_change_m_pass"></label>
 						<div class="col-sm-4">
-							<input type="password" maxlength="40" ng-disabled="!able_change_m_pass" class="form-control" name="m_pass" placeholder="m_pass" ng-model="selected_m_row.m_pass">
+							<input type="password" maxlength="100" ng-disabled="!able_change_m_pass" class="form-control" name="m_pass" placeholder="m_pass" ng-model="selected_m_row.m_pass">
 						</div>
 						<label class="col-sm-2 control-label">m_level</label>
 						<div class="col-sm-4 form-control-static">
