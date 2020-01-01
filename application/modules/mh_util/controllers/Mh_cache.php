@@ -12,9 +12,9 @@ class Mh_cache extends MX_Controller {
 		$key = preg_replace('/[^\w\s\.]/','_',$key);
 		$r = $this->cache->get($key);
 		if($r!==false){
-			header('X-Cache-Cached :'.$key);
+			header('X-Cache-Cached: '.$key);
 		}else{
-			header('X-Cache-No-Cached :'.$key);
+			header('X-Cache-No-Cached: '.$key);
 		}
 		return $r;
 	}
@@ -22,9 +22,9 @@ class Mh_cache extends MX_Controller {
 		$key = preg_replace('/[^\w\s\.]/','_',$key);
 		$r = $this->cache->save($key,$val,$ttl);
 		if(!$r){
-			header('X-Cache-No-Saved :'.$key);
+			header('X-Cache-No-Saved: '.$key);
 		}else{
-			header('X-Cache-Saved :'.$key);
+			header('X-Cache-Saved: '.$key);
 		}
 		return $r;
 	}
@@ -32,16 +32,10 @@ class Mh_cache extends MX_Controller {
 		$key = preg_replace('/[^\w\s\.]/','_',$key);
 		$r = $this->cache->delete($key);
 		if(!$r){
-			header('X-Cache-No-Deleted :'.$key);
+			header('X-Cache-No-Deleted: '.$key);
 		}else{
-			header('X-Cache-Deleted :'.$key);
+			header('X-Cache-Deleted: '.$key);
 		}
 		return $r;
 	}
 }
-
-
-
-
-
-
