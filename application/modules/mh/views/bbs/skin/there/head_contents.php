@@ -12,18 +12,18 @@ $base_url = base_url();
 
 <link href="/web_work/mb_wysiwyg_dom/mb_wysiwyg.css" rel="stylesheet" type="text/css" />
 
-<link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_default.css'))?>" rel="stylesheet"  class="mb_wysiwyg_head_css">
-<link href="<?=html_escape(base_url('css/bbs/skin/bbs_skin_there.css'))?>" rel="stylesheet"  class="mb_wysiwyg_head_css">
+<link href="<?=html_escape(SITE_URI_ASSET_PREFIX.'css/bbs/skin/bbs_skin_default.css')?>" rel="stylesheet"  class="mb_wysiwyg_head_css">
+<link href="<?=html_escape(SITE_URI_ASSET_PREFIX.'css/bbs/skin/bbs_skin_there.css')?>" rel="stylesheet"  class="mb_wysiwyg_head_css">
 
 <script type="text/javascript"
 	  src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;key=AIzaSyBw8nAJOdLCqN3DuGZJKvY0idP_QWRR5WM&amp;libraries=places"></script>
-<script src="<?=html_escape(base_url('js/bbs/google_map.js'))?>"></script>
+<script src="<?=html_escape(SITE_URI_ASSET_PREFIX.'js/bbs/google_map.js')?>"></script>
 <!-- //게시판 추가 head_contents -->
 
 
 
 <? if($mode=='read' && $bm_row['bm_use_comment']=='1'): ?>
-<script src="<?=html_escape(base_url('js/bbs/comment.js'))?>"></script>
+<script src="<?=html_escape(SITE_URI_ASSET_PREFIX.'js/bbs/comment.js')?>"></script>
 <? endif; ?>
 
 <? if($mode=='write' || $mode=='edit' || $mode=='answer'): ?>
@@ -32,9 +32,9 @@ $base_url = base_url();
 <script type="text/javascript" src="/web_work/mb_wysiwyg_dom/mb_wysiwyg.js"></script>
 <script type="text/javascript" src="/web_work/mb_wysiwyg_dom/set.toolbar.js"></script>
 
-<script src="<?=html_escape(base_url('js/bbs/script.js'))?>"></script>
+<script src="<?=html_escape(SITE_URI_ASSET_PREFIX.'js/bbs/script.js')?>"></script>
 
-<script src="<?=html_escape(base_url('js/mh_gps.js'))?>"></script>
+<script src="<?=html_escape(SITE_URI_ASSET_PREFIX.'js/mh_gps.js')?>"></script>
 
 
 <script>
@@ -48,10 +48,10 @@ function(){
 </script>
 
 <!-- 달력 -->
-<link href="<?=html_escape(base_url('css/vendor/bootstrap-datepicker/bootstrap-datepicker3.min.css'))?>" rel="stylesheet">
+<link href="<?=html_escape(SITE_URI_ASSET_PREFIX.'css/vendor/bootstrap-datepicker/bootstrap-datepicker3.min.css')?>" rel="stylesheet">
 
-<script src="<?=html_escape(base_url('js/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js'))?>"></script>
-<script src="<?=html_escape(base_url('js/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.kr.js'))?>"></script>
+<script src="<?=html_escape(SITE_URI_ASSET_PREFIX.'js/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js')?>"></script>
+<script src="<?=html_escape(SITE_URI_ASSET_PREFIX.'js/vendor/bootstrap-datepicker/locales/bootstrap-datepicker.kr.js')?>"></script>
 <script>
 $(
 	function(){

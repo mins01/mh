@@ -12,6 +12,7 @@ $http_host = isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'';
 define('SITE_NAME','공대여자홈');
 define('SITE_ADMIN_MAIL','mins01.lycos.co.kr@gmail.com');
 define('SITE_URI_PREFIX', '/mh/'); // URI 앞부분 경로
+define('SITE_URI_ASSET_PREFIX', '/mh/asset/'); // aaset 폴더 접속용 URI 앞부분 경로
 define('ADMIN_PREFIX', '_admin'); // 관리자 URI 기본 경로
 define('ADMIN_URI_PREFIX', SITE_URI_PREFIX.ADMIN_PREFIX.'/'); // 관리자 URI 기본 경로
 define('DB_PREFIX', 'mh_'); // DB 접두사
@@ -46,14 +47,10 @@ define('ADMIN_LOGIN_SECURE',false);
 define('ENCRYPTION_KEY_PREFIX','MH_');
 define('_FORM_DIR',dirname(__FILE__).'/../../_form');
 
-date_default_timezone_set('Asia/Seoul'); 
+date_default_timezone_set('Asia/Seoul');
 
 define('MH_LOG_STORE',3); //로그 저장소, 0:로그저장안함, 1: CI로그파일,2:DB, 3:1+2
 
 define('DATE_YMD',date('Y-m-d'));
 
 require_once(dirname(__FILE__).'/legacy.php');
-
-
-
-

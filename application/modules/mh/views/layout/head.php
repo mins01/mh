@@ -34,13 +34,13 @@
 
 
 
-	<link rel="stylesheet" href="<?=SITE_URI_PREFIX?>css/vendor/mins01.com/m-onoff.css">
-	<link rel="stylesheet" href="<?=SITE_URI_PREFIX?>css/bootstrap/bootstrap-select.min.css">
-	<link rel="stylesheet" href="<?=SITE_URI_PREFIX?>css/mh.css">
+	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/vendor/mins01.com/m-onoff.css">
+	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/bootstrap/bootstrap-select.min.css">
+	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/mh.css">
 
-	<script src="<?=SITE_URI_PREFIX?>js/bootstrap/bootstrap-select.min.js"></script>
-	<script src="<?=SITE_URI_PREFIX?>js/mh_lib.js"></script>
-	<script src="<?=SITE_URI_PREFIX?>js/mh_def.js"></script>
+	<script src="<?=SITE_URI_ASSET_PREFIX?>js/bootstrap/bootstrap-select.min.js"></script>
+	<script src="<?=SITE_URI_ASSET_PREFIX?>js/mh_lib.js"></script>
+	<script src="<?=SITE_URI_ASSET_PREFIX?>js/mh_def.js"></script>
 	<?=$seo_contents?>
 	<?=$head_contents?>
 
