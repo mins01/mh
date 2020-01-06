@@ -62,20 +62,20 @@ class Bbs_comment_model extends CI_Model {
 			return false;
 		}
 
-		$this->db->select("*,'' as bc_pass ")->order_by('bc_gidx ,bc_gpos');
+		$this->db->select("*,'' as bc_pass , LEAST(ROUND(LENGTH(bc_gpos)/2),10) AS depth")->order_by('bc_gidx ,bc_gpos');
 		//$this->db->order_by('bc_idx');
 
 		//list($limit,$offset) = $this->get_limit_offset($get['page']);
 		//$this->db->limit($limit,$offset);
 
 		$bc_rows = $this->db->get()->result_array();
-		//echo $this->db->last_query();
-		$this->extends_bc_rows($bc_rows);
+		// echo $this->db->last_query();
+		// $this->extends_bc_rows($bc_rows);
 		return $bc_rows;
 	}
-
+	// @defrecated
 	private function extends_bc_rows(& $bc_rows){
-
+		return;
 		foreach($bc_rows as & $r){
 			$this->extends_bc_row($r);
 		}
