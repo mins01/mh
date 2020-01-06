@@ -172,7 +172,8 @@ class Bbs_comment_model extends CI_Model {
 		$bc_idx = $this->db->insert_id();
 		if($bc_idx){
 			//$this->update_bc_row($bc_idx,array('bc_gidx'=>-1*$bc_idx/100,'bc_pidx'=>$bc_idx));
-			$this->update_bc_row($bc_idx,array('bc_gidx'=>1*$bc_idx/100,'bc_pidx'=>$bc_idx));
+			// $this->update_bc_row($bc_idx,array('bc_gidx'=>1*$bc_idx/100,'bc_pidx'=>$bc_idx));
+			$this->update_bc_row($bc_idx,array('bc_gidx'=>$bc_idx,'bc_pidx'=>$bc_idx));
 		}
 
 		return $bc_idx;
