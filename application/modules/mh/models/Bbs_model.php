@@ -575,9 +575,19 @@ class Bbs_model extends CI_Model {
 		$this->db->insert();
 		$b_idx = $this->db->insert_id();
 		if($b_idx){
-			$this->update_b_row($b_idx,array('b_gidx'=>-1*$b_idx/100,'b_pidx'=>$b_idx));
+			// $this->update_b_row($b_idx,array('b_gidx'=>-1*$b_idx,'b_pidx'=>$b_idx));
+			$this->update_for_insert_b_row($b_idx);
 		}
 		return $b_idx;
+	}
+	public function update_for_insert_b_row($b_idx){
+		$this->db->from($this->tbl)
+		->where('b_idx',$b_idx)
+		->where('b_isdel',0)
+		->set('b_gidx','4294967295 - b_idx',false)
+		->set('b_pidx','b_idx',false)
+		->set('b_update_date','now()',false)->update();
+		return $this->db->affected_rows();
 	}
 	//-- 글 삭제
 	public function delete_b_row($b_idx){
