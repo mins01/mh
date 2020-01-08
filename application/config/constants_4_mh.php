@@ -6,9 +6,13 @@ if(isset($_SERVER['REMOTE_ADDR'][0]) && $_SERVER['REMOTE_ADDR']=='121.189.37.55'
 	exit('');
 }
 
-
 //== mh 설정
 $http_host = isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'';
+
+
+define('USE_CACHE',false); //전역 캐시 사용여부
+define('REFLESH_TIME','20200118_0'); //query string 에 붙여서 파일 웹 캐싱 무시용. 수동으로 변경한다.
+
 define('SITE_NAME','공대여자홈');
 define('SITE_ADMIN_MAIL','mins01.lycos.co.kr@gmail.com');
 define('SITE_URI_PREFIX', '/mh/'); // URI 앞부분 경로

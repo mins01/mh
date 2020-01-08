@@ -14,7 +14,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<script src="http://www.mins01.com/js/ForGoogle.js?t=20190618"></script>
+	<script src="http://www.mins01.com/js/ForGoogle.js?t=<?=REFLESH_TIME?>"></script>
 	<!-- google analytics -->
 	<script>ForGoogle.analytics()</script>
 
@@ -34,13 +34,13 @@
 
 
 
-	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/vendor/mins01.com/m-onoff.css">
-	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/bootstrap/bootstrap-select.min.css">
-	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/mh.css">
+	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/vendor/mins01.com/m-onoff.css?t=<?=REFLESH_TIME?>">
+	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/bootstrap/bootstrap-select.min.css?t=<?=REFLESH_TIME?>">
+	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/mh.css?t=<?=REFLESH_TIME?>">
 
-	<script src="<?=SITE_URI_ASSET_PREFIX?>js/bootstrap/bootstrap-select.min.js"></script>
-	<script src="<?=SITE_URI_ASSET_PREFIX?>js/mh_lib.js"></script>
-	<script src="<?=SITE_URI_ASSET_PREFIX?>js/mh_def.js"></script>
+	<script src="<?=SITE_URI_ASSET_PREFIX?>js/bootstrap/bootstrap-select.min.js?t=<?=REFLESH_TIME?>"></script>
+	<script src="<?=SITE_URI_ASSET_PREFIX?>js/mh_lib.js?t=<?=REFLESH_TIME?>"></script>
+	<script src="<?=SITE_URI_ASSET_PREFIX?>js/mh_def.js?t=<?=REFLESH_TIME?>"></script>
 	<?=$seo_contents?>
 	<?=$head_contents?>
 
