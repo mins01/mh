@@ -46,4 +46,11 @@ class Mh_cache extends MX_Controller {
 		$this->delete_count++;
 		return $r;
 	}
+	public function clean(){
+		$r = $this->cache->clean();
+		return $r;
+	}
+	public function cache_info(){
+		return $this->cache->cache_info();
+	}
 }
