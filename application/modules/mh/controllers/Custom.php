@@ -3,7 +3,7 @@
 * 이 모듈속의 동작은 자동화하지 않는다. 스스로 커스터마이즈 해야함!
 */
 class Custom extends MX_Controller {
-	
+
 	public function __construct($conf=array())
 	{
 
@@ -15,74 +15,79 @@ class Custom extends MX_Controller {
 		$view = $conf['menu']['mn_arg1'];
 		$this->action($conf,$param);
 	}
-	
+
 	public function action($conf,$param){
-		
+
 		if(isset($conf['menu']['mn_arg1']) && method_exists($this,$conf['menu']['mn_arg1'])){
 			$this->{$conf['menu']['mn_arg1']}($conf,$param);
 		}else{
 			show_error('지원되지 않는 메뉴 아규먼트1 입니다.');
 		}
 	}
-	
+
 	public function last_bbs($conf,$param){
-		$this->load->model('mh/custom_model','custom_m');
-		
-		$bbs_tbl_b_ids = array(
-			array('tech','tech',0,'기술','tech'),
-			array('mine','calendar',1,'일정','calendar'),
-			array('mine','freegame',1,'무료게임','freegame'),
-			array('mine','mono',0,'잡담','mono'),
-			array('test','free',0,'자유','free'),
-			// array('mine','guest',0,'방명록','guest'),
-			//array('mine','gallery','갤러리'),
-			//array('test','test','테스트'),
-			//array('mine','diff','틀린그림찾기'),
-		);
-		// $b_rowss = array_merge(
-			// $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,5,30),
-			//$this->custom_m->last_bbs_rowss($calendar_tbl_b_ids,5,30)
-			// );
-		$b_rowss = $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,50,30);
-		
+
+		$this->load->module('mh_util/mh_cache');
+		$key = __FUNCTION__;
+		// var_dump($this->mh_cache);
+
+		$output = $this->mh_cache->get($key);
+		if(!$output){
+			$this->load->model('mh/custom_model','custom_m');
+
+			$bbs_tbl_b_ids = array(
+				array('tech','tech',0,'기술','tech'),
+				array('mine','calendar',1,'일정','calendar'),
+				array('mine','freegame',1,'무료게임','freegame'),
+				array('mine','mono',0,'잡담','mono'),
+				array('test','free',0,'자유','free'),
+				// array('mine','guest',0,'방명록','guest'),
+				//array('mine','gallery','갤러리'),
+				//array('test','test','테스트'),
+				//array('mine','diff','틀린그림찾기'),
+			);
+			// $b_rowss = array_merge(
+				// $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,5,30),
+				//$this->custom_m->last_bbs_rowss($calendar_tbl_b_ids,5,30)
+				// );
+			$b_rowss = $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,50,30);
+
+			//
+			$bc_tbl_b_ids = array(
+				//array('tech','tech',0,'기술','tech'),
+				//array('mine','calendar',1,'일정','calendar'),
+				array('mine','mono',0,'잡담','mono'),
+				array('test','free',0,'자유','free'),
+				// array('mine','guest',0,'방명록','guest'),
+				//array('mine','gallery','갤러리'),
+				//array('test','test','테스트'),
+				//array('mine','diff','틀린그림찾기'),
+			);
+			$bc_rowss = $this->custom_m->last_bbs_comment_rowss($bc_tbl_b_ids,50,30);
+
+
+			$bt_rowss = array();
+			$bt_rowss[] = array('tech','tech',0,'기술','tech',$this->custom_m->last_bbs_tags('tech','tech',100,10));
+
+
+			$output = array(
+				'bbs_tbl_b_ids'=>$bbs_tbl_b_ids,
+				'b_rowss'=>$b_rowss,
+				'bc_tbl_b_ids'=>$bc_tbl_b_ids,
+				'bc_rowss'=>$bc_rowss,
+				'bt_rowss'=>$bt_rowss,
+			);
+			$this->mh_cache->save($key,$output,60);
+		}
 		$this->config->set_item('layout_head_contents',
-		'<link href="'.html_escape(base_url('css/bbs/skin/bbs_skin_default.css')).'" rel="stylesheet"  class="mb_wysiwyg_head_css">'
+		'<link href="'.html_escape(SITE_URI_ASSET_PREFIX.'css/bbs/skin/bbs_skin_default.css').'?='.REFLESH_TIME.'" rel="stylesheet"  class="mb_wysiwyg_head_css">'
 		);
-		
-		//
-		$bc_tbl_b_ids = array(
-			//array('tech','tech',0,'기술','tech'),
-			//array('mine','calendar',1,'일정','calendar'),
-			array('mine','mono',0,'잡담','mono'),
-			array('test','free',0,'자유','free'),
-			// array('mine','guest',0,'방명록','guest'),
-			//array('mine','gallery','갤러리'),
-			//array('test','test','테스트'),
-			//array('mine','diff','틀린그림찾기'),
-		);
-		$bc_rowss = $this->custom_m->last_bbs_comment_rowss($bc_tbl_b_ids,50,30);
-		
-		
-		$bt_rowss = array();
-		$bt_rowss[] = array('tech','tech',0,'기술','tech',$this->custom_m->last_bbs_tags('tech','tech',100,10));
-		
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','');
-		$this->load->view('mh/custom/last_bbs',array(
-			'bbs_tbl_b_ids'=>$bbs_tbl_b_ids,
-			'b_rowss'=>$b_rowss,
-			'bc_tbl_b_ids'=>$bc_tbl_b_ids,
-			'bc_rowss'=>$bc_rowss,
-			'bt_rowss'=>$bt_rowss,
-			));
+		$this->load->view('mh/custom/last_bbs',$output);
+
 	}
-	
+
 
 
 }
-
-
-
-
-
-

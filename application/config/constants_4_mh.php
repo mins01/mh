@@ -10,7 +10,10 @@ if(isset($_SERVER['REMOTE_ADDR'][0]) && $_SERVER['REMOTE_ADDR']=='121.189.37.55'
 $http_host = isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'';
 
 
-define('USE_CACHE',false); //전역 캐시 사용여부
+define('USE_CACHE',true); //전역 캐시 사용여부
+define('USE_MH_CACHE',USE_CACHE && true); //Mh_cache만 캐시 사용여부
+
+
 define('REFLESH_TIME','20200118_0'); //query string 에 붙여서 파일 웹 캐싱 무시용. 수동으로 변경한다.
 
 define('SITE_NAME','공대여자홈');
