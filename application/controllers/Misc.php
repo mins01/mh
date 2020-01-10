@@ -57,8 +57,11 @@ class Misc extends MX_Controller {
 			//($url,$cookieRaw=null,$headers=array(), $opts = array())
 			// $url='//test.com/index.php?123=312';
 			// URL에 생략된 것 처리
+			// $url = preg_replace('/#.*$/','',$url); //#HASH 부분 삭제 낮은 cURL에서 400 에러 난다.
 			$t = parse_url($url);
 			// var_dump($t);
+			unset($t['fragment']); //#HASH 부분 삭제. 낮은 cURL에서 400 에러 난다.
+			// exit;
 			if(!isset($t['host'][0])){
 				$t['host'] = isset($_SERVER['HTTP_HOST'][0])?$_SERVER['HTTP_HOST']:'';
 			}
@@ -70,16 +73,16 @@ class Misc extends MX_Controller {
 				}
 
 			}
-			$url = unparse_url($t);
+			$call_url = unparse_url($t);
 			//
 			//
 			// var_dump($t);
-			// var_dump($url);
+			// var_dump($call_url);
 			// exit;
 			set_time_limit(120);// 동작 타임아웃
 			$this->mproxy->conn_timeout = 60;
 			$this->mproxy->exec_timeout = 60;
-			$res = $this->mproxy->get($url,null,array(),$opts);
+			$res = $this->mproxy->get($call_url,null,array(),$opts);
 
 			// echo $url;
 			// print_r($res);exit;
