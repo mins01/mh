@@ -128,7 +128,7 @@ class Misc extends MX_Controller {
 			}
 
 			// $this->output->cache($sec/60);
-			$this->mh_cache->save($key,$opgs);
+			$this->mh_cache->save($key,$opgs,60*60); //1시간
 		}else{
 
 		}
