@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Page extends MX_Controller {
-	
+
 	public function __construct($conf=array())
 	{
 		//var_dump(func_get_args());
@@ -16,20 +16,14 @@ class Page extends MX_Controller {
 		$view = $conf['menu']['mn_arg1'];
 		$this->action($conf,$view);
 	}
-	
+
 	public function action($conf,$view){
-		$this->config->set_item('layout_head_contents','<script>console.log("xxx");</script>');
+		// $this->config->set_item('layout_head_contents','<script>console.log("xxx");</script>');
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','');
 		$this->load->view($view,array('conf'=>$conf));
 	}
-	
+
 
 
 }
-
-
-
-
-
-

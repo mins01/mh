@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//== ¸Þ´º °ü¸® ¸ðµ¨
+//== ë©”ë‰´ ê´€ë¦¬ ëª¨ë¸
 
 class Menu_model extends CI_Model {
 	public $menu_rows = null;
@@ -11,9 +11,10 @@ class Menu_model extends CI_Model {
 	public $pre_uri='';
 	public function __construct()
 	{
+		$this->load->module('mh_util/mh_cache');
 		// Call the CI_Model constructor
 		parent::__construct();
-		
+
 	}
 	public function set_init_conf($tbl_nm='menu',$pre_uri=''){
 		$this->tbl_nm = $tbl_nm;
@@ -24,14 +25,14 @@ class Menu_model extends CI_Model {
 		$this->menu_rows = $this->_get_menu_rows();
 		$this->menu_tree = $this->_mapping_menu_tree($this->menu_rows);
 	}
-	
+
 	public function & get_menu_rows(){
 		return $this->menu_rows;
 	}
 	public function & get_menu_tree(){
 		return $this->menu_tree;
 	}
-	
+
 	public function get_current_menu($uri){
 
 		foreach($this->menu_rows as & $r){
@@ -41,27 +42,41 @@ class Menu_model extends CI_Model {
 					if(isset($this->menu_rows[$mn_id])){
 						$this->menu_rows[$mn_id]['active']=true;
 					}
-					
+
 				}
 				return $r;
 			}
 		}
 		return null;
 	}
-	
+	private function cache_key(){
+		return __CLASS__.'.'.DB_PREFIX.$this->tbl_nm;
+	}
+	private function cache_clear(){
+		$key = $this->cache_key();
+		$this->mh_cache->delete($key);
+	}
 	private function _get_menu_rows(){
-		$rows = array();
-		$row = array();
-		$q = $this->db->from(DB_PREFIX.$this->tbl_nm)->where('mn_use',1)
-		->order_by('mn_sort,mn_parent_id')
-		->get();
-		
-		foreach ($q->result_array() as $row)
-		{
-			$rows[$row['mn_id']] = $row;
+		$key = $this->cache_key();
+		$rows = $this->mh_cache->get($key);
+
+		if(!$rows){
+			$rows = array();
+			$row = array();
+			$q = $this->db->from(DB_PREFIX.$this->tbl_nm)->where('mn_use',1)
+			->order_by('mn_sort,mn_parent_id')
+			->get();
+
+			foreach ($q->result_array() as $row)
+			{
+				$rows[$row['mn_id']] = $row;
+			}
+			$this->extends_menu_rows($rows);
+			// echo $this->db->last_query();
+			$this->mh_cache->save($key,$rows,60*60); //1ì‹œê°„
 		}
-		$this->extends_menu_rows($rows);
-		// echo $this->db->last_query();
+
+
 		return $rows;
 	}
 	private function extends_menu_rows(& $rows){
@@ -71,7 +86,7 @@ class Menu_model extends CI_Model {
 			}else{
 				$r['url']=str_replace('//','/',$this->pre_uri.$r['mn_url']);
 			}
-			
+
 			$r['active']=false;
 			$r['child']=array();
 			$r['breadcrumbs']=array();
@@ -98,13 +113,13 @@ class Menu_model extends CI_Model {
 				}else{
 					$tr = null;
 				}
-				
+
 
 			}
 			$r['breadcrumbs'] = array_reverse($t);
 		}
 	}
-	
+
 	public function _mapping_menu_tree(& $menu_rows){
 		$menu_tree = array();
 		foreach($menu_rows as & $r){
@@ -113,27 +128,27 @@ class Menu_model extends CI_Model {
 				$menu_tree[] = & $r;
 			}
 			if($r['mn_id'] == $r['mn_parent_id']){
-				
+
 			}else{
 				if(isset($menu_rows[$r['mn_parent_id']])){
 					if(!isset($menu_rows[$r['mn_parent_id']]['child'])){
 						$menu_rows[$r['mn_parent_id']]['child'] = array();
 					}
 					$menu_rows[$r['mn_parent_id']]['child'][] = & $r;
-					
+
 				}
 			}
 		}
 		return $menu_tree;
 	}
-	
+
 	public function select($tbl_nm='menu',$pre_uri=''){
 		$rows = array();
 		$row = array();
 		$q = $this->db->from(DB_PREFIX.$this->tbl_nm)
 		->order_by('mn_sort,mn_parent_id')
 		->get();
-		
+
 		foreach ($q->result_array() as $row)
 		{
 			$rows[$row['mn_id']] = $row;
@@ -142,7 +157,7 @@ class Menu_model extends CI_Model {
 		// echo $this->db->last_query();
 		return array_values($rows);
 	}
-	
+
 	public function insert($sets){
 		$this->db->from(DB_PREFIX.$this->tbl_nm)
 		->set($sets)
@@ -150,6 +165,7 @@ class Menu_model extends CI_Model {
 		->set('mn_update_date','now()',false)
 		->insert();
 		//return $this->db->affected_rows();
+		$this->cache_clear();
 		return $this->db->insert_id();
 	}
 	public function update($wheres,$sets){
@@ -158,12 +174,14 @@ class Menu_model extends CI_Model {
 		->set('mn_update_date','now()',false)
 		->where($wheres)
 		->update();
+		$this->cache_clear();
 		return $this->db->affected_rows();
 	}
 	public function delete($wheres){
 		$this->db->from(DB_PREFIX.$this->tbl_nm)
 		->where($wheres)
 		->delete();
+		$this->cache_clear();
 		return $this->db->affected_rows();
 	}
 	public function count($wheres){

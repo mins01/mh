@@ -11,7 +11,7 @@ class Common extends MX_Controller {
 		// Call the CI_Model constructor
 		parent::__construct();
 		$this->load->helper('cookie');
-		
+
 		$this->load->library('encrypt');
 		//$this->encrypt->set_cipher(MCRYPT_RIJNDAEL_128);
 		$this->encrypt->set_cipher(MCRYPT_RIJNDAEL_256);
@@ -19,8 +19,8 @@ class Common extends MX_Controller {
 		$this->encrypt->set_mode(MCRYPT_MODE_CBC);//MCRYPT_MODE_CBC , MCRYPT_MODE_CFB
 		//$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,16);
 		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
-		
-		
+
+
 		$this->load->model('mh/menu_model','menu_m');
 		$this->menu_m->load_db('admin_menu',ADMIN_URI_PREFIX);
 		$this->config->set_item('menu_rows', $this->menu_m->get_menu_rows());
@@ -32,10 +32,10 @@ class Common extends MX_Controller {
 
 		$this->logedin = isset($t[0]);
 		$this->config->set_item('layout_logedin',$this->logedin);
-		
+
 
 	}
-	
+
 	public function redirect($msg,$ret_url){
 		//$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title',$msg);
@@ -54,7 +54,7 @@ class Common extends MX_Controller {
 		}
 		return true;
 	}
-	
+
 	private function init_login(){
 		switch(ADMIN_LOGIN_TYPE){
 			case 'cookie':
@@ -72,7 +72,7 @@ class Common extends MX_Controller {
 		if(!$m_row['is_admin']){ //관리자만 로그인 시킨다.
 			return false;
 		}
-		
+
 		unset($m_row['m_pass']);
 		switch(ADMIN_LOGIN_TYPE){
 			case 'cookie':
@@ -87,7 +87,7 @@ class Common extends MX_Controller {
 				break;
 		}
 	}
-	
+
 	public function enc_str($plain_text){
 		return @$this->encrypt->encode(@serialize( $plain_text),$this->enc_key);
 		//return (@serialize( $plain_text));
@@ -96,7 +96,7 @@ class Common extends MX_Controller {
 		return @unserialize(@$this->encrypt->decode($ciphertext,$this->enc_key));
 		//return @unserialize(($ciphertext));
 	}
-	
+
 	//-- 로그인 쿠키 설정
 	public function set_login_at_cookie($str,$expire=null){
 		if(!isset($expire)){
@@ -123,35 +123,29 @@ class Common extends MX_Controller {
 		}
 		return $this->m_row;
 	}
-	
+
 	public function send_mail($to,$subject,$message,$binds){
 		$keys = array_keys($binds);
 		foreach($keys as & $v){
 			$v = '{{'.$v.'}}';
 		}
 		$message = str_replace($keys,$binds,$message);
-		
+
 		$this->load->library('email');
 		$this->config->load('mail'); // 프론트 사이트 설정
 		$mail_conf = $this->config->item('mail');
 
 		$this->email->initialize($mail_conf);
 		$this->email->set_newline("\r\n");
-		
+
 		$this->email->from(SITE_ADMIN_MAIL);
 		$this->email->to($to);
-		
+
 		$this->email->subject($subject);
 		$this->email->message($message);
-		
+
 		return $this->email->send();
 	}
 
-	
+
 }
-
-
-
-
-
-
