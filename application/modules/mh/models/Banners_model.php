@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 //-- 배너 모델
 
-class Banner_admin_model extends CI_Model {
+class Banners_model extends CI_Model {
 	public $msg = '';
 	public $tbl = '';
 	public $fileds = array();
@@ -102,6 +102,19 @@ class Banner_admin_model extends CI_Model {
 		  'bn_update_date'=>'',
 		  'bn_isdel'=>'',
 		);
+	}
+	public function select_for_using($wheres){
+		$d = date('Y-m-d H:i:s');
+		$row = $this->db->from($this->tbl)
+		->select('bn_idx,bn_title,bn_base_node,bn_left,bn_top,bn_width,bn_height,bn_z_index,bn_isuse,bn_type,bn_content,bn_date_st,bn_date_ed')
+			->where($wheres)
+			->where('bn_isdel',0)
+			->where('bn_isuse',1)
+			->where('bn_date_st <=', 'now()',false)
+			->where('bn_date_ed >=', 'now()',false)
+			->order_by('bn_z_index desc')
+			->get()->result_array();
+		return $row;
 	}
 
 }

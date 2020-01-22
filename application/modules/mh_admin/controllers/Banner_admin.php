@@ -5,7 +5,7 @@ class Banner_admin extends MX_Controller {
 	public function __construct()
 	{
 		$this->load->library('mh_cache');
-		$this->load->model('mh_admin/banner_admin_model','bna_m');
+		$this->load->model('mh/banners_model','banners_m');
 	}
 
 	public function _remap($method, $params = array())
@@ -46,7 +46,7 @@ class Banner_admin extends MX_Controller {
 
   public function mode_list(){
     $skin = 'mh_admin/banner_admin/list';
-		$rows = $this->bna_m->select(array());
+		$rows = $this->banners_m->select(array());
     $this->load->view($skin,array(
 			'rows'=>$rows,
 			'base_url'=>$this->base_url,
@@ -60,9 +60,9 @@ class Banner_admin extends MX_Controller {
 
     $skin = 'mh_admin/banner_admin/form';
 		if($bn_idx==null){
-			$row = $this->bna_m->empty_row();
+			$row = $this->banners_m->empty_row();
 		}else{
-			$rows = $this->bna_m->select(array('bn_idx'=>(int)$bn_idx));
+			$rows = $this->banners_m->select(array('bn_idx'=>(int)$bn_idx));
 			if(!isset($rows[0])){
 				show_error('데이터가 없습니다.');
 			}
@@ -80,7 +80,7 @@ class Banner_admin extends MX_Controller {
 			show_error('관리번호가 없습니다.');
 		}
 		$bn_idx = $post['bn_idx'];
-		$this->bna_m->update_row($bn_idx,$post);
+		$this->banners_m->update_row($bn_idx,$post);
 		$ret_url = isset($_SERVER['HTTP_REFERER'][0])?$_SERVER['HTTP_REFERER']:'/';
 		$msg = '처리완료';
 		$this->common->redirect($msg,$ret_url);
@@ -89,7 +89,7 @@ class Banner_admin extends MX_Controller {
 		if(isset($post['bn_idx'][0])){
 			show_error('잘못된 입력');
 		}
-		$bn_idx = $this->bna_m->insert_row($post);
+		$bn_idx = $this->banners_m->insert_row($post);
 		$ret_url = $this->base_url.'/form/'.$bn_idx.$_SERVER['QUERY_STRING'];
 		$msg = '처리완료';
 		$this->common->redirect($msg,$ret_url);

@@ -70,6 +70,7 @@ $route['_admin/(.*)'] = 'admin/$1';
 $route['bbs'] = 'mh/bbs/index';
 $route['bbs/(.*)'] = 'mh/bbs/index/$1';
 $route['bbs_comment/(.*)'] = 'mh/bbs_comment/index';
+$route['banners/(.*)'] = 'mh/banners/$1';
 $route['misc/(.*)'] = 'misc/$1'; //기타
 
 
@@ -82,7 +83,7 @@ $route['crlud'] = 'mh_util/crlud';
 
 
 if(!is_cli()){
-	$route['(.*)'] = 'front/$1';	
+	$route['(.*)'] = 'front/$1';
 }
 
 
@@ -101,4 +102,3 @@ if(!is_cli()){
 // $route['pin/notice'] = 'www/pin/m_notice'; //공지사항
 // $route['pin/faq'] = 'www/pin/m_faq'; //faq
 // $route['ria/(:any)'] = 'www/ria/$1'; //json
-
