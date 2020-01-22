@@ -40,7 +40,7 @@ class Banners extends MX_Controller {
 		header("Cache-Control: public, max-age = {$t}");
 		$this->config->set_item('layout_disable',true);
 		$options = 0;
-		if(if(defined('JSON_UNESCAPED_UNICODE'))){
+		if(defined('JSON_UNESCAPED_UNICODE')){
 			if(defined('JSON_UNESCAPED_UNICODE')) $options += JSON_UNESCAPED_UNICODE;
 			if(defined('JSON_PRETTY_PRINT')) $options += JSON_PRETTY_PRINT;
 			echo json_encode($json,$options);
@@ -59,7 +59,7 @@ class Banners extends MX_Controller {
 		$options = 0;
 
 		echo 'var banners_data = ';
-		if(if(defined('JSON_UNESCAPED_UNICODE'))){
+		if(defined('JSON_UNESCAPED_UNICODE')){
 			if(defined('JSON_UNESCAPED_UNICODE')) $options += JSON_UNESCAPED_UNICODE;
 			if(defined('JSON_PRETTY_PRINT')) $options += JSON_PRETTY_PRINT;
 			echo json_encode($json,$options);
