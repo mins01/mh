@@ -26,8 +26,7 @@ class Custom extends MX_Controller {
 	}
 
 	public function last_bbs($conf,$param){
-
-		$this->load->module('mh_util/mh_cache');
+		$this->load->library('mh_cache');
 		$key = __FUNCTION__;
 		// var_dump($this->mh_cache);
 

@@ -6,23 +6,23 @@ class Sdgn extends MX_Controller {
 
 	public $b_id = 'sdgn_unit';
 	public $bm_row = null;
-	
+
 	public function __construct()
 	{
 		//parent::__construct();
-		$this->load->module('mh_util/mh_cache');
+		$this->load->library('mh_cache');
 		$this->load->model('sdgn_etc_model','sdgn_etc_m');
 		$this->config->set_item('layout_head_contents',
 			'<link href="/mh/css/sdgn/units.css" rel="stylesheet" type="text/css" />'
 		);
 	}
-	
+
 	public function _remap($method, $params = array())
 	{
-		
+
 		$this->index($params);
 	}
-	
+
 	// /bbs로 접근할 경우, 맨 처음은 b_id가 된다.
 	public function index($param){
 		exit('DontUseMethod');
@@ -48,7 +48,7 @@ class Sdgn extends MX_Controller {
 		}
 		//$this->set_base_url($base_url);
 		//$this->action($b_id,$mode,$b_idx);
-		
+
 		if(!method_exists($this,$conf['menu']['mn_arg1'])){
 			show_error($conf['menu']['mn_arg1'].' 메소드가 없습니다.');
 			exit;
@@ -57,14 +57,14 @@ class Sdgn extends MX_Controller {
 	}
 	//==== 메인 화면용
 	public function main($conf,$param){
-		
-		
+
+
 		$cache_key = __METHOD__;
 		$disable_cache = IS_DEV;
-		
+
 		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
-			
+
 			//최대 평가 코멘트 수
 			//$bc_rows = $this->sdgn_etc_m->select_comment_for_main();
 			//유닛 무기 수정 TOP 10
@@ -77,14 +77,14 @@ class Sdgn extends MX_Controller {
 			$tm = time();
 			$plan_dt_st = date('Y-m-d',$tm-(60*60*24*3));
 			$plan_dt_ed = date('Y-m-d',$tm+(60*60*24*15));
-			$plan_b_rows = $this->sdgn_etc_m->select_for_plan($plan_dt_st,$plan_dt_ed); 
+			$plan_b_rows = $this->sdgn_etc_m->select_for_plan($plan_dt_st,$plan_dt_ed);
 
 			$units_cards = array();
 			foreach($su_rows as $su_row){
 				$units_cards[] = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>true),true);
 			}
-			
-				
+
+
 			$view_data = array(
 				'conf' =>$conf,
 				'param' =>$param,
@@ -99,11 +99,11 @@ class Sdgn extends MX_Controller {
 			);
 			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
 		}
-		
+
 		$this->load->view('mh/sdgn/main',$view_data);
 	}
-	
-	
+
+
 	//==== 유닛 목록용
 	public function units($conf,$param){
 		$this->load->model('sdgn_unit_model','sdgn_unit_m');
@@ -114,16 +114,16 @@ class Sdgn extends MX_Controller {
 			show_error('사용 불가능한 게시판 입니다.');
 		}
 		$this->skin_path = 'mh/bbs/skin/'.$this->bm_row['bm_skin'];
-		
+
 
 		$this->config->set_item('layout_title','SDGN UNITS');
-		
+
 		if($this->input->get('unit_idx')){
 			return $this->units_detail($conf,$param);
 		}else{
 			return $this->units_lists($conf,$param);
 		}
-		
+
 	}
 	public function units_lists($conf,$param){
 		// $get = $this->input->get();
@@ -133,14 +133,14 @@ class Sdgn extends MX_Controller {
 			'unit_properties_nums'=>$this->input->get('unit_properties_nums'),
 			'unit_is_weapon_change'=>$this->input->get('unit_is_weapon_change'),
 			'unit_is_transform'=>$this->input->get('unit_is_transform'),
-			
+
 		);
 		if(!$sh['unit_ranks']) $sh['unit_ranks'] = array();
 		if(!$sh['unit_properties_nums']) $sh['unit_properties_nums'] = array();
-		
+
 		$cache_key = __METHOD__.md5(serialize($sh));
 		$disable_cache = IS_DEV;
-		
+
 		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
 			$su_rows = $this->sdgn_unit_m->select_for_lists($sh);
@@ -155,7 +155,7 @@ class Sdgn extends MX_Controller {
 			'su_cnt_all' =>$this->sdgn_unit_m->count(),
 			'su_cnt'	=> $this->sdgn_unit_m->count_for_lists($sh),
 			'sh'=>$sh,
-			
+
 			);
 			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
 		}
@@ -167,13 +167,13 @@ class Sdgn extends MX_Controller {
 	public function units_detail($conf,$param){
 		$this->load->model('sdgn_weapon_model','sdgn_weapon_m');
 		$this->load->model('sdgn_box_model','sdgn_box_m');
-		
-		
+
+
 		$unit_idx = $this->input->get('unit_idx');
-		
+
 		$mode = 'read';
 		$this->config->set_item('layout_head_contents',$this->config->item('layout_head_contents').$this->get_head_contents($mode));
-		
+
 		$disable_cache = IS_DEV;
 		$cache_key = 'Sdgn::units_detail'.'_'.$unit_idx;
 		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
@@ -187,12 +187,12 @@ class Sdgn extends MX_Controller {
 			foreach($sw_rows as & $sw_row){
 				$sw_row['card'] = $this->load->view('mh/sdgn/weapon_card',array('sw_row'=>$sw_row),1);
 			}
-			unset($sw_row);			
+			unset($sw_row);
 			$sw_rows = $this->sdgn_weapon_m->select_assoc_weapons_by_rows($sw_rows);
 
 			$units_card = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>false),true);
-			
-			
+
+
 			$comment_url = base_url('bbs_comment/'.$this->bm_row['b_id'].'/'.$su_row['unit_idx']);
 			$view_data = array(
 				'su_row'=>$su_row,
@@ -201,16 +201,16 @@ class Sdgn extends MX_Controller {
 				'units_card'=>$units_card,
 				'html_comment'=>($this->bm_row['bm_use_comment']=='1')?$this->load->view($this->skin_path.'/comment',array('comment_url'=>$comment_url,'bm_row'=>$this->bm_row),true):'',
 			);
-			
+
 			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
 		}
 		$view_data['logedin'] = $this->common->logedin;
 		$view_data['is_admin'] = $this->common->is_admin;
-		
+
 		$this->load->view('mh/sdgn/units_detail',$view_data);
-		
+
 	}
-	
+
 	public function vs_sdgo($conf,$param){
 		$cache_key = __METHOD__;
 		$disable_cache = IS_DEV;
@@ -225,21 +225,21 @@ class Sdgn extends MX_Controller {
 			'sdgo_count_comments'=>12102,
 			'sdgn_count_comment_users'=>$this->sdgn_etc_m->count_comment_users(),
 			'sdgo_count_comment_users'=>1068,
-			
-			
+
+
 			);
 			if(!$disable_cache) $this->mh_cache->save($cache_key, $view_data,60*10);
 		}
 		$this->load->view('mh/sdgn/vs_sdgo',$view_data);
 	}
-	
+
 	public function last_comments($conf,$param){
 		$cache_key = __METHOD__;
 		$disable_cache = IS_DEV;
-		
+
 		if ($disable_cache || ($view_data = $this->mh_cache->get($cache_key))===false)
 		{
-			
+
 			$bc_rows = $this->sdgn_etc_m->select_for_last_comments(20);
 			$units_cards = array();
 			$view_data = array(
@@ -251,7 +251,7 @@ class Sdgn extends MX_Controller {
 		}
 		$this->load->view('mh/sdgn/last_comments',$view_data);
 	}
-	
+
 	public function box($conf,$param){
 		$view_data = array();
 		$this->load->model('sdgn_unit_model','sdgn_unit_m');
@@ -263,10 +263,10 @@ class Sdgn extends MX_Controller {
 		$view_data['mode'] = $mode;
 
 		if($view_data['mode']=='add_units'){
-			$view_data['all_su_rows'] = $this->sdgn_unit_m->select_for_lists(array());	
+			$view_data['all_su_rows'] = $this->sdgn_unit_m->select_for_lists(array());
 		}
-		
-		
+
+
 		//-- 박스 목록
 		$view_data['sb_rows'] = $this->sdgn_box_m->get_box_lists();
 		if(!isset($sb_idx)){
@@ -297,32 +297,8 @@ class Sdgn extends MX_Controller {
 			$view_data['units_cards'][] = $this->load->view('mh/sdgn/units_card',array('su_row'=>$su_row,'use_a'=>true),true);
 		}
 		$view_data['is_admin'] = $this->common->is_admin;
-		
-		
+
+
 		$this->load->view('mh/sdgn/box',$view_data);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

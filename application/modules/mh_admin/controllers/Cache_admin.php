@@ -4,7 +4,7 @@ class Cache_admin extends MX_Controller {
 
 	public function __construct()
 	{
-    $this->load->module('mh_util/mh_cache');
+		$this->load->library('mh_cache');
 	}
 
 	public function _remap($method, $params = array())

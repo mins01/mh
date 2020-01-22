@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+/*
+@deprecated
+*/
 class Mh_cache extends MX_Controller {
 	private $act_count = 0;
 	public function __construct($bbs_conf=array())

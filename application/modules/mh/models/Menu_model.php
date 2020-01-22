@@ -11,7 +11,7 @@ class Menu_model extends CI_Model {
 	public $pre_uri='';
 	public function __construct()
 	{
-		$this->load->module('mh_util/mh_cache');
+		$this->load->library('mh_cache');
 		// Call the CI_Model constructor
 		parent::__construct();
 

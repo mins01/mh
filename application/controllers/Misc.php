@@ -42,7 +42,7 @@ class Misc extends MX_Controller {
 			show_error("required url");
 		}
 
-		$this->load->module('mh_util/mh_cache');
+		$this->load->library('mh_cache');
 		$key = md5($url);
 		// var_dump( $this->mh_cache);
 		// exit;
