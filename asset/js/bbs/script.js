@@ -11,7 +11,7 @@
 		alert('글내용을 2글자 이상  입력해주세요.');
 		return false;
 	}
-	
+
 	var bm_use_category = $(f).attr('data-bm_use_category');
 	var ta = f.b_category;
 	if(bm_use_category=='2' && ta.value.length==0){
@@ -19,7 +19,7 @@
 		alert('카테고리를 필수로 선택하셔야합니다.');
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -58,7 +58,9 @@ function createWysiwygObj(target){
 		// 	<!-- //게시판 추가 head_contents --> \
 		// 	<style>body{padding:0 !important}</style> \
 		// ';
-		mb_wysiwyg_head_css = $('.mb_wysiwyg_head_css').clone().wrapAll("<div/>").parent().html()
+		if($('.mb_wysiwyg_head_css').length>0){
+			mb_wysiwyg_head_css = $('.mb_wysiwyg_head_css').clone().wrapAll("<div/>").parent().html()
+		}
 		var wysiwyg = new mb_wysiwyg(target,'100%',300,'','mins가 만든 위지웍 에디터입니다.');
 		wysiwygs.push(wysiwyg);
 		wysiwyg.path = mb_wysiwyg_url;
@@ -112,7 +114,7 @@ function load_tag_lists(url){
 		}
 		// console.log(rData);
 		console.log("tag_lists success");
-		
+
 	})
 	.fail(function() { //통신 실패 시 호출
 		console.log("tag_lists error");
