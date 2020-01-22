@@ -40,9 +40,14 @@ class Banners extends MX_Controller {
 		header("Cache-Control: public, max-age = {$t}");
 		$this->config->set_item('layout_disable',true);
 		$options = 0;
-		if(defined('JSON_UNESCAPED_UNICODE')) $options += JSON_UNESCAPED_UNICODE;
-		if(defined('JSON_PRETTY_PRINT')) $options += JSON_PRETTY_PRINT;
-		echo json_encode($json,$options);
+		if(if(defined('JSON_UNESCAPED_UNICODE'))){
+			if(defined('JSON_UNESCAPED_UNICODE')) $options += JSON_UNESCAPED_UNICODE;
+			if(defined('JSON_PRETTY_PRINT')) $options += JSON_PRETTY_PRINT;
+			echo json_encode($json,$options);
+		}else{
+			echo json_encode($json);
+		}
+
 		return;
 	}
 	private function print_js($json){
@@ -52,9 +57,16 @@ class Banners extends MX_Controller {
 		header("Cache-Control: public, max-age = {$t}");
 		$this->config->set_item('layout_disable',true);
 		$options = 0;
-		if(defined('JSON_UNESCAPED_UNICODE')) $options += JSON_UNESCAPED_UNICODE;
-		if(defined('JSON_PRETTY_PRINT')) $options += JSON_PRETTY_PRINT;
-		echo 'var banners_data = '.json_encode($json,$options);
+
+		echo 'var banners_data = ';
+		if(if(defined('JSON_UNESCAPED_UNICODE'))){
+			if(defined('JSON_UNESCAPED_UNICODE')) $options += JSON_UNESCAPED_UNICODE;
+			if(defined('JSON_PRETTY_PRINT')) $options += JSON_PRETTY_PRINT;
+			echo json_encode($json,$options);
+		}else{
+			echo json_encode($json);
+		}
+
 		return;
 	}
 
