@@ -1,9 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Mh_cache extends MX_Controller {
-	private $get_count = 0;
-	private $save_count = 0;
-	private $delete_count = 0;
+	private $act_count = 0;
 	public function __construct($bbs_conf=array())
 	{
 		//$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
@@ -15,11 +13,11 @@ class Mh_cache extends MX_Controller {
 		$key = preg_replace('/[^\w\s\.]/','_',$key);
 		$r = $this->cache->get($key);
 		if($r!==false){
-			header("X-Cache-Cached: [{$this->get_count}] {$key}");
+			header("X-Cache-Cached-{$this->act_count}: {$key}");
 		}else{
-			header("X-Cache-No-Cached: [{$this->get_count}] {$key}");
+			header("X-Cache-No-Cached-{$this->act_count}: {$key}");
 		}
-		$this->get_count++;
+		$this->act_count++;
 		return $r;
 	}
 	public function save($key,$val,$ttl=60){
@@ -27,11 +25,11 @@ class Mh_cache extends MX_Controller {
 		$key = preg_replace('/[^\w\s\.]/','_',$key);
 		$r = $this->cache->save($key,$val,$ttl);
 		if(!$r){
-			header("X-Cache-No-Saved: [{$this->save_count}] {$key} ({$ttl})");
+			header("X-Cache-No-Saved-{$this->act_count}: {$key} ({$ttl})");
 		}else{
-			header("X-Cache-Saved: [{$this->save_count}] {$key} ({$ttl})");
+			header("X-Cache-Saved-{$this->act_count}: {$key} ({$ttl})");
 		}
-		$this->save_count++;
+		$this->act_count++;
 		return $r;
 	}
 	public function delete($key){
@@ -39,11 +37,11 @@ class Mh_cache extends MX_Controller {
 		$key = preg_replace('/[^\w\s\.]/','_',$key);
 		$r = $this->cache->delete($key);
 		if(!$r){
-			header("X-Cache-No-Deleted: [{$this->delete_count}] {$key}");
+			header("X-Cache-No-Deleted-{$this->act_count}: {$key}");
 		}else{
-			header("X-Cache-Deleted: [{$this->delete_count}] {$key}");
+			header("X-Cache-Deleted-{$this->act_count}: {$key}");
 		}
-		$this->delete_count++;
+		$this->act_count++;
 		return $r;
 	}
 	public function clean(){
