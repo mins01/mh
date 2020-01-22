@@ -26,20 +26,20 @@ class Custom extends MX_Controller {
 	}
 
 	public function last_bbs($conf,$param){
-		// //-- 웹 캐시 설정
-		$this->load->library('mheader');
-		$sec = 60*5; //캐시시간
-		$etag = date('Hi').ceil(date('s')/$sec).'last_bbs';
-
-		//$msgs = array();
-		if( MHeader::etag($etag)){ //etag는 사용하지 말자.
-		//$msgs[] = 'etag 동작';//실제 출력되지 않는다.(304 발생이 되기 때문에)
-			exit('etag 동작');
-		}else if(MHeader::lastModified($sec)){
-		//$msgs[] = 'lastModified 동작'; //실제 출력되지 않는다.(304 발생이 되기 때문에)
-			exit('lastModified 동작');
-		}
-		MHeader::expires($sec);
+		// // //-- 웹 캐시 설정
+		// $this->load->library('mheader');
+		// $sec = 30; //캐시시간
+		// $etag = date('Hi').ceil(date('s')/$sec).'last_bbs';
+		//
+		// //$msgs = array();
+		// if( MHeader::etag($etag)){ //etag는 사용하지 말자.
+		// //$msgs[] = 'etag 동작';//실제 출력되지 않는다.(304 발생이 되기 때문에)
+		// 	exit('etag 동작');
+		// }else if(MHeader::lastModified($sec)){
+		// //$msgs[] = 'lastModified 동작'; //실제 출력되지 않는다.(304 발생이 되기 때문에)
+		// 	exit('lastModified 동작');
+		// }
+		// MHeader::expires($sec);
 
 
 		$this->load->library('mh_cache');
