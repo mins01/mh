@@ -12,7 +12,7 @@
   <li class="list-group-item active">캐싱 목록 (<?=count($cache_info)?>)</li>
   <? foreach($cache_info as $r): ?>
     <li class="list-group-item">
-      <div>~<?=date('Y-m-d H:i:s',$r['date'])?> (remain : <?=$r['date']-time()?> sec )</div>
+      <div>~<?=date('Y-m-d H:i:s',$r['date'])?> ( <?=$r['date']-time()?> sec )</div>
       <? print_r($r); ?>
     </li>
   <? endforeach; ?>
