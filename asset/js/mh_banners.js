@@ -19,7 +19,7 @@ var mh_banners = {
     div.id ='mh_banner_'+bn.bn_idx;
     div.classList.add('mh-banner');
     div.classList.add('mh-banner-'+bn.bn_postion);
-    div.classList.add(bn.bn_class_name);
+    if(bn.bn_class_name.trim().length>0) div.classList.add(bn.bn_class_name);
 
     div.style.left=bn.bn_left;
     div.style.top=bn.bn_top;
