@@ -213,8 +213,15 @@ function(){
 						<datalist id="datalist_bn_class_name">
 							<option value="mh-banner-content-padding-5px">내용부분에 padding:5px</option>
 							<option value="mh-banner-content-padding-0px">내용부분에 padding:0px</option>
+							<option value="mh-banner-content-img-max-100p">내용부분에 padding:0px</option>
+
 						</datalist>
 						<div class="text-danger"><small>* 빈칸으로 구분해서 다중 입력 가능</small></div>
+						<div>
+							<div> mh-banner-content-padding-5px : 내용부분에 padding:5px</div>
+							<div> mh-banner-content-padding-0px : 내용부분에 padding:0px</div>
+							<div> mh-banner-content-img-max-100p : 내용부분에 padding:0px</div>
+						</div>
 					</td>
 				</tr>
 
