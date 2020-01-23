@@ -22,10 +22,11 @@ var mh_banners = {
     }
     var div = document.createElement('div');
     div.id ='mh_banner_'+bn.bn_idx;
+    if(bn.bn_class_name.trim().length>0) div.className = bn.bn_class_name;
     div.classList.add('mh-banner');
     div.classList.add('mh-banner-'+bn.bn_postion);
     div.classList.add('mh-banner-content-type-'+bn.bn_content_type);
-    if(bn.bn_class_name.trim().length>0) div.classList.add(bn.bn_class_name);
+
 
     div.style.left=bn.bn_left;
     div.style.top=bn.bn_top;
