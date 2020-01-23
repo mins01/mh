@@ -47,7 +47,7 @@ function(){
               <td><input class="form-control" type="text" readonly name="<?=html_escape($k)?>" value="<?=html_escape($v)?>"></td>
             </tr>
             <?
-          elseif($k=='bn_content'):
+          elseif($k=='bn_html'):
             ?>
             <tr>
               <th class="text-center" style="width:10em"><?=html_escape($k)?></th>

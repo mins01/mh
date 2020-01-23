@@ -28,7 +28,11 @@ class Banners_model extends CI_Model {
 			'bn_postion',
 			'bn_isuse',
 			'bn_class_name',
-			'bn_content',
+			'bn_content_type',
+			'bn_html',
+			'bn_a_href',
+			'bn_a_target',
+			'bn_img_src',
 			'bn_date_st',
 			'bn_date_ed',
 			// 'bn_insert_date',
@@ -56,7 +60,11 @@ class Banners_model extends CI_Model {
 			'bn_postion'=>$row['bn_postion'],
 			'bn_isuse'=>(int)$row['bn_isuse'],
 			'bn_class_name'=>$row['bn_class_name'],
-			'bn_content'=>$row['bn_content'],
+			'bn_content_type'=>$row['bn_content_type'],
+			'bn_html'=>$row['bn_html'],
+			'bn_a_href'=>$row['bn_a_href'],
+			'bn_a_target'=>$row['bn_a_target'],
+			'bn_img_src'=>$row['bn_img_src'],
 			'bn_date_st'=>$row['bn_date_st'],
 			'bn_date_ed'=>$row['bn_date_ed'],
 		);
@@ -103,8 +111,12 @@ class Banners_model extends CI_Model {
 			'bn_z_index'=>'',
 		  'bn_postion'=>'static',
 		  'bn_isuse'=>'',
-		  'bn_class_name'=>'',
-		  'bn_content'=>'',
+			'bn_class_name'=>'',
+		  'bn_content_type'=>'html',
+		  'bn_html'=>'',
+			'bn_a_href'=>'',
+			'bn_a_target'=>'',
+			'bn_img_src'=>'',
 		  'bn_date_st'=>'',
 		  'bn_date_ed'=>'',
 		  'bn_insert_date'=>'',
@@ -115,7 +127,10 @@ class Banners_model extends CI_Model {
 	public function select_for_using($wheres){
 		$d = date('Y-m-d H:i:s');
 		$row = $this->db->from($this->tbl)
-		->select('bn_idx,bn_title,bn_base_node,bn_left,bn_top,bn_width,bn_height,bn_z_index,bn_postion,bn_isuse,bn_class_name,bn_content,bn_date_st,bn_date_ed')
+		->select("bn_idx,bn_title,bn_base_node,bn_left,bn_top,bn_width,bn_height,bn_z_index,bn_postion,bn_isuse,bn_class_name,
+		bn_content_type,
+		if(bn_content_type='html',bn_html,concat('<a href=\"',bn_a_href,'\" target=\"',bn_a_target,'\"><img src=\"',bn_img_src,'\" /></a>')) as bn_content,
+		bn_date_st,bn_date_ed")
 			->where($wheres)
 			->where('bn_isdel',0)
 			->where('bn_isuse',1)
