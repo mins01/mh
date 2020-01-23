@@ -34,6 +34,7 @@ class Layout extends MX_Controller {
 		$conf['logedin'] = $this->config->item('layout_logedin');
 		$conf['login_label'] = $this->common->get_login('m_nick');
 		$conf['login_info']	=	 $this->common->get_login();
+		$conf['use_banners'] = $this->config->item('layout_use_banners'); //배너 사용여부
 
 		$conf['layout_keywords'] = $this->config->item('layout_keywords');
 		$conf['layout_og_title'] = $this->config->item('layout_og_title');
@@ -76,6 +77,7 @@ class Layout extends MX_Controller {
 
 
 		$conf['seo_contents'] = $this->load->view('mh/layout/seo',$conf,true);
+		$conf['head_banners'] = $this->load->view('mh/layout/head_banners',$conf,true);
 
 		return $this->load->view('mh/layout/'.$conf['view_head'],$conf,true);
 	}

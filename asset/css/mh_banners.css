@@ -1,0 +1,51 @@
+@charset "UTF-8";
+.mh-banner-bannered{
+  position: relative;
+}
+.mh-banner-bannered-static{
+  overflow: visible;
+}
+.mh-banner-bannered-absolute{
+  overflow: visible;
+}
+.mh-banner-bannered-relative{
+  overflow: visible;
+}
+.mh-banner-bannered-fixed{
+  overflow: visible;
+}
+.mh-banner-bannered-sticky{
+  overflow: visible;
+}
+.mh-banner{
+  background-color: #fff;
+}
+.mh-banner.off{
+  display: none;
+}
+
+.mh-banner-header{
+
+}
+.mh-banner-footer{
+text-align: right;
+padding:5px;
+}
+.mh-banner-static{
+  position: static;
+}
+.mh-banner-absolute{
+  position: absolute;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+  max-width: 100%;
+}
+.mh-banner-relative{
+  position: relative;
+}
+.mh-banner-fixed{
+  position: relative;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+}
+.mh-banner-sticky{
+  position: sticky;
+}

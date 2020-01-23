@@ -43,8 +43,7 @@
 	<script src="<?=SITE_URI_ASSET_PREFIX?>js/mh_def.js?t=<?=REFLESH_TIME?>"></script>
 	<?=$seo_contents?>
 	<?=$head_contents?>
-
-
+	<?=$head_banners?>
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -54,6 +53,11 @@
 	<? //print_r($menu_tree); ?>
 </head>
 <body>
+	<!-- 배너용 기준위치 -->
+	<div class="container-fluid ">
+		<div id="banner_pos_left_top"></div>
+	</div>
+	<!-- //배너용 기준위치 -->
 <? if(!$hide):?>
 	<nav class="navbar navbar-default  navbar-absolute-top" role="navigation">
 		<div class="container-fluid ">

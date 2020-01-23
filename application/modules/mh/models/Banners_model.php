@@ -18,13 +18,16 @@ class Banners_model extends CI_Model {
 			// 'bn_idx',
 			'bn_title',
 			'bn_base_node',
-			'bn_left',
 			'bn_top',
+			'bn_right',
+			'bn_bottom',
+			'bn_left',
 			'bn_width',
 			'bn_height',
 			'bn_z_index',
+			'bn_postion',
 			'bn_isuse',
-			'bn_type',
+			'bn_class_name',
 			'bn_content',
 			'bn_date_st',
 			'bn_date_ed',
@@ -43,13 +46,15 @@ class Banners_model extends CI_Model {
 		$sets = array(
 			'bn_title'=>$row['bn_title'],
 			'bn_base_node'=>$row['bn_base_node'],
-			'bn_left'=>(int)$row['bn_left'],
 			'bn_top'=>(int)$row['bn_top'],
+			'bn_right'=>(int)$row['bn_right'],
+			'bn_bottom'=>(int)$row['bn_bottom'],
+			'bn_left'=>(int)$row['bn_left'],
 			'bn_width'=>(int)$row['bn_width'],
 			'bn_height'=>(int)$row['bn_height'],
 			'bn_z_index'=>(int)$row['bn_z_index'],
 			'bn_isuse'=>(int)$row['bn_isuse'],
-			'bn_type'=>$row['bn_type'],
+			'bn_class_name'=>$row['bn_class_name'],
 			'bn_content'=>$row['bn_content'],
 			'bn_date_st'=>$row['bn_date_st'],
 			'bn_date_ed'=>$row['bn_date_ed'],
@@ -88,13 +93,16 @@ class Banners_model extends CI_Model {
 		  'bn_idx'=>'',
 		  'bn_title'=>'',
 		  'bn_base_node'=>'',
+			'bn_top'=>'',
+			'bn_right'=>'',
+			'bn_bottom'=>'',			
 		  'bn_left'=>'',
-		  'bn_top'=>'',
 		  'bn_width'=>'',
 		  'bn_height'=>'',
-		  'bn_z_index'=>'',
+			'bn_z_index'=>'',
+		  'bn_postion'=>'static',
 		  'bn_isuse'=>'',
-		  'bn_type'=>'',
+		  'bn_class_name'=>'',
 		  'bn_content'=>'',
 		  'bn_date_st'=>'',
 		  'bn_date_ed'=>'',
@@ -106,7 +114,7 @@ class Banners_model extends CI_Model {
 	public function select_for_using($wheres){
 		$d = date('Y-m-d H:i:s');
 		$row = $this->db->from($this->tbl)
-		->select('bn_idx,bn_title,bn_base_node,bn_left,bn_top,bn_width,bn_height,bn_z_index,bn_isuse,bn_type,bn_content,bn_date_st,bn_date_ed')
+		->select('bn_idx,bn_title,bn_base_node,bn_left,bn_top,bn_width,bn_height,bn_z_index,bn_postion,bn_isuse,bn_class_name,bn_content,bn_date_st,bn_date_ed')
 			->where($wheres)
 			->where('bn_isdel',0)
 			->where('bn_isuse',1)

@@ -12,7 +12,7 @@ class Front extends MX_Controller {
 
 		//$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		//$this->load->driver('cache');
-		
+
 		$this->config->load('conf_front'); // 프론트 사이트 설정
 		$this->load->module('mh/layout');
 		$this->load->module('mh/common');
@@ -26,7 +26,7 @@ class Front extends MX_Controller {
 			return call_user_func_array(array($this, $method), array($menu_uri,$params));
 		}
 		$this->index($menu_uri,$params);
-		
+
 	}
 	public function get_current_menu($uri){
 		$current_menu = $this->menu_m->get_current_menu($uri);
@@ -46,7 +46,8 @@ class Front extends MX_Controller {
 			//show_404();
 			return false;
 		}
-		$this->config->set_item('menu', $menu); 
+		$this->config->set_item('menu', $menu);
+		$this->config->set_item('layout_use_banners',$menu['mn_use_banners']=='1');
 
 		$conf = array(
 			'menu'=>$menu,
@@ -62,7 +63,7 @@ class Front extends MX_Controller {
 		}
 		return true;
 	}
-	
+
 	// public function login(){
 		// $this->load->module('mh/member');
 		// $this->member->login();
@@ -83,7 +84,7 @@ class Front extends MX_Controller {
 		// $this->load->module('mh/member');
 		// $this->member->join();
 	// }
-	
+
 	// public function search_id(){
 		// $this->load->module('mh/member');
 		// $this->member->search_id();
@@ -99,9 +100,3 @@ class Front extends MX_Controller {
 
 
 }
-
-
-
-
-
-
