@@ -54,8 +54,8 @@
 </head>
 <body>
 	<!-- 배너용 기준위치 -->
-	<div class="container-fluid ">
-		<div id="banner_pos_left_top"></div>
+	<div class="container-fluid mh-banner-pos-box">
+		<div id="banner_pos_top"></div>
 	</div>
 	<!-- //배너용 기준위치 -->
 <? if(!$hide):?>

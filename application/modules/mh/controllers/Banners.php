@@ -35,7 +35,7 @@ class Banners extends MX_Controller {
   }
 	private function print_json($json){
 		header('Content-Type: application/json');
-		$t = 60*10;
+		$t = 60*2;
 		header("Expires: ".gmdate("D, d M Y H:i:s", time()+$t)." GMT");
 		header("Cache-Control: public, max-age = {$t}");
 		$this->config->set_item('layout_disable',true);
@@ -52,7 +52,7 @@ class Banners extends MX_Controller {
 	}
 	private function print_js($json){
 		header('Content-Type: application/javascript');
-		$t = 60*10;
+		$t = 60*2;
 		header("Expires: ".gmdate("D, d M Y H:i:s", time()+$t)." GMT");
 		header("Cache-Control: public, max-age = {$t}");
 		$this->config->set_item('layout_disable',true);

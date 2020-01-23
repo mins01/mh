@@ -1,9 +1,18 @@
 @charset "UTF-8";
+.mh-banner-pos-box{
+  position: relative;
+}
+#banner_pos_top{
+  position: absolute;top:0;left:0;right:0;
+}
+#banner_pos_bottom_right{
+  position: absolute;bottom:0;left:0right:0;
+}
 .mh-banner-bannered{
   position: relative;
 }
 .mh-banner-bannered-static{
-  overflow: visible;
+  overflow: hidden;
 }
 .mh-banner-bannered-absolute{
   overflow: visible;
@@ -23,28 +32,51 @@
 .mh-banner.off{
   display: none;
 }
-
+.mh-banner-content{
+  padding:5px;
+}
 .mh-banner-header{
-
+  padding:5px;
+  background-color: #f8f8f8;
+  border-bottom:1px solid #ef9454;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .mh-banner-footer{
-text-align: right;
-padding:5px;
+  text-align: right;
+  padding:5px;
+  background-color: #f8f8f8;
+  border-top:1px solid #ef9454;
 }
+.mh-banner-close ,
+.mh-banner-close-24{
+  background-color: #eee;
+  margin: 0;
+  padding: 1px 0.5em;
+  border: 1px solid #aaa;
+  border-radius: 5px
+}
+.mh-banner-close:hover ,
+.mh-banner-close-24:hover{
+  background-color: #ef9454;
+  color: #fff;
+}
+
 .mh-banner-static{
   position: static;
-}
-.mh-banner-absolute{
-  position: absolute;
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
-  max-width: 100%;
 }
 .mh-banner-relative{
   position: relative;
 }
-.mh-banner-fixed{
-  position: relative;
+.mh-banner-absolute , .mh-banner-fixed{
   box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+  max-width: 100%;
+  border:solid 2px #ef9454;
+}
+.mh-banner-absolute{
+  position: absolute;
+}
+.mh-banner-fixed{
+  position: fixed;
 }
 .mh-banner-sticky{
   position: sticky;
