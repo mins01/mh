@@ -19,19 +19,19 @@ class Json_menu extends MX_Controller {
 		$this->load->module('mh_admin/common');
 
 		$this->config->set_item('layout_disable',true);
-		
+
 		$this->m_row = $this->common->get_login();
 		$this->logedin = & $this->common->logedin;
 		$this->config->load('bbs');
 		$this->bbs_conf = $this->config->item('bbs');
 
 	}
-	
+
 	public function _remap($method, $params = array())
 	{
 		$this->index($params);
 	}
-	
+
 	public function set_base_url($base_url){
 		$this->base_url = $base_url;
 	}
@@ -40,7 +40,7 @@ class Json_menu extends MX_Controller {
 		$mode = isset($param[0][0])?$param[0]:'list';
 		$mn_id = isset($param[1][0])?$param[1]:'';
 		//$mode = $this->uri->segment(3,'list');//option
-		
+
 		//$this->set_base_url(ADMIN_URI_PREFIX.'bbs_admin'); 의미 없음
 		$this->action($mode);
 	}
@@ -55,7 +55,7 @@ class Json_menu extends MX_Controller {
 
 	public function action($mode){
 		$this->{$mode}();
-		
+
 	}
 
 	public function echo_json($obj){
@@ -72,7 +72,7 @@ class Json_menu extends MX_Controller {
 		$fs = array(
 			'mn_id','mn_uri','mn_url','mn_text','mn_sort','mn_parent_id','mn_hide_sitemap',
 			'mn_module','mn_arg1','mn_arg2','mn_arg3',
-			'mn_use','mn_hide','mn_lock','mn_head_contents','mn_top_html',
+			'mn_use','mn_hide','mn_use_banners','mn_lock','mn_head_contents','mn_top_html',
 		);
 		if($this->input->post('mn_lock')=='1'){
 			$fs = array(
@@ -88,7 +88,7 @@ class Json_menu extends MX_Controller {
 			if(isset($v)){
 				$rt[$k] = $this->input->post($k);
 			}
-			
+
 		}
 		return $rt;
 	}
@@ -111,7 +111,7 @@ class Json_menu extends MX_Controller {
 		$sets = $this->get_field_post();
 		//$sets['mn_id']=$mn_id;
 		unset($sets['mn_id']);
-		
+
 		$mn_id = $this->menu_m_f->insert($sets);
 		$json = array(
 			'mn_rows' => $this->menu_m_f->select(),
@@ -191,7 +191,7 @@ class Json_menu extends MX_Controller {
 		return $arr;
 	}
 	// page 모듈용
-	public function page_lists(){ 
+	public function page_lists(){
 		$path=APPPATH.$this->page_path;
 		$arr = array();
 		$d = dir($path);
@@ -219,9 +219,3 @@ class Json_menu extends MX_Controller {
 		return $this->echo_json($json);
 	}
 }
-
-
-
-
-
-

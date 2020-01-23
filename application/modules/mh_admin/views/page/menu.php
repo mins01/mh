@@ -38,8 +38,8 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 							<!-- <option  value="" >#NONE#</option> -->
 							<option  ng-repeat="(k,v) in mn_parent_id_lists" value="{{k}}" >[{{k}}] {{v}}</option>
 						</select>
-						
-							
+
+
 						<div class="error text-danger" ng-show="!formInfo.mn_parent_id.$valid">{{formInfo.mn_parent_id.$error}}</div>
 					</div>
 			</div>
@@ -85,7 +85,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 					<div class="btn-group form-control-static" >
 						<label ><input type="radio" placeholder="mn_hide" ng-model="selected_obj.mn_hide" value="0" ng-checked="selected_obj.mn_hide=='0'" ng-disabled="selected_obj.mn_lock=='1'">일반메뉴</label>
 						<label ><input type="radio" placeholder="mn_use" ng-model="selected_obj.mn_hide" value="1" ng-checked="selected_obj.mn_hide=='1'" ng-disabled="selected_obj.mn_lock=='1'">숨김메뉴</label>
-						
+
 					</div>
 				</div>
 			</div>
@@ -95,6 +95,13 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 					<div class="btn-group form-control-static" >
 						<label ><input type="radio" placeholder="mn_hide_sitemap" ng-model="selected_obj.mn_hide_sitemap" value="0" ng-checked="selected_obj.mn_hide_sitemap=='0'" ng-disabled="selected_obj.mn_lock=='1'">사용</label>
 						<label ><input type="radio" placeholder="mn_hide_sitemap" ng-model="selected_obj.mn_hide_sitemap" value="1" ng-checked="selected_obj.mn_hide_sitemap=='1'" ng-disabled="selected_obj.mn_lock=='1'">금지</label>
+					</div>
+				</div>
+				<label class="col-sm-2 control-label">배너사용</label>
+				<div class="col-sm-4">
+					<div class="btn-group form-control-static" >
+						<label ><input type="radio" placeholder="mn_use_banners" ng-model="selected_obj.mn_use_banners" value="1" ng-checked="selected_obj.mn_use_banners=='1'" ng-disabled="selected_obj.mn_lock=='1'">사용</label>
+						<label ><input type="radio" placeholder="mn_use_banners" ng-model="selected_obj.mn_use_banners" value="0" ng-checked="selected_obj.mn_use_banners=='0'" ng-disabled="selected_obj.mn_lock=='1'">금지</label>
 					</div>
 				</div>
 			</div>
@@ -110,20 +117,20 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 
 				<label class="col-sm-2 control-label">모듈인자1</label>
 				<div class="col-sm-4">
-					<input type="text" maxlength="100" class="form-control" placeholder="mn_arg1" ng-model="selected_obj.mn_arg1" 
-					ng-hide="['bbs','page'].indexOf(selected_obj.mn_module)>-1 " 
+					<input type="text" maxlength="100" class="form-control" placeholder="mn_arg1" ng-model="selected_obj.mn_arg1"
+					ng-hide="['bbs','page'].indexOf(selected_obj.mn_module)>-1 "
 					ng-disabled="selected_obj.mn_lock=='1'"
 					>
-					<select class="form-control" placeholder="mn_arg1" 
-					ng-model="selected_obj.mn_arg1" 
-					ng-disabled="selected_obj.mn_module!='bbs' || selected_obj.mn_lock=='1'" 
+					<select class="form-control" placeholder="mn_arg1"
+					ng-model="selected_obj.mn_arg1"
+					ng-disabled="selected_obj.mn_module!='bbs' || selected_obj.mn_lock=='1'"
 					ng-hide="selected_obj.mn_module!='bbs'"  >
 						<option value="" >#게시판 아이디#</option>
 						<option ng-repeat="(k, v) in bbs_lists" value="{{k}}" >[{{k}}] {{v}}</option>
 					</select>
-					<select class="form-control" placeholder="mn_arg1" 
-					ng-model="selected_obj.mn_arg1" 
-					ng-disabled="selected_obj.mn_module!='page' || selected_obj.mn_lock=='1'" 
+					<select class="form-control" placeholder="mn_arg1"
+					ng-model="selected_obj.mn_arg1"
+					ng-disabled="selected_obj.mn_module!='page' || selected_obj.mn_lock=='1'"
 					ng-hide="selected_obj.mn_module!='page'"  >
 						<option value="" >#페이지 파일#</option>
 						<option ng-repeat="(k, v) in page_lists" value="{{k}}" >{{v}}</option>
@@ -173,7 +180,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 					<div class="btn-group form-control-static" >
 						<label ><input type="radio" placeholder="mn_lock" ng-model="selected_obj.mn_lock" value="1" ng-checked="selected_obj.mn_lock=='1'" >잠금</label>
 						<label ><input type="radio" placeholder="mn_use" ng-model="selected_obj.mn_lock" value="0" ng-checked="selected_obj.mn_lock=='0'" >해제</label>
-						
+
 						<span class="text-danger">(잠긴 메뉴는 대부분 중요한 메뉴입니다.)</span>
 					</div>
 				</div>
@@ -232,7 +239,7 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 		}
 		mx = Math.min(mx+10,99);
 		$scope.selected_obj.mn_sort = mx;
-		//$scope.selected_obj.mn_sort = 
+		//$scope.selected_obj.mn_sort =
 		$scope.selected_obj.mode='insert';
 	}
 	//트리모양으로 만든다.
@@ -244,7 +251,7 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 			$scope.mn_rows['mn-'+mn_rows[i]['mn_id']] = mn_rows[i];
 		}
 		console.log($scope.mn_rows);
-		
+
 		for(var x in $scope.mn_rows){
 			var mn_row = $scope.mn_rows[x];
 			//console.log(x,mn_row['mn_parent_id'],mn_row['mn_text']);
@@ -256,7 +263,7 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 					$scope.mn_rows['mn-'+mn_row['mn_parent_id']].child = [];
 				}
 				$scope.mn_rows['mn-'+mn_row['mn_parent_id']].child.push(mn_row);
-				
+
 			}
 		}
 		$scope.mn_parent_id_lists = {};
@@ -272,7 +279,7 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 			}
 		}
 	}
-	
+
 	//통신 결과처리:성공
 	$scope.callback_success = function(data, status, headers, config){
 		//console.log(data);
@@ -298,14 +305,14 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 				$scope.form_update({});
 			}
 		}
-		
+
 	}
 	//통신 결과처리:실패
 	$scope.callback_error = function(data, status, headers, config){
 		$scope.bc_rows =[];
 		$scope.m_row = [];
 	}
-		
+
 	//데이터초기처리
 	$scope.call_lists = function(){
 		$http({
@@ -377,7 +384,7 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 		.success($scope.callback_success)
 		.error($scope.callback_error);
 	}
-	
+
 }]);
 
 </script>
