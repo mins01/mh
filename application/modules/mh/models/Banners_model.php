@@ -27,6 +27,8 @@ class Banners_model extends CI_Model {
 			'bn_z_index',
 			'bn_postion',
 			'bn_isuse',
+			'bn_use_header',
+			'bn_use_footer',
 			'bn_class_name',
 			'bn_content_type',
 			'bn_html',
@@ -59,6 +61,8 @@ class Banners_model extends CI_Model {
 			'bn_z_index'=>(int)$row['bn_z_index'],
 			'bn_postion'=>$row['bn_postion'],
 			'bn_isuse'=>(int)$row['bn_isuse'],
+			'bn_use_header'=>(int)$row['bn_use_header'],
+			'bn_use_footer'=>(int)$row['bn_use_footer'],
 			'bn_class_name'=>$row['bn_class_name'],
 			'bn_content_type'=>$row['bn_content_type'],
 			'bn_html'=>$row['bn_html'],
@@ -110,7 +114,9 @@ class Banners_model extends CI_Model {
 		  'bn_height'=>'',
 			'bn_z_index'=>'',
 		  'bn_postion'=>'static',
-		  'bn_isuse'=>'',
+		  'bn_isuse'=>'0',
+			'bn_use_header'=>'1',
+			'bn_use_footer'=>'1',
 			'bn_class_name'=>'',
 		  'bn_content_type'=>'html',
 		  'bn_html'=>'',
@@ -128,7 +134,7 @@ class Banners_model extends CI_Model {
 		$d = date('Y-m-d H:i:s');
 		$row = $this->db->from($this->tbl)
 		->select("bn_idx,bn_title,bn_base_node,bn_left,bn_top,bn_width,bn_height,bn_z_index,bn_postion,bn_isuse,bn_class_name,
-		bn_content_type,
+		bn_content_type,bn_use_header,bn_use_footer,
 		if(bn_content_type='html',bn_html,concat('<a href=\"',bn_a_href,'\" target=\"',bn_a_target,'\"><img src=\"',bn_img_src,'\" /></a>')) as bn_content,
 		bn_date_st,bn_date_ed")
 			->where($wheres)

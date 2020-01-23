@@ -32,14 +32,14 @@ var mh_banners = {
     div.style.width=bn.bn_width;
     div.style.height=bn.bn_height;
     div.style.zIndex=bn.bn_z_index;
-    if(bn.bn_postion=='absolute' || bn.bn_postion=='fixed'){
+    if(bn.bn_use_header=='1'){
       div.appendChild(this.create_header(bn,div.id));
     }
     var content = document.createElement('div');
     content.classList.add('mh-banner-content');
     content.innerHTML = bn['bn_content'];
     div.appendChild(content)
-    if(bn.bn_postion=='absolute' || bn.bn_postion=='fixed'){
+    if(bn.bn_use_footer=='1'){
       div.appendChild(this.create_footer(bn,div.id));
     }
     node.classList.add('mh-banner-bannered');

@@ -33,7 +33,6 @@
   display: none;
 }
 .mh-banner-content{
-  padding:5px;
   overflow: hidden;
 }
 .mh-banner-header{
@@ -86,4 +85,11 @@
 .mh-banner-content-type-a img{
   max-width:100%;
   max-height:100%;
+}
+
+.mh-banner-content-padding-5px .mh-banner-content{
+  padding:5px;
+}
+.mh-banner-content-padding-0px .mh-banner-content{
+  padding:0px;
 }
