@@ -38,7 +38,7 @@ define('LOGIN_TYPE','cookie');
 define('LOGIN_EXPIRE',60*60*24*365);
 define('LOGIN_DOAMIN',$http_host);
 //define('LOGIN_PATH',substr(SITE_URI_PREFIX,0,-1));
-define('LOGIN_PATH','/');
+define('LOGIN_PATH','/; samesite=strict'); //php 7.3 미만 버번용
 define('LOGIN_PREFIX','');
 define('LOGIN_SECURE',false);
 
