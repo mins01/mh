@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+.hz{
+
+}
+
+.hz-box{
+	overflow: hidden;
+	display: inline-block;
+}
+.hz-target
+, .hz-target[data-transition-duration="0.5s"]{
+	transition: transform 0.5s ease-out;
+}
+.hz-target[data-transition-duration="0.2s"]{
+	transition: transform 0.2s ease-out;
+}
+.hz-target[data-transition-duration="0.3s"]{
+	transition: transform 0.3s ease-out;
+}
+.hz-target[data-transition-duration="1s"]{
+	transition: transform 1s ease-out;
+}
+.hz-target[data-transition-duration="2s"]{
+	transition: transform 2s ease-out;
+}
+
+.hz-center-center{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.hz-box:hover .hz-target
+, .hz-box:focus .hz-target
+, .hz-box:hover .hz-target[data-transform-scale="2"]
+, .hz-box:focus .hz-target[data-transform-scale="2"]{
+	transform: scale(2);
+}
+.hz-box:hover .hz-target[data-transform-scale="1.5"]
+, .hz-box:focus .hz-target[data-transform-scale="1.5"]{
+	transform: scale(1.5);
+}
+.hz-box:hover .hz-target[data-transform-scale="3"]
+, .hz-box:focus .hz-target[data-transform-scale="3"]{
+	transform: scale(3);
+}
+.hz-box:hover .hz-target[data-transform-scale="4"]
+, .hz-box:focus .hz-target[data-transform-scale="4"]{
+	transform: scale(4);
+}
+
+.hz-img{
+	width: 100%;
+	height: 100%;
+}
+.hz-img-contain{
+	object-fit: contain;
+}
+.hz-img-cover{
+	object-fit: cover;
+}
+.hz-img-fill{
+	object-fit: fill;
+}
+.hz-img-scaleDown{
+	object-fit: scale-down;
+}

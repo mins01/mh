@@ -19,7 +19,7 @@ foreach($bf_rows as $r):
 			</div>
 			<div class="panel-body text-center">
 				<? if($r['is_image']): //외부이미지 ?>
-				<a  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img src="<?=html_escape($r['thumbnail_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
+				<a class="hz-box hz-center-center"  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img class="hz-target hz-img hz-img-cover" src="<?=html_escape($r['thumbnail_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
 				title="<?=html_escape($r['bf_name'])?>"></a>
 				<? elseif($r['is_external']): //외부링크 ?>
 				<span class="text-danger"><a class="text-overflow-ellipsis text-overflow-ellipsis-box" title="<?=html_escape($r['bf_save'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank">🔗 <?=html_escape($r['bf_save'])?></a></span>

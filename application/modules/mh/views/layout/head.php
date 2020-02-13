@@ -35,6 +35,7 @@
 
 
 	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/vendor/mins01.com/m-onoff.css?t=<?=REFLESH_TIME?>">
+	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/vendor/hoverZoom/hoverZoom.css?t=<?=REFLESH_TIME?>">
 	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/bootstrap/bootstrap-select.min.css?t=<?=REFLESH_TIME?>">
 	<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>css/mh.css?t=<?=REFLESH_TIME?>">
 
