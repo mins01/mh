@@ -26,6 +26,7 @@ $href = isset($_GET['href'][0])?$_GET['href']:null;
 	.og-title{ }
 	.og-description{font-size:smaller}
 	.box-info{position: fixed;top: auto;bottom: 0;right:0;left:0; background-color: rgba(255,255,255,0.8);z-index: 20;}
+	.og-text-box{ height:100%;}
 	.flex-center-center{
 		display: flex ;
 		justify-content: center;  /* 가로 중앙 */
@@ -65,7 +66,7 @@ $href = isset($_GET['href'][0])?$_GET['href']:null;
 					?><img class="og-image hover-sacleUp"  src="<?=html_escape($src)?>" alt="image"><?
 				else:
 					?>
-					<div class="text-center flex-center-center hover-sacleUp"><div class="og-site_name text-ellipsis" style="font-size:20px;color:#fff;" title="<?=html_escape($opgs['title'])?>"><?=html_escape($opgs['title'])?></div></div>
+					<div class="og-text-box text-center flex-center-center hover-sacleUp"><div class="og-site_name text-ellipsis" style="font-size:20px;color:#fff;" title="<?=html_escape($opgs['title'])?>"><?=html_escape($opgs['title'])?></div></div>
 					<?
 				endif;
 				?>
