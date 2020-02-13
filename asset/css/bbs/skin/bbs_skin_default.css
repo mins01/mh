@@ -231,15 +231,20 @@ span.bc-star-5::before{content:'★★★★★'}
 }
 .file-item .panel-body{
 	padding:5px;
+	height:150px;
 }
-.div_iframe_htmlOgp{ 
+.file-item .panel-body > a{
+	height: 100%;
+}
+.div_iframe_htmlOgp{
 	border: 0px solid #eee; position: relative;
 	width:100%;
 }
 .iframe_htmlOgp{
 	box-sizing: content-box;
 	width:100%; max-width:320px; max-height: 320px; border: 0px solid #eee; display: block;
-	transition: opacity 0.5s ease-out, height 0.5s ease-out;	
+	transition: opacity 0.5s ease-out, height 0.5s ease-out;
+	height:120px;
 }
 
 
@@ -248,7 +253,7 @@ span.bc-star-5::before{content:'★★★★★'}
  * 태그 관련
  */
 .bt_tags{
- 
+
  text-overflow: ellipsis;
  font-size: 8px;
  margin-top: 1px;
@@ -258,7 +263,7 @@ span.bc-star-5::before{content:'★★★★★'}
 .bt_tags > .bt_tag{
  display: inline-block;
  font-size: inherit;
- 
+
  margin: 0.1em 0.1em;
 }
 
@@ -297,7 +302,7 @@ span.bc-star-5::before{content:'★★★★★'}
 	margin:0;
 }
 .bbs-read-b_title{
-	
+
 }
 .bbs-info-labels{
 	/* font-size: 8px; */

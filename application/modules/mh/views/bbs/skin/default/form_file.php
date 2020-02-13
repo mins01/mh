@@ -15,11 +15,11 @@ foreach($bf_rows as $r):
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4  mode-read-file-item">
 		<div class="panel panel-default center-block file-item" style="max-width:310px">
 			<div class="panel-heading text-center  text-overflow-ellipsis">
-				<a title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['download_url'])?>"><?=html_escape($r['bf_name'])?></a>
+				<a title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['download_url'])?>" target="_blank"><?=html_escape($r['bf_name'])?></a>
 			</div>
 			<div class="panel-body text-center">
 				<? if($r['is_image']): //외부이미지 ?>
-				<a class="hz-box hz-center-center"  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img class="hz-target hz-img hz-img-cover" src="<?=html_escape($r['thumbnail_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
+				<a class="hz-box hz-center-center"  title="<?=html_escape($r['bf_name'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank"><img class="hz-target hz-img hz-img-contain" src="<?=html_escape($r['thumbnail_url'])?>" class="img-responsive center-block" alt="<?=html_escape($r['bf_name'])?>"
 				title="<?=html_escape($r['bf_name'])?>"></a>
 				<? elseif($r['is_external']): //외부링크 ?>
 				<span class="text-danger"><a class="text-overflow-ellipsis text-overflow-ellipsis-box" title="<?=html_escape($r['bf_save'])?>" href="<?=html_escape($r['view_url'])?>" target="_blank">🔗 <?=html_escape($r['bf_save'])?></a></span>
