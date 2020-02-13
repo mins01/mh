@@ -19,8 +19,8 @@ $href = isset($_GET['href'][0])?$_GET['href']:null;
 	<style>
 	html{padding:0;margin:0;height: 100%;}
 	body{padding:0;margin: 0; background-color: #000; overflow: hidden; height:100%;}
-	.og-image{width:100%;height:100%; z-index: 10;}
-	a.url{display: block; position: relative; color: #000}
+	.og-image{width:100%;height:100%; z-index: 10;object-fit: contain;}
+	a.url{display: block; color: #000}
 	.text-ellipsis{text-overflow: ellipsis; white-space: nowrap; width: 100%; overflow: hidden;}
 	.og-site_name{font-size:larger}
 	.og-title{ }
@@ -32,7 +32,8 @@ $href = isset($_GET['href'][0])?$_GET['href']:null;
 		align-items: center; /* 세로 중앙 */
 	}
 	.full-stretch{
-		 position: fixed;top:0;left: 0;right: 0;bottom: 0;
+		display: block;
+		position: fixed;top:0;left: 0;right: 0;bottom: 0;
 	}
 	.hover-sacleUp{
 			transition: transform  0.5s ease-out;
@@ -45,56 +46,53 @@ $href = isset($_GET['href'][0])?$_GET['href']:null;
 <body>
 	<div class="hover-scaleUp-parent">
 			<? if(isset($href[0])): ?>
-			<a class="url" href="<?=html_escape($href)?>" target="_parent" > 
+			<a class="url full-stretch" href="<?=html_escape($href)?>" target="_parent" >
 			<? else: ?>
-			<a class="url" href="<?=html_escape($ogp_url)?>" target="_blank" >
+			<a class="url full-stretch" href="<?=html_escape($ogp_url)?>" target="_blank" >
 			<? endif;?>
-			<div>
-			<?
-			if(isset($opgs['og:video:url'][0])):
-				$poster = isset($opgs['og:image'][0])?'poster="'.html_escape($opgs['og:image']).'"':'';
-			?>
-			<div class="text-center full-stretch">
-				<iframe width="100%" height="100%" border="0" src="<?=html_escape($opgs['og:video:url'])?>" style="border-style:none;">
-				  Your browser does not support the iframe tag.
-				</iframe>
-			</div>
-			<?
-			elseif(isset($opgs['og:image'][0])):
-				$src = $opgs['og:image'];
-				?><img class="og-image full-stretch hover-sacleUp"  src="<?=html_escape($src)?>" alt="image"><?
-			else:
-				?>
-				<div class="text-center flex-center-center full-stretch hover-sacleUp"><div class="og-site_name text-ellipsis" style="font-size:20px;color:#fff;" title="<?=html_escape($opgs['title'])?>"><?=html_escape($opgs['title'])?></div></div>
 				<?
-			endif;
-			?>
-			<div class="text-center box-info">
-				<?
-				if(isset($opgs['og:site_name'][0])){
-					?><div class="og-site_name text-ellipsis" title="<?=html_escape($opgs['og:site_name'])?>"><?=html_escape($opgs['og:site_name'])?></div><?
-				}
+				if(isset($opgs['og:video:url'][0])):
+					$poster = isset($opgs['og:image'][0])?'poster="'.html_escape($opgs['og:image']).'"':'';
 				?>
+				<div class="text-center ">
+					<iframe width="100%" height="100%" border="0" src="<?=html_escape($opgs['og:video:url'])?>" style="border-style:none;">
+					  Your browser does not support the iframe tag.
+					</iframe>
+				</div>
 				<?
-				if(isset($opgs['og:title'][0])){
-					?><div class="og-title text-ellipsis" title="<?=html_escape($opgs['og:title'])?>"><?=html_escape($opgs['og:title'])?></div><?
-				}
+				elseif(isset($opgs['og:image'][0])):
+					$src = $opgs['og:image'];
+					?><img class="og-image hover-sacleUp"  src="<?=html_escape($src)?>" alt="image"><?
+				else:
+					?>
+					<div class="text-center flex-center-center hover-sacleUp"><div class="og-site_name text-ellipsis" style="font-size:20px;color:#fff;" title="<?=html_escape($opgs['title'])?>"><?=html_escape($opgs['title'])?></div></div>
+					<?
+				endif;
 				?>
-				<?
-				if(isset($opgs['og:description'][0])){
-					?><div class="og-description text-ellipsis" title="<?=html_escape($opgs['og:description'])?>"><?=html_escape($opgs['og:description'])?></div><?
-				}
-				?>
+				<div class="text-center box-info">
+					<?
+					if(isset($opgs['og:site_name'][0])){
+						?><div class="og-site_name text-ellipsis" title="<?=html_escape($opgs['og:site_name'])?>"><?=html_escape($opgs['og:site_name'])?></div><?
+					}
+					?>
+					<?
+					if(isset($opgs['og:title'][0])){
+						?><div class="og-title text-ellipsis" title="<?=html_escape($opgs['og:title'])?>"><?=html_escape($opgs['og:title'])?></div><?
+					}
+					?>
+					<?
+					if(isset($opgs['og:description'][0])){
+						?><div class="og-description text-ellipsis" title="<?=html_escape($opgs['og:description'])?>"><?=html_escape($opgs['og:description'])?></div><?
+					}
+					?>
 				</div>
 
-			</div>
 			</a>
-		
+
 
 	</div>
-	<!-- 
+	<!--
 	<? print_r($opgs); ?>
 	-->
 </body>
 </html>
-
