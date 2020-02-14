@@ -36,6 +36,8 @@ if(IS_DEV){
 
 define('LOGIN_TYPE','cookie');
 define('LOGIN_EXPIRE',60*60*24*365);
+define('LOGIN_VERIFY_EXPIRE',60*60*24*7); //세션 암호화 체크 expire
+define('LOGIN_REFRESH_EXPIRE',LOGIN_VERIFY_EXPIRE/100); //세션 암호화 갱신 expire
 define('LOGIN_DOAMIN',$http_host);
 //define('LOGIN_PATH',substr(SITE_URI_PREFIX,0,-1));
 define('LOGIN_PATH','/; samesite=strict'); //php 7.3 미만 버번용

@@ -93,7 +93,7 @@ class Common extends MX_Controller {
 		// print_r($m_row);		exit;
 	}
 	public function verigy_login($m_row){
-		// $m_row['tm'] = time()-60*11;
+		// $m_row['tm'] = time()-LOGIN_REFRESH_EXPIRE-100;
 		// print_r($_SERVER);		exit;
 		if(!isset($m_row['tm'])){ $m_row['tm'] = -1; }
 		if(!isset($m_row['vk'][0])){ //인증키 체크
@@ -102,16 +102,17 @@ class Common extends MX_Controller {
 		}else if($m_row['vk'] != $this->get_verify_key($_SERVER)){
 			header('X-Invalid-Verify-key: 0');
 			return false;
-		}else if(time()-$m_row['tm'] > 60*60*2 ){
+		}else if(time()-$m_row['tm'] > LOGIN_VERIFY_EXPIRE ){
 			header('X-Old-Session: '.$m_row['tm']);
 			return false; // 오래된 로그인 정보
-		}else if(time()-$m_row['tm'] > 60*10 ){
-			//-- 60분을 넘기면 로그인 정보 새로구움.
-			header('X-Reflesh-Session: '.$m_row['tm']);
+		}else if(time()-$m_row['tm'] > LOGIN_REFRESH_EXPIRE ){
+			//-- 60분을 넘기면 로그인 정보 새로 구움.
+			header('X-Refresh-Session: '.$m_row['tm']);
 			$m_row['tm'] = time();
 			$this->set_login($m_row);
+		}else{
+			header('X-Ok-Session: '.$m_row['tm']);
 		}
-		// header('X-Ok-Session: '.$m_row['tm']);
 
 		return true;
 	}
