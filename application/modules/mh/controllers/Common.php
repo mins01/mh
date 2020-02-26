@@ -12,6 +12,7 @@ class Common extends MX_Controller {
 		parent::__construct();
 		$this->load->helper('cookie');
 
+		/*
 		$this->load->library('encrypt');
 		//$this->encrypt->set_cipher(MCRYPT_RIJNDAEL_128);
 		$this->encrypt->set_cipher(MCRYPT_RIJNDAEL_256);
@@ -19,7 +20,20 @@ class Common extends MX_Controller {
 		$this->encrypt->set_mode(MCRYPT_MODE_CBC);//MCRYPT_MODE_CBC , MCRYPT_MODE_CFB
 		//$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,16);
 		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
-
+		*/
+		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
+		$this->load->library('encryption',
+			array(
+				// 'driver' => 'openssl', //가능하면 openssl 모듈을 사용한다
+				'driver' => 'mcrypt', //가능하면 openssl 모듈을 사용한다
+				'cipher' => 'aes-256',
+				'mode' => 'CBC',
+				'key' => $this->enc_key,
+				'hmac' => false,
+				'hmac_digest' => 'sha256',
+				'hmac_key' => false
+			)
+		);
 
 		$this->load->model('mh/menu_model','menu_m');
 		$this->menu_m->load_db('menu',SITE_URI_PREFIX);
@@ -145,11 +159,15 @@ class Common extends MX_Controller {
 	}
 
 	public function enc_str($plain_text){
-		return @$this->encrypt->encode(@serialize( $plain_text),$this->enc_key);
+		$cipher_text = $this->encryption->encrypt(@serialize($plain_text));
+		return $cipher_text;
+		// return @$this->encrypt->encode(@serialize( $plain_text),$this->enc_key); //old
 		//return (@serialize( $plain_text));
 	}
-	public function dec_str($ciphertext){
-		return @unserialize(@$this->encrypt->decode($ciphertext,$this->enc_key));
+	public function dec_str($cipher_text){
+		$plain_text = @unserialize($this->encryption->decrypt($cipher_text));
+		return $plain_text;
+		// return @unserialize(@$this->encrypt->decode($ciphertext,$this->enc_key)); //old
 		//return @unserialize(($ciphertext));
 	}
 
