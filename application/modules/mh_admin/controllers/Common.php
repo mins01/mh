@@ -21,24 +21,22 @@ class Common extends MX_Controller {
 		$this->encrypt->set_mode(MCRYPT_MODE_CBC);//MCRYPT_MODE_CBC , MCRYPT_MODE_CFB
 		//$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,16);
 		*/
-
 		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
-		$this->load->library('encryption',
-			array(
-				// 'driver' => 'openssl', //가능하면 openssl 모듈을 사용한다
-				'driver' => 'mcrypt', //가능하면 openssl 모듈을 사용한다
-				'cipher' => 'aes-256',
-				'mode' => 'CBC',
-				'key' => $this->enc_key,
-				'hmac' => false,
-				'hmac_digest' => 'sha256',
-				'hmac_key' => false
-			)
+		$enc_conf = array(
+			'driver' => 'openssl', //가능하면 openssl 모듈을 사용한다
+			// 'driver' => 'mcrypt', //가능하면 mcrypt 모듈을 사용한다
+			'cipher' => 'aes-256',
+			'mode' => 'CBC',
+			'key' => $this->enc_key,
+			'hmac' => false,
+			'hmac_digest' => 'sha256',
+			'hmac_key' => false
 		);
+		if (version_compare(PHP_VERSION, '5.3.0','<')) {
+			$enc_conf['driver']='mcrypt';
+		}
 
-
-
-
+		$this->load->library('encryption',$enc_conf);
 
 		$this->load->model('mh/menu_model','menu_m');
 		$this->menu_m->load_db('admin_menu',ADMIN_URI_PREFIX);
