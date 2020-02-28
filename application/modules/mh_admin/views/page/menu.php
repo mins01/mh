@@ -149,6 +149,12 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 			</div>
 			<hr>
 			<div class="form-group">
+				<label class="col-sm-2 control-label">레이아웃</label>
+				<div class="col-sm-4">
+					<input type="text" maxlength="100" class="form-control" placeholder="mn_layout" ng-model="selected_obj.mn_layout" ng-disabled="selected_obj.mn_lock=='1'">
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-12 ">&lt;head&gt; 속 추가내용</label>
 				<div class="col-sm-12">
 					<textarea type="text" maxlength="50000" class="form-control" placeholder="mn_head_contents" ng-model="selected_obj.mn_head_contents" ng-disabled="selected_obj.mn_lock=='1'"></textarea>
