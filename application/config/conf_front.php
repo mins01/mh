@@ -13,8 +13,8 @@ $config['db']= array(
 );
 
 //-- 레이아웃용 view 파일 설정
-$config['layout_view_head'] = 'head';
-$config['layout_view_tail'] = 'tail';
+$config['layout_view_head'] = 'default_head';
+$config['layout_view_tail'] = 'default_tail';
 
 //--- layout용 head
 $config['layout_keywords'] = '공대여자,웹,프로그래밍,DB,PHP,MySQL,ORACLE';

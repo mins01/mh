@@ -54,6 +54,10 @@ class Front extends MX_Controller {
 		}
 		$this->config->set_item('menu', $menu);
 		$this->config->set_item('layout_use_banners',$menu['mn_use_banners']=='1');
+		if(isset($menu['mn_layout'][0])){
+			$this->config->set_item('layout_view_head',$menu['mn_layout'].'_head');
+	    $this->config->set_item('layout_view_tail',$menu['mn_layout'].'_tail');
+		}
 
 		$conf = array(
 			'menu'=>$menu,

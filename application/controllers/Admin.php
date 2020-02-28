@@ -54,6 +54,11 @@ class Admin extends MX_Controller {
 			return false;
 		}
 		$this->config->set_item('menu', $menu);
+		if(isset($menu['mn_layout'][0])){
+			$this->config->set_item('layout_view_head',$menu['mn_layout'].'_head');
+			$this->config->set_item('layout_view_tail',$menu['mn_layout'].'_tail');
+		}
+		
 		$conf = array(
 			'menu'=>$menu,
 			'base_url'=>ADMIN_URI_PREFIX.$menu['mn_uri'],

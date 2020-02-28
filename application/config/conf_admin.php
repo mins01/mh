@@ -8,3 +8,6 @@ $config['layout']= array(
 	'suffix_title'=> '::관리자사이트',
 );
 
+//-- 레이아웃용 view 파일 설정
+$config['layout_view_head'] = 'default_head';
+$config['layout_view_tail'] = 'default_tail';

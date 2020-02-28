@@ -15,6 +15,8 @@ class Layout extends MX_Controller {
 
 	public function get_conf_from_config(){
 		$conf = array();
+		$conf['view_head'] = $this->config->item('layout_view_head');
+		$conf['view_tail'] = $this->config->item('layout_view_tail');
 		$conf['menu_tree'] = $this->config->item('menu_tree');
 		$conf['menu_rows'] = $this->config->item('menu_rows');
 		$conf['menu'] = $this->config->item('menu');
@@ -53,12 +55,14 @@ class Layout extends MX_Controller {
 		}
 
 
-		return $this->load->view('mh_admin/layout/head',$conf,true);
+		// return $this->load->view('mh_admin/layout/head',$conf,true);
+		return $this->load->view('mh_admin/layout/'.$conf['view_head'],$conf,true);
 	}
 	public function layout_tail($conf = array()){
 		$conf = array_merge($this->get_conf_from_config(),$conf);
 
-		return $this->load->view('mh_admin/layout/tail',$conf,true);
+		// return $this->load->view('mh_admin/layout/tail',$conf,true);
+		return $this->load->view('mh_admin/layout/'.$conf['view_tail'],$conf,true);
 	}
 
 }
