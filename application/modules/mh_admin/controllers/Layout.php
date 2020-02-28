@@ -12,7 +12,7 @@ class Layout extends MX_Controller {
 		$this->prefix_title = $this->config->item('prefix_title','layout');
 		$this->suffix_title = $this->config->item('suffix_title','layout');
 	}
-	
+
 	public function get_conf_from_config(){
 		$conf = array();
 		$conf['menu_tree'] = $this->config->item('menu_tree');
@@ -35,32 +35,30 @@ class Layout extends MX_Controller {
 			$conf['head_contents'].="\n".$current_menu['mn_head_contents'];
 			$conf['top_html'] = $current_menu['mn_top_html'];
 		}
-		
+
 		return $conf;
+	}
+
+	public function get_output($__content__){
+		return $this->layout_head().$__content__.$this->layout_tail();
 	}
 
 	public function layout_head($conf=array()){
 		$conf = array_merge($this->get_conf_from_config(),$conf);
-		
+
 		if(!isset($conf['title'][0])){
 			$conf['title'] = $this->prefix_title . $conf['menu']['mn_text']. $this->suffix_title;
 		}else{
 			$conf['title'] = $this->prefix_title . $conf['title']. $this->suffix_title;
 		}
-		
-		
+
+
 		return $this->load->view('mh_admin/layout/head',$conf,true);
 	}
 	public function layout_tail($conf = array()){
 		$conf = array_merge($this->get_conf_from_config(),$conf);
-		
+
 		return $this->load->view('mh_admin/layout/tail',$conf,true);
 	}
 
 }
-
-
-
-
-
-

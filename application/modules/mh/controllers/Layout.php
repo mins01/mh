@@ -66,6 +66,10 @@ class Layout extends MX_Controller {
 		return $conf;
 	}
 
+	public function get_output($__content__){
+		return $this->layout_head().$__content__.$this->layout_tail();
+	}
+
 	public function layout_head($conf=array()){
 		$conf = array_merge($this->get_conf_from_config(),$conf);
 

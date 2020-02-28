@@ -4,7 +4,7 @@ class Mh_hook{
 
 	public function __construct(){
 		$this->CI = &get_instance();
-		
+
 	}
 	public function pre(){
 	}
@@ -18,14 +18,20 @@ class Mh_hook{
 		}
 		if($layout_disable){
 		}else{
-			
+
 			//$this->CI->load->module('mh/layout');
 			//$this->CI->load->module('mh_admin/layout');
-			$this->CI->output->set_output(
-				$this->CI->layout->layout_head().
-				$this->CI->output->get_output().
-				$this->CI->layout->layout_tail()
-			);
+
+			if(method_exists($this->CI->layout,'get_output')){
+				$this->CI->output->set_output($this->CI->layout->get_output($this->CI->output->get_output()));
+			}else{
+				$this->CI->output->set_output(
+					$this->CI->layout->layout_head().
+					$this->CI->output->get_output().
+					$this->CI->layout->layout_tail()
+				);
+			}
+
 		}
 	}
 }
