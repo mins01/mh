@@ -72,7 +72,7 @@ class Json_menu extends MX_Controller {
 		$fs = array(
 			'mn_id','mn_uri','mn_url','mn_text','mn_sort','mn_parent_id','mn_hide_sitemap',
 			'mn_module','mn_arg1','mn_arg2','mn_arg3',
-			'mn_use','mn_hide','mn_use_banners','mn_lock','mn_layout','mn_head_contents','mn_top_html',
+			'mn_use','mn_hide','mn_use_banners','mn_lock','mn_m_level','mn_layout','mn_head_contents','mn_top_html',
 		);
 		if($this->input->post('mn_lock')=='1'){
 			$fs = array(
