@@ -13,14 +13,14 @@ class Admin extends MX_Controller {
 	}
 
 	public function _remap($method, $params = array())
-	{		
+	{
 		$menu_uri = $method=='index'?'':$method;
 		if (method_exists($this, $method))
 		{
 			return call_user_func_array(array($this, $method), array($menu_uri,$params));
 		}
 		$this->index($menu_uri,$params);
-		
+
 	}
 	public function get_current_menu($uri){
 		$current_menu = $this->menu_m->get_current_menu($uri);
@@ -38,7 +38,7 @@ class Admin extends MX_Controller {
 		if(!$this->common->required_login()){
 			return false;
 		}
-		
+
 		$data = array();
 
 		$menu = $this->get_current_menu($menu_uri);
@@ -47,7 +47,13 @@ class Admin extends MX_Controller {
 			//show_404();
 			return false;
 		}
-		$this->config->set_item('menu', $menu); 
+		//-- 접근 레벨 설정
+		if((int)$this->common->get_login('m_level') < $menu['mn_m_level']){
+			show_error('접근권한이 없습니다.',401);
+			//show_404();
+			return false;
+		}
+		$this->config->set_item('menu', $menu);
 		$conf = array(
 			'menu'=>$menu,
 			'base_url'=>ADMIN_URI_PREFIX.$menu['mn_uri'],
@@ -63,7 +69,7 @@ class Admin extends MX_Controller {
 		return true;
 	}
 
-	
+
 	public function login(){
 		if($this->common->get_login('m_idx')){
 			$this->common->redirect('',ADMIN_URI_PREFIX);
@@ -81,7 +87,7 @@ class Admin extends MX_Controller {
 		$this->load->module('mh_admin/member');
 		$this->member->logout();
 	}
-	
+
 	// public function login(){
 		// $this->load->module('mh_admin/staff');
 		// $this->staff->login();
@@ -99,7 +105,7 @@ class Admin extends MX_Controller {
 		// $this->load->module('mh/staff');
 		// $this->staff->join();
 	// }
-	
+
 	// public function search_id(){
 		// $this->load->module('mh/staff');
 		// $this->staff->search_id();
@@ -115,9 +121,3 @@ class Admin extends MX_Controller {
 
 
 }
-
-
-
-
-
-

@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Member extends MX_Controller {
-	
+
 	public function __construct()
 	{
 		//var_dump(func_get_args());
@@ -11,33 +11,33 @@ class Member extends MX_Controller {
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
 	}
-	
+
 	public function login(){
 		$process = $this->input->post_get('process');
 		if($process && $process=='login'){
 			return $this->login_process();
 		}
-		
+
 		$ret_url = $this->input->post('ret_url');
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
 		}
-		
+
 		$data = array(
 			'ret_url' => $ret_url,
 		);
-		
+
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','로그인');
-		
+
 		$this->load->view('mh_admin/member/login',$data);
 	}
-	
+
 	public function login_process(){
-		
+
 		$this->config->set_item('layout_hide',true);
 		$this->config->set_item('layout_title','로그인 처리');
-		
+
 		$m_id = $this->input->post('m_id');
 		$m_pass = $this->input->post('m_pass');
 		$enc_m_pass = $this->member_m->hash($m_pass);
@@ -45,8 +45,8 @@ class Member extends MX_Controller {
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
 		}
-		
-		
+
+
 		$this->form_validation->set_rules('m_id', '아이디', 'required|min_length[1]|max_length[100]');
 		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[1]|max_length[40]');
 		if ($this->form_validation->run() == FALSE){
@@ -55,10 +55,10 @@ class Member extends MX_Controller {
 				'ret_url' => $ret_url,
 			);
 			return $this->load->view('mh_admin/member/login',$data);
-		}	
-		
+		}
+
 		$m_row = $this->member_m->select_by_m_id($m_id);
-		
+
 		if(!$m_row){
 			//unset($m_row['m_pass']);
 			$this->mh_log->error(array(
@@ -80,8 +80,9 @@ class Member extends MX_Controller {
 			return $this->login_process_end(true,'해당 회원 정보를 찾을 수 없습니다.');
 		}
 		//-- 로그인 처리
-		if($m_row['m_level']!='99'){
-			
+		// if($m_row['m_level']!='99'){
+		if($m_row['m_level'] < 90){ //90이상은 관리자!
+
 			unset($m_row['m_pass']);
 			$this->mh_log->error(array(
 				'title'=>__METHOD__,
@@ -89,11 +90,11 @@ class Member extends MX_Controller {
 				'result'=>'실패3',
 				'm_row'=>@$m_row,
 			));
-			
+
 			return $this->login_process_end(true,'관리자 권한이 필요합니다.');
 		}
 		$this->common->set_login($m_row);
-		
+
 		unset($m_row['m_pass']);
 		$this->mh_log->error(array(
 			'title'=>__METHOD__,
@@ -101,11 +102,11 @@ class Member extends MX_Controller {
 			'result'=>'성공',
 			'm_row'=>@$m_row,
 		));
-		
+
 		$this->member_m->set_m_login_date($m_row['m_idx']);
 		return $this->login_process_end(false,'로그인에 성공하였습니다.',$ret_url);
 	}
-	
+
 	private function relogin($m_idx){
 		//-- 로그인 처리
 		$m_row = $this->member_m->select_by_m_idx($m_idx);
@@ -113,7 +114,7 @@ class Member extends MX_Controller {
 		$this->member_m->set_m_login_date($m_idx);
 		return $r;
 	}
-	
+
 	public function login_process_end($error,$msg,$ret_url=null){
 		if(!isset($ret_url)){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
@@ -121,11 +122,11 @@ class Member extends MX_Controller {
 		$this->common->redirect($msg,$ret_url);
 		return;
 	}
-	
+
 	public function logout(){
 		$this->config->set_item('layout_hide',true);
 		$this->config->set_item('layout_title','로그아웃 처리');
-		
+
 		$ret_url = $this->input->post('ret_url');
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
@@ -133,11 +134,11 @@ class Member extends MX_Controller {
 		$this->common->set_logout();
 		return $this->login_process_end(false,'로그아웃에 성공하였습니다.',$ret_url);
 	}
-	
+
 	public function join(){
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','회원가입');
-		
+
 		$ret_url = $this->input->post('ret_url');
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
@@ -145,8 +146,8 @@ class Member extends MX_Controller {
 
 		$data = array(
 			'ret_url' => $ret_url,
-		);		
-		
+		);
+
 		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]|is_unique[mh_member.m_id]');
 		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]|is_unique[mh_member.m_nick]');
 		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[4]|max_length[40]|matches[m_pass_re]');
@@ -166,7 +167,7 @@ class Member extends MX_Controller {
 		$this->config->set_item('layout_hide',true);
 		$this->config->set_item('layout_title','회원가입 처리');
 		$m_idx = $this->member_m->join($this->input->post());
-		
+
 		$m_row = $this->member_m->select_by_m_idx($m_idx);
 		if(!$m_row){
 			return $this->login_process_end(true,'해당 회원 정보가 없습니다.');
@@ -174,12 +175,12 @@ class Member extends MX_Controller {
 		//-- 로그인 처리
 		$this->common->set_login($m_row);
 		$this->member_m->set_m_login_date($m_row['m_idx']);
-		
+
 		$ret_url = $this->input->post('ret_url');
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
 		}
-		
+
 		return $this->login_process_end(true,'회원 가입 완료',$ret_url);
 	}
 
@@ -189,7 +190,7 @@ class Member extends MX_Controller {
 		}
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','회원정보수정');
-		
+
 		$ret_url = $this->input->post('ret_url');
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
@@ -199,8 +200,8 @@ class Member extends MX_Controller {
 			'ret_url' => $ret_url,
 			'm_row' =>$this->common->get_login(),
 		);
-		
-		
+
+
 		$process = $this->input->post('process');
 		if($process=='modify'){
 			$this->modify_process();
@@ -226,7 +227,7 @@ class Member extends MX_Controller {
 		$this->relogin($m_idx);
 		$this->common->redirect('정보를 수정하였습니다.','');
 	}
-	
+
 	public function required_password(){
 		$data = array('error_msg'=>'');
 		$error = false;
@@ -248,13 +249,13 @@ class Member extends MX_Controller {
 	public function search_id(){
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','아이디 찾기');
-	
+
 		$data = array('error_msg'=>'');
 		$error = false;
-		
+
 		$this->form_validation->set_rules('m_id_part', '아이디 부분', 'required|min_length[4]|max_length[40]');
 		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]');
-		
+
 		if ($this->form_validation->run() == FALSE){
 			$this->config->set_item('layout_hide',false);
 			return $this->load->view('mh/member/search_id',$data);
@@ -267,7 +268,7 @@ class Member extends MX_Controller {
 			show_error('이상접근');
 		}
 	}
-	
+
 	private function search_id_process(){
 		$m_nick = $this->input->post('m_nick');
 		$m_id_part = $this->input->post('m_id_part');
@@ -276,21 +277,21 @@ class Member extends MX_Controller {
 		$data = array(
 			'm_id'=>$m_id,
 		);
-		
+
 		$this->load->view('mh/member/search_id_process',$data);
 		//$this->load->view('mh/member/search_id',$data);
 	}
-	
+
 	public function search_pw(){
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','비밀번호 찾기');
-	
+
 		$data = array('error_msg'=>'');
 		$error = false;
-		
+
 		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]');
 		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]');
-		
+
 		if ($this->form_validation->run() == FALSE){
 			$this->config->set_item('layout_hide',false);
 			return $this->load->view('mh/member/search_pw',$data);
@@ -314,24 +315,24 @@ class Member extends MX_Controller {
 			'm_id'=>$m_id,
 			'm_nick'=>$m_nick,
 		);
-		
+
 		$this->load->view('mh/member/search_pw_process',$data);
 		//$this->load->view('mh/member/search_id',$data);
 	}
 	private function search_pw_send_mail(){
 		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]');
 		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]');
-		
+
 		if ($this->form_validation->run() == FALSE){
 			$this->config->set_item('layout_hide',false);
 			show_error('잘못된 접근');
 		}
-		
-		
+
+
 		$m_nick = $this->input->post('m_nick');
 		$m_id = $this->input->post('m_id');
 		$m_row = $this->member_m->select_by_m_id($m_id);
-		
+
 		if($m_row['m_nick']!=$m_nick){
 			show_error('잘못된 접근.');
 		}
@@ -350,23 +351,23 @@ class Member extends MX_Controller {
 		//echo $m_key,'<br>';
 		$reset_pw_url = base_url('reset_pw').'?m_key='.urlencode($m_key);
 		$data['reset_pw_url'] = $reset_pw_url;
-		
+
 		$message = file_get_contents(_FORM_DIR.'/mail/reset_pw.html');
 		$binds = array(
 			'href'=>$reset_pw_url,
 		);
 		$result = $this->common->send_mail($m_id,'비밀번호 변경 안내 메일',$message,$binds);
-		
+
 		$data['result'] = $result;
 		//var_dump($this->email);
-		
+
 		$this->load->view('mh/member/search_pw_send_mail',$data);
 		//$this->load->view('mh/member/search_id',$data);
 	}
 	public function reset_pw(){
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','비밀번호 재설정');
-	
+
 		$data = array('error_msg'=>'');
 		$error = false;
 		$m_key = $this->input->post_get('m_key',true);
@@ -386,11 +387,11 @@ class Member extends MX_Controller {
 		if($tmp['m_pass_md5'] != md5($m_row['m_pass']) || $m_row['m_update_date'] != $tmp['m_update_date']){
 			show_error('잘못된 접근입니다....');
 		}
-		
+
 		$this->form_validation->set_rules('m_id', '아이디', 'required|valid_email|min_length[4]|max_length[40]');
 		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[4]|max_length[40]|matches[m_pass_re]');
 		$this->form_validation->set_rules('m_pass_re', '비밀번호 확인', 'required|min_length[4]|max_length[40]');
-		
+
 		if ($this->form_validation->run() == FALSE){
 			$this->config->set_item('layout_hide',false);
 			return $this->load->view('mh/member/reset_pw',$data);
@@ -409,7 +410,7 @@ class Member extends MX_Controller {
 		$m_id = $this->input->post('m_id');
 		$m_pass = $this->input->post('m_pass');
 		$m_pass_re = $this->input->post('m_pass_re');
-		
+
 		if($m_id != $m_row['m_id']){
 			$this->config->set_item('layout_hide',true);
 			return $this->common->history_back('잘못된 아이디입니다');
@@ -420,13 +421,7 @@ class Member extends MX_Controller {
 		$this->member_m->update_row($m_row['m_idx'],$sets);
 		$data = array();
 		return $this->load->view('mh/member/reset_pw_ok',$data);
-		
+
 	}
-	
+
 }
-
-
-
-
-
-

@@ -46,6 +46,12 @@ class Front extends MX_Controller {
 			//show_404();
 			return false;
 		}
+		//-- 접근 레벨 설정
+		if((int)$this->common->get_login('m_level') < $menu['mn_m_level']){
+			show_error('접근권한이 없습니다.',401);
+			//show_404();
+			return false;
+		}
 		$this->config->set_item('menu', $menu);
 		$this->config->set_item('layout_use_banners',$menu['mn_use_banners']=='1');
 

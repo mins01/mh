@@ -32,10 +32,11 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 							</td>
 							<td  class="text-center" ng-bind="m_row.m_nick"></td>
 							<td  class="text-center">
-								<span ng-show="m_row.m_level==-1" class="ng-hide label label-default">사용금지</span>
-								<span ng-show="m_row.m_level==0" class="ng-hide label label-default">비회원</span>
-								<span ng-show="m_row.m_level==1" class="ng-hide label label-info">회원</span>
-								<span ng-show="m_row.m_level==99" class="ng-hide label label-danger">관리자</span>
+								<span ng-show="m_row.m_level==-1" class="ng-hide label label-default">사용금지({{ m_row.m_level }})</span>
+								<span ng-show="m_row.m_level==0" class="ng-hide label label-default">비회원({{ m_row.m_level }})</span>
+								<span ng-show="m_row.m_level>0 &amp;&amp; m_row.m_level<90" class="ng-hide label label-info">회원({{ m_row.m_level }})</span>
+								<span ng-show="m_row.m_level>=90 &amp;&amp; m_row.m_level<99" class="ng-hide label label-danger">관리자({{ m_row.m_level }})</span>
+								<span ng-show="m_row.m_level==99" class="ng-hide label label-danger">전체관리자({{ m_row.m_level }})</span>
 								,
 								<span ng-show="m_row.m_isout==0" class="ng-hide label label-info">사용중</span>
 								<span ng-show="m_row.m_isout==1" class="ng-hide label label-default">탈퇴됨</span>
@@ -108,10 +109,13 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 						</div>
 						<label class="col-sm-2 control-label">m_level</label>
 						<div class="col-sm-4 form-control-static">
-							<label><input type="radio" value="-1" ng-model="selected_m_row.m_level">사용금지</label>
-							, <label><input type="radio" value="0" ng-model="selected_m_row.m_level">비회원</label>
-							, <label><input type="radio" value="1" ng-model="selected_m_row.m_level">일반회원</label>
-							, <label><input type="radio" value="99" ng-model="selected_m_row.m_level">관리자</label>
+							<label><input type="radio" value="-1" ng-model="selected_m_row.m_level">사용금지(-1)</label>
+							, <label><input type="radio" value="0" ng-model="selected_m_row.m_level">비회원(0)</label>
+							, <label><input type="radio" value="1" ng-model="selected_m_row.m_level">일반회원(1)</label>
+							, <label><input type="radio" value="10" ng-model="selected_m_row.m_level">일반회원(10)</label>
+							, <label><input type="radio" value="20" ng-model="selected_m_row.m_level">일반회원(20)</label>
+							, <label><input type="radio" value="90" ng-model="selected_m_row.m_level">서브관리자(90)</label>
+							, <label><input type="radio" value="99" ng-model="selected_m_row.m_level">전체관리자(99)</label>
 						</div>
 
 					</div>
