@@ -93,7 +93,7 @@ class Common extends MX_Controller {
 					$v = $this->input->cookie(LOGIN_NAME);
 				break;
 				case 'session':
-					$this->load->library('session');
+					// $this->load->library('session');
 					$v = $this->session->userdata(LOGIN_NAME);
 				break;
 			}
@@ -156,7 +156,7 @@ class Common extends MX_Controller {
 				$this->set_login_at_cookie($this->enc_str($m_row));
 			break;
 			case 'session':
-				$this->load->library('session');
+				// $this->load->library('session');
 				$name = $this->set_login_at_session($this->enc_str($m_row));
 			break;
 		}
@@ -167,7 +167,7 @@ class Common extends MX_Controller {
 				$this->delete_login_at_cookie('');
 			break;
 			case 'session':
-				$this->load->library('session');
+				// $this->load->library('session');
 				$this->delete_login_at_session();
 			break;
 

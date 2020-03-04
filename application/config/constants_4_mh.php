@@ -36,6 +36,7 @@ if(IS_DEV){
 
 // define('LOGIN_TYPE','cookie');
 define('LOGIN_TYPE','session');
+// 세션일 땐 만료일, 도메인 등이 동작 안한다.
 define('LOGIN_EXPIRE',60*60*24*365);
 define('LOGIN_VERIFY_EXPIRE',60*60*24*7); //세션 암호화 체크 expire
 define('LOGIN_REFRESH_EXPIRE',LOGIN_VERIFY_EXPIRE/100); //세션 암호화 갱신 expire
@@ -46,10 +47,12 @@ define('LOGIN_PREFIX','');
 define('LOGIN_SECURE',false);
 
 define('ADMIN_LOGIN_NAME',md5('SESS_MH_ADMIN'.$http_host));
-define('ADMIN_LOGIN_TYPE','cookie');
+// define('ADMIN_LOGIN_TYPE','cookie');
+define('ADMIN_LOGIN_TYPE',LOGIN_TYPE);
+// 세션일 땐 만료일, 도메인 등이 동작 안한다.
 define('ADMIN_LOGIN_EXPIRE',60*60*24*365);
 define('ADMIN_LOGIN_DOAMIN',$http_host);
-define('ADMIN_LOGIN_PATH',substr(ADMIN_URI_PREFIX,0,-1));
+define('ADMIN_LOGIN_PATH',substr(ADMIN_URI_PREFIX,0,-1).'; samesite=strict');
 define('ADMIN_LOGIN_PREFIX','');
 define('ADMIN_LOGIN_SECURE',false);
 
