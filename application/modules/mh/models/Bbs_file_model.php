@@ -60,7 +60,7 @@ class Bbs_file_model extends CI_Model {
 			, IF(bf_type LIKE 'external/%',bf_save,IF(bf_type LIKE '%image%',concat('{$this->base_url}/thumbnail/{$b_idx}?bf_idx=',bf_idx,'&inline=1'),'')) AS thumbnail_url
 			, IF(bf_type LIKE 'external/%',1,0) AS is_external
 		";
-		
+
 		$bf_rows = $this->db->select($select)->from($this->tbl.'  bbsf')->where('bf_isdel',0)->where('b_idx',(int)$b_idx)->get()->result_array();
 		// $this->extends_bf_rows($bf_rows); //더이상 필요 없음, 쿼리에서 처리함.
 		return $bf_rows;
@@ -334,7 +334,7 @@ class Bbs_file_model extends CI_Model {
 
 	//== 이미지 리사이즈 출력
 	public function echo_image_resize($filePath,$new_width=200){
-		header('X-resized: 1');
+		header('X-Resized: 1');
 		list($width, $height) = getimagesize($filePath);
 		//$new_width = 200;
 		$new_height = floor($height * $new_width/$width);
@@ -357,7 +357,7 @@ class Bbs_file_model extends CI_Model {
 			imagejpeg($image_p, null, 70);
 			imagedestroy($image_p);
 		}else{
-			header('X-resized : 0');
+			header('X-Resized: 0');
 			$this->msg = '이미지 생성 오류';
 			return false;
 		}
@@ -399,7 +399,7 @@ class Bbs_file_model extends CI_Model {
 			// echo $this->image_lib->display_errors();
 			// return false;
 		// }
-		header('x-thumbnail : 1');
+		header('X-Thumbnail: 1');
 		//-- 웹 캐시 설정
 		$this->load->library('mheader');
 		$sec = 60*60*24; //하루. 더 길게해도 문제 없다.(파일 수정 기능이 없기 때문에)
