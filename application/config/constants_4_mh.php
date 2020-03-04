@@ -34,7 +34,8 @@ if(IS_DEV){
 	define('LOGIN_NAME','SESS_MH');
 }
 
-define('LOGIN_TYPE','cookie');
+// define('LOGIN_TYPE','cookie');
+define('LOGIN_TYPE','session');
 define('LOGIN_EXPIRE',60*60*24*365);
 define('LOGIN_VERIFY_EXPIRE',60*60*24*7); //세션 암호화 체크 expire
 define('LOGIN_REFRESH_EXPIRE',LOGIN_VERIFY_EXPIRE/100); //세션 암호화 갱신 expire

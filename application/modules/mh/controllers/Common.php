@@ -91,7 +91,11 @@ class Common extends MX_Controller {
 			switch(LOGIN_TYPE){
 				case 'cookie':
 					$v = $this->input->cookie(LOGIN_NAME);
-					break;
+				break;
+				case 'session':
+					$this->load->library('session');
+					$v = $this->session->userdata(LOGIN_NAME);
+				break;
 			}
 		}
 
@@ -150,14 +154,23 @@ class Common extends MX_Controller {
 		switch(LOGIN_TYPE){
 			case 'cookie':
 				$this->set_login_at_cookie($this->enc_str($m_row));
-				break;
+			break;
+			case 'session':
+				$this->load->library('session');
+				$name = $this->set_login_at_session($this->enc_str($m_row));
+			break;
 		}
 	}
 	public function set_logout(){
 		switch(LOGIN_TYPE){
 			case 'cookie':
 				$this->delete_login_at_cookie('');
-				break;
+			break;
+			case 'session':
+				$this->load->library('session');
+				$this->delete_login_at_session();
+			break;
+
 		}
 	}
 
@@ -173,7 +186,13 @@ class Common extends MX_Controller {
 		// return @unserialize(@$this->encrypt->decode($ciphertext,$this->enc_key)); //old
 		//return @unserialize(($ciphertext));
 	}
-
+	//-- 로그인 세션 설정
+	public function set_login_at_session($str,$expire=null){
+		$this->session->set_userdata(LOGIN_NAME,$str);
+	}
+	public function delete_login_at_session(){
+		$this->session->set_userdata(LOGIN_NAME,'');
+	}
 	//-- 로그인 쿠키 설정
 	public function set_login_at_cookie($str,$expire=null){
 		if(!isset($expire)){

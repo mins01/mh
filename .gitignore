@@ -46,3 +46,4 @@ _files/*
 _logs/*
 /_cache
 _temp/*
+_tmp/*
