@@ -758,6 +758,9 @@ class Bbs extends MX_Controller {
 			$bt_tags = array();
 		}else{
 			$b_row = $this->bbs_m->select_by_b_idx($b_idx);
+			if($b_row['b_secret']!='0'){
+				show_error('비밀글은 복사할 수 없습니다.');
+			}
 			$this->extends_b_row($b_row,$this->input->get());
 			$bf_rows = $this->get_bf_rows_by_b_row($b_row);
 			$bt_tags = $this->select_tags($b_row['b_idx']); //내부에서 자동 if처리함
