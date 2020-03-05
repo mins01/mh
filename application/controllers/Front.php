@@ -20,7 +20,8 @@ class Front extends MX_Controller {
 
 	public function _remap($method, $params = array())
 	{
-		$menu_uri = $method=='index'?'':$method;
+		// $menu_uri = $method=='index'?'':$method;
+		$menu_uri = uri_string();
 		if (method_exists($this, $method))
 		{
 			return call_user_func_array(array($this, $method), array($menu_uri,$params));

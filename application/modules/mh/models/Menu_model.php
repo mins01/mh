@@ -34,18 +34,31 @@ class Menu_model extends CI_Model {
 	}
 
 	public function get_current_menu($uri){
-
+		$max = -1;
+		$curr_r = null;
 		foreach($this->menu_rows as & $r){
-			if($r['mn_uri'] == $uri){
-				$r['active']=true;
-				foreach($r['breadcrumbs'] as $mn_id){
-					if(isset($this->menu_rows[$mn_id])){
-						$this->menu_rows[$mn_id]['active']=true;
-					}
 
-				}
-				return $r;
+			// echo "{$uri}!={$r['mn_uri']} \n";
+			if($uri===$r['mn_uri']){
+
+			}else if(empty($r['mn_uri']) || strpos($uri,$r['mn_uri'])!==0){
+				continue;
 			}
+
+			if(strlen($r['mn_uri'])>$max){
+				$max = strlen($r['mn_uri']);
+				$curr_r= &$r;
+			}
+		}
+		// print_r($r);
+		if(isset($curr_r)){
+			foreach($curr_r['breadcrumbs'] as $mn_id){
+				if(isset($this->menu_rows[$mn_id])){
+					$this->menu_rows[$mn_id]['active']=true;
+				}
+
+			}
+			return $curr_r;
 		}
 		return null;
 	}
