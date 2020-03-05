@@ -38,32 +38,42 @@ class Front extends MX_Controller {
  * 분배 위치
  * @return null
  */
-	public function index($menu_uri,$params=array()){
-		$data = array();
+ public function index($menu_uri,$params=array()){
+	 $data = array();
 
-		$menu = $this->get_current_menu($menu_uri);
-		if(!isset($menu)){
-			show_error('메뉴가 없습니다.',404);
-			//show_404();
-			return false;
-		}
-		$this->config->set_item('menu', $menu);
-		$this->config->set_item('layout_use_banners',$menu['mn_use_banners']=='1');
+	 $menu = $this->get_current_menu($menu_uri);
+	 if(!isset($menu)){
+		 show_error('메뉴가 없습니다.',404);
+		 //show_404();
+		 return false;
+	 }
+	 //-- 접근 레벨 설정
+	 if((int)$this->common->get_login('m_level') < $menu['mn_m_level']){
+		 show_error('접근권한이 없습니다.',401);
+		 //show_404();
+		 return false;
+	 }
+	 $this->config->set_item('menu', $menu);
+	 $this->config->set_item('layout_use_banners',$menu['mn_use_banners']=='1');
+	 if(isset($menu['mn_layout'][0])){
+		 $this->config->set_item('layout_view_head',$menu['mn_layout'].'_head');
+		 $this->config->set_item('layout_view_tail',$menu['mn_layout'].'_tail');
+	 }
 
-		$conf = array(
-			'menu'=>$menu,
-			'base_url'=>mh_base_url($menu['mn_uri']),
-		);
-		$this->load->module('mh/'.$menu['mn_module'],$conf);
-		if(!class_exists($menu['mn_module'],false)){
-			show_error('모듈이 없습니다.',404);
-		}else{
-			$this->config->set_item('layout_og_title', $this->config->item('layout_og_title').' : '.$menu['mn_text']);
-			$this->config->set_item('layout_og_description', $this->config->item('layout_og_title'));
-			$this->{$menu['mn_module']}->index_as_front($conf,$params);
-		}
-		return true;
-	}
+	 $conf = array(
+		 'menu'=>$menu,
+		 'base_url'=>mh_base_url($menu['mn_uri']),
+	 );
+	 $this->load->module('mh/'.$menu['mn_module'],$conf);
+	 if(!class_exists($menu['mn_module'],false)){
+		 show_error('모듈이 없습니다.',404);
+	 }else{
+		 $this->config->set_item('layout_og_title', $this->config->item('layout_og_title').' : '.$menu['mn_text']);
+		 $this->config->set_item('layout_og_description', $this->config->item('layout_og_title'));
+		 $this->{$menu['mn_module']}->index_as_front($conf,$params);
+	 }
+	 return true;
+ }
 
 	// public function login(){
 		// $this->load->module('mh/member');
