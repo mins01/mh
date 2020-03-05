@@ -63,10 +63,10 @@ $route['member/(.*)'] = 'front_member/$1'; //바꾸지 마시오!
 
 $route['_test/(.*)'] = 'front_test/$1'; //개발 테스트용. 필요 없으면 주석처리.
 
-$route['_admin'] = 'admin/index';
-$route['_admin/bbs_admin'] = 'mh_admin/bbs_admin/index';
-$route['_admin/bbs_admin/(.*)'] = 'mh_admin/bbs_admin/index/$1';
-$route['_admin/(.*)'] = 'admin/$1';
+$route[ADMIN_PREFIX] = 'admin/index';
+$route[ADMIN_PREFIX.'/bbs_admin'] = 'mh_admin/bbs_admin/index';
+$route[ADMIN_PREFIX.'/bbs_admin/(.*)'] = 'mh_admin/bbs_admin/index/$1';
+$route[ADMIN_PREFIX.'/(.*)'] = 'admin/$1';
 $route['bbs'] = 'mh/bbs/index';
 $route['bbs/(.*)'] = 'mh/bbs/index/$1';
 $route['bbs_comment/(.*)'] = 'mh/bbs_comment/index';
