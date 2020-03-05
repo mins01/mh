@@ -206,6 +206,9 @@ class Bbs extends MX_Controller {
 		}
 	}
 	private function get_bf_rows_by_b_row(&$b_row){
+		if(!isset($b_row['b_idx'])){
+			show_error('잘못된 데이터 호출입니다.');
+		}
 		$bf_rows = $this->bf_m->select_for_list($b_row['b_idx']);
 		return $bf_rows;
 	}
