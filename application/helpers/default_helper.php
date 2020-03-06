@@ -194,3 +194,11 @@ function split_tags_string($bt_tags_string){
 	preg_match_all('/([^#\t\s\n\x00-\x2C\x2E-\x2F\x3A-\x40\x5B-\x5E\x60\x7B~\x7F]{1,30})/u',strtolower($bt_tags_string),$matched);
 	return isset($matched[1])?array_unique($matched[1]):array();
 }
+
+/**
+ * 모바일 디바이스 상태인가?
+ * @return boolean [description]
+ */
+function is_mobile(){
+	return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", isset($_SERVER["HTTP_USER_AGENT"])?$_SERVER["HTTP_USER_AGENT"]:'');
+}
