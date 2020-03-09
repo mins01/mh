@@ -140,7 +140,7 @@ class Common extends MX_Controller {
 	//m_row에서 로그인할 때 쓸 필드만 추려낸다.
 	public function filter_login_from_m_row($m_row){
 		$m_row['m_level'] = (int)$m_row['m_level'];
-		$m_row['is_admin'] = @$m_row['m_level']==99;//관리자 유무
+		$m_row['is_admin'] = @$m_row['m_level']>=90;//관리자 유무
 		unset($m_row['m_pass'],$m_row['m_isdel'],$m_row['m_isout'],
 		$m_row['m_ip'],
 		$m_row['m_login_date'],$m_row['m_insert_date'],$m_row['m_update_date'],$m_row['m_pass_update_date']);

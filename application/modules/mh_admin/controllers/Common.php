@@ -89,7 +89,7 @@ class Common extends MX_Controller {
 	}
 	public function set_login($m_row){
 		$m_row['m_level'] = (int)$m_row['m_level'];
-		$m_row['is_admin'] = @$m_row['m_level']==99;//관리자 유무
+		$m_row['is_admin'] = @$m_row['m_level']>=90;//관리자 유무
 		if(!$m_row['is_admin']){ //관리자만 로그인 시킨다.
 			return false;
 		}
