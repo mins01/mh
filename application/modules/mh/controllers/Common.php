@@ -11,16 +11,8 @@ class Common extends MX_Controller {
 		// Call the CI_Model constructor
 		parent::__construct();
 		$this->load->helper('cookie');
+		$this->check_default_allowd_ip();
 
-		/*
-		$this->load->library('encrypt');
-		//$this->encrypt->set_cipher(MCRYPT_RIJNDAEL_128);
-		$this->encrypt->set_cipher(MCRYPT_RIJNDAEL_256);
-		//MCRYPT_RIJNDAEL_128(key:16byte),MCRYPT_RIJNDAEL_192(key:24byte),MCRYPT_RIJNDAEL_256(key:32byte)
-		$this->encrypt->set_mode(MCRYPT_MODE_CBC);//MCRYPT_MODE_CBC , MCRYPT_MODE_CFB
-		//$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,16);
-		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
-		*/
 		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
 		$enc_conf = array(
 			'driver' => 'openssl', //가능하면 openssl 모듈을 사용한다
@@ -266,5 +258,13 @@ class Common extends MX_Controller {
 		return $this->email->send();
 	}
 
-
+	/**
+	 * 접근 허용 아이피 체크
+	 */
+	public function check_default_allowd_ip(){
+		$ip = isset($_SERVER['REMOTE_ADDR'][0])?$_SERVER['REMOTE_ADDR']:null;
+		if(!is_allowd_ip(ALLOWED_IP_REGEXP,$ip)){
+			show_error("IP({$ip}) is not allowd.");
+		}
+	}
 }

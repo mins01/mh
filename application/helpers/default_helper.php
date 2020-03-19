@@ -202,3 +202,26 @@ function split_tags_string($bt_tags_string){
 function is_mobile(){
 	return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", isset($_SERVER["HTTP_USER_AGENT"])?$_SERVER["HTTP_USER_AGENT"]:'');
 }
+
+
+/**
+ * IP 체크용 (cli는 무조건 통과)
+ * @param  [type]  $pattern [description]
+ * @return boolean          allowd=1,true / other is not allowd.
+ */
+function is_allowd_ip($pattern,$ip=null){
+	if(is_cli()){ //CLI는 무조건 통과
+		return true;
+	}
+	if($ip==null){
+		$ip = isset($_SERVER['REMOTE_ADDR'][0])?$_SERVER['REMOTE_ADDR']:null;
+	}
+	if($ip==null){
+		trigger_error("Where is a IP?", E_USER_WARNING);
+		return null;
+	}
+	if(!isset($pattern[2])){ //패턴 길이가 2 미만이면 무조건 통과
+		return true;
+	}
+	return @preg_match($pattern,$ip);
+}
