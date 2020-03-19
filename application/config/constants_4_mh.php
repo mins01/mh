@@ -66,9 +66,9 @@ define('MH_LOG_STORE',3); //로그 저장소, 0:로그저장안함, 1: CI로그�
 
 define('DATE_YMD',date('Y-m-d'));
 
-// define('ALLOWED_IP_REGEXP','/127.0.0.\d{1,3}/'); //접근 가능 IP preg_match 규칙에 맞아야함. 빈값이면 전부 허용
+// define('ALLOWED_IP_REGEXP','/^127.0.0.\d{1,3}$/'); //접근 가능 IP preg_match 규칙에 맞아야함. 빈값이면 전부 허용
 define('ALLOWED_IP_REGEXP','');
-// define('ADMIN_ALLOWED_IP_REGEXP','/127.0.0.9/'); //접근 가능 IP  preg_match 규칙에 맞아야함. 빈값이면 전부 허용. 관리자페이지 용
+// define('ADMIN_ALLOWED_IP_REGEXP','/^(127.0.0.9|127.0.0.7)$/'); //접근 가능 IP  preg_match 규칙에 맞아야함. 빈값이면 전부 허용. 관리자페이지 용
 define('ADMIN_ALLOWED_IP_REGEXP','');
 
 require_once(dirname(__FILE__).'/legacy.php');
