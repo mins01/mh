@@ -34,6 +34,8 @@ if(IS_DEV){
 	define('LOGIN_NAME','SESS_MH');
 }
 
+define('MEMBER_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
+
 // define('LOGIN_TYPE','cookie');
 define('LOGIN_TYPE','session');
 // 세션일 땐 만료일, 도메인 등이 동작 안한다.

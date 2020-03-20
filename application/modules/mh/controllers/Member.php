@@ -11,6 +11,10 @@ class Member extends MX_Controller {
 		$this->load->module('mh/common');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="text-danger">', '</div>');
+		$mn_layout = MEMBER_LAYOUT;
+		$this->config->set_item('layout_view_head',$mn_layout.'_head');
+		$this->config->set_item('layout_view_tail',$mn_layout.'_tail');
+
 	}
 
 	public function login(){
@@ -201,7 +205,7 @@ class Member extends MX_Controller {
 			'ret_url' => $ret_url,
 		);
 
-		$this->form_validation->set_rules('m_id', '아이디', 'required|min_length[4]|max_length[40]|is_unique[mh_member.m_id]');
+		$this->form_validation->set_rules('m_id', '아이디', 'required|min_length[4]|max_length[40]|alpha_dash|is_unique[mh_member.m_id]');
 		$this->form_validation->set_rules('m_nick', '닉네임', 'required|min_length[2]|max_length[40]|is_unique[mh_member.m_nick]');
 		$this->form_validation->set_rules('m_email', '이메일', 'required|valid_email|min_length[5]|max_length[200]|is_unique[mh_member.m_email]');
 		$this->form_validation->set_rules('m_pass', '비밀번호', 'required|min_length[4]|max_length[40]|matches[m_pass_re]');
