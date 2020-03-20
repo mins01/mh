@@ -47,12 +47,41 @@ class Front extends MX_Controller {
 		 //show_404();
 		 return false;
 	 }
-	 //-- 접근 레벨 설정
-	 if((int)$this->common->get_login('m_level') < $menu['mn_m_level']){
-		 show_error('접근권한이 없습니다.',401);
-		 //show_404();
-		 return false;
+
+
+	 $m_level = (int)$this->common->get_login('m_level');
+	 // 접근 제한용
+	 if($m_level < 99){ //슈퍼관리자 미만이면 적용
+		 $allowed = false;
+		 $auth_msg = '';
+		 //-- 접근 레벨 설정
+		 if(!$allowed && $m_level < $menu['mn_m_level']){
+			 $auth_msg = '메뉴 접근권한이 없습니다. (레벨)';
+		 }else{
+			 $allowed = true;
+		 }
+
+		 //-- 접근 허용아이디 설정
+		 if(!$allowed && isset($menu['mn_allowed_m_id'][0])){
+			 $m_id = $this->common->get_login('m_id');
+			 $tt = explode(',',$menu['mn_allowed_m_id']);
+			 // var_dump( $m_id);
+			 // print_r($tt);
+			 if(!in_array($m_id,$tt)){
+				 $auth_msg = "메뉴 접근권한이 없습니다. (아이디: {$m_id})";
+			 }else{
+				 $allowed = true;
+			 }
+		 }
+
+		 if(!$allowed){
+			 show_error($auth_msg,401);
+			 //show_404();
+			 return false;
+		 }
 	 }
+
+
 	 $this->config->set_item('menu', $menu);
 	 $this->config->set_item('layout_use_banners',$menu['mn_use_banners']=='1');
 	 if(isset($menu['mn_layout'][0])){
