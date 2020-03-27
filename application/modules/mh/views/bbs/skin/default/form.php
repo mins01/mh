@@ -21,7 +21,7 @@ if($mode=='write'||$mode=='answer'){
 			<button type="button" onclick="history.back()" class="btn btn-xs btn-danger glyphicon glyphicon-remove"> 취소</button>
 		</div>
 		<ul class="list-group">
-			
+
 			<li class="list-group-item form-inline">
 				<div class="input-group">
 					<div class="input-group-addon">작성자</div>
@@ -51,9 +51,9 @@ if($mode=='write'||$mode=='answer'){
 					<?=print_onoff('b_secret',$b_row['b_secret'],'비밀글','일반글')?>
 				</div>
 				<? endif; ?>
-				
+
 				<?=form_dropdown('b_html', $permission['admin']?$bbs_conf['b_htmls_for_admin']:$bbs_conf['b_htmls'], $b_row['b_html'], ' class="form-control show-tick" style="width:6em" data-width="80px" aria-label="글형식" title="글형식"  data-header="글형식"')?>
-				
+
 				<?
 				if($permission['admin']){
 				echo form_dropdown('b_notice', $bbs_conf['b_notices'], $b_row['b_notice'], 'class="form-control show-tick" style="width:6em" data-width="80px" aria-label="공지설정" title="공지글" data-header="공지글 설정"');
@@ -61,9 +61,9 @@ if($mode=='write'||$mode=='answer'){
 				?>
 				<div class="input-group input-daterange">
 					<div class="input-group-addon">날짜</div>
-					<input type="text" class="form-control"  name="b_date_st" aria-label="시작날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_st'])?>">
+					<input type="text" class="form-control"  name="b_date_st" aria-label="시작일" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_st'])?>">
 					<div class="input-group-addon">-</div>
-					<input type="text" class="form-control"  name="b_date_ed" aria-label="끝날짜" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_ed'])?>">
+					<input type="text" class="form-control"  name="b_date_ed" aria-label="완료일" placeholder="YYYY-MM-DD" style="max-width:8em" value="<?=html_escape($b_row['b_date_ed'])?>">
 				</div>
 				<div class="btn-group">
 					<label class="m-onoff m-onoff-success m-with-label btn btn-success"><input type="radio" name="none_geo" value="1" autocomplete="off" onclick="show_geo_form(true)"><div class="m-layout" data-label-on="지도 on" data-label-off="on"></div>
@@ -82,7 +82,7 @@ if($mode=='write'||$mode=='answer'){
 				</div>
 			</li>
 			<li class="list-group-item form-inline  for-geo-form">
-				
+
 				<div class="input-group">
 					<div class="input-group-addon">위도</div>
 					<input type="text" class="form-control" readonly id="google_map_lat" name="b_num_0" aria-label="위도" placeholder="위도" size="4" value="<?=html_escape($b_row['b_num_0'])?>">
@@ -95,8 +95,8 @@ if($mode=='write'||$mode=='answer'){
 				<div class="input-group">
 					<div class="input-group-addon">Zoom</div>
 					<input type="text" class="form-control" readonly id="google_map_zoom" name="b_num_2" aria-label="Zoom" placeholder="위도" size="4" value="<?=html_escape($b_row['b_num_2'])?>">
-					
-					
+
+
 				</div>
 
 			</li>
@@ -108,11 +108,11 @@ if($mode=='write'||$mode=='answer'){
 					<div class="input-group">
 						<div class="input-group-addon">Tag</div>
 						<div class="multipleInputBox form-control" style="height:auto" data-removeEmptyBox data-inputBoxType="custom" <?=$bm_row['bm_use_tag']=='2'?'data-once-required':''?> data-min="1" data-max="10"  data-autoAddInputBox data-autoRemoveInputBox data-prefix="#" data-separator=" " >
-							<input type="hidden" maxlength="200" class="form-control multipleInputBox-sync" <?=$bm_row['bm_use_tag']=='2'?'required':''?>  id="bt_tags_string" name="bt_tags_string" placeholder="tags (separator = ',',';',whitespace)" value="<?=html_escape(implode(' ',$bt_tags))?>">	
+							<input type="hidden" maxlength="200" class="form-control multipleInputBox-sync" <?=$bm_row['bm_use_tag']=='2'?'required':''?>  id="bt_tags_string" name="bt_tags_string" placeholder="tags (separator = ',',';',whitespace)" value="<?=html_escape(implode(' ',$bt_tags))?>">
 						</div>
-						
+
 					</div>
-					
+
 				</li>
 			<? endif; ?>
 			<? if(isset($view_form_file[0])): ?>
@@ -120,7 +120,7 @@ if($mode=='write'||$mode=='answer'){
 				<?=$view_form_file?>
 			</li>
 			<? endif; ?>
-			
+
 		</ul>
 		<div class="panel-body" style="min-height:200px">
 			<textarea class="form-control pre-wysiwyg" name="b_text" rows="3"  placeholder="글내용" style="min-height:180px"><?=html_escape($b_row['b_text'])?></textarea>
@@ -163,7 +163,7 @@ function show_geo_form(bool){
 	}else{
 		$('.bbs-mode-form.for-geo-show').removeClass('for-geo-show').addClass('for-geo-hide');
 	}
-	
+
 }
 show_geo_form.inited_map = false;
 
