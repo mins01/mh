@@ -163,7 +163,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 				<div class="col-sm-10">
 					<input type="text" maxlength="100" class="form-control" placeholder="mn_allowed_m_id" ng-model="selected_obj.mn_allowed_m_id" ng-disabled="selected_obj.mn_lock=='1'">
 					<div>
-						<small class="text-danger">( ,로 구분 )( 빈 값이면 모든 사용자 접근 가능 )</small>
+						<small class="text-danger">( ,표로 구분 )( 빈값이면 모든 사용자 접근 가능 )</small>
 					</div>
 				</div>
 			</div>
