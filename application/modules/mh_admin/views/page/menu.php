@@ -159,6 +159,15 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-sm-2 control-label">접근허용아이디</label>
+				<div class="col-sm-10">
+					<input type="text" maxlength="100" class="form-control" placeholder="mn_allowed_m_id" ng-model="selected_obj.mn_allowed_m_id" ng-disabled="selected_obj.mn_lock=='1'">
+					<div>
+						<small class="text-danger">( ,로 구분 )( 빈 값이면 모든 사용자 접근 가능 )</small>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-12 ">&lt;head&gt; 속 추가내용</label>
 				<div class="col-sm-12">
 					<textarea type="text" maxlength="50000" class="form-control" placeholder="mn_head_contents" ng-model="selected_obj.mn_head_contents" ng-disabled="selected_obj.mn_lock=='1'"></textarea>

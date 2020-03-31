@@ -12,7 +12,7 @@ class Front_member extends MX_Controller {
 
 		//$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		//$this->load->driver('cache');
-		
+
 		$this->config->load('conf_front'); // 프론트 사이트 설정
 		$this->load->module('mh/layout');
 		$this->load->module('mh/common');
@@ -25,6 +25,10 @@ class Front_member extends MX_Controller {
 		$this->member->json_login_process();
 	}
 	public function user_info(){
+		if(!$this->common->logedin){
+			$this->common->redirect('회원가입으로 변경합니다.',SITE_URI_PREFIX.'member/join');
+			return;
+		}
 		$this->member->modify();
 	}
 	public function user_pass(){
@@ -34,9 +38,13 @@ class Front_member extends MX_Controller {
 		$this->member->logout();
 	}
 	public function join(){
+		if($this->common->logedin){
+			$this->common->redirect('회원정보 수정으로 변경합니다.',SITE_URI_PREFIX.'member/user_info');
+			return;
+		}
 		$this->member->join();
 	}
-	
+
 	public function search_id(){
 		$this->member->search_id();
 	}
@@ -49,9 +57,3 @@ class Front_member extends MX_Controller {
 
 
 }
-
-
-
-
-
-

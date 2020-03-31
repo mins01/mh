@@ -62,7 +62,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-require_once(dirname(__FILE__).'/../../../conf/database.php');
+require(dirname(__FILE__).'/../../../conf/database.php');
 
 if(IS_DEV || is_cli()){
 	$db['default'] = $db['dev'];

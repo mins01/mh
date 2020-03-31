@@ -19,7 +19,7 @@
 				<?php echo form_error('m_id'); ?>
 			</div>
 		</div>
-		
+
 		<div class="form-group">
 			<label for="b_pass" class="col-sm-2 control-label">비밀번호</label>
 			<div class="col-sm-10">
@@ -27,11 +27,14 @@
 				<?php echo form_error('m_pass'); ?>
 			</div>
 		</div>
-		
+
 		<div class="text-right">
 			<div class="btn-group" role="group" aria-label="">
 				<button  class="btn btn-primary glyphicon glyphicon-ok-circle"> 로그인</button>
 				<button type="button" onclick="history.back()" class="btn btn-danger glyphicon glyphicon-ban-circle"> 취소</button>
+			</div>
+			<div class="btn-group" role="group" aria-label="">
+				<a href="<?=SITE_URI_PREFIX.'member/join'?>"  class="btn btn-success glyphicon glyphicon-ok-circle"> 회원가입</a>
 			</div>
 		</div>
 	</div>

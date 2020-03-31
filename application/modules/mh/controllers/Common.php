@@ -11,16 +11,8 @@ class Common extends MX_Controller {
 		// Call the CI_Model constructor
 		parent::__construct();
 		$this->load->helper('cookie');
+		$this->check_default_allowd_ip();
 
-		/*
-		$this->load->library('encrypt');
-		//$this->encrypt->set_cipher(MCRYPT_RIJNDAEL_128);
-		$this->encrypt->set_cipher(MCRYPT_RIJNDAEL_256);
-		//MCRYPT_RIJNDAEL_128(key:16byte),MCRYPT_RIJNDAEL_192(key:24byte),MCRYPT_RIJNDAEL_256(key:32byte)
-		$this->encrypt->set_mode(MCRYPT_MODE_CBC);//MCRYPT_MODE_CBC , MCRYPT_MODE_CFB
-		//$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,16);
-		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
-		*/
 		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
 		$enc_conf = array(
 			'driver' => 'openssl', //가능하면 openssl 모듈을 사용한다
@@ -62,7 +54,7 @@ class Common extends MX_Controller {
 	public function required_login(){
 		if(!$this->logedin){
 			header("HTTP/1.1 401 Unauthorized");
-			$ret_url = SITE_URI_PREFIX.'login';
+			$ret_url = SITE_URI_PREFIX.'member/login';
 			$this->redirect('로그인이 필요합니다.',$ret_url);
 			return false;
 		}
@@ -91,7 +83,11 @@ class Common extends MX_Controller {
 			switch(LOGIN_TYPE){
 				case 'cookie':
 					$v = $this->input->cookie(LOGIN_NAME);
-					break;
+				break;
+				case 'session':
+					// $this->load->library('session');
+					$v = $this->session->userdata(LOGIN_NAME);
+				break;
 			}
 		}
 
@@ -136,7 +132,7 @@ class Common extends MX_Controller {
 	//m_row에서 로그인할 때 쓸 필드만 추려낸다.
 	public function filter_login_from_m_row($m_row){
 		$m_row['m_level'] = (int)$m_row['m_level'];
-		$m_row['is_admin'] = @$m_row['m_level']==99;//관리자 유무
+		$m_row['is_admin'] = @$m_row['m_level']>=90;//관리자 유무
 		unset($m_row['m_pass'],$m_row['m_isdel'],$m_row['m_isout'],
 		$m_row['m_ip'],
 		$m_row['m_login_date'],$m_row['m_insert_date'],$m_row['m_update_date'],$m_row['m_pass_update_date']);
@@ -150,14 +146,23 @@ class Common extends MX_Controller {
 		switch(LOGIN_TYPE){
 			case 'cookie':
 				$this->set_login_at_cookie($this->enc_str($m_row));
-				break;
+			break;
+			case 'session':
+				// $this->load->library('session');
+				$name = $this->set_login_at_session($this->enc_str($m_row));
+			break;
 		}
 	}
 	public function set_logout(){
 		switch(LOGIN_TYPE){
 			case 'cookie':
 				$this->delete_login_at_cookie('');
-				break;
+			break;
+			case 'session':
+				// $this->load->library('session');
+				$this->delete_login_at_session();
+			break;
+
 		}
 	}
 
@@ -173,7 +178,13 @@ class Common extends MX_Controller {
 		// return @unserialize(@$this->encrypt->decode($ciphertext,$this->enc_key)); //old
 		//return @unserialize(($ciphertext));
 	}
-
+	//-- 로그인 세션 설정
+	public function set_login_at_session($str,$expire=null){
+		$this->session->set_userdata(LOGIN_NAME,$str);
+	}
+	public function delete_login_at_session(){
+		$this->session->set_userdata(LOGIN_NAME,'');
+	}
 	//-- 로그인 쿠키 설정
 	public function set_login_at_cookie($str,$expire=null){
 		if(!isset($expire)){
@@ -247,5 +258,13 @@ class Common extends MX_Controller {
 		return $this->email->send();
 	}
 
-
+	/**
+	 * 접근 허용 아이피 체크
+	 */
+	public function check_default_allowd_ip(){
+		$ip = isset($_SERVER['REMOTE_ADDR'][0])?$_SERVER['REMOTE_ADDR']:null;
+		if(!is_allowd_ip(ALLOWED_IP_REGEXP,$ip)){
+			show_error("IP({$ip}) is not allowd.");
+		}
+	}
 }

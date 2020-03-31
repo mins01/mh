@@ -15,6 +15,11 @@ class Admin extends MX_Controller {
 	public function _remap($method, $params = array())
 	{
 		$menu_uri = $method=='index'?'':$method;
+		// $menu_uri = $method=='index'?'':$method;
+		$menu_uri = uri_string();
+		$menu_uri = preg_replace('/^'.ADMIN_PREFIX.'\/?/','',$menu_uri);
+
+
 		if (method_exists($this, $method))
 		{
 			return call_user_func_array(array($this, $method), array($menu_uri,$params));
@@ -34,45 +39,74 @@ class Admin extends MX_Controller {
  * 분배 위치
  * @return null
  */
-	public function index($menu_uri,$params=array()){
-		if(!$this->common->required_login()){
-			return false;
-		}
+ public function index($menu_uri,$params=array()){
+	 if(!$this->common->required_login()){
+		 return false;
+	 }
 
-		$data = array();
+	 $data = array();
 
-		$menu = $this->get_current_menu($menu_uri);
-		if(!isset($menu)){
-			show_error('메뉴가 없습니다.',404);
-			//show_404();
-			return false;
-		}
-		//-- 접근 레벨 설정
-		if((int)$this->common->get_login('m_level') < $menu['mn_m_level']){
-			show_error('접근권한이 없습니다.',401);
-			//show_404();
-			return false;
-		}
-		$this->config->set_item('menu', $menu);
-		if(isset($menu['mn_layout'][0])){
-			$this->config->set_item('layout_view_head',$menu['mn_layout'].'_head');
-			$this->config->set_item('layout_view_tail',$menu['mn_layout'].'_tail');
-		}
-		
-		$conf = array(
-			'menu'=>$menu,
-			'base_url'=>ADMIN_URI_PREFIX.$menu['mn_uri'],
-		);
-		// print_r($menu);
-		// echo $this->get_segment($conf['base_url'],$params);
-		$this->load->module('mh_admin/'.$menu['mn_module'],$conf);
-		if(!class_exists($menu['mn_module'],false)){
-			show_error('모듈이 없습니다.',404);
-		}else{
-			$this->{$menu['mn_module']}->index_as_front($conf,$params);
-		}
-		return true;
-	}
+	 $menu = $this->get_current_menu($menu_uri);
+	 if(!isset($menu)){
+		 show_error('메뉴가 없습니다.',404);
+		 //show_404();
+		 return false;
+	 }
+
+
+	 $m_level = (int)$this->common->get_login('m_level');
+	 // 접근 제한용
+	 if($m_level < 99){ //슈퍼관리자 미만이면 적용
+		 $allowed = false;
+		 $auth_msg = '';
+		 //-- 접근 레벨 설정
+		 if(!$allowed && $m_level < $menu['mn_m_level']){
+			 $auth_msg = '메뉴 접근권한이 없습니다. (레벨)';
+		 }else{
+			 $allowed = true;
+		 }
+
+		 //-- 접근 허용아이디 설정
+		 if(!$allowed && isset($menu['mn_allowed_m_id'][0])){
+			 $m_id = $this->common->get_login('m_id');
+			 $tt = explode(',',$menu['mn_allowed_m_id']);
+			 // var_dump( $m_id);
+			 // print_r($tt);
+			 if(!in_array($m_id,$tt)){
+				 $auth_msg = "메뉴 접근권한이 없습니다. (아이디: {$m_id})";
+			 }else{
+				 $allowed = true;
+			 }
+		 }
+
+		 if(!$allowed){
+			 show_error($auth_msg,401);
+			 //show_404();
+			 return false;
+		 }
+	 }
+
+
+	 $this->config->set_item('menu', $menu);
+	 if(isset($menu['mn_layout'][0])){
+		 $this->config->set_item('layout_view_head',$menu['mn_layout'].'_head');
+		 $this->config->set_item('layout_view_tail',$menu['mn_layout'].'_tail');
+	 }
+
+	 $conf = array(
+		 'menu'=>$menu,
+		 'base_url'=>ADMIN_URI_PREFIX.$menu['mn_uri'],
+	 );
+	 // print_r($menu);
+	 // echo $this->get_segment($conf['base_url'],$params);
+	 $this->load->module('mh_admin/'.$menu['mn_module'],$conf);
+	 if(!class_exists($menu['mn_module'],false)){
+		 show_error('모듈이 없습니다.',404);
+	 }else{
+		 $this->{$menu['mn_module']}->index_as_front($conf,$params);
+	 }
+	 return true;
+ }
 
 
 	public function login(){

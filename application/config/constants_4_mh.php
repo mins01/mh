@@ -34,7 +34,11 @@ if(IS_DEV){
 	define('LOGIN_NAME','SESS_MH');
 }
 
-define('LOGIN_TYPE','cookie');
+define('MEMBER_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
+
+// define('LOGIN_TYPE','cookie');
+define('LOGIN_TYPE','session');
+// 세션일 땐 만료일, 도메인 등이 동작 안한다.
 define('LOGIN_EXPIRE',60*60*24*365);
 define('LOGIN_VERIFY_EXPIRE',60*60*24*7); //세션 암호화 체크 expire
 define('LOGIN_REFRESH_EXPIRE',LOGIN_VERIFY_EXPIRE/100); //세션 암호화 갱신 expire
@@ -45,10 +49,12 @@ define('LOGIN_PREFIX','');
 define('LOGIN_SECURE',false);
 
 define('ADMIN_LOGIN_NAME',md5('SESS_MH_ADMIN'.$http_host));
-define('ADMIN_LOGIN_TYPE','cookie');
+// define('ADMIN_LOGIN_TYPE','cookie');
+define('ADMIN_LOGIN_TYPE',LOGIN_TYPE);
+// 세션일 땐 만료일, 도메인 등이 동작 안한다.
 define('ADMIN_LOGIN_EXPIRE',60*60*24*365);
 define('ADMIN_LOGIN_DOAMIN',$http_host);
-define('ADMIN_LOGIN_PATH',substr(ADMIN_URI_PREFIX,0,-1));
+define('ADMIN_LOGIN_PATH',substr(ADMIN_URI_PREFIX,0,-1).'; samesite=strict');
 define('ADMIN_LOGIN_PREFIX','');
 define('ADMIN_LOGIN_SECURE',false);
 
@@ -61,5 +67,10 @@ date_default_timezone_set('Asia/Seoul');
 define('MH_LOG_STORE',3); //로그 저장소, 0:로그저장안함, 1: CI로그파일,2:DB, 3:1+2
 
 define('DATE_YMD',date('Y-m-d'));
+
+// define('ALLOWED_IP_REGEXP','/^127.0.0.\d{1,3}$/'); //접근 가능 IP preg_match 규칙에 맞아야함. 빈값이면 전부 허용
+define('ALLOWED_IP_REGEXP','');
+// define('ADMIN_ALLOWED_IP_REGEXP','/^(127.0.0.9|127.0.0.7)$/'); //접근 가능 IP  preg_match 규칙에 맞아야함. 빈값이면 전부 허용. 관리자페이지 용
+define('ADMIN_ALLOWED_IP_REGEXP','');
 
 require_once(dirname(__FILE__).'/legacy.php');

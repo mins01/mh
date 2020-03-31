@@ -9,7 +9,7 @@ function mh_base_url($url){
 }
 function mh_get_url($url,$get,$appendArr=''){
 	// parse_str($appendStr, $appendArr);
-	
+
 	$get = remove_empty(array_merge($get,$appendArr));
 	return $url.'?'.http_build_query($get);
 }
@@ -27,7 +27,7 @@ function generate_paging($get,$max_page,$uri='',$i_conf=array()){
 	$conf = array_merge(array(
 		'cut'=>10
 	),$i_conf);
-	
+
 	$page = $get['page'];
 	$tmp_get = $get;
 	// $page_s = floor(($PCFG['page']-1)/$PCFG['pnum'])*$PCFG['pnum']+1;	//루프시작
@@ -47,7 +47,7 @@ function generate_paging($get,$max_page,$uri='',$i_conf=array()){
 	}else{
 		$pre_url = '';
 	}
-	
+
 	if($ed<$max_page){
 		$tmp_get['page']=$ed+1;
 		$next_url = $uri.'?'.http_build_query($tmp_get);
@@ -61,7 +61,7 @@ function generate_paging($get,$max_page,$uri='',$i_conf=array()){
 		$last_url = '';
 	}
 	$r_arr = array();
-	
+
 	$r_arr[] = '<ul class="pagination">';
 
 	$tmp_class = isset($first_url[2])?'':'class="disabled"';
@@ -77,14 +77,14 @@ function generate_paging($get,$max_page,$uri='',$i_conf=array()){
 	$r_arr[] = '<span aria-hidden="true">&laquo;</span>';
 	$r_arr[] = '</a>';
 	$r_arr[] = '</li>';
-		for($i = $st,$m = $ed;$i<=$m;$i++): 
+		for($i = $st,$m = $ed;$i<=$m;$i++):
 			$tmp_class = $page==$i?'class="active"':'';
 			$tmp_get['page']=$i;
 			$url = $uri.'?'.http_build_query($tmp_get);
 			$r_arr[] = '<li '.$tmp_class.'><a href="'.htmlspecialchars($url).'">'.html_escape($i).'</a></li>';
-		endfor; 
+		endfor;
 	$tmp_class = isset($next_url[2])?'':'class="disabled"';
-	
+
 	$r_arr[] = '<li '.$tmp_class.'>';
 	$r_arr[] = '<a href="'.htmlspecialchars($next_url).'" aria-label="Next">';
 	$r_arr[] = '<span aria-hidden="true">&raquo;</span>';
@@ -97,7 +97,7 @@ function generate_paging($get,$max_page,$uri='',$i_conf=array()){
 	$r_arr[] = '<span aria-hidden="true">&raquo;</span>';
 	$r_arr[] = '</a>';
 	$r_arr[] = '</li>';
-	
+
 		$r_arr[] = '</ul>';
 	return implode("\n",$r_arr);
 }
@@ -134,15 +134,17 @@ function get_offset_by_page($page,$limit=10){
 	$offset = ($page-1)*$limit;
 	return $offset;
 }
-
+function pretty_json_encode($res){
+	if(defined('JSON_UNESCAPED_UNICODE')){
+		return json_encode($res,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+	}else{
+		return json_encode($res);
+	}
+}
 function exit_json($res){
 	header('Content-Type: application/json');
-	
-	if(defined('JSON_UNESCAPED_UNICODE')){
-		exit(json_encode($res,JSON_UNESCAPED_UNICODE));
-	}else{
-		exit(json_encode($res));
-	}
+	echo pretty_json_encode($res);
+	exit();
 }
 
 // onoff
@@ -174,21 +176,52 @@ function bbs_date_former($form,$dtstr){
 }
 
 // http://php.net/manual/en/function.parse-url.php
-function unparse_url($parsed_url) { 
-  $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : ''; 
-  $host     = isset($parsed_url['host']) ? $parsed_url['host'] : ''; 
-  $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : ''; 
-  $user     = isset($parsed_url['user']) ? $parsed_url['user'] : ''; 
-  $pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass']  : ''; 
-  $pass     = ($user || $pass) ? "$pass@" : ''; 
-  $path     = isset($parsed_url['path']) ? $parsed_url['path'] : ''; 
-  $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : ''; 
-  $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : ''; 
-  return "$scheme$user$pass$host$port$path$query$fragment"; 
-} 
+function unparse_url($parsed_url) {
+  $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+  $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+  $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+  $user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+  $pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass']  : '';
+  $pass     = ($user || $pass) ? "$pass@" : '';
+  $path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+  $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+  $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
+  return "$scheme$user$pass$host$port$path$query$fragment";
+}
 
 function split_tags_string($bt_tags_string){
 	$matched = array();
 	preg_match_all('/([^#\t\s\n\x00-\x2C\x2E-\x2F\x3A-\x40\x5B-\x5E\x60\x7B~\x7F]{1,30})/u',strtolower($bt_tags_string),$matched);
 	return isset($matched[1])?array_unique($matched[1]):array();
+}
+
+/**
+ * 모바일 디바이스 상태인가?
+ * @return boolean [description]
+ */
+function is_mobile(){
+	return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", isset($_SERVER["HTTP_USER_AGENT"])?$_SERVER["HTTP_USER_AGENT"]:'');
+}
+
+
+/**
+ * IP 체크용 (cli는 무조건 통과)
+ * @param  [type]  $pattern [description]
+ * @return boolean          allowd=1,true / other is not allowd.
+ */
+function is_allowd_ip($pattern,$ip=null){
+	if(is_cli()){ //CLI는 무조건 통과
+		return true;
+	}
+	if($ip==null){
+		$ip = isset($_SERVER['REMOTE_ADDR'][0])?$_SERVER['REMOTE_ADDR']:null;
+	}
+	if($ip==null){
+		trigger_error("Where is a IP?", E_USER_WARNING);
+		return null;
+	}
+	if(!isset($pattern[2])){ //패턴 길이가 2 미만이면 무조건 통과
+		return true;
+	}
+	return @preg_match($pattern,$ip);
 }
