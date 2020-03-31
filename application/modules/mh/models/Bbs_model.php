@@ -68,7 +68,8 @@ class Bbs_model extends CI_Model {
 			,b_name,b_ip,b_notice,b_secret,b_html,b_link,b_title
 			,b_date_st,b_date_ed
 			,b_etc_0,b_etc_1,b_etc_2,b_etc_3,b_etc_4
-			,b_num_0,b_num_1,b_num_2,b_num_3,b_num_4';
+			,b_num_0,b_num_1,b_num_2,b_num_3,b_num_4
+			,substr(b_text,1,512) as cutted_b_text';
 		}
 		if($bm_row['bm_use_category']!='0'){
 			$select.=',b.b_category';
@@ -280,7 +281,7 @@ class Bbs_model extends CI_Model {
 		$b_rows = $this->db->get()->result_array();
 		// echo $this->db->last_query();
 
-		// $this->extends_b_rows($b_rows);
+		$this->extends_b_rows($b_rows);
 		return $b_rows;
 	}
 
@@ -371,7 +372,7 @@ class Bbs_model extends CI_Model {
 
 		$b_rows = $this->db->get()->result_array();
 		// echo $this->db->last_query();
-		// $this->extends_b_rows($b_rows);
+		$this->extends_b_rows($b_rows);
 		return $b_rows;
 	}
 	public function exnteds_b_rows_for_calendar(& $b_rows,$date_st,$date_ed){
@@ -452,19 +453,33 @@ class Bbs_model extends CI_Model {
 		$this->db->where('b_notice>',0); //공지만
 
 		$b_rows = $this->db->get()->result_array();
-		// $this->extends_b_rows($b_rows);
+		$this->extends_b_rows($b_rows);
 		return $b_rows;
 	}
 
-	// private function extends_b_rows(& $b_rows){ //더이상 필요 없음, 쿼리에서 처리함
-	//
-	// 	foreach($b_rows as & $r){
-	// 		$this->extends_b_row($r);
-	// 	}
-	// }
-	// private function extends_b_row(& $b_row){ //더이상 필요 없음, 쿼리에서 처리함
-	// 	$b_row['depth']= min(strlen($b_row['b_gpos'])/2,10);
-	// }
+	private function extends_b_rows(& $b_rows){ //더이상 필요 없음, 쿼리에서 처리함
+
+		foreach($b_rows as & $r){
+			$this->extends_b_row($r);
+		}
+	}
+	private function extends_b_row(& $b_row){ //더이상 필요 없음, 쿼리에서 처리함
+		// $b_row['depth']= min(strlen($b_row['b_gpos'])/2,10);
+
+		// 썸네일 이미지 설정이 안되어있을 경우 b_text속에서 가져옴
+		if(!isset($b_row['thumbnail_url'][0]) && $b_row['b_html']!='t'){
+			$text = isset($b_row['b_text'])?$b_row['b_text']:(isset($b_row['cutted_b_text'])?$b_row['cutted_b_text']:'');
+			if(isset($text[0])){
+				$matches = array();
+				preg_match('/<img[^>]*src=(?:"|\'|)([^<>"\']*)(?:"|\'|)[^>]*>/',$text,$matches );
+				if(isset($matches[1])){
+					$b_row['thumbnail_url']=$matches[1];
+					$b_row['is_image']='1';
+				}
+
+			}
+		}
+	}
 	//-- 빈 게시물 만들기
 	public function generate_empty_b_row(){
 		// $sql="DESC {$this->tbl}";
@@ -520,6 +535,7 @@ class Bbs_model extends CI_Model {
 		$this->db->where('b_id',$this->bm_row['b_id']);
 		//-- 필수 where절
 		$row = $this->db->where('b_isdel','0')->where('b.b_idx',$b_idx)->get()->row_array();
+		$this->extends_b_row($row);
 		return $row;
 	}
 	//-- 목록 갯수
