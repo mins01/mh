@@ -467,7 +467,7 @@ class Bbs_model extends CI_Model {
 		// $b_row['depth']= min(strlen($b_row['b_gpos'])/2,10);
 
 		// 썸네일 이미지 설정이 안되어있을 경우 b_text속에서 가져옴
-		if(!isset($b_row['thumbnail_url'][0]) && $b_row['b_html']!='t'){
+		if(isset($b_row['thumbnail_url']) && !isset($b_row['thumbnail_url'][0]) && $b_row['b_html']!='t'){
 			$text = isset($b_row['b_text'])?$b_row['b_text']:(isset($b_row['cutted_b_text'])?$b_row['cutted_b_text']:'');
 			if(isset($text[0])){
 				$matches = array();
@@ -475,6 +475,7 @@ class Bbs_model extends CI_Model {
 				if(isset($matches[1])){
 					$b_row['thumbnail_url']=$matches[1];
 					$b_row['is_image']='1';
+					$b_row['is_external']='1';
 				}
 
 			}
