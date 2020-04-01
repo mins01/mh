@@ -15,8 +15,8 @@
 			게시물 : <?=$count?> (<?=$max_page?> page)
 		</nav>
 	</div>
-	<? 
-	if(count($b_n_rows)>0): 
+	<?
+	if(count($b_n_rows)>0):
 	?>
 		<table class="table table-condensed" style="table-layout:fixed">
 			<tr >
@@ -32,10 +32,10 @@
 				<tr class="bbs-notice info <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 					<td class="text-center hidden-xs"><span class="label label-danger">공지</span></td>
 					<td class="bbs-title bbs-flex-box">
-						
+
 						<? if(isset($b_row['b_category'][0])): ?><span class="bbs-flex-sub bbs-flex-sub-left"><span class="label label-primary "><?=html_escape($b_row['b_category'])?></span></span><? endif; ?>
 						<a class="bbs-flex-main" href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
-					
+
 						<span class="bbs-flex-sub bbs-flex-sub-right">
 							<? if(($b_row['is_new'])): ?>
 								<span class="is_new label label-default" title="새글">new</span>
@@ -46,12 +46,12 @@
 							<? if(!empty($b_row['bf_cnt'])): ?>
 								<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
 							<? endif; ?>
-					
+
 							<? if(!empty($b_row['bc_cnt'])): ?>
 								<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
 							<? endif; ?>
 						</span>
-					
+
 					</td>
 					<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['b_name'])?></td>
 					<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
@@ -61,14 +61,14 @@
 			<? endforeach; ?>
 		</table>
 
-	<? 
+	<?
 	endif;
 	?>
-	
+
 	<!-- Default panel contents -->
 	<div class="panel-body">
 		<div class="row">
-		<? 
+		<?
 		foreach($b_rows as $b_row):
 		// print_r($b_row);
 		?>
@@ -87,7 +87,7 @@
 									<? else:?>
 										<img class="img-rounded" src="<?=html_escape($b_row['thumbnail_url'])?>">
 									<? endif; ?>
-									
+
 								<? else: ?>
 									<div class="no-thumbnail"></div>
 								<? endif; ?>
@@ -100,29 +100,28 @@
 							<? if(!empty($b_row['bf_cnt'])): ?>
 								<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
 							<? endif; ?>
-							
+
 							<? if(!empty($b_row['bc_cnt'])): ?>
 								<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
 							<? endif; ?>
 						</div>
-						<? 
-						if(!empty($b_row['bt_tags_string'])): 
+						<?
+						if(!empty($b_row['bt_tags_string'])):
 						?>
 							<div class="bt_tags text-right">
-								<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>">tag:<?=$b_row['bt_cnt']?></span>
 							<?
 							foreach(explode(',',$b_row['bt_tags_string']) as $bt_tag):
 								?>
 								<a class="bt_tag label  label-success" href="<?=mh_get_url($bbs_conf['base_url'].'/list',$_GET,array('tag'=>$bt_tag))?>">#<?=html_escape($bt_tag)?></a>
-								<? 
+								<?
 							endforeach;
 							?>
 							</div>
 						<?
-						endif; 
+						endif;
 						?>
 					</div>
-					
+
 				</div>
 			</div>
 		<?
@@ -161,5 +160,3 @@
 		</nav>
 	</div>
 </div>
-
-

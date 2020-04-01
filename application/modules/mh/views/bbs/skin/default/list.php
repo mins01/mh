@@ -56,32 +56,31 @@
 							<? if(!empty($b_row['bf_cnt'])): ?>
 								<span class="bf_cnt label label-default" title="file: <?=$b_row['bf_cnt']?>"><?=$b_row['bf_cnt']?></span>
 							<? endif; ?>
-	
+
 							<? if(!empty($b_row['bc_cnt'])): ?>
 								<span class="bc_cnt label label-default" title="comment: <?=$b_row['bc_cnt']?>"><?=$b_row['bc_cnt']?></span>
 							<? endif; ?>
 							<? /*if(!empty($b_row['bt_cnt'])): ?>
 								<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>"><?=$b_row['bt_cnt']?></span>
 							<? endif;*/ ?>
-						</span>	
+						</span>
 					</div>
-					<? 
-					if(!empty($b_row['bt_tags_string'])): 
+					<?
+					if(!empty($b_row['bt_tags_string'])):
 					?>
 						<div class="bt_tags text-right">
-							<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>">tag:<?=$b_row['bt_cnt']?></span>
 						<?
 						foreach(explode(',',$b_row['bt_tags_string']) as $bt_tag):
 							?>
 							<a class="bt_tag label  label-success" href="<?=mh_get_url($bbs_conf['base_url'].'/list',$_GET,array('tag'=>$bt_tag))?>">#<?=html_escape($bt_tag)?></a>
-							<? 
+							<?
 						endforeach;
 						?>
 						</div>
 					<?
-					endif; 
+					endif;
 					?>
-					
+
 
 				</td>
 				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
@@ -114,32 +113,31 @@
 							<? if(!empty($b_row['bf_cnt'])): ?>
 								<span class="bf_cnt label label-default" title="file: <?=$b_row['bf_cnt']?>"><?=$b_row['bf_cnt']?></span>
 							<? endif; ?>
-	
+
 							<? if(!empty($b_row['bc_cnt'])): ?>
 								<span class="bc_cnt label label-default" title="comment: <?=$b_row['bc_cnt']?>"><?=$b_row['bc_cnt']?></span>
 							<? endif; ?>
 							<? /*if(!empty($b_row['bt_cnt'])): ?>
 								<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>"><?=$b_row['bt_cnt']?></span>
 							<? endif;*/ ?>
-						</span>	
+						</span>
 					</div>
-					<? 
-					if(!empty($b_row['bt_tags_string'])): 
+					<?
+					if(!empty($b_row['bt_tags_string'])):
 					?>
 						<div class="bt_tags text-right">
-							<span class="bt_cnt label label-default" title="tag: <?=$b_row['bt_cnt']?>">tag:<?=$b_row['bt_cnt']?></span>
 						<?
 						foreach(explode(',',$b_row['bt_tags_string']) as $bt_tag):
 							?>
 							<a class="bt_tag label  label-success" href="<?=mh_get_url($bbs_conf['base_url'].'/list',$_GET,array('tag'=>$bt_tag))?>">#<?=html_escape($bt_tag)?></a>
-							<? 
+							<?
 						endforeach;
 						?>
 						</div>
 					<?
-					endif; 
+					endif;
 					?>
-					
+
 
 				</td>
 				<td class="text-center text-overflow-ellipsis"><?=html_escape($b_row['b_name'])?></td>
