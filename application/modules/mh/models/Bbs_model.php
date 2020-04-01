@@ -473,7 +473,7 @@ class Bbs_model extends CI_Model {
 				$matches = array();
 				preg_match('/<img[^>]*src=(?:"|\'|)([^<>"\']*)(?:"|\'|)[^>]*>/',$text,$matches );
 				if(isset($matches[1])){
-					$b_row['thumbnail_url']=$matches[1];
+					$b_row['thumbnail_url']=htmlspecialchars_decode($matches[1]);
 					$b_row['is_image']='1';
 					$b_row['is_external']='1';
 				}
