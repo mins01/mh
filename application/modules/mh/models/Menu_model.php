@@ -37,7 +37,7 @@ class Menu_model extends CI_Model {
 		$max = -1;
 		$curr_r = null;
 		$pu0 = parse_url($uri);
-		$pu0parr = explode('/',$pu0['path']);
+		$pu0parr = explode('/',isset($pu0['path'][0])?$pu0['path']:'');
 		// print_r($pu0parr);
 		foreach($this->menu_rows as & $r){
 
@@ -46,7 +46,8 @@ class Menu_model extends CI_Model {
 			$len_mn_uri = strlen($r['mn_uri']);
 
 			$pu1 = parse_url($r['mn_uri']);
-			$pu1parr = explode('/',$pu1['path']);
+			// var_dump($pu1['path']);
+			$pu1parr = explode('/',isset($pu1['path'][0])?$pu1['path']:'');
 			// print_r($pu1parr);
 			$skip = false;
 			for($i1=0,$m1=count($pu1parr);$i1<$m1;$i1++){
