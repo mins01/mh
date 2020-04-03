@@ -10,7 +10,7 @@
 
 	<meta name="description" content="<?=html_escape($title)?>" />
 	<meta name="keywords" content="<?=html_escape($layout_keywords)?>" />
-	<meta name="classification" content="웹 프로그래밍" />
+	<meta name="classification" content="" />
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -69,7 +69,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/" style="margin: 0;padding: 3px"><img src="/img/logo.gif" style="max-height: 100%;" alt="logo image"></a>
+				<a class="navbar-brand" href="/" style="margin: 0;padding: 3px 10px 3px 5px"><img src="<?=SITE_URI_ASSET_PREFIX?>img/logo.png" style="max-height: 100%;" alt="logo image"></a>
 				<a class="navbar-brand hidden-sm hidden-md hidden-lg " href="<?=SITE_URI_PREFIX?>">메인</a>
 				<a class="navbar-brand hidden-sm hidden-md hidden-lg " href="<?=SITE_URI_PREFIX?>tech">기술</a>
 			</div>
