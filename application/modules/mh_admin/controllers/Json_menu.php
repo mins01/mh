@@ -14,7 +14,7 @@ class Json_menu extends MX_Controller {
 	public function __construct()
 	{
 		$this->load->model('mh/menu_model','menu_m_f');
-		$this->menu_m_f->set_init_conf('menu','');
+		$this->menu_m_f->set_init_conf('menu',SITE_URI_PREFIX);
 		$this->load->module('mh_admin/layout');
 		$this->load->module('mh_admin/common');
 

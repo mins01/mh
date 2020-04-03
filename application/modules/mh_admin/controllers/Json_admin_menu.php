@@ -14,23 +14,23 @@ class Json_admin_menu extends Json_menu {
 	public function __construct()
 	{
 		$this->load->model('mh/menu_model','menu_m_f');
-		$this->menu_m_f->set_init_conf('admin_menu','');
+		$this->menu_m_f->set_init_conf('admin_menu',ADMIN_URI_PREFIX);
 		$this->load->module('mh_admin/layout');
 		$this->load->module('mh_admin/common');
 
 		$this->config->set_item('layout_disable',true);
-		
+
 		$this->m_row = $this->common->get_login();
 		$this->logedin = & $this->common->logedin;
 		//$this->config->load('bbs');
 		//$this->bbs_conf = $this->config->item('bbs');
 	}
-	
+
 	public function _remap($method, $params = array())
 	{
 		$this->index($params);
 	}
-	
+
 
 	public function first(){
 		$this->load->model('mh/bbs_master_model','bm_m');
@@ -43,9 +43,3 @@ class Json_admin_menu extends Json_menu {
 		return $this->echo_json($json);
 	}
 }
-
-
-
-
-
-

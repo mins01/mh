@@ -155,7 +155,7 @@ class Menu_model extends CI_Model {
 		return $menu_tree;
 	}
 
-	public function select($tbl_nm='menu',$pre_uri=''){
+	public function select(){
 		$rows = array();
 		$row = array();
 		$q = $this->db->from(DB_PREFIX.$this->tbl_nm)

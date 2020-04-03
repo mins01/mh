@@ -50,7 +50,7 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 				*메뉴 매칭용(보통 URL과 같음)
 				<div class="error text-danger" ng-show="!formInfo.mn_uri.$valid ">{{formInfo.mn_uri.$error}}</div>
 				</div>
-				<label class="col-sm-2 control-label">URL</label>
+				<label class="col-sm-2 control-label"><a ng-href="{{selected_obj.url}}" target="_blank" title="메뉴 URL 확인">URL</a></label>
 				<div class="col-sm-4">
 				<input type="text" class="form-control" name="mn_url" placeholder="mn_url" ng-model="selected_obj.mn_url" ng-minlength="0" ng-maxlength="100">
 				*이동할 경로
