@@ -35,7 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		animation-duration: 2s;
 		animation-name: rolypoly;
 		animation-iteration-count: 1;
-		
+
 	}
 	.animation:hover .animation-target{
 		animation-iteration-count: infinite;
@@ -125,6 +125,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div id="container">
 			<h1><?php echo $heading; ?></h1>
 			<?php echo $message; ?>
+			<h2><a href="/">[root]</a></h2>
 		</div>
 	</body>
 </html>
