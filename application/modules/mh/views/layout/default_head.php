@@ -79,7 +79,7 @@
 						if($mr['mn_hide']!='0'){continue;}
 						$class = $mr['active']?'class="active"':'';
 					?>
-					<li <?=$class?>><a href="<?=html_escape($mr['url'])?>" <?=$mr['mn_attr']?>><?=html_escape($mr['mn_text'])?></a></li>
+					<li <?=$class?>><a href="<?=html_escape($mr['url'])?>" target="<?=html_escape($mr['mn_a_target'])?>" <?=$mr['mn_attr']?>><?=html_escape($mr['mn_text'])?></a></li>
 					<? endforeach; ?>
 				</ul>
 				<div class="navbar-right">

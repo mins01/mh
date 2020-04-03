@@ -4,6 +4,13 @@
 $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 ?>
 <h4>메뉴설정</h4>
+<datalist id="datalist-mn_a_target">
+		<option value="" >기본</option>
+		<option value="_blank" >새창</option>
+		<option value="_self" >현재창</option>
+		<option value="_parent" >부조창</option>
+		<option value="_top" >최상위창</option>
+</datalist>
 <div ng-app="menuApp" class="row" ng-controller="treeCtrl as treeCtrl" ng-init="treeCtrl.init('<?=$json_url?>')">
 	<script type="text/ng-template" id="field_renderer.html">
 		<span class="menu-label">
@@ -62,6 +69,12 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 				<div class="col-sm-4">
 					<input type="text" maxlength="20" class="form-control" placeholder="mn_text" ng-model="selected_obj.mn_text" >
 				</div>
+				<label class="col-sm-2 control-label">이동 타겟</label>
+				<div class="col-sm-4">
+					<input type="text" maxlength="20" class="form-control" placeholder="mn_a_target" list="datalist-mn_a_target" ng-model="selected_obj.mn_a_target" >
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-2 control-label">정렬순서</label>
 				<div class="col-sm-4">
 					<!-- <select class="form-control" placeholder="mn_sort" ng-model="selected_obj.mn_sort"  required >
