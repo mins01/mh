@@ -36,14 +36,39 @@ class Menu_model extends CI_Model {
 	public function get_current_menu($uri){
 		$max = -1;
 		$curr_r = null;
+		$pu0 = parse_url($uri);
+		$pu0parr = explode('/',$pu0['path']);
+		// print_r($pu0parr);
 		foreach($this->menu_rows as & $r){
 
 			// echo "{$uri}!={$r['mn_uri']} \n";
-			if($uri===$r['mn_uri']){
+			$len_uri = strlen($uri);
+			$len_mn_uri = strlen($r['mn_uri']);
 
-			}else if(empty($r['mn_uri']) || strpos($uri,$r['mn_uri'])!==0){
+			$pu1 = parse_url($r['mn_uri']);
+			$pu1parr = explode('/',$pu1['path']);
+			// print_r($pu1parr);
+			$skip = false;
+			for($i1=0,$m1=count($pu1parr);$i1<$m1;$i1++){
+				if(!isset($pu0parr[$i1]) || $pu1parr[$i1] !== $pu0parr[$i1]){
+					$skip = true;
+					continue;
+				}
+				// echo $pu1parr[$i1],' ',$pu0parr[$i1],"\n";
+			}
+			if($skip){
 				continue;
 			}
+			//
+			// if($len_uri==$len_mn_uri && $uri===$r['mn_uri']){
+			//
+			// }else if($len_uri > $len_mn_uri && strpos($uri,$r['mn_uri'].'/')===0){
+			//
+			// }else if(empty($r['mn_uri']) || strpos($uri,$r['mn_uri'])!==0){
+			// 	continue;
+			// }
+			// echo $uri;
+			// print_r($r);
 
 			if(strlen($r['mn_uri'])>$max){
 				$max = strlen($r['mn_uri']);
