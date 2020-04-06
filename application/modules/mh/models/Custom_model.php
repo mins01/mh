@@ -9,7 +9,7 @@ class Custom_model extends CI_Model {
 		// $bm_row['tbl_file']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_file';
 		// $bm_row['tbl_comment']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_comment';
 		// $bm_row['tbl_hit']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_hit';
-		
+
 		$from = DB_PREFIX.'bbs_'.$table.'_data';
 		$from_menu = DB_PREFIX.'menu';
 		$v_b_insert_date = $this->db->escape(date('Y-m-d 00:00:00',time()-60*60*24*$day));
@@ -21,23 +21,24 @@ class Custom_model extends CI_Model {
 		";
 		if($type==0){
 			$sql = "select {$v_select} from {$from} b
-			
+
 			where b_isdel=0 and b_insert_date >= {$v_b_insert_date}
 			and b_id = {$v_b_id}
 			order by b_idx desc
-			limit {$limit} 
+			limit {$limit}
 			";
 		}else{
 			$v_b_date_st = $this->db->escape(date('Y-m-d 00:00:00',time()-60*60*24*2));
 			$v_b_date_ed = $this->db->escape(date('Y-m-d 00:00:00',time()+60*60*24*$day));
-		
+
 			$sql = "select {$v_select} from {$from} b
-			
-			where b_isdel=0 
+
+			where b_isdel=0
 			and b_date_st <= {$v_b_date_ed}
 			and b_date_ed >= {$v_b_date_st}
 			and b_id = {$v_b_id}
 			#order by b_date_st desc,b_date_ed desc
+			ORDER BY LEAST(ABS(TIMESTAMPDIFF(HOUR ,b_date_ed,NOW())), ABS(TIMESTAMPDIFF(HOUR ,b_date_st,NOW())))
 			limit {$limit}
 			";
 			// echo $sql;
@@ -62,13 +63,13 @@ class Custom_model extends CI_Model {
 		}
 		return $rowss;
 	}
-	
+
 	private function last_bbs_comment_sql($table,$b_id,$limit,$day,$type){
 		// $bm_row['tbl_data']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_data';
 		// $bm_row['tbl_file']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_file';
 		// $bm_row['tbl_comment']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_comment';
 		// $bm_row['tbl_hit']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_hit';
-		
+
 		$from = DB_PREFIX.'bbs_'.$table.'_comment';
 		$from_data = DB_PREFIX.'bbs_'.$table.'_data';
 		$v_b_insert_date = $this->db->escape(date('Y-m-d 00:00:00',time()-60*60*24*$day));
@@ -81,7 +82,7 @@ class Custom_model extends CI_Model {
 		JOIN {$from_data} b on(b_id={$v_b_id} and b.b_idx=bc.b_idx)
 		where bc_isdel=0  and b_isdel=0  and bc_insert_date >= {$v_b_insert_date}
 		order by bc_idx desc
-		limit {$limit} 
+		limit {$limit}
 		";
 		//echo $sql;
 		return $sql;
@@ -105,15 +106,15 @@ class Custom_model extends CI_Model {
 		}
 		return $rowss;
 	}
-	
+
 	public function last_bbs_tags($bm_table,$b_id,$limit,$limit2){
 		$v_b_id = $this->db->escape($b_id);
 		$v_limit = $this->db->escape((int)$limit);
 		$v_limit2 = $this->db->escape((int)$limit2);
 		$sql = "SELECT bt_tag,(SELECT COUNT(*) FROM `mh_bbs_{$bm_table}_tag` bt2 WHERE bt2.bt_tag=bt.bt_tag AND bt2.bt_isdel=0) cnt,MAX(bt_update_date) bt_update_date
-		FROM (SELECT b.b_idx FROM `mh_bbs_{$bm_table}_data` b  WHERE b_id={$v_b_id} ORDER BY  b.b_gidx LIMIT {$v_limit}) b 
+		FROM (SELECT b.b_idx FROM `mh_bbs_{$bm_table}_data` b  WHERE b_id={$v_b_id} ORDER BY  b.b_gidx LIMIT {$v_limit}) b
 		JOIN `mh_bbs_{$bm_table}_tag` bt USING(b_idx) where bt.bt_isdel=0 GROUP BY bt_tag  ORDER BY b_idx DESC limit {$v_limit2}";
 		return $this->db->query($sql)->result_array();
 	}
-	
+
 }
