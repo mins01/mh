@@ -93,7 +93,12 @@ class Front extends MX_Controller {
 		 'menu'=>$menu,
 		 'base_url'=>mh_base_url($menu['mn_uri']),
 	 );
-	 $this->load->module('mh/'.$menu['mn_module'],$conf);
+	 if(strpos($menu['mn_module'],'/')){
+		 $this->load->module($menu['mn_module'],$conf);
+	 }else{
+		 $this->load->module('mh/'.$menu['mn_module'],$conf); //곧 이 방식 사라질 예정
+	 }
+
 	 if(!class_exists($menu['mn_module'],false)){
 		 show_error('모듈이 없습니다.',404);
 	 }else{
