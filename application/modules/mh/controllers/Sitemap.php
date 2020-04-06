@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Sitemap extends MX_Controller {
-	
+
 	public function __construct($conf=array())
 	{
 		$this->load->library('Array2XML');
@@ -15,7 +15,7 @@ class Sitemap extends MX_Controller {
 		$view = $conf['menu']['mn_arg1'];
 		$this->action($conf,$param);
 	}
-	
+
 	public function action($conf,$param){
 		// $this->config->set_item('layout_head_contents','<script>console.log("xxx");</script>');
 		$this->config->set_item('layout_hide',false);
@@ -27,12 +27,12 @@ class Sitemap extends MX_Controller {
 			return $this->google($conf,$param);
 			break;
 		}
-		
+
 	}
 	public function google($conf,$param){
 		$this->config->set_item('layout_disable',true);
 		$menu_rows = $this->config->item('menu_rows');
-		
+
 		$rr = array(
 			'@attributes'=>array(
 				'xmlns'=>'http://www.sitemaps.org/schemas/sitemap/0.9',
@@ -42,7 +42,7 @@ class Sitemap extends MX_Controller {
 		// print_r($menu_rows);
 		$lastmod = date('Y-m-d');
 		$http_domain = (!empty($_SERVER['HTTPS'])?'https://':'http://').$_SERVER['HTTP_HOST'];
-		foreach($menu_rows[0]['child'] as $row){
+		foreach($menu_rows[1]['child'] as $row){
 			if($row['mn_hide']=='1' || !$row['mn_use']){continue;}
 			if($row['mn_hide_sitemap']=='1' || !$row['mn_use']){continue;}
 			// print_r($row);
@@ -60,14 +60,8 @@ class Sitemap extends MX_Controller {
 		$xml = Array2XML::createXML('urlset', $rr);
 		header('Content-Type: application/xml; charset=UTF-8');
 		echo $xml->saveXML();
-		
+
 	}
 
 
 }
-
-
-
-
-
-
