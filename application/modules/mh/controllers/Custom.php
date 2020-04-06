@@ -65,7 +65,7 @@ class Custom extends MX_Controller {
 				// $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,5,30),
 				//$this->custom_m->last_bbs_rowss($calendar_tbl_b_ids,5,30)
 				// );
-			$b_rowss = $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,50,30);
+			$b_rowss = $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,50,1);
 
 			//
 			$bc_tbl_b_ids = array(
