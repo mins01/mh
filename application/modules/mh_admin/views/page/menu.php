@@ -122,10 +122,14 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 			<div class="form-group">
 				<label class="col-sm-2 control-label">모듈</label>
 				<div class="col-sm-4">
-					<select class="form-control" name="mn_module"  placeholder="mn_module" ng-model="selected_obj.mn_module"  ng-disabled="selected_obj.mn_lock=='1'">
+					<!-- <select class="form-control" name="mn_module"  placeholder="mn_module" ng-model="selected_obj.mn_module"  ng-disabled="selected_obj.mn_lock=='1'">
 						<option  value="" >#NONE#</option>
 						<option  ng-repeat="val in module_lists" value="{{val}}" >{{val}}</option>
-					</select>
+					</select> -->
+					<input class="form-control" name="mn_module" list="datalist-mn_module"  placeholder="mn_module" ng-model="selected_obj.mn_module"  ng-disabled="selected_obj.mn_lock=='1'">
+					<datalist id="datalist-mn_module">
+						<option  ng-repeat="val in module_lists" value="{{val}}" >{{val}}</option>
+					</datalist>
 				</div>
 
 				<label class="col-sm-2 control-label">모듈인자1</label>

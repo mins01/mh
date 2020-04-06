@@ -1,14 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Admin extends MX_Controller {
+	public $def_module_dir = 'mh_admin/';
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->config->load('conf_front'); // 프론트 사이트 설정
 		$this->config->load('conf_admin'); // 관리자 사이트 설정
-		$this->load->module('mh_admin/common');
-		$this->load->module('mh_admin/layout');
+		$this->load->module($this->def_module_dir.'layout');
+		$this->load->module($this->def_module_dir.'common');
 		$this->load->model('mh/menu_model','menu_m');
 	}
 
@@ -99,15 +100,19 @@ class Admin extends MX_Controller {
 	 );
 	 // print_r($menu);
 	 // echo $this->get_segment($conf['base_url'],$params);
-	 if(strpos($menu['mn_module'],'/')){
+	 if(strpos($menu['mn_module'],'/')!==false){
 		 $this->load->module($menu['mn_module'],$conf);
 	 }else{
-		 $this->load->module('mh_admin/'.$menu['mn_module'],$conf); //곧 이 방식 사라질 예정
+		 $this->load->module($this->def_module_dir.$menu['mn_module'],$conf);
 	 }
-	 if(!class_exists($menu['mn_module'],false)){
-		 show_error('모듈이 없습니다.',404);
+	 $module_name = basename($menu['mn_module']);
+
+	 if(!class_exists($module_name,false)){
+		 show_error("모듈이 없습니다.($module_name , {$menu['mn_module']})",500);
 	 }else{
-		 $this->{$menu['mn_module']}->index_as_front($conf,$params);
+		 $this->config->set_item('layout_og_title', $this->config->item('layout_og_title').' : '.$menu['mn_text']);
+		 $this->config->set_item('layout_og_description', $this->config->item('layout_og_title'));
+		 $this->{$module_name}->index_as_front($conf,$params);
 	 }
 	 return true;
  }
@@ -118,7 +123,7 @@ class Admin extends MX_Controller {
 			$this->common->redirect('',ADMIN_URI_PREFIX);
 			return;
 		}
-		$this->load->module('mh_admin/member');
+		$this->load->module($this->def_module_dir.'member');
 		$this->member->login();
 		$this->config->set_item('layout_hide',true);
 	}
@@ -127,7 +132,7 @@ class Admin extends MX_Controller {
 		// $this->member->modify();
 	// }
 	public function logout(){
-		$this->load->module('mh_admin/member');
+		$this->load->module($this->def_module_dir.'member');
 		$this->member->logout();
 	}
 

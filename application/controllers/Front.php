@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Front extends MX_Controller {
-
+	public $def_module_dir = 'mh/';
 	public function __construct()
 	{
 		parent::__construct();
@@ -14,8 +14,8 @@ class Front extends MX_Controller {
 		//$this->load->driver('cache');
 
 		$this->config->load('conf_front'); // 프론트 사이트 설정
-		$this->load->module('mh/layout');
-		$this->load->module('mh/common');
+		$this->load->module($this->def_module_dir.'layout');
+		$this->load->module($this->def_module_dir.'common');
 	}
 
 	public function _remap($method, $params = array())
@@ -93,18 +93,19 @@ class Front extends MX_Controller {
 		 'menu'=>$menu,
 		 'base_url'=>mh_base_url($menu['mn_uri']),
 	 );
-	 if(strpos($menu['mn_module'],'/')){
+	 if(strpos($menu['mn_module'],'/')!==false){
 		 $this->load->module($menu['mn_module'],$conf);
 	 }else{
-		 $this->load->module('mh/'.$menu['mn_module'],$conf); //곧 이 방식 사라질 예정
+		 $this->load->module($this->def_module_dir.$menu['mn_module'],$conf);
 	 }
+	 $module_name = basename($menu['mn_module']);
 
-	 if(!class_exists($menu['mn_module'],false)){
-		 show_error('모듈이 없습니다.',404);
+	 if(!class_exists($module_name,false)){
+		 show_error("모듈이 없습니다.($module_name , {$menu['mn_module']})",500);
 	 }else{
 		 $this->config->set_item('layout_og_title', $this->config->item('layout_og_title').' : '.$menu['mn_text']);
 		 $this->config->set_item('layout_og_description', $this->config->item('layout_og_title'));
-		 $this->{$menu['mn_module']}->index_as_front($conf,$params);
+		 $this->{$module_name}->index_as_front($conf,$params);
 	 }
 	 return true;
  }
