@@ -95,3 +95,28 @@ padding-left:5px; padding-right:5px;
 		box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.4);
 	}
 }
+
+
+/*
+last_bbs_columns
+*/
+.last-bbs-columns{
+
+}
+.last-bbs-columns-3{
+  column-count: 1;
+
+}
+@media (min-width: 768px) {
+  .last-bbs-columns-3{
+    column-count: 2
+  }
+}
+@media (min-width: 992px){
+  .last-bbs-columns-3{
+    column-count: 3
+  }
+}
+.last-bbs-columns-content{
+  break-inside:avoid;
+}

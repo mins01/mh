@@ -99,7 +99,7 @@ class Custom extends MX_Controller {
 		);
 		$this->config->set_item('layout_hide',false);
 		$this->config->set_item('layout_title','');
-		$this->load->view('mh/custom/last_bbs',$output);
+		$this->load->view('mh/custom/last_bbs_columns',$output);
 
 	}
 
