@@ -60,7 +60,11 @@ define('ADMIN_LOGIN_SECURE',false);
 
 
 define('ENCRYPTION_KEY_PREFIX','MH_');
-define('_FORM_DIR',dirname(__FILE__).'/../../_form');
+define('_FORM_DIR',APPPATH.'../_form');
+define('_FILES_DIR',APPPATH.'../_files');
+define('_LOGS_DIR',APPPATH.'../_logs');
+define('_TMP_DIR',APPPATH.'../_tmp');
+define('_TEMP_DIR',APPPATH.'../_temp');
 
 date_default_timezone_set('Asia/Seoul');
 
