@@ -2,7 +2,7 @@
 //$bm_row,$b_row
 //$start_num,$count
 if($mode=='write'||$mode=='answer'){
-	if(isset($get['dt'])){
+	if(isset($get['dt']) && !isset($b_row['b_date_st'][0])){
 		$b_row['b_date_st'] =$b_row['b_date_ed'] = $get['dt'];
 	}
 }
