@@ -45,11 +45,18 @@ class Cache_admin extends MX_Controller {
     $this->load->view($skin,array(
       "USE_CACHE"=>USE_CACHE,
       "USE_MH_CACHE"=>USE_MH_CACHE,
-      'cache_info'=>$this->cache->cache_info(),
+			'cache_info'=>$this->mh_cache->cache_info(),
+      // 'cache_info'=>$this->mh_cache->cache_detail_info(),
 		));
   }
   public function process_clean(){
-    $this->cache->clean();
+    $this->mh_cache->clean();
+    $referer = isset($_SERVER['HTTP_REFERER'][0])?$_SERVER['HTTP_REFERER']:ADMIN_URI_PREFIX;
+    header('Location: '.$referer);
+    exit;
+  }
+	public function process_readjust(){
+    $this->mh_cache->readjust();
     $referer = isset($_SERVER['HTTP_REFERER'][0])?$_SERVER['HTTP_REFERER']:ADMIN_URI_PREFIX;
     header('Location: '.$referer);
     exit;

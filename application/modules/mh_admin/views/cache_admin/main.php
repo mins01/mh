@@ -4,7 +4,8 @@
   <li class="list-group-item">전역 캐시 설정 : <?=$USE_CACHE?'ON':'OFF'?></li>
   <li class="list-group-item">mh_cache 설정 : <?=$USE_MH_CACHE?'ON':'OFF'?></li>
   <li class="list-group-item">
-    <a href="?process=clean" class="btn btn-info">캐시 클리어</a>
+    <a href="?process=clean" class="btn btn-danger">캐시 클리어</a>
+    <a href="?process=readjust" class="btn btn-warning">캐시 정리(오래된 캐시 삭제)</a>
   </li>
 </ul>
 
@@ -12,8 +13,28 @@
   <li class="list-group-item active">캐싱 목록 (<?=count($cache_info)?>)</li>
   <? foreach($cache_info as $r): ?>
     <li class="list-group-item">
-      <div>~<?=date('Y-m-d H:i:s',$r['date'])?> ( <?=$r['date']-time()?> sec )</div>
-      <? print_r($r); ?>
+
+      <span>date: <?=date('Y-m-d H:i:s',$r['date'])?> ( <?=$r['date']-time()?> sec )</span>
+      / <span>expire: <?=date('Y-m-d H:i:s',$r['expire'])?> ( <?=$r['expire']-time()?> sec )</span>
+      / <span>size: <?=number_format($r['size'])?> Byte</span>
+      /
+      <?
+      if($r['expired']):
+        ?>
+        <b class="text-danger">expired!</b>
+        <?
+      else:
+        ?>
+        <b class="text-success">cached</b>
+        <?
+      endif;
+      ?>
+      <div>
+        <span>name: <?=html_escape($r['name'])?></span>
+      </div>
+
+
+      <? // print_r($r); ?>
     </li>
   <? endforeach; ?>
 

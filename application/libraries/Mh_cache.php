@@ -6,7 +6,7 @@ if(!defined('USE_MH_CACHE')){
 
 class Mh_cache {
 	private $act_count = 0;
-  private $CI = 0;
+  private $CI = null;
   public $use_cache = false; //사용유무
   public $use_log_header = false; //해더로 로그 출력
 	public function __construct()
@@ -62,7 +62,25 @@ class Mh_cache {
 		$r = $this->CI->cache->clean();
 		return $r;
 	}
-	public function cache_info(){
-		return $this->CI->cache->cache_info();
+	// public function cache_info(){
+  //   // return $this->cache_detail_info();
+	// 	return $this->CI->cache->cache_info();
+	// }
+  public function cache_info(){
+		$rows = $this->CI->cache->cache_info();
+    $tm = time();
+    foreach($rows as & $r){
+      $r = array_merge($r,$this->CI->cache->get_metadata($r['name']));
+      $r['expired'] = ($tm > $r['expire']);
+      unset($r);
+    }
+    return $rows;
 	}
+
+  public function readjust(){
+    $rows = $this->CI->cache->cache_info();
+    foreach($rows as & $r){
+      $this->CI->cache->get($r['name']);
+    }
+  }
 }
