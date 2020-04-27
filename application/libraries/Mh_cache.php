@@ -9,6 +9,8 @@ class Mh_cache {
   private $CI = null;
   public $use_cache = false; //사용유무
   public $use_log_header = false; //해더로 로그 출력
+  public $auto_readjust_time = 3600; //자동 정리 시간
+  private $auto_readjust_meta = null;
 	public function __construct()
 	{
     $this->CI =& get_instance();
@@ -43,6 +45,7 @@ class Mh_cache {
 			$this->header("X-Cache-{$this->act_count}: [Saved] {$key} ({$ttl})");
 		}
 		$this->act_count++;
+    $this->auto_readjust();
 		return $r;
 	}
 	public function delete($key){
@@ -77,6 +80,22 @@ class Mh_cache {
     return $rows;
 	}
 
+  public function auto_readjust(){
+    $fn = "__auto_readjust__";
+    if($this->auto_readjust_meta == null){
+      $this->auto_readjust_meta = $this->CI->cache->get_metadata($fn);
+    }
+    if($this->auto_readjust_meta == null){
+      $this->CI->cache->save($fn,1,$this->auto_readjust_time);
+      // exit('정리0');
+    }else{
+      if($this->auto_readjust_meta['expire'] < time()){
+        $this->readjust();
+        $this->CI->cache->save($fn,1,$this->auto_readjust_time);
+        // exit('정리');
+      }
+    }
+  }
   public function readjust(){
     $rows = $this->CI->cache->cache_info();
     foreach($rows as & $r){
