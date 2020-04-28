@@ -69,13 +69,16 @@ class Mh_cache {
   //   // return $this->cache_detail_info();
 	// 	return $this->CI->cache->cache_info();
 	// }
-  public function cache_info(){
+  public function cache_info($detail=false){
 		$rows = $this->CI->cache->cache_info();
     $tm = time();
-    foreach($rows as & $r){
-      $r = array_merge($r,$this->CI->cache->get_metadata($r['name']));
-      $r['expired'] = ($tm > $r['expire']);
-      unset($r);
+    if($detail){
+      foreach($rows as & $r){
+        $r = array_merge($r,$this->CI->cache->get_metadata($r['name']));
+        $r['ttl'] = $r['expire'] - $r['mtime'];
+        $r['expired'] = ($tm > $r['expire']);
+        unset($r);
+      }
     }
     return $rows;
 	}
@@ -97,9 +100,12 @@ class Mh_cache {
     }
   }
   public function readjust(){
-    $rows = $this->CI->cache->cache_info();
+    $rows = $this->cache_info(true);
     foreach($rows as & $r){
-      $this->CI->cache->get($r['name']);
+      // $this->CI->cache->get($r['name']);
+      if($r['expired']){
+        $this->CI->cache->delete($r['name']);
+      }
     }
   }
 }

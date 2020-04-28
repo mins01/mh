@@ -8,14 +8,16 @@
     <a href="?process=readjust" class="btn btn-warning">캐시 정리(오래된 캐시 삭제)</a>
   </li>
 </ul>
-
+<?
+$cnt_cache_info = count($cache_info);
+?>
 <ul class="list-group">
-  <li class="list-group-item active">캐싱 목록 (<?=count($cache_info)?>)</li>
+  <li class="list-group-item active">캐싱 목록 [ All: <?=count($cache_info)?> / cached: <?=($cnt_cached)?> (<?=round($cnt_cached/$cnt_cache_info*100,2)?>%) / expired: <?=($cnt_expired)?> (<?=round($cnt_expired/$cnt_cache_info*100,2)?>%) ] </li>
   <? foreach($cache_info as $r): ?>
     <li class="list-group-item">
-
-      <span>date: <?=date('Y-m-d H:i:s',$r['date'])?> ( <?=$r['date']-time()?> sec )</span>
+      <span>date: <?=date('Y-m-d H:i:s',$r['date'])?></span>
       / <span>expire: <?=date('Y-m-d H:i:s',$r['expire'])?> ( <?=$r['expire']-time()?> sec )</span>
+      / <span>TTL: <?=$r['ttl']?> sec</span>
       / <span>size: <?=number_format($r['size'])?> Byte</span>
       /
       <?

@@ -42,10 +42,22 @@ class Cache_admin extends MX_Controller {
 
   public function mode_main(){
     $skin = 'mh_admin/cache_admin/main';
+		$cache_info = $this->mh_cache->cache_info(true);
+		$cnt_cached = 0;
+		$cnt_expired = 0;
+		foreach ($cache_info as $r) {
+			if($r['expired']){
+				$cnt_expired++;
+			}else{
+				$cnt_cached++;
+			}
+		}
     $this->load->view($skin,array(
       "USE_CACHE"=>USE_CACHE,
       "USE_MH_CACHE"=>USE_MH_CACHE,
-			'cache_info'=>$this->mh_cache->cache_info(),
+			'cnt_cached'=>$cnt_cached,
+			'cnt_expired'=>$cnt_expired,
+			'cache_info'=>$cache_info,
       // 'cache_info'=>$this->mh_cache->cache_detail_info(),
 		));
   }
