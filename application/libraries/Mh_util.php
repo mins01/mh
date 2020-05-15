@@ -88,13 +88,24 @@ class Mh_util{
 	* 최대 10번 재처리
 	*/
 	static function convertOneventXSS($str){
-		$p = '/((?:<)(?:[^>]*))(\bon)((?:[^=\s]*)(?:=[^>]*>))/im';
-		$r = '$1xsson$3';
-		$shp = '/(?:<)(?:[^>]*)(\bon)(?:[^=\s]*)(?:=[^>]*>)/im';
+		// $str='<div onclikc="ssdad" class=" onzcxzxc ontt" xxonxx ="asd" onxxx ="asd" src=" onasdasd-asdas /on/sasd asd zx on the  "></div>';
+		// var_dump($str);
+		// exit;
+		// $p = '/((?:<)(?:[^>]*)\s+)(\bon)((?:[^=]*)+(?:=[^>]*>))/im';
+		$p = '/(<[^\s>]*[^>]*\s+)(\bon)([^>="\']+)(=[^>]*>)/im';
+		$r = '$1xsson$3$4';
+		// $shp = '/(?:<)(?:[^>]*\s+)(\bon)(?:[^=]*)+(?:=[^>]*>)/im';
+		$shp = '/(?:<[^\s>]*[^>]*\s+)(\bon)(?:[^>="\']+)(?:=[^>]*>)/im';
+		// $searched = null;
+		// preg_match_all($shp,$str,$searched);
+		// print_r($searched);
+
 		$limit = 100;
 		while(preg_match($shp,$str) && $limit-- > 0){
 			$str = preg_replace($p,$r,$str);
 		}
+		// var_dump($str);
+		// exit;
 		return $str;
 	}
 	/** XSS Style 회피용
@@ -157,7 +168,7 @@ class Mh_util{
 			return $str;
 		}
 	}
-	
+
 	/**
 	 * OGP parser
 	 * <meta property="og:title" content="공대여자 홈 : 메인">
@@ -173,7 +184,7 @@ class Mh_util{
 		// if(!class_exists('XML2Array')){
 		// 	require_once(dirname(__FILE__).'XML2Array.php');
 		// }
-		
+
 		$ogp = array();
 		$metas = array();
 		$match = array();
@@ -199,7 +210,7 @@ class Mh_util{
 					$ogp[$property]=isset($meta['content'])?htmlspecialchars_decode(html_entity_decode($meta['content'],ENT_QUOTES)):'';
 					$ogp[$property.'s'] = array();
 				}
-				
+
 				$ogp[$property.'s'][]=isset($meta['content'])?htmlspecialchars_decode(html_entity_decode($meta['content'],ENT_QUOTES)):'';
 			}else{
 				$metas[$property]=isset($meta['content'])?htmlspecialchars_decode(html_entity_decode($meta['content'],ENT_QUOTES)):'';
@@ -213,7 +224,7 @@ class Mh_util{
 		if(!isset($ogp['og:description']) && isset($metas['description'])){
 			$ogp['og:description'] = htmlspecialchars_decode(html_entity_decode($metas['description'],ENT_QUOTES));
 		}
-		
+
 		return $ogp;
 	}
 }
