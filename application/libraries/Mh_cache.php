@@ -50,16 +50,19 @@ class Mh_cache {
 			$this->header("X-Cache-{$this->act_count}: [Saved] {$key} ({$ttl})");
 		}
 		$this->act_count++;
-
-    if($this->use_file_driver){
-      $path = $this->file_cache_path.'/'.$key;
-      if(is_file($path)){
-        chmod($path,0777);
-      }
-    }
+    $this->chmod0777($key);
     $this->auto_readjust();
 		return $r;
 	}
+  public function chmod0777($key){
+    if($this->use_file_driver){
+      $path = $this->file_cache_path.'/'.$key;
+      if(is_file($path)){
+        return chmod($path,0777);
+      }
+    }
+    return;
+  }
 	public function delete($key){
 		if(!$this->use_cache){return null;}
 		$key = preg_replace('/[^\w\s\.]/','_',$key);
@@ -102,11 +105,13 @@ class Mh_cache {
     }
     if($this->auto_readjust_meta == null){
       $this->CI->cache->save($fn,1,$this->auto_readjust_time);
+      $this->chmod0777($fn);
       // exit('정리0');
     }else{
       if($this->auto_readjust_meta['expire'] < time()){
         $this->readjust();
         $this->CI->cache->save($fn,1,$this->auto_readjust_time);
+        $this->chmod0777($fn);
         // exit('정리');
       }
     }
