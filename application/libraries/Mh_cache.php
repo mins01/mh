@@ -45,6 +45,11 @@ class Mh_cache {
 			$this->header("X-Cache-{$this->act_count}: [Saved] {$key} ({$ttl})");
 		}
 		$this->act_count++;
+
+    $r = $this->CI->cache->get_metadata($key);
+    if(isset($r['server_path'])){
+      chmod($r['server_path'],0777);
+    }
     $this->auto_readjust();
 		return $r;
 	}
