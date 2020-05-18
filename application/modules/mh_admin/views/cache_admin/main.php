@@ -13,7 +13,9 @@ $cnt_cache_info = count($cache_info);
 ?>
 <ul class="list-group">
   <li class="list-group-item active">캐싱 목록 [ All: <?=count($cache_info)?> / cached: <?=($cnt_cached)?> (<?=round($cnt_cached/$cnt_cache_info*100,2)?>%) / expired: <?=($cnt_expired)?> (<?=round($cnt_expired/$cnt_cache_info*100,2)?>%) ] </li>
-  <? foreach($cache_info as $r): ?>
+  <?
+  foreach($cache_info as $r): 
+    ?>
     <li class="list-group-item">
       <span>date: <?=date('Y-m-d H:i:s',$r['date'])?></span>
       / <span>expire: <?=date('Y-m-d H:i:s',$r['expire'])?> ( <?=$r['expire']-time()?> sec )</span>
@@ -38,6 +40,8 @@ $cnt_cache_info = count($cache_info);
 
       <? // print_r($r); ?>
     </li>
-  <? endforeach; ?>
+    <?
+  endforeach;
+  ?>
 
 </ul>
