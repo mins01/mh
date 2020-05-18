@@ -11,12 +11,17 @@ class Mh_cache {
   public $use_log_header = false; //해더로 로그 출력
   public $auto_readjust_time = 3600; //자동 정리 시간
   private $auto_readjust_meta = null;
+  public $file_cache_path = '';
+  public $use_file_driver = false;
 	public function __construct()
 	{
     $this->CI =& get_instance();
 		$this->CI->load->driver('cache', array('adapter' => 'file', 'backup' => 'file'));
     $this->use_cache = USE_MH_CACHE;
 		//print_r($this->CI->cache);
+    $tmp_path = $this->CI->config->item('cache_path');
+    $this->file_cache_path = ($tmp_path === '') ? APPPATH.'cache/' : $tmp_path;
+    $this->use_file_driver = true;
 	}
   public function header($msg){
     if($this->use_log_header){
@@ -46,9 +51,11 @@ class Mh_cache {
 		}
 		$this->act_count++;
 
-    $r = $this->CI->cache->get_metadata($key);
-    if(isset($r['server_path'])){
-      chmod($r['server_path'],0777);
+    if($this->use_file_driver){
+      $path = $this->file_cache_path.'/'.$key;
+      if(is_file($path)){
+        chmod($path,0777);
+      }
     }
     $this->auto_readjust();
 		return $r;
