@@ -74,11 +74,12 @@ class Email_sender extends MX_Controller {
     // $posts = $this->input->post();
     // $from = $this->input->post('email_from');
     // $from = SITE_ADMIN_MAIL;
-    $from = $this->input->post('email_from');
-    $tos = $this->input->post('email_tos');
-    $subject = $this->input->post('email_subject');
-    $message = $this->input->post('email_message');
-    $mailtype = $this->input->post('email_mailtype');
+    $from = $this->input->post('from');
+    $tos = $this->input->post('tos');
+    $tos = preg_split('/(\r\n|\r|\n)/',$tos);
+    $subject = $this->input->post('subject');
+    $message = $this->input->post('message');
+    $mailtype = $this->input->post('mailtype');
     $mail_conf = array(
       'mailtype'=>$mailtype,
     );
@@ -95,6 +96,12 @@ class Email_sender extends MX_Controller {
         'binds'=>$binds,
       );
       $res = $this->send_mail($send_data,$mail_conf);
+      $this->mh_log->info(array(
+      'title'=>__METHOD__,
+      'msg'=>'메일발송',
+      'result'=>$res['result']?'성공':'실패',
+      'res'=>$res
+      ));
       $ress[] =$res;
     }
     // print_r($ress);
@@ -119,6 +126,7 @@ class Email_sender extends MX_Controller {
       'message'=>'',
       'binds'=>'',
     ),$send_data);
+    // print_r($send_data);exit;
      $send_data['from'] = trim($send_data['from']);
      if(!isset($send_data['from'][0])){
          $res = array('result'=>false,'to'=>$send_data['to'],'headers'=>'발송자 메일 주소가 없습니다.');
