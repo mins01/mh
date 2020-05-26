@@ -5,16 +5,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // 화이트 도메인 설정이 필요함.
 	$config['mail']= array(
 		'protocol'=> 'smtp',//smtp,mail,sendmail
-		'smtp_host'=> 'ssl://smtp.gmail.com',
-		'smtp_port'=> '465' , //465, 587
+		'smtp_host'=> 'smtp.gmail.com',
+		'smtp_port'=> '465', //465, 587
 		'smtp_user'=> 'xxxx',
 		'smtp_pass'=> 'xxxx',
-		'smtp_from_name'=>'xxxx',
-		
+		// 'smtp_from_name'=>'xxxx',
 		'smtp_timeout'=> 5,
 		//'smtp_crypto'=>'tls', //tls,ssl
-		'charset'=>'utf-8',
-		'mailtype'=>'html',
+		'smtp_crypto'=>'ssl',
+		// 'charset'=>'utf-8',
+		'mailtype'=>'html'
 	);
 
 
