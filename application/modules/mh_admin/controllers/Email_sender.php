@@ -59,16 +59,6 @@ class Email_sender extends MX_Controller {
       )
     );
   }
-  // private function process_form($conf,$param){
-  //   echo 'form';
-  //   $to='new10@ggook.com,mins01.lycos.co.kr@gmail.com';
-  //   $subject='테스트메일 제목';
-  //   $message='테스트메일 메세지<br>{{date}}';
-  //   $binds=array(
-  //     'date'=>date('Y-m-d H:i:s'),
-  //   );
-  //   $this->send_mail($smtp_user,$smtp_pass,$from,$to,$subject,$message,$binds);
-  // }
 
   private function process_send($conf,$param){
     // $posts = $this->input->post();
@@ -79,10 +69,13 @@ class Email_sender extends MX_Controller {
     $tos = preg_split('/(\r\n|\r|\n)/',$tos);
     $subject = $this->input->post('subject');
     $message = $this->input->post('message');
-    $mailtype = $this->input->post('mailtype');
-    $mail_conf = array(
-      'mailtype'=>$mailtype,
-    );
+
+    $mail_conf = $this->input->post();
+    unset($mail_conf['process'],$mail_conf['from'],$mail_conf['tos'],$mail_conf['subject'],$mail_conf['message']);
+    // $mailtype = $this->input->post('mailtype');
+    // $mail_conf = array(
+    //   'mailtype'=>$mailtype,
+    // );
     $binds = array();
 // header('Content-Type: text/plain');
     $ress = array();
