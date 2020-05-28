@@ -187,7 +187,10 @@ $ci_path = realpath( dirname(__FILE__) . '/../codeigniter3');
  */
 	// $assign_to_config['name_of_config_item'] = 'value of config item';
 
-//require_once($ci_path.'/conf/inc.conf.php');
+	//require_once($ci_path.'/conf/inc.conf.php');
+	require_once($application_folder.'/config/assign_config_cli.php');
+
+	// $assign_to_config['permitted_uri_chars'] = ''; //cli 에서는 permitted_uri_chars 제한 안함
 
 // --------------------------------------------------------------------
 // END OF USER CONFIGURABLE SETTINGS.  DO NOT EDIT BELOW THIS LINE
