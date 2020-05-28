@@ -49,18 +49,26 @@ class Email_sender extends MX_Controller {
   }
 
   public function mode_enc_str($conf,$param){
-    $plain_text = $this->input->post('plain_text');
+    $input_plain_text = $this->input->post('input_plain_text');
     $cipher_text = '';
     $checked_enc = false;
-    if(isset($plain_text[0])){
-      $cipher_text = $this->enc_str($plain_text);
-      $checked_enc = $this->dec_str($cipher_text) == $plain_text;
+    if(isset($input_plain_text[0])){
+      $cipher_text = $this->enc_str($input_plain_text);
+      $checked_enc = $this->dec_str($cipher_text) == $input_plain_text;
     }
+    $input_cipher_text = $this->input->post('input_cipher_text');
+    $plain_text = '';
+    $checked_dec = false;
+    if(isset($input_cipher_text[0])){
+      $plain_text = $this->dec_str($input_cipher_text);
+    }
+
     $this->load->view('mh_admin/email_sender/enc_str',
       array(
         'base_url'=>$this->base_url,
         'cipher_text'=>$cipher_text,
         'checked_enc'=>$checked_enc,
+        'plain_text'=>$plain_text,
       )
     );
   }

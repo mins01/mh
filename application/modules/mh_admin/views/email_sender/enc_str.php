@@ -8,13 +8,11 @@
       <h4>문자열 암호화</h4>
       <div class="input-group">
         <span class="input-group-addon" >입력 문자열</span>
-        <input type="password" class="form-control" name="plain_text" placeholder="******" >
+        <input type="password" class="form-control" name="input_plain_text" placeholder="******" >
         <span class="input-group-btn">
           <button class="btn btn-success btn-add"  type="submit">암호화</button>
         </span>
       </div>
-    </li>
-    <li class="list-group-item">
       <h4>결과</h4>
       <div>
         <textarea readonly rows="3"  class="form-control"><?=html_escape($cipher_text)?></textarea>
@@ -22,7 +20,23 @@
       <div>
         검증결과: <?=$checked_enc?'OK':'FAIL'?>
       </div>
+    </li>
+    <li class="list-group-item">
 
+    </li>
+    <li class="list-group-item">
+      <h4>문자열 복호화</h4>
+      <div class="input-group">
+        <span class="input-group-addon" >입력 문자열</span>
+        <input type="password" class="form-control" name="input_cipher_text" placeholder="******" >
+        <span class="input-group-btn">
+          <button class="btn btn-success btn-add"  type="submit">암호화</button>
+        </span>
+      </div>
+      <h4>결과</h4>
+      <div>
+        <textarea readonly rows="3"  class="form-control"><?=html_escape($plain_text)?></textarea>
+      </div>
     </li>
   </ul>
 </form>
