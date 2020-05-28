@@ -5,7 +5,7 @@
 <form action="?" method="post" class="form_email" >
   <input name="process" type="hidden" value="send">
   <ul class="list-group">
-    <li class="list-group-item">
+    <!-- <li class="list-group-item">
       <h4>보내는사람 이메일</h4>
       <div class="input-group">
         <span class="input-group-addon" >보내는사람 이메일</span>
@@ -15,7 +15,26 @@
         </span>
       </div>
       <div class="text-danger">서버에 따라서 보내는 이메일 주소는 바뀔 수 있습니다.</div>
-
+    </li> -->
+    <li class="list-group-item">
+      <h4>보내는 메일 계정</h4>
+      <div class="input-group">
+        <span class="input-group-addon" >메일 계정</span>
+        <select name="mail_account" class="form-control" placeholder="***@mail.com" required value="<?=html_escape(SITE_ADMIN_MAIL)?>" >
+          <option value="">#SELECT!#</option>
+          <?
+          foreach ($mail_accounts as $k => $v):
+            ?>
+            <option value="<?=html_escape($k)?>"><?=html_escape($k)?></option>
+            <?
+          endforeach;
+          ?>
+        </select>
+        <span class="input-group-btn">
+          <button class="btn btn-success btn-add"  type="submit">발송</button>
+        </span>
+      </div>
+      <div class="text-danger">서버에 따라서 보내는 이메일 주소는 바뀔 수 있습니다.</div>
     </li>
     <li class="list-group-item">
       <h4>대상 이메일</h4>
@@ -61,7 +80,7 @@
       <div>
         <div class="input-group input-group_mail_tos" id="input-group_mail_tos">
           <span class="input-group-addon" >메일 제목</span>
-          <input type="text" name="subject" class="form-control" placeholder="[***] *** 안내 메일입니다." >
+          <input type="text" name="subject" class="form-control" placeholder="[***] *** 안내 메일입니다."  required>
         </div>
       </div>
       <div style="margin-top:0.5em">
