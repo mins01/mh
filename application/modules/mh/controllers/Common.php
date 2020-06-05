@@ -13,22 +13,8 @@ class Common extends MX_Controller {
 		$this->load->helper('cookie');
 		$this->check_default_allowd_ip();
 
-		$this->enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
-		$enc_conf = array(
-			'driver' => 'openssl', //가능하면 openssl 모듈을 사용한다
-			// 'driver' => 'mcrypt', //가능하면 mcrypt 모듈을 사용한다
-			'cipher' => 'aes-256',
-			'mode' => 'CBC',
-			'key' => $this->enc_key,
-			'hmac' => false,
-			'hmac_digest' => 'sha256',
-			'hmac_key' => false
-		);
-		if (version_compare(PHP_VERSION, '5.3.0','<')) {
-			$enc_conf['driver']='mcrypt';
-		}
-
-		$this->load->library('encryption',$enc_conf);
+		$enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
+		$this->load->library('mh_encryption',array('key'=>$enc_key));
 
 		$this->load->model('mh/menu_model','menu_m');
 		$this->menu_m->load_db('menu',SITE_URI_PREFIX);
@@ -167,16 +153,10 @@ class Common extends MX_Controller {
 	}
 
 	public function enc_str($plain_text){
-		$cipher_text = $this->encryption->encrypt(@serialize($plain_text));
-		return $cipher_text;
-		// return @$this->encrypt->encode(@serialize( $plain_text),$this->enc_key); //old
-		//return (@serialize( $plain_text));
+		return $this->mh_encryption->enc($plain_text);
 	}
 	public function dec_str($cipher_text){
-		$plain_text = @unserialize($this->encryption->decrypt($cipher_text));
-		return $plain_text;
-		// return @unserialize(@$this->encrypt->decode($ciphertext,$this->enc_key)); //old
-		//return @unserialize(($ciphertext));
+		return $this->mh_encryption->dec($cipher_text);
 	}
 	//-- 로그인 세션 설정
 	public function set_login_at_session($str,$expire=null){
