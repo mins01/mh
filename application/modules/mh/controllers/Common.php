@@ -13,8 +13,7 @@ class Common extends MX_Controller {
 		$this->load->helper('cookie');
 		$this->check_default_allowd_ip();
 
-		$enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
-		$this->load->library('mh_encryption',array('key'=>$enc_key));
+		$this->load->library('mh_encryption');
 
 		$this->load->model('mh/menu_model','menu_m');
 		$this->menu_m->load_db('menu',SITE_URI_PREFIX);

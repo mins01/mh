@@ -11,8 +11,7 @@ class Mh_mailer{
 		$this->ci = get_instance();
 		// $this->ci->load->library('encryption',$enc_conf);
 		$this->ci->load->library('email');
-		$enc_key = substr(md5(ENCRYPTION_KEY_PREFIX.__CLASS__),0,32);
-		$this->ci->load->library('mh_encryption',array('key'=>$enc_key));
+		$this->ci->load->library('mh_encryption');
 	}
 	public function get_mail_conf($mail_account){
 		if($this->mail_accounts == null){

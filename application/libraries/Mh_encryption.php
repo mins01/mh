@@ -13,7 +13,7 @@ class Mh_encryption{
 			// 'driver' => 'mcrypt', //가능하면 mcrypt 모듈을 사용한다
 			'cipher' => 'aes-256',
 			'mode' => 'CBC',
-			'key' => '123456789012345678901234567890123456789012', //32길이 문자열 (32를 넘어가면 32길이까지만 사용된다.)
+			// 'key' => '123456789012345678901234567890123456789012', //32길이 문자열 (32를 넘어가면 32길이까지만 사용된다.) // $config['encryption_key'] 이걸 사용한다.
 			'hmac' => false,
 			'hmac_digest' => 'sha256',
 			'hmac_key' => false
