@@ -7,6 +7,9 @@ $config['mail_accounts']= array(
   //https://support.google.com/mail/answer/7126229?hl=ko
   'gmail' => array(
     'from'=>'***@gmail.com',
+    'from_name'=> '보내는사람이름',
+    'return_path'=> '***@gmail.com',
+
     'protocol'=> 'smtp',//smtp,mail,sendmail
     'smtp_host'=> 'smtp.gmail.com',
     'smtp_port'=> '465', //465, 587
@@ -25,6 +28,9 @@ $config['mail_accounts']= array(
   // https://help.naver.com/support/contents/contents.help?serviceNo=2342&categoryNo=2288
   'naver' => array(
     'from'=>'***@naver.com',
+    'from_name'=> '보내는사람이름',
+    'return_path'=> '***@naver.com',
+
     'protocol'=> 'smtp',//smtp,mail,sendmail
     'smtp_host'=> 'smtp.naver.com',
     'smtp_port'=> '465', //465, 587
