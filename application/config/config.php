@@ -307,6 +307,10 @@ $config['cache_query_string'] = FALSE;
 | http://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
+/*
+$ php -r "echo md5('20200605');"
+98ca4c5ff2a8a1032920d977947f6537
+ */
 $config['encryption_key'] = '98ca4c5ff2a8a1032920d977947f6537'; // 바꾸면 encryption 사용하는 모든 값이 바뀌니 주의!
 
 /*
