@@ -10,6 +10,7 @@ class Email_sender extends MX_Controller {
 	{
 		$this->load->helper('form');
 
+    $this->load->library('mh_mailer');
     // $this->load->model('mh/recommend_model','recommend_m');
 		// $this->load->model('mh/recommend_catalogs_model','rc_m');
 	}
@@ -74,10 +75,12 @@ class Email_sender extends MX_Controller {
   }
 
   public function enc_str($plain_text){
-		return $this->common->enc_str($plain_text);
+		// return $this->common->enc_str($plain_text);
+		return $this->mh_mailer->enc($plain_text);
 	}
 	public function dec_str($cipher_text){
-		return $this->common->dec_str($cipher_text);
+		// return $this->common->dec_str($cipher_text);
+    return $this->mh_mailer->dec($cipher_text);
 	}
 
   private function mode_form($conf,$param){
@@ -108,17 +111,22 @@ class Email_sender extends MX_Controller {
       show_error('필수값 mail_account가 없습니다.');
     }
 
-    $mail_accounts = $this->config->load('mail_accounts'); // 이메일 설정
-    $mail_conf = $mail_accounts[$mail_account];
-    if(!isset($mail_accounts[$mail_account])){
-      show_error('존재하지 않는 mail_account입니다.');
-    }
-    $from = $mail_conf['from'];
-    if(isset($mail_conf['enc_smtp_pass'])){
-      $mail_conf['smtp_pass'] = $this->dec_str($mail_conf['enc_smtp_pass']);
-      // print_r($mail_conf['smtp_pass']);
-    }
-    unset($mail_conf['process'],$mail_conf['from'],$mail_conf['tos'],$mail_conf['subject'],$mail_conf['message']);
+    // $mail_accounts = $this->config->load('mail_accounts'); // 이메일 설정
+    // $mail_conf = $mail_accounts[$mail_account];
+    // if(!isset($mail_accounts[$mail_account])){
+    //   show_error('존재하지 않는 mail_account입니다.');
+    // }
+    // $from = $mail_conf['from'];
+    // if(isset($mail_conf['enc_smtp_pass'])){
+    //   $mail_conf['smtp_pass'] = $this->dec_str($mail_conf['enc_smtp_pass']);
+    //   // print_r($mail_conf['smtp_pass']);
+    // }
+    $mail_conf = $this->mh_mailer->get_mail_conf($mail_account);
+    // $from = $mail_conf['from'];
+    // $from_name = isset($mail_conf['from_name'])?$mail_conf['from_name']:'';
+    // $return_path = isset($mail_conf['return_path'])?$mail_conf['return_path']:null;
+
+    // unset($mail_conf['process'],$mail_conf['from'],$mail_conf['from_name'],$mail_conf['return_path'],$mail_conf['tos'],$mail_conf['subject'],$mail_conf['message']);
     $mailtype = $this->input->post('mailtype');
     $mail_conf['mailtype'] = $mailtype;
 
@@ -128,7 +136,9 @@ class Email_sender extends MX_Controller {
     foreach ($tos as $to) {
       $to = preg_replace('/(\s|\n)/','',$to);
       $send_data = array(
-        'from'=>$from,
+        // 'from'=>$from, //자동설정됨
+        // 'from_name'=>$from_name,
+        // 'return_path'=>$return_path,
         'to'=>$to,
         'subject'=>$subject,
         'message'=>$message,
@@ -155,54 +165,56 @@ class Email_sender extends MX_Controller {
   }
 
 
-
-
   public function send_mail($send_data,$mail_conf = array()){
-    // http://www.ciboard.co.kr/user_guide/kr/libraries/email.html
-    $send_data = array_merge(array(
-      'from'=>'',
-      'to'=>'',
-      'subject'=>'',
-      'message'=>'',
-      'binds'=>'',
-    ),$send_data);
-    // print_r($send_data);exit;
-     $send_data['from'] = trim($send_data['from']);
-     if(!isset($send_data['from'][0])){
-         $res = array('result'=>false,'to'=>$send_data['to'],'headers'=>'발송자 메일 주소가 없습니다.');
-         return $res;
-     }
-    $send_data['to'] = trim($send_data['to']);
-    if(!isset($send_data['to'][0])){
-        $res = array('result'=>false,'to'=>$send_data['to'],'headers'=>'빈 주소로 메일을 발송 할 수 없습니다.');
-        return $res;
-    }
-    if(count($send_data['binds'])>0){
-      $keys = array_keys($send_data['binds']);
-  		foreach($keys as & $v){
-  			$v = '{{'.$v.'}}';
-  		}
-  		$message = str_replace($keys,array_values($send_data['binds']),$message);
-    }
-		$this->load->library('email');
-		$this->config->load('mail'); // 이메일 설정
-		$mail_conf = array_merge($this->config->item('mail'),$mail_conf);
-    $mail_conf['validate'] = true;
-    // $mail_conf['smtp_user'] = $smtp_user;
-    // $mail_conf['smtp_pass'] = $smtp_pass;
+    return $this->mh_mailer->send($send_data,$mail_conf);
+  }
 
-		$this->email->initialize($mail_conf);
-		$this->email->set_newline("\r\n");
-    // $this->email->from(SITE_ADMIN_MAIL);
-		$this->email->from($send_data['from']);
-		$this->email->to($send_data['to']);
-		$this->email->subject($send_data['subject']);
-		$this->email->message($send_data['message']);
-
-    $r = @$this->email->send();
-    $res = array('result'=>$r,'to'=>$send_data['to'],'headers'=>$this->email->print_debugger(array('headers')));
-    return $res;
-	}
+  // public function send_mail($send_data,$mail_conf = array()){
+  //   // http://www.ciboard.co.kr/user_guide/kr/libraries/email.html
+  //   $send_data = array_merge(array(
+  //     'from'=>'',
+  //     'to'=>'',
+  //     'subject'=>'',
+  //     'message'=>'',
+  //     'binds'=>'',
+  //   ),$send_data);
+  //   // print_r($send_data);exit;
+  //    $send_data['from'] = trim($send_data['from']);
+  //    if(!isset($send_data['from'][0])){
+  //        $res = array('result'=>false,'to'=>$send_data['to'],'headers'=>'발송자 메일 주소가 없습니다.');
+  //        return $res;
+  //    }
+  //   $send_data['to'] = trim($send_data['to']);
+  //   if(!isset($send_data['to'][0])){
+  //       $res = array('result'=>false,'to'=>$send_data['to'],'headers'=>'빈 주소로 메일을 발송 할 수 없습니다.');
+  //       return $res;
+  //   }
+  //   if(count($send_data['binds'])>0){
+  //     $keys = array_keys($send_data['binds']);
+  // 		foreach($keys as & $v){
+  // 			$v = '{{'.$v.'}}';
+  // 		}
+  // 		$message = str_replace($keys,array_values($send_data['binds']),$message);
+  //   }
+	// 	$this->load->library('email');
+	// 	$this->config->load('mail'); // 이메일 설정
+	// 	$mail_conf = array_merge($this->config->item('mail'),$mail_conf);
+  //   $mail_conf['validate'] = true;
+  //   // $mail_conf['smtp_user'] = $smtp_user;
+  //   // $mail_conf['smtp_pass'] = $smtp_pass;
+  //
+	// 	$this->email->initialize($mail_conf);
+	// 	$this->email->set_newline("\r\n");
+  //   // $this->email->from(SITE_ADMIN_MAIL);
+	// 	$this->email->from($send_data['from']);
+	// 	$this->email->to($send_data['to']);
+	// 	$this->email->subject($send_data['subject']);
+	// 	$this->email->message($send_data['message']);
+  //
+  //   $r = @$this->email->send();
+  //   $res = array('result'=>$r,'to'=>$send_data['to'],'headers'=>$this->email->print_debugger(array('headers')));
+  //   return $res;
+	// }
 
 
 }
