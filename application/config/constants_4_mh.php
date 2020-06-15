@@ -34,11 +34,8 @@ if(IS_DEV){
 	define('LOGIN_NAME','SESS_MH');
 }
 
-// define('DEFAULT_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
-define('FRONT_LAYOUT','mins01'); //ftonr 기본 레이아웃
-// define('MEMBER_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
-define('MEMBER_LAYOUT','mins01'); //Member layout 설정. 기본:default, (empty ...)
-
+define('MEMBER_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
+//font 의 기본 layout 을 바꾸고 싶다면 conf_front.php를 수정하라.
 
 // define('LOGIN_TYPE','cookie');
 define('LOGIN_TYPE','session');

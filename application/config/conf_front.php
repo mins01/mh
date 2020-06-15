@@ -12,12 +12,12 @@ $config['db']= array(
 'prefix'=>'',//현재 사용안함.
 );
 
-//-- 레이아웃용 view 파일 설정
+//-- 레이아웃용 view 파일 설정 // 사이트에 맞춰서 수정
 // $config['layout_view_head'] = 'default_head';
 // $config['layout_view_tail'] = 'default_tail';
 
-$config['layout_view_head'] = FRONT_LAYOUT.'_head';
-$config['layout_view_tail'] = FRONT_LAYOUT.'_tail';
+$config['layout_view_head'] = 'mins01_head';
+$config['layout_view_tail'] = 'mins01_tail';
 
 
 
