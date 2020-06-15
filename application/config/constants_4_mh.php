@@ -34,7 +34,11 @@ if(IS_DEV){
 	define('LOGIN_NAME','SESS_MH');
 }
 
-define('MEMBER_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
+// define('DEFAULT_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
+define('FRONT_LAYOUT','mins01'); //ftonr 기본 레이아웃
+// define('MEMBER_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
+define('MEMBER_LAYOUT','mins01'); //Member layout 설정. 기본:default, (empty ...)
+
 
 // define('LOGIN_TYPE','cookie');
 define('LOGIN_TYPE','session');
