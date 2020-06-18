@@ -43,7 +43,7 @@ class Mh_cache {
 	public function save($key,$val,$ttl=60){
 		if(!$this->use_cache){return null;}
 		$key = preg_replace('/[^\w\s\.]/','_',$key);
-		$r = $this->CI->cache->save($key,$val,$ttl);
+		$r = @$this->CI->cache->save($key,$val,$ttl);
 		if(!$r){
 			$this->header("X-Cache-{$this->act_count}: [No-Saved] {$key} ({$ttl})");
 		}else{
@@ -58,7 +58,7 @@ class Mh_cache {
     if($this->use_file_driver){
       $path = $this->file_cache_path.'/'.$key;
       if(is_file($path)){
-        return chmod($path,0777);
+        return @chmod($path,0777);
       }
     }
     return;
