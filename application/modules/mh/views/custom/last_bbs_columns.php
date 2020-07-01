@@ -98,8 +98,8 @@
 								/* display: block; */
 								"  href="<?=html_escape($url)?>">
 								<div class="" style="width:100%; background-color:rgba(255,255,255,0.8); display:block; padding:5px 0;">
-									<div class="text-primary" style="font-size:34px"><?=html_escape($b_row['b_title'])?></div>
-									<div class="" style="font-size:20px">
+									<div class="text-primary" style="font-size:24px"><?=html_escape($b_row['b_title'])?></div>
+									<div class="" style="font-size:14px">
 										<? if($b_row['b_secret']!='0'):?><span class="b_secret" title="비밀">S</span><? endif; ?>
 										<span class="" title="새글"><?
 												if($date_type==0){
