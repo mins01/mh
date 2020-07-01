@@ -4,6 +4,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //-- 게시판 모델
 
 class Custom_model extends CI_Model {
+	public function __construct()
+	{
+		$this->load->model('mh/bbs_master_model','bm_m');
+		$this->load->model('mh/bbs_model','bbs_m');
+	}
+	public function get_list_rows($b_id,$day,$limit){
+		$bm_row = $this->bm_m->get_bm_row($b_id);
+		$this->bbs_m->set_bm_row($bm_row); //여기서 모델에 사용할 게시판 아이디가 고정됨
+		// $this->bf_m->set_bm_row($this->bm_row);
+		// $this->bt_m->set_bm_row($this->bm_row);
+		$get = array();
+		$opts = array(
+			'wheres'=>array(
+				'b_insert_date>date_sub(now(),interval '.$this->db->escape((int)$day).' day)'=>null
+			)
+		);
+		$rows = $this->bbs_m->select_for_list($get,$opts,$limit,0);
+		return $rows;
+	}
+	public function get_calendar_rows($b_id,$date_st,$date_ed){
+		$bm_row = $this->bm_m->get_bm_row($b_id);
+		$this->bbs_m->set_bm_row($bm_row); //여기서 모델에 사용할 게시판 아이디가 고정됨
+		// $this->bf_m->set_bm_row($this->bm_row);
+		// $this->bt_m->set_bm_row($this->bm_row);
+		$get = array('date_st'=>$date_st,'date_ed'=>$date_ed);
+		$rows = $this->bbs_m->select_for_calendar($get);
+		return $rows;
+	}
+
 	private function last_bbs_sql($table,$b_id,$limit,$day,$type){
 		// $bm_row['tbl_data']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_data';
 		// $bm_row['tbl_file']= DB_PREFIX.'bbs_'.$bm_row['bm_table'].'_file';

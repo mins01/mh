@@ -267,20 +267,19 @@ class Bbs_model extends CI_Model {
 	}
 
 	//일반 목록용
-	public function select_for_list($get,$opts=null){
+	public function select_for_list($get,$opts=null,$limit=null,$offset=null){
 		if(!$this->_apply_list_where($get,$opts)){
 			return false;
 		}
-
 		$this->_apply_list_bm_row($this->bm_row,null,false,$opts);
 
-
-		list($limit,$offset) = $this->get_limit_offset($get['page']);
+		if(isset($get['page'])){
+			list($limit,$offset) = $this->get_limit_offset($get['page']);
+		}
 		$this->db->limit($limit,$offset);
 
 		$b_rows = $this->db->get()->result_array();
 		// echo $this->db->last_query();
-
 		$this->extends_b_rows($b_rows);
 		return $b_rows;
 	}

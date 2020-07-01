@@ -45,11 +45,19 @@ class Custom extends MX_Controller {
 		$this->load->library('mh_cache');
 		$key = __FUNCTION__;
 		// var_dump($this->mh_cache);
+		$this->load->model('mh/custom_model','custom_m');
+		// $b_rowss = array();
+		// $b_rowss['tech'] = $this->custom_m->get_list_rows('tech',7,50);
+		// $b_rowss['mono'] = $this->custom_m->get_list_rows('mono',7,50);
+		// $b_rowss['free'] = $this->custom_m->get_list_rows('free',7,50);
+		// $b_rowss['calendar'] =  = $this->custom_m->get_calendar_rows('calendar',date('Y-m-d',time()-60*60*24*7),date('Y-m-d',time()+60*60*24*7));
+		// $b_rowss['freegame'] =  = $this->custom_m->get_calendar_rows('freegame',date('Y-m-d',time()-60*60*24*7),date('Y-m-d',time()+60*60*24*7));
+		// print_r($rows);
 
 		$output = $this->mh_cache->get($key);
 		if(!$output){
-			$this->load->model('mh/custom_model','custom_m');
 
+			$b_rowss = array();
 			$bbs_tbl_b_ids = array(
 				array('tech','tech',0,'기술','tech'),
 				array('mine','calendar',1,'일정','calendar'),
@@ -65,7 +73,16 @@ class Custom extends MX_Controller {
 				// $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,5,30),
 				//$this->custom_m->last_bbs_rowss($calendar_tbl_b_ids,5,30)
 				// );
-			$b_rowss = $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,50,1);
+			// $b_rowss = $this->custom_m->last_bbs_rowss($bbs_tbl_b_ids,50,7);
+			foreach ($bbs_tbl_b_ids as $v) {
+				if($v[2]==0){
+					$b_rowss[$v[1]] = $this->custom_m->get_list_rows($v[1],7,50);
+				}else if($v[2]==1){
+					$b_rowss[$v[1]] = $this->custom_m->get_calendar_rows($v[1],date('Y-m-d',time()-60*60*24*7),date('Y-m-d',time()+60*60*24*7));
+				}
+			}
+			// print_r($b_rowss);
+			// exit;
 
 			//
 			$bc_tbl_b_ids = array(
