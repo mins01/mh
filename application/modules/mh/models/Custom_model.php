@@ -26,10 +26,13 @@ class Custom_model extends CI_Model {
 	public function get_calendar_rows($b_id,$date_st,$date_ed){
 		$bm_row = $this->bm_m->get_bm_row($b_id);
 		$this->bbs_m->set_bm_row($bm_row); //여기서 모델에 사용할 게시판 아이디가 고정됨
-		// $this->bf_m->set_bm_row($this->bm_row);
-		// $this->bt_m->set_bm_row($this->bm_row);
 		$get = array('date_st'=>$date_st,'date_ed'=>$date_ed);
-		$rows = $this->bbs_m->select_for_calendar($get);
+		$opts = array(
+			'wheres'=>array("b_date_ed>=CURRENT_DATE()"=>null), //마침일이 안 넘은 데이터만
+		);
+		$rows = $this->bbs_m->select_for_calendar($get,$opts);
+		// echo $this->db->last_query();
+		// exit;
 		return $rows;
 	}
 

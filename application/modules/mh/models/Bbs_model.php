@@ -242,7 +242,7 @@ class Bbs_model extends CI_Model {
 			$this->db->where('b_category',$get['ct']);
 		}
 		//-- 정렬
-		if(!isset($order_by[0])){
+		if(!isset($order_by)){
 			switch($this->bm_row['bm_list_type']){
 				case '0':$this->db->order_by('b_gidx,b_gpos');break;
 				case '1':$this->db->order_by('b.b_idx desc');break;
@@ -349,26 +349,20 @@ class Bbs_model extends CI_Model {
 		return $rowss;
 	}
 	//달력 목록용
-	public function select_for_calendar($get){
-		$opts = array(
-			'order_by'=>'b.b_date_st,b.b_date_ed'
-
+	public function select_for_calendar($get,$opts=array()){
+		$opts = array_merge(
+			array('order_by'=>'b.b_date_st,b.b_date_ed'),
+			$opts
 		);
 		if(!$this->_apply_list_where($get,$opts)){
 			return false;
 		}
+		// print_r($opts);
 		if(!isset($get['date_ed']) || !isset($get['date_st'])){
 			return false;
 		}
-
 		$this->_apply_list_bm_row($this->bm_row);
-
-
 		$this->db->where('b_date_st <=',$get['date_ed'])->where('b_date_ed >=',$get['date_st']);
-		// $this->db->order_by('b.b_date_st,b.b_date_ed');
-		//list($limit,$offset) = $this->get_limit_offset($get['page']);
-		//$this->db->limit($limit,$offset);
-
 		$b_rows = $this->db->get()->result_array();
 		// echo $this->db->last_query();
 		$this->extends_b_rows($b_rows);

@@ -55,7 +55,7 @@ class Custom extends MX_Controller {
 		// print_r($rows);
 
 		$output = $this->mh_cache->get($key);
-		if(1||!$output){
+		if(!$output){
 
 			$b_rowss = array();
 			$bbs_tbl_b_ids = array(
