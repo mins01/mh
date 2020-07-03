@@ -378,8 +378,8 @@ class Bbs extends MX_Controller {
 		if(!isset($get['q'])){ $get['q'] = ''; }
 		if(!isset($get['ct'])){ $get['ct'] = ''; }
 		$get['page']=$this->bbs_conf['page'];
-		$order_by = isset($opt['order_by'])?$opt['order_by']:'';
-		$b_rows = $this->bbs_m->select_for_list($get,$order_by);
+		$order_by = isset($opt['order_by'])?$opt['order_by']:null;
+		$b_rows = $this->bbs_m->select_for_list($get,array('order_by'=>$order_by));
 		//echo $this->db->last_query();
 
 		$get2 = $this->input->get();
@@ -450,7 +450,7 @@ class Bbs extends MX_Controller {
 		$get['page']=$this->bbs_conf['page'];
 		$opts = array(
 			'with_short_b_text'=>true,
-			'order_by' => isset($opt['order_by'])?$opt['order_by']:'',
+			'order_by' => isset($opt['order_by'])?$opt['order_by']:null,
 			'wheres' =>array(
 				'b_secret' => '0',
 			)
@@ -557,8 +557,8 @@ class Bbs extends MX_Controller {
 		if(!isset($get['q'])){ $get['q'] = ''; }
 		if(!isset($get['ct'])){ $get['ct'] = ''; }
 		$get['page']=1;
-		$order_by = isset($opt['order_by'])?$opt['order_by']:'';
-		$b_rows = $this->bbs_m->select_for_list($get,$order_by);
+		$order_by = isset($opt['order_by'])?$opt['order_by']:null;
+		$b_rows = $this->bbs_m->select_for_list($get,array('order_by'=>$order_by));
 		$b_idx = isset($b_rows[0]['b_idx'][0])?$b_rows[0]['b_idx']:null;
 		if(!$b_idx){
 			$this->mode_list();
