@@ -45,39 +45,6 @@
 	$v_url = base_url($mn_url);
 	if($b_id=='freegame'):
 		?>
-		<? /* ?>
-		<div class="last-bbs-columns-content">
-			<div class="list-group">
-				<a class="list-group-item list-group-item-success" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?> 최근 글</a>
-				<? foreach($b_rows as $b_row):
-					$url = base_url($mn_url.'/read/'.$b_row['b_idx']);
-				?>
-				<a class="list-group-item bbs-flex-box"  href="<?=html_escape($url)?>">
-					<span class="bbs-flex-main bbs-flex-main-fullsize text-primary"><?=html_escape($b_row['b_title'])?></span>
-					<span class="bbs-flex-sub bbs-flex-sub-right">
-						<? if($b_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
-						<span class=" label label-info" title="새글"><?
-								if($date_type==0){
-									echo date('m-d H시',strtotime($b_row['b_insert_date']));
-
-								}else{
-									if($tm < strtotime($b_row['b_date_st'])){
-										echo date('m-d',strtotime($b_row['b_date_st'])).'~';
-									}else if($tm > strtotime($b_row['b_date_ed'])){
-										echo 'END';
-									}else{
-										echo '~'.date('m-d',strtotime($b_row['b_date_ed']));
-									}
-
-								}
-							?></span>
-					</span>
-				</a>
-				<? endforeach;?>
-				<? if(count($b_rows)==0):?><div class="list-group-item text-center">최근 내용이 없습니다.</div><? endif;?>
-			</div>
-		</div>
-		<? //*/ ?>
 		<div class="last-bbs-columns-content">
 			<div class="list-group">
 				<a class="list-group-item list-group-item-success" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?> 최근 글</a>
@@ -106,14 +73,11 @@
 													echo date('m-d H시',strtotime($b_row['b_insert_date']));
 
 												}else{
-													if($tm < strtotime($b_row['b_date_st'])){
-														echo date('m-d',strtotime($b_row['b_date_st'])).'~';
-													}else if($tm > strtotime($b_row['b_date_ed'])){
-														echo 'END';
+													if($b_row['b_date_st'] == $b_row['b_date_ed'] ){
+														echo date('m-d',strtotime($b_row['b_date_st']));
 													}else{
-														echo '~'.date('m-d',strtotime($b_row['b_date_ed']));
+														echo date('m-d',strtotime($b_row['b_date_st'])).' ~ '.date('m-d',strtotime($b_row['b_date_ed']));
 													}
-
 												}
 											?></span>
 									</div>
