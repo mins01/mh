@@ -16,7 +16,7 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
   background-color: #f0f0f0;
 }
 .slideList.slideList-v{
-  height: 4em;
+  height: 2em;
 }
 .slideList.slideList-h{
   height: 2em;
@@ -45,94 +45,63 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 .slideList-v .slideList-item{
   top:0;left:0;right:0;bottom:auto;
   width:100%;
-  height:50%;
+  height:80%;
+	visibility: visible;
 }
 .slideList-h .slideList-item{
   top:0;left:0;right:auto;bottom:0;
   width:80%;
   height:100%;
+	visibility: visible;
 }
 .slideList-v .slideList-item:not([data-pos]){
   /* 기본 위치및 크기 */
-  top:-75%;
-  visibility: hidden;
-  transform-origin: 50% 100%;
-  z-index: 9;
-  transform: scale(0.9,0.8);
-  filter: blur(6px);
-  opacity: 0;
+  top:-90%;
 }
 .slideList-h .slideList-item:not([data-pos]){
   /* 기본 위치및 크기 */
-  left:-75%;
-  visibility: hidden;
-  transform-origin: 100% 50% ;
-  z-index: 9;
-  transform: scale(0.9,0.8);
-  filter: blur(6px);
-  opacity: 0;
+  left:-90%;
 }
 .slideList-v .slideList-item[data-pos="2"] ~ .slideList-item{
-  top:100%;
-  visibility: visible;
-  transform-origin: 50% 0%;
-  z-index: 9;
-  transform: scale(0.9,0.8);
-  filter: blur(6px);
-  opacity: 0;
+  top:110%;
 }
 .slideList-h .slideList-item[data-pos="2"] ~ .slideList-item{
-  left:100%;
-  visibility: visible;
-  transform-origin: 0% 50%;
-  z-index: 9;
-  transform: scale(0.9,0.8);
-  filter: blur(6px);
-  opacity: 0;
+  left:110%;
+}
+.slideList-item:not([data-pos]) ,
+.slideList-item[data-pos="2"] ~ .slideList-item {
+	z-index: 6;
+	transform: scale(0.9,0.8);
+	filter: blur(6px);
+	opacity: 0;
 }
 
 .slideList-v .slideList-item[data-pos="0"]{
-  top:25%;
-  visibility: visible;
-  transform-origin: 50% 50%;
-  transform: scale(1,1);
-  opacity:1;
-  filter: blur(0px);
-  z-index: 10;
-  pointer-events:all;
-  user-select: auto;
+  top:10%;
 }
 .slideList-h .slideList-item[data-pos="0"]{
   left:10%;
-  visibility: visible;
-  transform-origin: 50% 50%;
-  transform: scale(1,1);
+
+}
+.slideList-item[data-pos="0"]{
+	transform: scale(1,1);
   opacity:1;
   filter: blur(0px);
   z-index: 10;
   pointer-events:all;
   user-select: auto;
 }
-
 .slideList-v .slideList-item[data-pos="-1"]{
-  top:-25%;
-  visibility: visible;
-  transform-origin: 50% 100%;
+  top:-40%;
 }
 .slideList-h .slideList-item[data-pos="-1"]{
-  left:-35%;
-  visibility: visible;
-  transform-origin: 100% 50%;
+  left:-40%;
 }
 .slideList-v .slideList-item[data-pos="1"]{
-  top:75%;
-  visibility: visible;
-  transform-origin: 50% 0%;
+  top:60%;
 }
 .slideList-h .slideList-item[data-pos="1"]{
   left:60%;
-  visibility: visible;
-  transform-origin: 0% 50%;
 }
 .slideList-item[data-pos="-1"] ,
 .slideList-item[data-pos="1"]{
@@ -143,28 +112,20 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 }
 
 .slideList-v .slideList-item[data-pos="-2"]{
-  top:-50%;
-  visibility: visible;
-  transform-origin: 50% 100%;
+  top:-90%;
 }
 .slideList-h .slideList-item[data-pos="-2"]{
-  left:-100%;
-  visibility: visible;
-  transform-origin: 100% 50%;
+  left:-90%;
 }
 .slideList-v .slideList-item[data-pos="2"]{
-  top:100%;
-  visibility: visible;
-  transform-origin: 50% 0%;
+  top:110%;
 }
 .slideList-h .slideList-item[data-pos="2"]{
-  left:100%;
-  visibility: visible;
-  transform-origin: 0% 50%;
+  left:110%;
 }
 .slideList-item[data-pos="-2"] ,
 .slideList-item[data-pos="2"]{
-  z-index: 9;
+  z-index: 8;
   transform: scale(0.9,0.8);
   filter: blur(6px);
   opacity: 0.5;
