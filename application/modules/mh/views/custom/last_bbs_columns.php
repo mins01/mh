@@ -94,8 +94,8 @@
 						?>
 					</div>
 					<div style="flex:0 0 40px; display:flex;flex-direction: row;">
-						<button class="btn btn-success" onclick="sl01.prev()" style="flex: 1 1 50%; margin:5px;">◀</button>
-						<button class="btn btn-success" onclick="sl01.next()" style="flex: 1 1 50%; margin:5px;">▶</button>
+						<button class="btn btn-success" onclick="sl01.prev();if(sl01.isAuto){sl01.playAuto()}" style="flex: 1 1 50%; margin:5px;">◀</button>
+						<button class="btn btn-success" onclick="sl01.next();if(sl01.isAuto){sl01.playAuto()}" style="flex: 1 1 50%; margin:5px;">▶</button>
 					</div>
 				</div>
 			</div>
