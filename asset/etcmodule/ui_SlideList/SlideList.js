@@ -10,6 +10,9 @@ var SlideList = function(target){
   this.target = null;
   this.isRepeat = false;
   this.tm = null;
+	this.interval = 5000;
+	this.isPrev = false
+	this.isAuto = false;
   this.init(target);
 }
 
@@ -42,19 +45,31 @@ SlideList.prototype.next = function(){
     return this.selectByNode(el)
   }
 }
+SlideList.prototype.confAuto = function(interval,isPrev){
+	if(interval!==undefined && interval!==null){
+		this.interval = interval;
+	}
+	if(isPrev!==undefined && isPrev!==null){
+		this.isPrev = isPrev;
+	}
+}
 SlideList.prototype.playAuto = function(interval,isPrev){
   this.stopAuto();
-  var fn = isPrev
+	this.confAuto(interval,isPrev);
+  var fn = this.isPrev
           ?function(thisC){ return function(){ if(!thisC.prev()){thisC.stopAuto()}}}(this)
           :function(thisC){ return function(){ if(!thisC.next()){thisC.stopAuto()}}}(this)
-  this.tm = setInterval(fn,interval);
+  this.tm = setInterval(fn,this.interval);
+	this.isAuto = true;
+	console.log("playAuto");
 }
 SlideList.prototype.stopAuto = function(){
-  // console.log("stopAuto");
   if(this.tm != null){
     clearInterval(this.tm)
     this.tm = null;
   }
+	this.isAuto = false;
+	console.log("stopAuto");
 }
 SlideList.prototype.selectByNode = function(node){
   if(!node){ return false;}

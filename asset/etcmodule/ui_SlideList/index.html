@@ -202,15 +202,15 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 			<div class="slideList-item">menu9</div>
 		</div>
 		<div class="text-center">
-			<button class="btn btn-info" onclick="sl01.first()">first</button>
-			<button class="btn btn-info" onclick="sl01.prev()">prev</button>
-			<button class="btn btn-info" onclick="sl01.next()">next</button>
-			<button class="btn btn-info" onclick="sl01.last()">last</button>
-			<button class="btn btn-warning" onclick="sl01.isRepeat=true">repeat on</button>
-			<button class="btn btn-warning" onclick="sl01.isRepeat=false">repeat off</button>
-			<button class="btn btn-success" onclick="sl01.playAuto(1000,true)">Auto prev</button>
-			<button class="btn btn-success" onclick="sl01.stopAuto()">Auto stop</button>
-			<button class="btn btn-success" onclick="sl01.playAuto(1000,false)">Auto next</button>
+			<button type="button" class="btn btn-info" onclick="sl01.first()">first</button>
+			<button type="button" class="btn btn-info" onclick="sl01.prev()">prev</button>
+			<button type="button" class="btn btn-info" onclick="sl01.next()">next</button>
+			<button type="button" class="btn btn-info" onclick="sl01.last()">last</button>
+			<button type="button" class="btn btn-warning" onclick="sl01.isRepeat=true">repeat on</button>
+			<button type="button" class="btn btn-warning" onclick="sl01.isRepeat=false">repeat off</button>
+			<button type="button" class="btn btn-success" onclick="sl01.playAuto(1000,true)">Auto prev</button>
+			<button type="button" class="btn btn-success" onclick="sl01.stopAuto()">Auto stop</button>
+			<button type="button" class="btn btn-success" onclick="sl01.playAuto(1000,false)">Auto next</button>
 
 		</div>
 
@@ -256,15 +256,15 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 			<div class="slideList-item">menu9</div>
 		</div>
 		<div class="text-center">
-			<button class="btn btn-info" onclick="sl01h.first()">first</button>
-			<button class="btn btn-info" onclick="sl01h.prev()">prev</button>
-			<button class="btn btn-info" onclick="sl01h.next()">next</button>
-			<button class="btn btn-info" onclick="sl01h.last()">last</button>
-			<button class="btn btn-warning" onclick="sl01h.isRepeat=true">repeat on</button>
-			<button class="btn btn-warning" onclick="sl01h.isRepeat=false">repeat off</button>
-			<button class="btn btn-success" onclick="sl01h.playAuto(1000,true)">Auto prev</button>
-			<button class="btn btn-success" onclick="sl01h.stopAuto()">Auto stop</button>
-			<button class="btn btn-success" onclick="sl01h.playAuto(1000,false)">Auto next</button>
+			<button type="button" class="btn btn-info" onclick="sl01h.first()">first</button>
+			<button type="button" class="btn btn-info" onclick="sl01h.prev()">prev</button>
+			<button type="button" class="btn btn-info" onclick="sl01h.next()">next</button>
+			<button type="button" class="btn btn-info" onclick="sl01h.last()">last</button>
+			<button type="button" class="btn btn-warning" onclick="sl01h.isRepeat=true">repeat on</button>
+			<button type="button" class="btn btn-warning" onclick="sl01h.isRepeat=false">repeat off</button>
+			<button type="button" class="btn btn-success" onclick="sl01h.playAuto(1000,true)">Auto prev</button>
+			<button type="button" class="btn btn-success" onclick="sl01h.stopAuto()">Auto stop</button>
+			<button type="button" class="btn btn-success" onclick="sl01h.playAuto(1000,false)">Auto next</button>
 		</div>
 		<hr>
 		<h3>design sample</h3>
@@ -325,17 +325,51 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 					<div class="slideList-item">거여역</div>
 					<div class="slideList-item">마천역</div>
 				</div>
-				<div class="text-center">
-					<button class="btn btn-info" onclick="sl02.first()">first</button>
-					<button class="btn btn-info" onclick="sl02.prev()">prev</button>
-					<button class="btn btn-info" onclick="sl02.next()">next</button>
-					<button class="btn btn-info" onclick="sl02.last()">last</button>
-					<button class="btn btn-warning" onclick="sl02.isRepeat=true">repeat on</button>
-					<button class="btn btn-warning" onclick="sl02.isRepeat=false">repeat off</button>
-					<button class="btn btn-success" onclick="sl02.playAuto(1000,true)">Auto prev</button>
-					<button class="btn btn-success" onclick="sl02.stopAuto()">Auto stop</button>
-					<button class="btn btn-success" onclick="sl02.playAuto(1000,false)">Auto next</button>
-				</div>
+
+				<form class="text-center">
+						<div class=" mb-1">
+							<button type="button" class="btn btn-info" onclick="sl02.first();if(sl02.isAuto)sl02.playAuto()">first</button>
+							<button type="button" class="btn btn-info" onclick="sl02.prev();if(sl02.isAuto)sl02.playAuto()">prev</button>
+							<button type="button" class="btn btn-info" onclick="sl02.next();if(sl02.isAuto)sl02.playAuto()">next</button>
+							<button type="button" class="btn btn-info" onclick="sl02.last();if(sl02.isAuto)sl02.playAuto()">last</button>
+						</div>
+						<div class=" mb-1">
+							<button type="button" class="btn btn-warning" onclick="sl02.isRepeat=true">repeat on</button>
+							<button type="button" class="btn btn-warning" onclick="sl02.isRepeat=false">repeat off</button>
+						</div>
+						<div class=" mb-1">
+							<div class="input-group  justify-content-center">
+								<div class="input-group-prepend">
+									<label class="input-group-text"  >인터벌타임</label>
+								</div>
+								<input type="number" class="form-control" name="interval" value="5000" placeholder="인터벌타임">
+								<div class="input-group-prepend">
+									<label class="input-group-text"  >방향</label>
+								</div>
+								<select class="form-control" name="isPrev">
+									<option value="1" >이전</option>
+									<option value="0" selected>다음</option>
+								</select>
+								<div class="input-group-append">
+									<button type="button" class="btn btn-outline-secondary" type="button" onclick="sl02.confAuto(parseInt(this.form.interval.value),this.form.isPrev.value=='1')">설정</button>
+								</div>
+							</div>
+						</div>
+						<div class=" mb-1">
+							<div class="input-group  justify-content-center">
+								<div class="input-group-prepend">
+									<label class="input-group-text"  >Auto</label>
+								</div>
+								<div class="input-group-append">
+									<button type="button" class="btn btn-info" onclick="sl02.playAuto(null,true)">prev</button>
+									<button type="button" class="btn btn-success" onclick="sl02.playAuto()">start</button>
+									<button type="button" class="btn btn-danger" onclick="sl02.stopAuto()">stop</button>
+									<button type="button" class="btn btn-info" onclick="sl02.playAuto(null,false)">next</button>
+								</div>
+							</div>
+						</div>
+					</form>
+
 			</div>
 			<div class="col-sm-6">
 				<div class="slideList slideList-h" id="sl02h" style="margin:10px auto; ">
@@ -392,17 +426,49 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 					<div class="slideList-item">거여역</div>
 					<div class="slideList-item">마천역</div>
 				</div>
-				<div class="text-center">
-					<button class="btn btn-info" onclick="sl02h.first()">first</button>
-					<button class="btn btn-info" onclick="sl02h.prev()">prev</button>
-					<button class="btn btn-info" onclick="sl02h.next()">next</button>
-					<button class="btn btn-info" onclick="sl02h.last()">last</button>
-					<button class="btn btn-warning" onclick="sl02h.isRepeat=true">repeat on</button>
-					<button class="btn btn-warning" onclick="sl02h.isRepeat=false">repeat off</button>
-					<button class="btn btn-success" onclick="sl02h.playAuto(1000,true)">Auto prev</button>
-					<button class="btn btn-success" onclick="sl02h.stopAuto()">Auto stop</button>
-					<button class="btn btn-success" onclick="sl02h.playAuto(1000,false)">Auto next</button>
-				</div>
+				<form class="text-center">
+						<div class=" mb-1">
+							<button type="button" class="btn btn-info" onclick="sl02h.first();if(sl02h.isAuto)sl02h.playAuto()">first</button>
+							<button type="button" class="btn btn-info" onclick="sl02h.prev();if(sl02h.isAuto)sl02h.playAuto()">prev</button>
+							<button type="button" class="btn btn-info" onclick="sl02h.next();if(sl02h.isAuto)sl02h.playAuto()">next</button>
+							<button type="button" class="btn btn-info" onclick="sl02h.last();if(sl02h.isAuto)sl02h.playAuto()">last</button>
+						</div>
+						<div class=" mb-1">
+							<button type="button" class="btn btn-warning" onclick="sl02h.isRepeat=true">repeat on</button>
+							<button type="button" class="btn btn-warning" onclick="sl02h.isRepeat=false">repeat off</button>
+						</div>
+						<div class=" mb-1">
+							<div class="input-group  justify-content-center">
+								<div class="input-group-prepend">
+									<label class="input-group-text"  >인터벌타임</label>
+								</div>
+								<input type="number" class="form-control" name="interval" value="5000" placeholder="인터벌타임">
+								<div class="input-group-prepend">
+									<label class="input-group-text"  >방향</label>
+								</div>
+								<select class="form-control" name="isPrev">
+									<option value="1" >이전</option>
+									<option value="0" selected>다음</option>
+								</select>
+								<div class="input-group-append">
+									<button type="button" class="btn btn-outline-secondary" type="button" onclick="sl02h.confAuto(parseInt(this.form.interval.value),this.form.isPrev.value=='1')">설정</button>
+								</div>
+							</div>
+						</div>
+						<div class=" mb-1">
+							<div class="input-group  justify-content-center">
+								<div class="input-group-prepend">
+									<label class="input-group-text"  >Auto</label>
+								</div>
+								<div class="input-group-append">
+									<button type="button" class="btn btn-info" onclick="sl02h.playAuto(null,true)">prev</button>
+									<button type="button" class="btn btn-success" onclick="sl02h.playAuto()">start</button>
+									<button type="button" class="btn btn-danger" onclick="sl02h.stopAuto()">stop</button>
+									<button type="button" class="btn btn-info" onclick="sl02h.playAuto(null,false)">next</button>
+								</div>
+							</div>
+						</div>
+					</form>
 			</div>
 		</div>
 
@@ -464,16 +530,16 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 				<div class="slideList-item">마천역</div>
 			</div>
 			<div style="flex:0 0 40px; display:flex;flex-direction: column;">
-				<button class="btn btn-success" onclick="sl03.prev()" style="flex: 1 1 50%; margin:5px;">▲</button>
-				<button class="btn btn-success" onclick="sl03.next()" style="flex: 1 1 50%; margin:5px;">▼</button>
+				<button type="button" class="btn btn-success" onclick="sl03.prev()" style="flex: 1 1 50%; margin:5px;">▲</button>
+				<button type="button" class="btn btn-success" onclick="sl03.next()" style="flex: 1 1 50%; margin:5px;">▼</button>
 			</div>
 		</div>
 		<div class="text-center m-3">
-			<button class="btn btn-warning" onclick="sl03.isRepeat=true">repeat on</button>
-			<button class="btn btn-warning" onclick="sl03.isRepeat=false">repeat off</button>
-			<button class="btn btn-success" onclick="sl03.playAuto(1000,true)">Auto prev</button>
-			<button class="btn btn-success" onclick="sl03.stopAuto()">Auto stop</button>
-			<button class="btn btn-success" onclick="sl03.playAuto(1000,false)">Auto next</button>
+			<button type="button" class="btn btn-warning" onclick="sl03.isRepeat=true">repeat on</button>
+			<button type="button" class="btn btn-warning" onclick="sl03.isRepeat=false">repeat off</button>
+			<button type="button" class="btn btn-success" onclick="sl03.playAuto(1000,true)">Auto prev</button>
+			<button type="button" class="btn btn-success" onclick="sl03.stopAuto()">Auto stop</button>
+			<button type="button" class="btn btn-success" onclick="sl03.playAuto(1000,false)">Auto next</button>
 		</div>
 		<hr>
 		<h3>horizon+flex style + onwheel</h3>
@@ -533,16 +599,16 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 				<div class="slideList-item">마천역</div>
 			</div>
 			<div style="flex:0 0 40px; display:flex;flex-direction: row;">
-				<button class="btn btn-success" onclick="sl03h.prev()" style="flex: 1 1 50%; margin:5px;">◀</button>
-				<button class="btn btn-success" onclick="sl03h.next()" style="flex: 1 1 50%; margin:5px;">▶</button>
+				<button type="button" class="btn btn-success" onclick="sl03h.prev()" style="flex: 1 1 50%; margin:5px;">◀</button>
+				<button type="button" class="btn btn-success" onclick="sl03h.next()" style="flex: 1 1 50%; margin:5px;">▶</button>
 			</div>
 		</div>
 		<div class="text-center m-3">
-			<button class="btn btn-warning" onclick="sl03h.isRepeat=true">repeat on</button>
-			<button class="btn btn-warning" onclick="sl03h.isRepeat=false">repeat off</button>
-			<button class="btn btn-success" onclick="sl03h.playAuto(1000,true)">Auto prev</button>
-			<button class="btn btn-success" onclick="sl03h.stopAuto()">Auto stop</button>
-			<button class="btn btn-success" onclick="sl03h.playAuto(1000,false)">Auto next</button>
+			<button type="button" class="btn btn-warning" onclick="sl03h.isRepeat=true">repeat on</button>
+			<button type="button" class="btn btn-warning" onclick="sl03h.isRepeat=false">repeat off</button>
+			<button type="button" class="btn btn-success" onclick="sl03h.playAuto(1000,true)">Auto prev</button>
+			<button type="button" class="btn btn-success" onclick="sl03h.stopAuto()">Auto stop</button>
+			<button type="button" class="btn btn-success" onclick="sl03h.playAuto(1000,false)">Auto next</button>
 		</div>
 	</div>
 	<hr>
