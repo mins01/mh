@@ -40,6 +40,8 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
   /* 알맞게 재선언하자 */
   border: 1px solid #000;
   background-color: #f0f0f0;
+	will-change: transform;
+  transform: translateZ(0);
 }
 
 .slideList-v .slideList-item{
