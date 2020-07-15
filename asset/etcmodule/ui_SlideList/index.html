@@ -326,7 +326,7 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 					<div class="slideList-item">마천역</div>
 				</div>
 
-				<form class="text-center">
+				<form class="text-center" onsubmit="return false;">
 						<div class=" mb-1">
 							<button type="button" class="btn btn-info" onclick="sl02.first();if(sl02.isAuto)sl02.playAuto()">first</button>
 							<button type="button" class="btn btn-info" onclick="sl02.prev();if(sl02.isAuto)sl02.playAuto()">prev</button>
@@ -340,18 +340,18 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 						<div class=" mb-1">
 							<div class="input-group  justify-content-center">
 								<div class="input-group-prepend">
-									<label class="input-group-text"  >인터벌타임</label>
+									<label class="input-group-text"  >interval</label>
 								</div>
 								<input type="number" class="form-control" name="interval" value="5000" placeholder="인터벌타임">
 								<div class="input-group-prepend">
-									<label class="input-group-text"  >방향</label>
+									<label class="input-group-text"  >dir</label>
 								</div>
 								<select class="form-control" name="isPrev">
-									<option value="1" >이전</option>
-									<option value="0" selected>다음</option>
+									<option value="1" >prev</option>
+									<option value="0" selected>next</option>
 								</select>
 								<div class="input-group-append">
-									<button type="button" class="btn btn-outline-secondary" type="button" onclick="sl02.confAuto(parseInt(this.form.interval.value),this.form.isPrev.value=='1')">설정</button>
+									<button type="button" class="btn btn-outline-secondary" type="button" onclick="sl02.confAuto(parseInt(this.form.interval.value),this.form.isPrev.value=='1')">setting</button>
 								</div>
 							</div>
 						</div>
@@ -426,7 +426,7 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 					<div class="slideList-item">거여역</div>
 					<div class="slideList-item">마천역</div>
 				</div>
-				<form class="text-center">
+				<form class="text-center"  onsubmit="return false;">
 						<div class=" mb-1">
 							<button type="button" class="btn btn-info" onclick="sl02h.first();if(sl02h.isAuto)sl02h.playAuto()">first</button>
 							<button type="button" class="btn btn-info" onclick="sl02h.prev();if(sl02h.isAuto)sl02h.playAuto()">prev</button>
@@ -440,18 +440,18 @@ license : MIT + "공대여자는 예쁘다"를 나태내야함
 						<div class=" mb-1">
 							<div class="input-group  justify-content-center">
 								<div class="input-group-prepend">
-									<label class="input-group-text"  >인터벌타임</label>
+									<label class="input-group-text"  >interval</label>
 								</div>
 								<input type="number" class="form-control" name="interval" value="5000" placeholder="인터벌타임">
 								<div class="input-group-prepend">
-									<label class="input-group-text"  >방향</label>
+									<label class="input-group-text"  >dir</label>
 								</div>
 								<select class="form-control" name="isPrev">
-									<option value="1" >이전</option>
-									<option value="0" selected>다음</option>
+									<option value="1" >prev</option>
+									<option value="0" selected>next</option>
 								</select>
 								<div class="input-group-append">
-									<button type="button" class="btn btn-outline-secondary" type="button" onclick="sl02h.confAuto(parseInt(this.form.interval.value),this.form.isPrev.value=='1')">설정</button>
+									<button type="button" class="btn btn-outline-secondary" type="button" onclick="sl02h.confAuto(parseInt(this.form.interval.value),this.form.isPrev.value=='1')">setting</button>
 								</div>
 							</div>
 						</div>
