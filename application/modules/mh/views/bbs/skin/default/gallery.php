@@ -7,7 +7,7 @@
 	<a href="?lm=list" type="button" class="btn btn-link btn-xs"><span class="glyphicon glyphicon-list"></span>목록형</a>
 	<a href="?lm=calendar" type="button" class="btn btn-link btn-xs">📅 달력형</a>
 </div>
-<div class="panel panel-default bbs-mode-list">
+<div class="panel panel-default bbs-mode-list list-type-gallery">
 
 	<!-- Default panel contents -->
 	<div class="panel-heading">

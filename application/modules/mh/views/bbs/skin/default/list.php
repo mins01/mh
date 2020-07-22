@@ -11,7 +11,7 @@
 
 	<a target="_blank" href="<?=html_escape($bbs_conf['rss_url'])?>" type="button" class="btn btn-link btn-xs"><span class="glyphicon bbs_feed_icon_14x14"></span> RSS</a>
 </nav>
-<div class="panel panel-default bbs-mode-list">
+<div class="panel panel-default bbs-mode-list list-type-list">
 	<!-- Default panel contents -->
 	<div class="panel-heading ">
 		<div class="row visible-lg-block">

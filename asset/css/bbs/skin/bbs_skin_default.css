@@ -314,3 +314,23 @@ span.bc-star-5::before{content:'★★★★★'}
 	white-space: inherit;
 	text-overflow: inherit;
 }
+
+/**
+* 갤러리 전용
+*/
+.list-type-gallery{
+
+}
+.list-type-gallery .bt_tags{
+	margin-top:-2.5em;
+}
+
+/**
+* 캘린더 전용
+*/
+.list-type-calendar{
+
+}
+.list-type-calendar .bt_tags{
+ /* 사용안한다 */
+}

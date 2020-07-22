@@ -21,8 +21,8 @@ $today_date = date('Y-m-d');
 	<a href="?lm=list" type="button" class="btn btn-link btn-xs"><span class="glyphicon glyphicon-list"></span>목록형</a>
 	<a href="?lm=gallery" type="button" class="btn btn-link btn-xs">📷 갤러리형</a>
 </div>
-<div class="panel panel-default bbs-mode-list">
-	
+<div class="panel panel-default bbs-mode-list list-type-calendar">
+
 	<!-- Default panel contents -->
 	<div class="panel-heading">
 		<nav class="text-right">
@@ -32,8 +32,8 @@ $today_date = date('Y-m-d');
 	<div class="panel-body">
 		<?=$pagination_dt?>
 	</div>
-	<? 
-	if(count($b_n_rows)>0): 
+	<?
+	if(count($b_n_rows)>0):
 	?>
 		<table class="table table-condensed" style="table-layout:fixed">
 			<tr >
@@ -49,10 +49,10 @@ $today_date = date('Y-m-d');
 				<tr class="bbs-notice info <?=$b_idx==$b_row['b_idx']?'warning':''?> ">
 					<td class="text-center hidden-xs"><span class="label label-danger">공지</span></td>
 					<td class="bbs-title bbs-flex-box">
-						
+
 						<? if(isset($b_row['b_category'][0])): ?><span class="bbs-flex-sub bbs-flex-sub-left"><span class="label label-primary "><?=html_escape($b_row['b_category'])?></span></span><? endif; ?>
 						<a class="bbs-flex-main" href="<?=html_escape($b_row['read_url'])?>"><?=html_escape($b_row['b_title'])?></a>
-					
+
 						<span class="bbs-flex-sub bbs-flex-sub-right">
 							<? if(($b_row['is_new'])): ?>
 								<span class="is_new label label-default" title="새글">new</span>
@@ -63,12 +63,12 @@ $today_date = date('Y-m-d');
 							<? if(!empty($b_row['bf_cnt'])): ?>
 								<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
 							<? endif; ?>
-					
+
 							<? if(!empty($b_row['bc_cnt'])): ?>
 								<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
 							<? endif; ?>
 						</span>
-					
+
 					</td>
 					<td class="text-center hidden-xs hidden-sm"><?=html_escape($b_row['b_name'])?></td>
 					<td class="text-center hidden-xs hidden-sm"><?=html_escape(date('m/d H:i',strtotime($b_row['b_insert_date'])))?></td>
@@ -78,14 +78,14 @@ $today_date = date('Y-m-d');
 			<? endforeach; ?>
 		</table>
 
-	<? 
+	<?
 	endif;
 	?>
 	<div class="">
 		<time style="hide" datetime="<?=html_escape(bbs_date_former('Y-m',$v_date_st))?>"></time>
 		<table class="table  table-condensed  table-striped table-calender" style="table-layout:fixed">
 			<!-- <colgroup> -->
-			
+
 				<!-- <col style="width:auto"> -->
 				<!-- <col style="width:14.285%;width:calc(100%/7)">
 				<col style="width:14.285%;width:calc(100%/7)">
@@ -110,7 +110,7 @@ $today_date = date('Y-m-d');
 				</tr>
 			</thead>
 			<tbody>
-				<? 
+				<?
 				$limit_i=100;
 				$c_time = $v_time_st;
 				while($c_time < $v_time_ed && $limit_i--):
@@ -118,18 +118,18 @@ $today_date = date('Y-m-d');
 				<tr>
 					<!-- <td class="day-hide day-w-hide"></td> -->
 					<?
-					
+
 					$tmp_get = $get;
 					for($i=0,$m=7;$i<$m;$i++):
-						
+
 						$c_date = date('Y-m-d',$c_time);
 						$c_m = date('m',$c_time);
 						$c_date_label = date('n.j',$c_time);
-						
+
 						$tmp_get['dt']=$c_date;
 						$write_url = $base_url.'/write?'.http_build_query($tmp_get);
 						$cl_today = $today_date==$c_date?'day-td-today':'';
-						
+
 						$c_time+=86400;
 					?>
 					<td class="day-td day-w-<?=$i?> day-m-<?=$c_m?> <?=$cl_today?>" data-date="<?=$c_date?>">
@@ -140,10 +140,10 @@ $today_date = date('Y-m-d');
 							<? else:?>
 							<div class="day-label"><?=$c_date_label?></div>
 							<? endif;?>
-							<? 
-							
+							<?
+
 							if(isset($b_rowss[$c_date])):
-								foreach($b_rowss[$c_date] as $k=>$plan): 
+								foreach($b_rowss[$c_date] as $k=>$plan):
 								$b_row=$plan['b_row'];
 								$tmp_class = '';
 								if($b_row['b_idx']==$b_idx){
@@ -151,49 +151,49 @@ $today_date = date('Y-m-d');
 								}
 								$label = $b_row['b_title'];
 							?>
-								<div class="plan <?=$tmp_class?> floating_label_parent" 
+								<div class="plan <?=$tmp_class?> floating_label_parent"
 								data-b_idx="<?=$b_row['b_idx']?>"
 								data-plan-len="<?=$plan['len']?>"
 								data-plan-order="<?=$plan['order']?>"
 								>
-								<a href="<?=html_escape($b_row['read_url'])?>">
-								<? if(isset($b_row['b_category'])): ?><span class="hidden-xs label label-primary b_category"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
-								<?=html_escape($label)?></a>
-								
-								<div class="floating_label hidden-xs">
-									<? if(($b_row['is_new'])): ?>
-										<span class="is_new label label-default" title="새글">new</span>
-									<? endif; ?>
-									<? if(($b_row['b_secret'])): ?>
-										<span class="b_secret label label-default" title="비밀">S</span>
-									<? endif; ?>
-									<? if(!empty($b_row['bf_cnt'])): ?>
-										<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
-									<? endif; ?>
-									
-									<? if(!empty($b_row['bc_cnt'])): ?>
-										<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
-									<? endif; ?>
+									<a href="<?=html_escape($b_row['read_url'])?>">
+									<? if(isset($b_row['b_category'])): ?><span class="hidden-xs label label-primary b_category"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
+									<?=html_escape($label)?></a>
+
+									<div class="floating_label hidden-xs">
+										<? if(($b_row['is_new'])): ?>
+											<span class="is_new label label-default" title="새글">new</span>
+										<? endif; ?>
+										<? if(($b_row['b_secret'])): ?>
+											<span class="b_secret label label-default" title="비밀">S</span>
+										<? endif; ?>
+										<? if(!empty($b_row['bf_cnt'])): ?>
+											<span class="bf_cnt label label-default" title="<?=$b_row['bf_cnt']?> 파일"><?=$b_row['bf_cnt']?></span>
+										<? endif; ?>
+
+										<? if(!empty($b_row['bc_cnt'])): ?>
+											<span class="bc_cnt label label-default" title="<?=$b_row['bc_cnt']?> 댓글"><?=$b_row['bc_cnt']?></span>
+										<? endif; ?>
+									</div>
+
 								</div>
-								
-								</div>
-							<? 
+							<?
 								endforeach;
-							endif; 
+							endif;
 							?>
 						</div>
 					</td>
-					<? 
-					
+					<?
+
 					endfor;
 					?>
 					<!-- <td class="day-hide day-w-hide"></td> -->
 				</tr>
-				<? 
+				<?
 				endwhile;
 				?>
 			</tbody>
-			
+
 		</table>
 	</div>
 	<div class="panel-footer">
@@ -219,8 +219,7 @@ $(function(){
 	$('.table-calender').on('dblclick','.day-bg',function(){
 		var href=$(this).parents('td.day-td').find('a.day-label').prop('href');
 		if(href) window.open(href,'_self');
-		
+
 	});
 })
 </script>
-
