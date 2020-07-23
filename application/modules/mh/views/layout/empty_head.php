@@ -60,6 +60,6 @@
 	</div>
 	<!-- //배너용 기준위치 -->
 <? if(!$hide):?>
-	<div class="container-fluid contents">
+	<div class="">
 	<?=$top_html?>
 <? endif; ?>
