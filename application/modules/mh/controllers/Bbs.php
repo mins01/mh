@@ -50,6 +50,11 @@ class Bbs extends MX_Controller {
 		$this->set_base_url(base_url('bbs/'.$b_id));
 
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : {$b_id}");
+		// $this->config->set_item('layout_view_head', 'default_head');
+		// $this->config->set_item('layout_view_tail', 'default_tail');
+		$this->config->set_item('layout_view_head', 'empty_head');
+		$this->config->set_item('layout_view_tail', 'empty_tail');
+
 
 		$this->action($b_id,$mode,$b_idx);
 	}
