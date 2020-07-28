@@ -998,6 +998,9 @@ class Bbs extends MX_Controller {
 		}else{
 			$ret_url = $b_row['read_url'];
 		}
+		if($this->input->post('ret_url')){
+			$ret_url = $this->input->post('ret_url');
+		}
 		$this->config->set_item('layout_hide',true);
 
 		$this->config->set_item('layout_og_title', $this->config->item('layout_og_title')." : 처리중");
