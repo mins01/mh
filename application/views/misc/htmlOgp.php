@@ -19,8 +19,8 @@ $href = isset($_GET['href'][0])?$_GET['href']:null;
 	<style>
 	html{padding:0;margin:0;height: 100%;}
 	body{padding:0;margin: 0; background-color: #000; overflow: hidden; height:100%;}
-	.og-image{width:100%;height:100%; z-index: 10;object-fit: contain;}
-	a.url{display: block; color: #000}
+	.og-image{max-width:100%;height:100%; z-index: 10;object-fit: cover; border-radius: 10px;}
+	a.url{display: block; color: #000; text-align: center;}
 	.text-ellipsis{text-overflow: ellipsis; white-space: nowrap; width: 100%; overflow: hidden;}
 	.og-site_name{font-size:larger}
 	.og-title{ }
@@ -36,12 +36,7 @@ $href = isset($_GET['href'][0])?$_GET['href']:null;
 		display: block;
 		position: fixed;top:0;left: 0;right: 0;bottom: 0;
 	}
-	.hover-sacleUp{
-			transition: transform  0.5s ease-out;
-	}
-	.hover-scaleUp-parent:hover .hover-sacleUp{
-		transform: scale(2);
-	}
+
 	</style>
 	</head>
 <body>
@@ -63,7 +58,7 @@ $href = isset($_GET['href'][0])?$_GET['href']:null;
 				<?
 				elseif(isset($opgs['og:image'][0])):
 					$src = $opgs['og:image'];
-					?><img class="og-image hover-sacleUp"  src="<?=html_escape($src)?>" alt="image"><?
+					?><img class="og-image"  src="<?=html_escape($src)?>" alt="image"><?
 				else:
 					?>
 					<div class="og-text-box text-center flex-center-center hover-sacleUp"><div class="og-site_name text-ellipsis" style="font-size:20px;color:#fff;" title="<?=html_escape($opgs['title'])?>"><?=html_escape($opgs['title'])?></div></div>
