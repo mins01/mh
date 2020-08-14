@@ -246,7 +246,7 @@ class Bbs_model extends CI_Model {
 			switch($this->bm_row['bm_list_type']){
 				case '0':$this->db->order_by('b_gidx,b_gpos');break;
 				case '1':$this->db->order_by('b.b_idx desc');break;
-				case '2':$this->db->order_by('b.b_date_st DESC');break;
+				case '2':$this->db->order_by('b.b_date_ed DESC');break;
 			}
 		}else{
 			$this->db->order_by($order_by);
