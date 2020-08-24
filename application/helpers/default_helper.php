@@ -225,3 +225,68 @@ function is_allowd_ip($pattern,$ip=null){
 	}
 	return @preg_match($pattern,$ip);
 }
+
+function only_https($https_port=null){
+	$r = is_https();
+	if(!$r){
+		$url_parts = array();
+		$url_parts[]='https://';
+		$url_parts[]=$_SERVER['HTTP_HOST'];
+		if(isset($https_port)){
+			$url_parts[]=':'.$https_port;
+		}
+		$url_parts[]=$_SERVER['REQUEST_URI'];
+		$to_url = implode('',$url_parts);
+		redirect($to_url);
+		return true;
+	}
+	return false;
+}
+function only_http(){
+	$r = is_https();
+	if($r){
+		$url_parts = array();
+		$url_parts[]='http://';
+		$url_parts[]=$_SERVER['HTTP_HOST'];
+		$url_parts[]=$_SERVER['REQUEST_URI'];
+		$to_url = implode('',$url_parts);
+		redirect($to_url);
+		return true;
+	}
+	return false;
+}
+
+//-- 배열용 통계 함수
+function array_min( &$arr )
+{
+    $min = FALSE;
+    foreach( $arr as $a )
+        if( $min === FALSE || $a < $min ) $min = $a;
+    return $min;
+}
+
+function array_max( &$arr )
+{
+    $max = FALSE;
+    foreach( $arr as $a )
+        if( $max === FALSE || $a > $max ) $max = $a;
+    return $max;
+}
+
+function array_avg( &$arr )
+{
+    $sum = 0;
+    foreach( $arr as $a )
+        $sum += $a;
+    return $sum / count($arr);
+}
+
+function array_dev( &$arr, $avg = NULL )
+{
+    if( $avg == NULL ) $avg = array_avg($arr);
+
+    $dev = 0;
+    foreach( $arr as $a )
+        $dev += pow(($a - $avg),2);
+    return sqrt($dev);
+}
