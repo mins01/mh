@@ -506,7 +506,8 @@ class Bbs_file_model extends CI_Model {
 			header("Content-Length: {$save_file_size}");
 			while (!feof($fp)) {
 				set_time_limit(30);	//타임아웃 30씩 :30초가 지났는데도 문제가 있다면 파일읽어오는 데 문제가 있다!
-				echo fgets($fp, 1024*1204*4); //메모리 제한 넘지 않는한 큰 숫자가 효과가 크다.
+				// echo fgets($fp, 1024*1024*4); //메모리 제한 넘지 않는한 큰 숫자가 효과가 크다.
+				echo fread($fp, 1024*1024*4); //메모리 제한 넘지 않는한 큰 숫자가 효과가 크다.
 			}
 			fclose($fp);
 		}else{
