@@ -12,6 +12,9 @@ $config['db']= array(
 'prefix'=>'',//현재 사용안함.
 );
 
+//-- front_member  https 사용여부
+$config['front_member_only_https'] = false;
+
 //-- 레이아웃용 view 파일 설정 // 사이트에 맞춰서 수정
 // $config['layout_view_head'] = 'default_head';
 // $config['layout_view_tail'] = 'default_tail';

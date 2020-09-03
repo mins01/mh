@@ -17,6 +17,10 @@ class Front_member extends MX_Controller {
 		$this->load->module('mh/layout');
 		$this->load->module('mh/common');
 		$this->load->module('mh/member');
+
+		if($this->config->item('front_member_only_https')){ //https 사용여부
+			only_https(); //강제 https 로 변경
+		}
 	}
 	public function login(){
 		$this->member->login();
