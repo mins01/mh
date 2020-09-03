@@ -119,6 +119,10 @@ class Admin extends MX_Controller {
 
 
 	public function login(){
+		if($this->config->item('admin_login_only_https')){ //강제 https 로 변경
+			only_https();
+		}
+
 		if($this->common->get_login('m_idx')){
 			$this->common->redirect('',ADMIN_URI_PREFIX);
 			return;
