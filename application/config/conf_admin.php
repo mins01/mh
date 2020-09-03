@@ -13,4 +13,4 @@ $config['layout_view_head'] = 'default_head';
 $config['layout_view_tail'] = 'default_tail';
 
 //-- 관리자 로그인 URL에 https 사용유무
-$config['admin_login_only_https'] = false;
+$config['admin_login_only_https'] = USE_HTTPS;
