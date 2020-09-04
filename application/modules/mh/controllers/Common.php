@@ -46,12 +46,11 @@ class Common extends MX_Controller {
 		return true;
 	}
 	public function get_verify_key($server){
-		if(!isset($server['HTTP_USER_AGENT']) || !isset($server['HTTP_ACCEPT_ENCODING']) || !isset($server['HTTP_ACCEPT_LANGUAGE'])){
+		if(!isset($server['HTTP_USER_AGENT']) || !isset($server['HTTP_ACCEPT_LANGUAGE'])){
 			return ''; //빈 문자열은 인증키로 인증되지 않는다.
 		}
 		$key = md5($server['HTTP_HOST'].
 		$server['HTTP_USER_AGENT'].
-		$server['HTTP_ACCEPT_ENCODING'].
 		$server['HTTP_ACCEPT_LANGUAGE']);
 		// echo $server['HTTP_HOST'].
 		// $server['HTTP_USER_AGENT'].
