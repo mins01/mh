@@ -115,14 +115,19 @@ class Mh_util{
 	static function convertStyleXSS($str,$rStyles=array()){
 		$rStyles = (count($rStyles)>0)?array_merge(array('absolute', 'behavior', 'behaviour', 'content', 'expression', 'fixed', 'include-source', 'moz-binding' ),$rStyles):array('absolute', 'behavior', 'behaviour', 'content', 'expression', 'fixed', 'include-source', 'moz-binding' );
 		$t = implode('|',$rStyles);
-		$p = "/(\bstyle\s*=\s*)('|\")([^<]*)({$t})(;?)([^<]*)('|\")/mi";
+		$p = "/(\bstyle\s*=\s*)(\")([^<\"]*)({$t})(;?)([^<\"]*)(\")/mi";
+		$p2 = "/(\bstyle\s*=\s*)(')([^<']*)({$t})(;?)([^<']*)(')/mi";
 		//echo $p,"\n";
-		$shp = $p;
+		// $shp = $p;
 		$r = '$1$2$3xss__$5$6$7';
 		$limit = count($rStyles);
 		//echo $str,"\n";
-		while(preg_match($shp,$str) && $limit-- > 0){
+		while(preg_match($p,$str) && $limit-- > 0){
 			$str = preg_replace($p,$r,$str);
+			//print_r($x);	echo $str,"\n";	echo":",$limit,"\n";
+		}
+		while(preg_match($p2,$str) && $limit-- > 0){
+			$str = preg_replace($p2,$r,$str);
 			//print_r($x);	echo $str,"\n";	echo":",$limit,"\n";
 		}
 		return $str;
