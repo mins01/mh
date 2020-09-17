@@ -6,15 +6,17 @@ class Google_api_tool extends MX_Controller {
 	public function __construct($conf=array())
 	{
 
-		// $this->load->library('Mproxy');
+		$this->load->library('Mproxy');
 		$this->config->load('google_oauth2');
 		// $this->bbs_conf = ;
-
 		$this->load->library('GoogleOAuth2');
+
 		$conf_google_oauth2 = $this->config->item('google_oauth2');
+		$this->googleoauth2->set_mproxy($this->mproxy);
 		$this->client =& $this->googleoauth2->client;
 		$this->googleoauth2->set_client($conf_google_oauth2['clients']['default']);
 		$this->googleoauth2->set_access_token($conf_google_oauth2['access_tokens']['analytics.readonly']);
+
 
 	}
 
@@ -55,41 +57,6 @@ class Google_api_tool extends MX_Controller {
 			)
 		);
 	}
-	public function refresh_token($conf,$param){
-		// https://developers.google.com/youtube/v3/guides/auth/server-side-web-apps?hl=ko
-		/*
-			POST /o/oauth2/token HTTP/1.1
-			Host: accounts.google.com
-			Content-Type: application/x-www-form-urlencoded
-
-			client_id=21302922996.apps.googleusercontent.com&
-			client_secret=XTHhXh1SlUNgvyWGwDk1EjXB&
-			refresh_token=1/6BMfW9j53gdGImsixUH6kU5RsR4zwI9lUVX-tqf8JXQ&
-			grant_type=refresh_token
-		 */
-		 $url = $this->oauth2_token_url;
-
-		 $opts = array();
-		 $opts[CURLOPT_SSL_VERIFYPEER]=false;
-		 $opts[CURLOPT_SSL_VERIFYHOST]=false;
-		 $opts[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1; //HTTP 1.1 사용
-		 $opts[CURLOPT_FAILONERROR] = false;
-
-		 $posts = array();
-		 $posts['client_id']=$this->client_id;
-		 $posts['client_secret']=$this->client_secret;
-		 $posts['refresh_token']=$this->refresh_token;
-		 $posts['grant_type']='refresh_token';
-		 $postRaw = http_build_query($posts);
-		 $headers = array();
-		 $cookieRaw = '';
-		 // print_r($postRaw);
-		 set_time_limit(120);// 동작 타임아웃
-		 $this->mproxy->conn_timeout = 60;
-		 $this->mproxy->exec_timeout = 60;
-		 $res = $this->mproxy->post($url,$postRaw,$cookieRaw,$headers, $opts);
-		 print_r($res);
-	}
 	public function process_authorization_code($conf,$param){
 		// $CODE = '4/4QF3fKrHBAdXqzPWfVYim6KwapBLai9mosNk9VUSJCQ7FkHJFcAd3xk';
 		$req = array(
@@ -127,6 +94,29 @@ class Google_api_tool extends MX_Controller {
 		echo $res['body'];
 		exit;
 
+	}
+
+	public function analytics($conf,$param){
+		$this->load->library('GoogleAnalyticsApi');
+		$this->googleanalyticsapi->set_mproxy($this->mproxy);
+		$this->googleanalyticsapi->set_access_token($this->googleoauth2->access_token['access_token']);
+		// $res = $this->googleanalyticsapi->accountSummaries();
+
+
+		$profileId = '54658549'; //Lee Minsu/mins01.com/homepage
+		$gets = array(
+			'ids'=> 'ga:'.$profileId,
+	    'start-date'=> 'yesterday',
+	    'end-date'=> 'today',
+			'dimensions'=> 'ga:searchKeyword,ga:date',
+			'metrics'=> 'ga:searchResultViews,ga:searchUniques,ga:percentSearchRefinements,ga:avgSearchDuration,ga:searchExits',
+			'sort'=> '-ga:searchUniques',
+			'max-results'=> 1000
+		);
+		$res = $this->googleanalyticsapi->data_ga($gets);
+
+		print_r($res);
+		exit;
 	}
 
 

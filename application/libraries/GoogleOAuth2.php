@@ -30,7 +30,10 @@ class GoogleOAuth2
 	);
 	public function __construct()
 	{
-		$this->mproxy = new Mproxy();
+		// $this->mproxy = new Mproxy();
+	}
+	public function set_mproxy($mproxy){
+		$this->mproxy = $mproxy;
 	}
 	public function set_client($client){
 		$this->client = array_merge($this->client,$client);
