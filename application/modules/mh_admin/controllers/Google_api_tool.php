@@ -88,19 +88,23 @@ class Google_api_tool extends MX_Controller {
 
 	}
 	public function process_refreshed_access_token($conf,$param){
-		$res = $this->googleoauth2->refreshed_access_token();
-
-		header('Content-Type: application/json');
-		echo $res['body'];
+		$access_token = $this->googleoauth2->refreshed_access_token();
+		header('Content-Type: text/plain');
+		print_r($access_token);
+		// header('Content-Type: application/json');
+		// echo $res['body'];
 		exit;
 
 	}
 
 	public function analytics($conf,$param){
+		$access_token = $this->googleoauth2->refreshed_access_token();
+
 		$this->load->library('GoogleAnalyticsApi');
 		$this->googleanalyticsapi->set_mproxy($this->mproxy);
-		$this->googleanalyticsapi->set_access_token($this->googleoauth2->access_token['access_token']);
+		$this->googleanalyticsapi->set_access_token($access_token['access_token']);
 		// $res = $this->googleanalyticsapi->accountSummaries();
+
 
 
 		$profileId = '54658549'; //Lee Minsu/mins01.com/homepage

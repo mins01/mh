@@ -105,7 +105,8 @@ class GoogleOAuth2
 		$req['client_secret']=$this->client['client_secret'];
 		$req['refresh_token']=$this->access_token['refresh_token'];
 		$res = $this->refresh_token($req);
-		return $res;
+		return json_decode($res['body'],1);
+		// return $res;
 	}
 }
 
