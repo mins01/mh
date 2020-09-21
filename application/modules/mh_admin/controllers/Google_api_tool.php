@@ -141,11 +141,20 @@ class Google_api_tool extends MX_Controller {
 		$profileId = '54658549'; //Lee Minsu/mins01.com/homepage
 		$gets = array(
 			'ids'=> 'ga:'.$profileId,
-	    'start-date'=> 'yesterday',
-	    'end-date'=> 'today',
+	    // 'start-date'=> 'yesterday',
+	    // 'end-date'=> 'today',
+			'start-date'=> '2daysAgo',
+			'end-date'=> 'yesterday',
+			// 검색어용
 			'dimensions'=> 'ga:searchKeyword,ga:date',
 			'metrics'=> 'ga:searchResultViews,ga:searchUniques,ga:percentSearchRefinements,ga:avgSearchDuration,ga:searchExits',
 			'sort'=> '-ga:searchUniques',
+			// 일반 페이지용
+			// 'dimensions'=> 'ga:pagePath,ga:date',
+			// 'metrics'=> 'ga:pageviews,ga:uniquePageviews,ga:avgTimeOnPage,ga:entrances,ga:bounceRate',
+			// 'sort'=> '-ga:pageviews',
+			// 필터
+			// 'filters'=>'ga:pagePath=~^/main/item/itemList.php?'
 			'max-results'=> 1000
 		);
 		$res = $this->googleanalyticsapi->data_ga($gets);
