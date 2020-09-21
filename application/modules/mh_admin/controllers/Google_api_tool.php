@@ -6,6 +6,7 @@ class Google_api_tool extends MX_Controller {
 	public function __construct($conf=array())
 	{
 
+		$this->load->library('Mh_cache');
 		$this->load->library('Mproxy');
 		$this->config->load('google_oauth2');
 		// $this->bbs_conf = ;
@@ -16,6 +17,7 @@ class Google_api_tool extends MX_Controller {
 		$this->client =& $this->googleoauth2->client;
 		$this->googleoauth2->set_client($conf_google_oauth2['clients']['default']);
 		$this->googleoauth2->set_access_token($conf_google_oauth2['access_tokens']['analytics.readonly']);
+		$this->cache_key = 'analytics.readonly';
 
 
 	}
@@ -96,17 +98,46 @@ class Google_api_tool extends MX_Controller {
 		exit;
 
 	}
+	public function get_access_token(){
+		$key = $this->cache_key;
+		// $this->mh_cache->use_log_header = 1;
+		$access_token = $this->mh_cache->get($key);
+		if(!$access_token){
+			$access_token = $this->googleoauth2->refreshed_access_token();
+			if(!isset($access_token['access_token'][5])){
+				show_error('Wrong access_token 1');
+			}
+			$this->mh_cache->save($key,$access_token,60*50);
+		}
+		if(!isset($access_token['access_token'][5])){
+			show_error('Wrong access_token 2');
+		}
+		return $access_token['access_token'];
+	}
 
-	public function analytics($conf,$param){
-		$access_token = $this->googleoauth2->refreshed_access_token();
+	public function analytics_acounts($conf,$param){
+		$access_token = $this->googleoauth2->refreshed_access_token(); //캐싱 해야함!! 꼭 60분 캐싱하자
+		header('Content-Type: application/json');
+
+		$this->load->library('GoogleAnalyticsApi');
+		$this->googleanalyticsapi->set_mproxy($this->mproxy);
+		// $this->googleanalyticsapi->set_access_token($access_token['access_token']);
+		$this->googleanalyticsapi->set_access_token($this->get_access_token());
+		// $res = $this->googleanalyticsapi->accountSummaries();
+		$res = $this->googleanalyticsapi->accountSummaries();
+		print_r($res);
+		exit;
+	}
+
+	public function analytics_test($conf,$param){
+		$access_token = $this->googleoauth2->refreshed_access_token(); //캐싱 해야함!! 꼭 60분 캐싱하자
+		header('Content-Type: application/json');
 
 		$this->load->library('GoogleAnalyticsApi');
 		$this->googleanalyticsapi->set_mproxy($this->mproxy);
 		$this->googleanalyticsapi->set_access_token($access_token['access_token']);
 		// $res = $this->googleanalyticsapi->accountSummaries();
-
-
-
+		//-- ex
 		$profileId = '54658549'; //Lee Minsu/mins01.com/homepage
 		$gets = array(
 			'ids'=> 'ga:'.$profileId,

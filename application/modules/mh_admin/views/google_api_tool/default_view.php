@@ -13,6 +13,11 @@
 
 ?>
 <div class="container">
+	<div>
+		<a class="btn btn-info" href="<?=ADMIN_URI_PREFIX?>google_api_tool/analytics_acounts">analytics acounts 확인</a>
+		<a class="btn btn-info" href="<?=ADMIN_URI_PREFIX?>google_api_tool/analytics_test">analytics test</a>
+	</div>
+	<hr>
 	<h2>코드 받기 부분</h2>
 	<form action="<?=html_escape($client['auth_uri'])?>" target="_blank" class="form-inline">
 		scope : <input type="text" class="form-control" name="scope" value="" required> <a href="https://developers.google.com/identity/protocols/oauth2/scopes" target="_blank">OAuth 2.0 Scopes for Google APIs</a><br>

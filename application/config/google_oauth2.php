@@ -6,9 +6,9 @@ $default_client = JSON_DECODE($tjson,1);
 unset($tjson);
 
 //-- 엑세스 토큰 JSON
+// $analytics_readonly = array(); //초기 empty 설정
 $tjson = file_get_contents(APPPATH.'/../../conf/googleoauth2/access_token_analytics.readonly.json');
-$analytics_readonly = JSON_DECODE($tjson,1);
-unset($tjson);
+$analytics_readonly = JSON_DECODE($tjson,1); unset($tjson);
 
 $config['google_oauth2'] = array(
 	'clients' => array(
