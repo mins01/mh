@@ -139,6 +139,13 @@ class Google_api_tool extends MX_Controller {
 		// $res = $this->googleanalyticsapi->accountSummaries();
 		//-- ex
 		$profileId = '54658549'; //Lee Minsu/mins01.com/homepage
+		// ga:searchResultViews //검색수
+		// ga:searchUniques //유니크 검색수
+		// *pageviewsPerSearch = ga:searchResultViews / ga:searchUniques //검색당 굘과 페이지뷰수
+		// ga:searchExitRate // 검색 후 종료율
+		// ga:percentSearchRefinements //재검색율
+		// ga:avgSearchDuration //검색후 시간
+		// ga:avgSearchDepth //평균검색심도
 		$gets = array(
 			'ids'=> 'ga:'.$profileId,
 	    // 'start-date'=> 'yesterday',
@@ -147,15 +154,15 @@ class Google_api_tool extends MX_Controller {
 			'end-date'=> 'yesterday',
 			// 검색어용
 			'dimensions'=> 'ga:searchKeyword,ga:date',
-			'metrics'=> 'ga:searchResultViews,ga:searchUniques,ga:percentSearchRefinements,ga:avgSearchDuration,ga:searchExits',
+			'metrics'=> 'ga:searchResultViews,ga:searchUniques,ga:searchExitRate,ga:percentSearchRefinements,ga:avgSearchDuration,ga:avgSearchDepth',
 			'sort'=> '-ga:searchUniques',
 			// 일반 페이지용
 			// 'dimensions'=> 'ga:pagePath,ga:date',
-			// 'metrics'=> 'ga:pageviews,ga:uniquePageviews,ga:avgTimeOnPage,ga:entrances,ga:bounceRate',
+			// 'metrics'=> 'ga:pageviews,ga:uniquePageviews,ga:avgTimeOnPage,ga:entrances,ga:bounceRate,ga:exitRate',
 			// 'sort'=> '-ga:pageviews',
 			// 필터
 			// 'filters'=>'ga:pagePath=~^/main/item/itemList.php?'
-			'max-results'=> 1000
+			'max-results'=> 10
 		);
 		$res = $this->googleanalyticsapi->data_ga($gets);
 
