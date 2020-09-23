@@ -290,3 +290,36 @@ function array_dev( &$arr, $avg = NULL )
         $dev += pow(($a - $avg),2);
     return sqrt($dev);
 }
+
+// -- 날짜 범위 기준으로 날짜기준값으로 연관 배열 생성
+function array_date_key($group_type,$date_st,$date_ed,$v){
+	$def_ranks_array = array();
+	$tm1 = strtotime($date_st);
+	$tm2 = strtotime($date_ed);
+
+	if($group_type=='day'){
+		$i_limit = 1200;
+		while($tm1<=$tm2 && $i_limit-- > 0){
+			$t = date('Y-m-d',$tm1);
+			$def_ranks_array[$t]= ($v==='text'?date('m-d',$tm1):$v);
+			$tm1 += 60*60*24;
+		}
+	}else if($group_type=='week'){
+		$i_limit = 1200;
+		$tm2 = $tm2+86400*(7-date('N',$tm2));
+		while($tm1<=$tm2 && $i_limit-- > 0){
+			$t = date('o-W',$tm1);
+			$def_ranks_array[$t]= ($v==='text'?date('o-W주',$tm1):$v);
+			$tm1 += 60*60*24*7;
+		}
+	}else if($group_type=='month'){
+		$i_limit = 1200;
+		$tm2 = mktime(0,0,0,date('n',$tm2)+1,0,date('Y',$tm2));
+		while($tm1<=$tm2 && $i_limit-- > 0){
+			$t = date('Y-m',$tm1);
+			$def_ranks_array[$t]= ($v==='text'?date('Y-m월',$tm1):$v);
+			$tm1 = mktime(0,0,0,date('n',$tm1)+1,1,date('Y',$tm1));
+		}
+	}
+	return $def_ranks_array;
+}
