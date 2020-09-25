@@ -23,7 +23,7 @@ class Ga_dashboard extends MX_Controller {
 		$this->googleanalyticsapi->set_mproxy($this->mproxy);
 
 		$this->profileId = $conf['menu']['mn_arg1'];
-		$this->days = isset($conf['menu']['mn_arg2'][0])?$conf['menu']['mn_arg2']:14;
+		$this->daysAgo = isset($conf['menu']['mn_arg2'][0])?$conf['menu']['mn_arg2']:14;
 		if(!isset($this->profileId[0])){
 			show_error('mn_arg1(profileId) is empty.');
 		}
@@ -64,10 +64,10 @@ class Ga_dashboard extends MX_Controller {
 	}
 
 	public function dashboard($conf,$param){
-		$key='ga_dashboard_'.$this->profileId.'_'.$this->days;
+		$key='ga_dashboard_'.$this->profileId.'_'.$this->daysAgo;
 		$rowss = $this->mh_cache->get($key);
 		if(!$rowss){
-			$rowss = $this->get_ga_rowss();
+			$rowss = $this->get_ga_rowss($this->profileId,$this->daysAgo);
 			$this->mh_cache->save($key,$rowss,60*30); //30분 캐시
 		}
 
@@ -80,24 +80,23 @@ class Ga_dashboard extends MX_Controller {
 				'conf'=>$conf,
 				'param'=>$param,
 				'rowss'=>$rowss,
+				'daysAgo'=>$this->daysAgo
 			)
 		);
 	}
 
-	private function get_ga_rowss(){
+	private function get_ga_rowss($profileId,$daysAgo){
 		$rowss = array();
 		$rowss['createdAt'] = date('Y-m-h H:i:s');
 		$access_token = $this->get_access_token(); //캐싱 해야함!! 꼭 60분 캐싱하자
 		$this->googleanalyticsapi->set_access_token($access_token);
 
 
-
-		$profileId = $this->profileId;
 		$res = array('rows'=>array());
 		//--- 검색어 7일간 TOP10
 		$gets = array(
 			'ids'=> 'ga:'.$profileId,
-			'start-date'=> $this->days.'daysAgo',
+			'start-date'=> $daysAgo.'daysAgo',
 			'end-date'=> 'today',
 			// 검색어용
 			'dimensions'=> 'ga:searchKeyword,ga:pagePath',
@@ -112,7 +111,7 @@ class Ga_dashboard extends MX_Controller {
 		//--- Page 7일간 TOP10
 		$gets = array(
 			'ids'=> 'ga:'.$profileId,
-			'start-date'=> $this->days.'daysAgo',
+			'start-date'=> $daysAgo.'daysAgo',
 			'end-date'=> 'today',
 			// 검색어용
 			'dimensions'=> 'ga:pagePath,ga:pageTitle',
@@ -128,7 +127,7 @@ class Ga_dashboard extends MX_Controller {
 		//--- 방문자 7일간 TOP10
 		$gets = array(
 			'ids'=> 'ga:'.$profileId,
-			'start-date'=> $this->days.'daysAgo',
+			'start-date'=> $daysAgo.'daysAgo',
 			'end-date'=> 'today',
 			'dimensions'=> 'ga:date',
 			'metrics'=> 'ga:users,ga:newUsers',  //방문자,신규방문자

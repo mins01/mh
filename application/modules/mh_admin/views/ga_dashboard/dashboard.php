@@ -9,8 +9,12 @@
 //
 // print_r($rowss['total_page']);
 ?>
-<h2 style="margin-bottom:2em" class="text-center">Google analytics 통계</h2>
-<div id="curve_chart" style="width: 100%; max-width: 1000px;height: 400px;margin:10px auto"></div>
+<h2 style="margin-bottom:2em" class="text-center">Google analytics 대쉬보드 ( <?=$daysAgo?>일간 )</h2>
+<div class="text-center" style="font-size:20px;">
+방문자 : <?=$rowss['total_user']['ga:users']?> /
+신규방문자 : <?=$rowss['total_user']['ga:newUsers']?>
+</div>
+<div id="curve_chart" style="width: 100%; max-width: 1000px;height: 450px;margin:10px auto; overflow-x:auto; overflow-y:hidden"></div>
 <div class="row">
 	<div class="col-lg-6">
 		<table class="table" style="table-layout:fixed">
