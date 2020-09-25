@@ -68,7 +68,7 @@ class Ga_dashboard extends MX_Controller {
 		$rowss = $this->mh_cache->get($key);
 		if(!$rowss){
 			$rowss = $this->get_ga_rowss();
-			$this->mh_cache->save($key,$rowss,60*10); //10분 캐시
+			$this->mh_cache->save($key,$rowss,60*30); //30분 캐시
 		}
 
 		// print_r($rowss);
@@ -130,15 +130,9 @@ class Ga_dashboard extends MX_Controller {
 			'ids'=> 'ga:'.$profileId,
 			'start-date'=> $this->days.'daysAgo',
 			'end-date'=> 'today',
-			// 검색어용
-			// 'dimensions'=> 'ga:userDefinedValue',
-			// 'dimensions'=> 'ga:userType',
-			// 'dimensions'=> 'ga:userGender,ga:userAgeBracket',
 			'dimensions'=> 'ga:date',
-			// 'metrics'=> 'ga:users,ga:newUsers,ga:percentNewSessions,ga:1dayUsers,ga:7dayUsers,ga:14dayUsers,ga:28dayUsers,ga:sessionsPerUser',  //PV,UPV
 			'metrics'=> 'ga:users,ga:newUsers',  //방문자,신규방문자
-			// 'sort'=> '-ga:uniquePageviews',
-			'max-results'=> 10
+			'max-results'=> 365*2
 		);
 		$res = $this->googleanalyticsapi->data_ga($gets);
 		// print_r($res);

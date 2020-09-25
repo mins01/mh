@@ -61,7 +61,7 @@
 			<thead >
 				<tr >
 					<th class="text-center">번호</th>
-					<th class="text-center">페이지 타이틀</th>
+					<th class="text-center">페이지</th>
 					<th class="text-center">PV</th>
 					<th class="text-center">UPV</th>
 				</tr>
