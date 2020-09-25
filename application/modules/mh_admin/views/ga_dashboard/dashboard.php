@@ -11,8 +11,8 @@
 ?>
 <h2 style="margin-bottom:2em" class="text-center">Google analytics 대쉬보드 ( <?=$daysAgo?>일간 )</h2>
 <div class="text-center" style="font-size:20px;">
-방문자 : <?=$rowss['total_user']['ga:users']?> /
-신규방문자 : <?=$rowss['total_user']['ga:newUsers']?>
+방문자 : <?=number_format($rowss['total_user']['ga:users'])?> /
+신규방문자 : <?=number_format($rowss['total_user']['ga:newUsers'])?> (<?=round($rowss['total_user']['ga:newUsers']/$rowss['total_user']['ga:users']*100)?>%)
 </div>
 <div id="curve_chart" style="width: 100%; max-width: 1000px;height: 450px;margin:10px auto; overflow-x:auto; overflow-y:hidden"></div>
 <div class="row">
