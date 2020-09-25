@@ -5,10 +5,11 @@
 // $rowss['total_page']
 // $rowss['users']
 // $rowss['total_user']
+// $rowss['createdAt']
+//
 // print_r($rowss['total_page']);
 ?>
-<h2 style="margin-bottom:2em" class="text-center">Google analytics 7일간 통계</h2>
-
+<h2 style="margin-bottom:2em" class="text-center">Google analytics 통계</h2>
 <div id="curve_chart" style="width: 100%; max-width: 1000px;height: 400px;margin:10px auto"></div>
 <div class="row">
 	<div class="col-lg-6">
@@ -78,7 +79,7 @@
 				?>
 				<tr>
 					<td class="text-center"><?=$k+1?></td>
-					<td class="text-left"><div class="text-overflow-ellipsis"><a href="<?=html_escape($row[0])?>" target="_blank"><?=html_escape($row[1])?></a></div></td>
+					<td class="text-left"><div class="text-overflow-ellipsis"><a href="<?=html_escape($row[0])?>" target="_blank" title="<?=html_escape($row[1])?>"><?=html_escape($row[0])?></a></div></td>
 					<td class="text-center"><?=html_escape(number_format($row[2]))?></td>
 					<td class="text-center"><?=html_escape(number_format($row[3]))?></td>
 				</tr>
@@ -89,7 +90,7 @@
 
 	</div>
 </div>
-
+<div class="text-right">data date : <?=html_escape($rowss['createdAt'])?></div>
 
 <?
 // print_r($rowss['users']);

@@ -23,6 +23,7 @@ class Ga_dashboard extends MX_Controller {
 		$this->googleanalyticsapi->set_mproxy($this->mproxy);
 
 		$this->profileId = $conf['menu']['mn_arg1'];
+		$this->days = isset($conf['menu']['mn_arg2'][0])?$conf['menu']['mn_arg2']:14;
 		if(!isset($this->profileId[0])){
 			show_error('mn_arg1(profileId) is empty.');
 		}
@@ -34,7 +35,8 @@ class Ga_dashboard extends MX_Controller {
 		// print_r($param);exit;
 		$method = isset($param[0][0])?$param[0]:'index';
 		if(!method_exists($this,$method)){
-			show_error("지정 메소드가 없습니다.");
+			// show_error("지정 메소드가 없습니다.");
+			$method = 'index';
 		}
 		$this->{$method}($conf,$param);
 	}
@@ -62,7 +64,7 @@ class Ga_dashboard extends MX_Controller {
 	}
 
 	public function dashboard($conf,$param){
-		$key='ga_dashboard';
+		$key='ga_dashboard_'.$this->profileId.'_'.$this->days;
 		$rowss = $this->mh_cache->get($key);
 		if(!$rowss){
 			$rowss = $this->get_ga_rowss();
@@ -84,15 +86,18 @@ class Ga_dashboard extends MX_Controller {
 
 	private function get_ga_rowss(){
 		$rowss = array();
+		$rowss['createdAt'] = date('Y-m-h H:i:s');
 		$access_token = $this->get_access_token(); //캐싱 해야함!! 꼭 60분 캐싱하자
 		$this->googleanalyticsapi->set_access_token($access_token);
+
+
 
 		$profileId = $this->profileId;
 		$res = array('rows'=>array());
 		//--- 검색어 7일간 TOP10
 		$gets = array(
 			'ids'=> 'ga:'.$profileId,
-			'start-date'=> '14daysAgo',
+			'start-date'=> $this->days.'daysAgo',
 			'end-date'=> 'today',
 			// 검색어용
 			'dimensions'=> 'ga:searchKeyword,ga:pagePath',
@@ -107,7 +112,7 @@ class Ga_dashboard extends MX_Controller {
 		//--- Page 7일간 TOP10
 		$gets = array(
 			'ids'=> 'ga:'.$profileId,
-			'start-date'=> '14daysAgo',
+			'start-date'=> $this->days.'daysAgo',
 			'end-date'=> 'today',
 			// 검색어용
 			'dimensions'=> 'ga:pagePath,ga:pageTitle',
@@ -123,7 +128,7 @@ class Ga_dashboard extends MX_Controller {
 		//--- 방문자 7일간 TOP10
 		$gets = array(
 			'ids'=> 'ga:'.$profileId,
-			'start-date'=> '14daysAgo',
+			'start-date'=> $this->days.'daysAgo',
 			'end-date'=> 'today',
 			// 검색어용
 			// 'dimensions'=> 'ga:userDefinedValue',
