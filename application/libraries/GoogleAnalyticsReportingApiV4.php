@@ -82,16 +82,18 @@ class GoogleAnalyticsReportingApiV4
 	}
 	public function extract_rowss($res){
 		$rowss = array();
-		foreach ($res['reports'] as $k=>$r) {
-			$rows = array();
-			if(isset($r['data']['rows'])){
-				foreach ($r['data']['rows'] as $r2) {
-					foreach ($r2['metrics'] as $r3) {
-						$rows[] = array_merge($r2['dimensions'],$r3['values']);
+		if(isset($res['reports'])){
+			foreach ($res['reports'] as $k=>$r) {
+				$rows = array();
+				if(isset($r['data']['rows'])){
+					foreach ($r['data']['rows'] as $r2) {
+						foreach ($r2['metrics'] as $r3) {
+							$rows[] = array_merge($r2['dimensions'],$r3['values']);
+						}
 					}
 				}
-			}			
-			$rowss[]=$rows;
+				$rowss[]=$rows;
+			}
 		}
 		return $rowss;
 	}
