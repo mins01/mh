@@ -109,8 +109,9 @@ class Ga_dashboard extends MX_Controller {
 					'metrics'=>array(
 						array("expression"=>"ga:users"),
 						array("expression"=>"ga:newUsers"),
-						array("expression"=>"ga:pageviews"),
+						array("expression"=>"ga:sessions"),
 						array("expression"=>"ga:uniquePageviews"),
+						array("expression"=>"ga:pageviews"),
 					),
 					// 'orderBys'=>array(
 					// 	array(
@@ -214,20 +215,71 @@ class Ga_dashboard extends MX_Controller {
 					// "pageToken"=>"10000",
 					"pageSize"=>"10",
 				),
+				//-- source , session, 이탈률
+				array(
+					'viewId'=>$profileId,
+					'dateRanges'=>array(
+						"startDate"=>$daysAgo.'daysAgo',
+						"endDate"=>"today"
+					),
+					'dimensions'=>array(
+						array("name"=>"ga:source"),
+					),
+					'metrics'=>array(
+						array("expression"=>"ga:sessions"),
+						array("expression"=>"ga:bounceRate"),
+					),
+					'orderBys'=>array(
+						array(
+							"fieldName"=> "ga:sessions",
+							"sortOrder"=> "DESCENDING"
+						)
+					),
+					'samplingLevel'=>'SMALL', //SMALL , LARGE, DEFAULT
+					"pageSize"=>"10",
+				),
+				//-- source , session, 이탈률
+				array(
+					'viewId'=>$profileId,
+					'dateRanges'=>array(
+						"startDate"=>$daysAgo.'daysAgo',
+						"endDate"=>"today"
+					),
+					'dimensions'=>array(
+						array("name"=>"ga:country"),
+						array("name"=>"ga:city"),
+					),
+					'metrics'=>array(
+						array("expression"=>"ga:sessions"),
+						array("expression"=>"ga:bounceRate"),
+					),
+					'orderBys'=>array(
+						array(
+							"fieldName"=> "ga:sessions",
+							"sortOrder"=> "DESCENDING"
+						)
+					),
+					'samplingLevel'=>'SMALL', //SMALL , LARGE, DEFAULT
+					"pageSize"=>"10",
+				),
 			)
 		);
 		$res = $this->googleanalyticsreportingapiv4->data_ga($posts);
 		// print_r($res);exit;
 		$res_rowss = $this->googleanalyticsreportingapiv4->extract_rowss($res);
-		// print_r($rowss);exit;
+		// print_r($res_rowss);exit;
 
 		$rowss = array(
 			'per_date' => $res_rowss[0],
 			'pages' => $res_rowss[1],
 			'searchs' => $res_rowss[2],
+			'sources' => $res_rowss[3],
+			'citys' => $res_rowss[4],
 			'total_per_date' => $res['reports'][0]['data']['totals'][0]['values'],
 			'total_pages' => $res['reports'][1]['data']['totals'][0]['values'],
 			'total_searchs' => $res['reports'][2]['data']['totals'][0]['values'],
+			'total_sources' => $res['reports'][3]['data']['totals'][0]['values'],
+			'total_citys' => $res['reports'][4]['data']['totals'][0]['values'],
 			'createdAt' => date('Y-m-h H:i:s'),
 		);
 		// print_r($rowss);

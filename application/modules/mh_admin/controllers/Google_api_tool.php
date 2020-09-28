@@ -273,6 +273,51 @@ class Google_api_tool extends MX_Controller {
 					),
 			)
 		);
+		$posts = array(
+			'reportRequests'=>array(
+					array(
+						'viewId'=>$profileId,
+						'dateRanges'=>array(
+							"startDate"=>"7daysAgo",
+							"endDate"=>"yesterday"
+						),
+						'dimensions'=>array(
+							array("name"=>"ga:fullReferrer"),
+						),
+						'metrics'=>array(
+							array("expression"=>"ga:users"),
+							array("expression"=>"ga:newUsers"),
+							array("expression"=>"ga:bounceRate/100",
+								"formattingType"=>"FLOAT",
+								"alias"=>"ga:bounceRate"
+							),
+						),
+						// 'orderBys'=>array(
+						// 	array(
+						// 		"fieldName"=> "ga:searchUniques",
+						// 		"sortOrder"=> "DESCENDING"
+						// 	)
+						// ),
+						'samplingLevel'=>'SMALL', //SMALL , LARGE, DEFAULT
+						// 'segments'=>array(
+						// 	array(
+						// 		"segmentId"=> "gaid::-11"
+						// 	)
+						// ),
+						// 'dimensionFilterClauses'=>array(
+						// 	'filters'=>array(
+						// 		"dimension_name"=>"ga:browser",
+						// 		"operator"=>"EXACT",
+						// 		"expressions"=>array("Firefox"),
+						// 	)
+						// ),
+						// "filtersExpression"=> "ga:browser==Firefox",
+						// "includeEmptyRows"=> "true",
+						// "pageToken"=>"10000",
+						"pageSize"=>"10",
+					),
+			)
+		);
 		$res = $this->googleanalyticsreportingapiv4->data_ga($posts);
 		$rowss = $this->googleanalyticsreportingapiv4->extract_rowss($res);
 

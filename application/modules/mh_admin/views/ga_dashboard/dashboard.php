@@ -26,21 +26,31 @@
 			<tr>
 				<th class="text-center">방문자</th>
 				<th class="text-center">신규방문자</th>
-				<th class="text-center">PV</th>
+				<th class="text-center">세션</th>
 				<th class="text-center">UPV</th>
+				<th class="text-center">PV</th>
 			</tr>
 		</thead>
 
 		<tr>
 			<td><?=number_format($rowss['total_per_date'][0])?></td>
-			<td><?=number_format($rowss['total_per_date'][1])?> (<?=$rowss['total_per_date'][0]!=0?round($rowss['total_per_date'][1]/$rowss['total_per_date'][0]*100):0?>%)</td>
+			<td><?=number_format($rowss['total_per_date'][1])?></td>
 			<td><?=number_format($rowss['total_per_date'][2])?></td>
-			<td><?=number_format($rowss['total_per_date'][3])?> (<?=$rowss['total_per_date'][2]!=0?round($rowss['total_per_date'][3]/$rowss['total_per_date'][2]*100):0?>%)</td>
+			<td><?=number_format($rowss['total_per_date'][3])?></td>
+			<td><?=number_format($rowss['total_per_date'][4])?></td>
+		</tr>
+		<tr>
+			<td>100%</td>
+			<td><?=$rowss['total_per_date'][1]!=0?round($rowss['total_per_date'][1]/$rowss['total_per_date'][0]*100):0?>%</td>
+			<td><?=$rowss['total_per_date'][2]!=0?round($rowss['total_per_date'][2]/$rowss['total_per_date'][0]*100):0?>%</td>
+			<td><?=$rowss['total_per_date'][2]!=0?round($rowss['total_per_date'][3]/$rowss['total_per_date'][0]*100):0?>%</td>
+			<td><?=$rowss['total_per_date'][3]!=0?round($rowss['total_per_date'][4]/$rowss['total_per_date'][0]*100):0?>%</td>
 		</tr>
 	</table>
 </div>
 <div id="curve_chart" style="width: 100%; max-width: 1000px;height: 450px;margin:10px auto; overflow-x:auto; overflow-y:hidden"></div>
 <div class="row">
+	<!-- pages -->
 	<div class="col-lg-6">
 		<table class="table" style="table-layout:fixed">
 			<colgroup>
@@ -80,6 +90,7 @@
 		</table>
 
 	</div>
+	<!-- searchs -->
 	<div class="col-lg-6">
 		<table class="table" style="table-layout:fixed">
 			<colgroup>
@@ -118,16 +129,93 @@
 			?>
 		</table>
 	</div>
-
+	<!-- source -->
+	<div class="col-lg-6">
+		<table class="table" style="table-layout:fixed">
+			<colgroup>
+				<col width="30">
+				<col>
+				<col width="80">
+				<col width="80">
+			</colgroup>
+			<thead>
+				<tr>
+					<th class="text-center">no</th>
+					<th class="text-center">source</th>
+					<th class="text-center">세션</th>
+					<th class="text-center">이탈률</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th class="text-center">총</th>
+					<th class="text-center"></th>
+					<th class="text-center"><?=html_escape(number_format($rowss['total_sources'][0]))?></th>
+					<th class="text-center"><?=html_escape(sprintf('%.2f',$rowss['total_sources'][1]))?>%</th>
+				</tr>
+			</tfoot>
+			<?
+			foreach ($rowss['sources'] as $k => $row):
+				?>
+				<tr>
+					<td class="text-center"><?=$k+1?></td>
+					<td class="text-left text-overflow-ellipsis"><?=html_escape($row[0])?></td>
+					<td class="text-center"><?=html_escape(number_format($row[1]))?></td>
+					<td class="text-center"><?=html_escape(sprintf('%.2f',$row[2]))?>%</td>
+				</tr>
+				<?
+			endforeach;
+			?>
+		</table>
+	</div>
+	<!-- source -->
+	<div class="col-lg-6">
+		<table class="table" style="table-layout:fixed">
+			<colgroup>
+				<col width="30">
+				<col>
+				<col width="80">
+				<col width="80">
+			</colgroup>
+			<thead>
+				<tr>
+					<th class="text-center">no</th>
+					<th class="text-center">City</th>
+					<th class="text-center">세션</th>
+					<th class="text-center">이탈률</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th class="text-center">총</th>
+					<th class="text-center"></th>
+					<th class="text-center"><?=html_escape(number_format($rowss['total_citys'][0]))?></th>
+					<th class="text-center"><?=html_escape(sprintf('%.2f',$rowss['total_citys'][1]))?>%</th>
+				</tr>
+			</tfoot>
+			<?
+			foreach ($rowss['citys'] as $k => $row):
+				?>
+				<tr>
+					<td class="text-center"><?=$k+1?></td>
+					<td class="text-left text-overflow-ellipsis"><?=html_escape($row[0].' / '.$row[1])?></td>
+					<td class="text-center"><?=html_escape(number_format($row[2]))?></td>
+					<td class="text-center"><?=html_escape(sprintf('%.2f',$row[3]))?>%</td>
+				</tr>
+				<?
+			endforeach;
+			?>
+		</table>
+	</div>
 </div>
 <div class="text-right">data date : <?=html_escape($rowss['createdAt'])?></div>
 
 <?
 // print_r($rowss['users']);
-$chart_title = array('날짜','방문자','신규방문자','PV','UPV');
+$chart_title = array('날짜','방문자','신규방문자','세션','UPV','PV');
 $chart_value = array();
 foreach ($rowss['per_date'] as $k => $r) {
-	$chart_value[] = array(date('m-d',strtotime($r[0])),(int)$r[1],(int)$r[2],(int)$r[3],(int)$r[4]);
+	$chart_value[] = array(date('m-d',strtotime($r[0])),(int)$r[1],(int)$r[2],(int)$r[3],(int)$r[4],(int)$r[5]);
 }
 $chart_data = array_merge(array($chart_title),$chart_value);
 // print_r($chart_data);
