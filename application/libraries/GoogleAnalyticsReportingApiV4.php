@@ -84,11 +84,13 @@ class GoogleAnalyticsReportingApiV4
 		$rowss = array();
 		foreach ($res['reports'] as $k=>$r) {
 			$rows = array();
-			foreach ($r['data']['rows'] as $r2) {
-				foreach ($r2['metrics'] as $r3) {
-					$rows[] = array_merge($r2['dimensions'],$r3['values']);
+			if(isset($r['data']['rows'])){
+				foreach ($r['data']['rows'] as $r2) {
+					foreach ($r2['metrics'] as $r3) {
+						$rows[] = array_merge($r2['dimensions'],$r3['values']);
+					}
 				}
-			}
+			}			
 			$rowss[]=$rows;
 		}
 		return $rowss;
