@@ -151,6 +151,7 @@ class Ga_dashboard extends MX_Controller {
 					'metrics'=>array(
 						array("expression"=>"ga:pageviews"),
 						array("expression"=>"ga:uniquePageviews"),
+						array("expression"=>"ga:bounceRate"),
 					),
 					'orderBys'=>array(
 						array(
@@ -190,6 +191,7 @@ class Ga_dashboard extends MX_Controller {
 					'metrics'=>array(
 						array("expression"=>"ga:searchResultViews"),
 						array("expression"=>"ga:searchUniques"),
+						array("expression"=>"ga:bounceRate"),
 					),
 					'orderBys'=>array(
 						array(
@@ -223,10 +225,11 @@ class Ga_dashboard extends MX_Controller {
 						"endDate"=>"today"
 					),
 					'dimensions'=>array(
-						array("name"=>"ga:source"),
+						array("name"=>"ga:sourceMedium"),
 					),
 					'metrics'=>array(
 						array("expression"=>"ga:sessions"),
+						array("expression"=>"ga:organicSearches"),
 						array("expression"=>"ga:bounceRate"),
 					),
 					'orderBys'=>array(
@@ -246,11 +249,11 @@ class Ga_dashboard extends MX_Controller {
 						"endDate"=>"today"
 					),
 					'dimensions'=>array(
-						array("name"=>"ga:country"),
-						array("name"=>"ga:city"),
+						array("name"=>"ga:keyword"),
 					),
 					'metrics'=>array(
 						array("expression"=>"ga:sessions"),
+						array("expression"=>"ga:organicSearches"),
 						array("expression"=>"ga:bounceRate"),
 					),
 					'orderBys'=>array(
@@ -259,6 +262,7 @@ class Ga_dashboard extends MX_Controller {
 							"sortOrder"=> "DESCENDING"
 						)
 					),
+					// "filtersExpression"=> "ga:keyword=~..*", //목록만 검색
 					'samplingLevel'=>'SMALL', //SMALL , LARGE, DEFAULT
 					"pageSize"=>"10",
 				),
@@ -274,12 +278,12 @@ class Ga_dashboard extends MX_Controller {
 			'pages' => $res_rowss[1],
 			'searchs' => $res_rowss[2],
 			'sources' => $res_rowss[3],
-			'citys' => $res_rowss[4],
+			'keywords' => $res_rowss[4],
 			'total_per_date' => $res['reports'][0]['data']['totals'][0]['values'],
 			'total_pages' => $res['reports'][1]['data']['totals'][0]['values'],
 			'total_searchs' => $res['reports'][2]['data']['totals'][0]['values'],
 			'total_sources' => $res['reports'][3]['data']['totals'][0]['values'],
-			'total_citys' => $res['reports'][4]['data']['totals'][0]['values'],
+			'total_keywords' => $res['reports'][4]['data']['totals'][0]['values'],
 			'createdAt' => date('Y-m-h H:i:s'),
 		);
 		// print_r($rowss);
