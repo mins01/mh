@@ -145,12 +145,12 @@ $json = json_encode($chart_data);
 		var data = google.visualization.arrayToDataTable(chart_data);
 
 		var options = {
-			title: '방문자 변화량',
+			title: '방문자/PV 변화량',
 			// curveType: 'function',
 			legend: { position: 'top', maxLines:2, fontSize:12, },
 			chartArea: {
 				// leave room for y-axis labels
-				width: '90%',height:'300'
+				width: '85%',height:'300'
 			},
 		};
 
