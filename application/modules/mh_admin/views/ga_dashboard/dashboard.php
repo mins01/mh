@@ -18,8 +18,9 @@
 //
 // print_r($rowss['total_page']);
 ?>
-<h2 style="margin-bottom:1em" class="text-center">Google analytics 대쉬보드 ( <?=$daysAgo?>일간 )</h2>
+<h2 style="margin-bottom:0em" class="text-center">Google analytics 대쉬보드 ( <?=$daysAgo?>일간 )</h2>
 <div class="text-center">
+	<div class="text-right"><a class="btn btn-danger btn-sm" href="?nocache=1">캐시 강제 갱신</a></div>
 	<table class="table table-striped table-bordered table-condensed" style="width:auto; margin:0 auto;">
 		<thead>
 			<tr>
