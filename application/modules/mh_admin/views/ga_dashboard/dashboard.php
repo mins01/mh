@@ -32,9 +32,9 @@
 
 		<tr>
 			<td><?=number_format($rowss['total_per_date'][0])?></td>
-			<td><?=number_format($rowss['total_per_date'][1])?> (<?=round($rowss['total_per_date'][1]/$rowss['total_per_date'][0]*100)?>%)</td>
+			<td><?=number_format($rowss['total_per_date'][1])?> (<?=$rowss['total_per_date'][0]!=0?round($rowss['total_per_date'][1]/$rowss['total_per_date'][0]*100):0?>%)</td>
 			<td><?=number_format($rowss['total_per_date'][2])?></td>
-			<td><?=number_format($rowss['total_per_date'][3])?> (<?=round($rowss['total_per_date'][3]/$rowss['total_per_date'][2]*100)?>%)</td>
+			<td><?=number_format($rowss['total_per_date'][3])?> (<?=$rowss['total_per_date'][2]!=0?round($rowss['total_per_date'][3]/$rowss['total_per_date'][2]*100):0?>%)</td>
 		</tr>
 	</table>
 </div>
@@ -69,9 +69,9 @@
 				?>
 				<tr>
 					<td class="text-center"><?=$k+1?></td>
-					<td class="text-left"><div class="text-overflow-ellipsis"><a href="<?=html_escape($row[0])?>" target="_blank" title="<?=html_escape($row[1])?>"><?=html_escape($row[0])?></a></div></td>
+					<td class="text-left"><div class="text-overflow-ellipsis"><?=html_escape($row[0])?></div></td>
+					<td class="text-center"><?=html_escape(number_format($row[1]))?></td>
 					<td class="text-center"><?=html_escape(number_format($row[2]))?></td>
-					<td class="text-center"><?=html_escape(number_format($row[3]))?></td>
 				</tr>
 				<?
 			endforeach;
@@ -108,9 +108,9 @@
 				?>
 				<tr>
 					<td class="text-center"><?=$k+1?></td>
-					<td class="text-left text-overflow-ellipsis"><a href="<?=html_escape($row[1])?>" target="_blank"><?=html_escape($row[0])?></a></td>
+					<td class="text-left text-overflow-ellipsis"><?=html_escape($row[0])?></td>
+					<td class="text-center"><?=html_escape(number_format($row[1]))?></td>
 					<td class="text-center"><?=html_escape(number_format($row[2]))?></td>
-					<td class="text-center"><?=html_escape(number_format($row[3]))?></td>
 				</tr>
 				<?
 			endforeach;

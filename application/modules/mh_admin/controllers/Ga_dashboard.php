@@ -70,7 +70,8 @@ class Ga_dashboard extends MX_Controller {
 	public function dashboard($conf,$param){
 		$key='ga_dashboard_'.$this->profileId.'_'.$this->daysAgo;
 		$rowss = $this->mh_cache->get($key);
-		if(!$rowss){
+		$nocache = $this->input->get('nocache');
+		if($nocache || !$rowss){
 			$rowss = $this->get_ga_rowss($this->profileId,$this->daysAgo);
 			$this->mh_cache->save($key,$rowss,60*30); //30분 캐시
 		}
@@ -144,7 +145,7 @@ class Ga_dashboard extends MX_Controller {
 					),
 					'dimensions'=>array(
 						array("name"=>"ga:pagePath"),
-						array("name"=>"ga:pageTitle")
+						// array("name"=>"ga:pageTitle")
 					),
 					'metrics'=>array(
 						array("expression"=>"ga:pageviews"),
@@ -183,7 +184,7 @@ class Ga_dashboard extends MX_Controller {
 					),
 					'dimensions'=>array(
 						array("name"=>"ga:searchKeyword"),
-						array("name"=>"ga:pagePath")
+						// array("name"=>"ga:pagePath")
 					),
 					'metrics'=>array(
 						array("expression"=>"ga:searchResultViews"),
