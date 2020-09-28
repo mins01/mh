@@ -16,6 +16,7 @@
 	<div>
 		<a class="btn btn-info" href="<?=ADMIN_URI_PREFIX?>google_api_tool/analytics_acounts">analytics acounts 확인</a>
 		<a class="btn btn-info" href="<?=ADMIN_URI_PREFIX?>google_api_tool/analytics_test">analytics test</a>
+		<a class="btn btn-info" href="<?=ADMIN_URI_PREFIX?>google_api_tool/analytics_test_v4">analytics test V4</a>
 	</div>
 	<hr>
 	<h2>코드 받기 부분</h2>

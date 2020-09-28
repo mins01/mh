@@ -170,7 +170,116 @@ class Google_api_tool extends MX_Controller {
 		exit;
 	}
 
+	public function analytics_test_v4($conf,$param){
+		$access_token = $this->googleoauth2->refreshed_access_token(); //캐싱 해야함!! 꼭 60분 캐싱하자
+		header('Content-Type: application/json');
 
+		$this->load->library('GoogleAnalyticsReportingApiV4');
+		$this->googleanalyticsreportingapiv4->set_mproxy($this->mproxy);
+		$this->googleanalyticsreportingapiv4->set_access_token($access_token['access_token']);
+		// $res = $this->googleanalyticsapi->accountSummaries();
+		//-- ex
+		$profileId = '54658549'; //Lee Minsu/mins01.com/homepage
+
+
+		$posts = array(
+			'reportRequests'=>array(
+					array(
+						'viewId'=>$profileId,
+						'dateRanges'=>array(
+							"startDate"=>"7daysAgo",
+							"endDate"=>"yesterday"
+						),
+						'dimensions'=>array(
+							array("name"=>"ga:searchKeyword"),
+							array("name"=>"ga:date")
+						),
+						'metrics'=>array(
+							array("expression"=>"ga:searchResultViews"),
+							array("expression"=>"ga:searchUniques"),
+							array("expression"=>"ga:searchExitRate"),
+							array("expression"=>"ga:percentSearchRefinements"),
+							array("expression"=>"ga:avgSearchDuration"),
+							array("expression"=>"ga:avgSearchDepth"),
+						),
+						'orderBys'=>array(
+							array(
+								"fieldName"=> "ga:searchUniques",
+								"sortOrder"=> "DESCENDING"
+							)
+						),
+						'samplingLevel'=>'LARGE', //SMALL , LARGE, DEFAULT
+						// 'segments'=>array(
+						// 	array(
+						// 		"segmentId"=> "gaid::-11"
+						// 	)
+						// ),
+						// 'dimensionFilterClauses'=>array(
+						// 	'filters'=>array(
+						// 		"dimension_name"=>"ga:browser",
+						// 		"operator"=>"EXACT",
+						// 		"expressions"=>array("Firefox"),
+						// 	)
+						// ),
+						// "filtersExpression"=> "ga:browser==Firefox",
+						// "includeEmptyRows"=> "true",
+						// "pageToken"=>"10000",
+						"pageSize"=>"10",
+					),
+					array(
+						'viewId'=>$profileId,
+						'dateRanges'=>array(
+							"startDate"=>"7daysAgo",
+							"endDate"=>"yesterday"
+						),
+						// 	// 'dimensions'=> 'ga:pagePath,ga:date',
+						// 	// 'metrics'=> 'ga:pageviews,ga:uniquePageviews,ga:avgTimeOnPage,ga:entrances,ga:bounceRate,ga:exitRate',
+						// 	// 'sort'=> '-ga:pageviews',
+						'dimensions'=>array(
+							array("name"=>"ga:pagePath"),
+							array("name"=>"ga:date")
+						),
+						'metrics'=>array(
+							array("expression"=>"ga:pageviews"),
+							array("expression"=>"ga:uniquePageviews"),
+							array("expression"=>"ga:avgTimeOnPage"),
+							array("expression"=>"ga:entrances"),
+							array("expression"=>"ga:bounceRate"),
+							array("expression"=>"ga:exitRate"),
+						),
+						'orderBys'=>array(
+							array(
+								"fieldName"=> "ga:pageviews",
+								"sortOrder"=> "DESCENDING"
+							)
+						),
+						'samplingLevel'=>'LARGE', //SMALL , LARGE, DEFAULT
+						// 'segments'=>array(
+						// 	array(
+						// 		"segmentId"=> "gaid::-11"
+						// 	)
+						// ),
+						// 'dimensionFilterClauses'=>array(
+						// 	'filters'=>array(
+						// 		"dimension_name"=>"ga:browser",
+						// 		"operator"=>"EXACT",
+						// 		"expressions"=>array("Firefox"),
+						// 	)
+						// ),
+						// "filtersExpression"=> "ga:browser==Firefox",
+						// "includeEmptyRows"=> "true",
+						// "pageToken"=>"10000",
+						"pageSize"=>"10",
+					),
+			)
+		);
+		$res = $this->googleanalyticsreportingapiv4->data_ga($posts);
+		$rowss = $this->googleanalyticsreportingapiv4->extract_rowss($res);
+
+		print_r($rowss);
+		print_r($res);
+		exit;
+	}
 
 
 
