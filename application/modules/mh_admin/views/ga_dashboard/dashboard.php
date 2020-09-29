@@ -137,6 +137,8 @@
 			?>
 		</table>
 	</div>
+</div>
+<div class="row">
 	<!-- source -->
 	<div class="col-lg-6">
 		<table class="table table-striped" style="table-layout:fixed">
