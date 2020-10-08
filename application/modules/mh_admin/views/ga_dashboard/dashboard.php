@@ -18,37 +18,154 @@
 //
 // print_r($rowss['total_page']);
 ?>
-<h2 style="margin-bottom:0em" class="text-center">Google analytics 대쉬보드 ( <?=$daysAgo?>일간 )</h2>
-<div class="text-center">
-	<div class="text-right"><a class="btn btn-danger btn-sm" href="?nocache=1">캐시 강제 갱신</a></div>
-	<table class="table table-striped table-bordered table-condensed" style="width:auto; margin:0 auto;">
-		<thead>
-			<tr>
-				<th class="text-center">방문자</th>
-				<th class="text-center">신규방문자</th>
-				<th class="text-center">세션</th>
-				<th class="text-center">UPV</th>
-				<th class="text-center">PV</th>
-			</tr>
-		</thead>
+<script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_FixedFrameOnTable/FixedFrameOnTable.js?t=<?=REFLESH_TIME?>"></script>
+<link href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_FixedFrameOnTable/fixedFrameOnTable.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
+<style>
+.ffot-container-left {
+    background-color: #fff;
+}
+</style>
+<script>
+var ffot11 = null;
+$(function(){
+	//-- 수동 생성용
+	// ffot11 = new FixedFrameOnTable(document.querySelector('#ffot11'));
+	//-- 자동 변환용
+	ffot01= FixedFrameOnTable.tableToFfot(document.querySelector('#table_data'),1,2,document.querySelector('#ffot11'))
+	var x = document.querySelector('#table_data');
+	x.parentNode.removeChild(x)
 
-		<tr>
-			<td><?=number_format($rowss['total_per_date'][0])?></td>
-			<td><?=number_format($rowss['total_per_date'][1])?></td>
-			<td><?=number_format($rowss['total_per_date'][2])?></td>
-			<td><?=number_format($rowss['total_per_date'][3])?></td>
-			<td><?=number_format($rowss['total_per_date'][4])?></td>
-		</tr>
-		<tr>
-			<td>100%</td>
-			<td><?=$rowss['total_per_date'][1]!=0?round($rowss['total_per_date'][1]/$rowss['total_per_date'][0]*100):0?>%</td>
-			<td><?=$rowss['total_per_date'][2]!=0?round($rowss['total_per_date'][2]/$rowss['total_per_date'][0]*100):0?>%</td>
-			<td><?=$rowss['total_per_date'][2]!=0?round($rowss['total_per_date'][3]/$rowss['total_per_date'][0]*100):0?>%</td>
-			<td><?=$rowss['total_per_date'][3]!=0?round($rowss['total_per_date'][4]/$rowss['total_per_date'][0]*100):0?>%</td>
-		</tr>
-	</table>
+})
+</script>
+<h2 style="margin-bottom:0em" class="text-center">Google analytics 대쉬보드 ( <?=$daysAgo?>일간 )</h2>
+<div>
+	<div class="text-center">
+		<div class="text-right"><a class="btn btn-danger btn-sm" href="?nocache=1">캐시 강제 갱신</a></div>
+		<table class="table table-striped table-bordered table-condensed" style="width:auto; margin:0 auto;">
+			<thead>
+				<tr>
+					<th class="text-center">방문자</th>
+					<th class="text-center">신규방문자</th>
+					<th class="text-center">세션</th>
+					<th class="text-center">UPV</th>
+					<th class="text-center">PV</th>
+				</tr>
+			</thead>
+
+			<tr>
+				<td><?=number_format($rowss['total_per_date'][0])?></td>
+				<td><?=number_format($rowss['total_per_date'][1])?></td>
+				<td><?=number_format($rowss['total_per_date'][2])?></td>
+				<td><?=number_format($rowss['total_per_date'][3])?></td>
+				<td><?=number_format($rowss['total_per_date'][4])?></td>
+			</tr>
+			<tr>
+				<td>100%</td>
+				<td><?=$rowss['total_per_date'][1]!=0?round($rowss['total_per_date'][1]/$rowss['total_per_date'][0]*100):0?>%</td>
+				<td><?=$rowss['total_per_date'][2]!=0?round($rowss['total_per_date'][2]/$rowss['total_per_date'][0]*100):0?>%</td>
+				<td><?=$rowss['total_per_date'][2]!=0?round($rowss['total_per_date'][3]/$rowss['total_per_date'][0]*100):0?>%</td>
+				<td><?=$rowss['total_per_date'][3]!=0?round($rowss['total_per_date'][4]/$rowss['total_per_date'][0]*100):0?>%</td>
+			</tr>
+		</table>
+	</div>
+	<div id="curve_chart" style="width: 100%; max-width: 1000px;height: 450px;margin:5px auto; overflow-x:auto; overflow-y:hidden"></div>
+	<div id="ffot11"></div>
+	<div class="table-responsive" style="margin-bottom:1em;">
+		<table class="table table-condensed table-bordered" style="table-layout:fixed" id='table_data'>
+			<!-- <colgroup>
+				<col width="30">
+				<col>
+				<col width="80">
+				<col width="80">
+				<col width="80">
+			</colgroup> -->
+			<thead >
+				<tr class="active">
+					<th class="text-center" width='80'>날짜</th>
+					<th class="text-center" width='80'>총</th>
+					<?
+					foreach ($rowss['per_date'] as $k => $r):
+						?>
+						<th class="text-center" width="80"><?=preg_replace('/(?:\d{4})(\d{2})(\d{2})/','$1-$2',$r[0])?></th>
+						<?
+					endforeach;
+					?>
+				</tr>
+			</thead>
+			<!-- <tfoot>
+				<tr>
+					<th class="text-center">총</th>
+					<th class="text-center"></th>
+					<th class="text-center"><?=html_escape(number_format($rowss['total_pages'][0]))?></th>
+					<th class="text-center"><?=html_escape(number_format($rowss['total_pages'][1]))?></th>
+					<th class="text-center"><?=html_escape(sprintf('%.2f',$rowss['total_pages'][2]))?>%</th>
+				</tr>
+			</tfoot> -->
+			<!-- <th class="text-center">방문자</th>
+			<th class="text-center">신규방문자</th>
+			<th class="text-center">세션</th>
+			<th class="text-center">UPV</th>
+			<th class="text-center">PV</th> -->
+
+			<tr class="">
+				<th class="text-center">방문자</th>
+				<th class="text-center"><?=number_format($rowss['total_per_date'][0])?></th>
+				<?
+				foreach ($rowss['per_date'] as $k => $r):
+					?>
+					<td class="text-center"><?=number_format($r[1])?></td>
+					<?
+				endforeach;
+				?>
+			</tr>
+			<tr class="">
+				<th class="text-center">신규방문자</th>
+				<th class="text-center"><?=number_format($rowss['total_per_date'][1])?></th>
+				<?
+				foreach ($rowss['per_date'] as $k => $r):
+					?>
+					<td class="text-center"><?=number_format($r[2])?></td>
+					<?
+				endforeach;
+				?>
+			</tr>
+			<tr class="">
+				<th class="text-center">세션</th>
+				<th class="text-center"><?=number_format($rowss['total_per_date'][2])?></th>
+				<?
+				foreach ($rowss['per_date'] as $k => $r):
+					?>
+					<td class="text-center"><?=number_format($r[3])?></td>
+					<?
+				endforeach;
+				?>
+			</tr>
+			<tr class="">
+				<th class="text-center">UPV</th>
+				<th class="text-center"><?=number_format($rowss['total_per_date'][3])?></th>
+				<?
+				foreach ($rowss['per_date'] as $k => $r):
+					?>
+					<td class="text-center"><?=number_format($r[4])?></td>
+					<?
+				endforeach;
+				?>
+			</tr>
+			<tr class="">
+				<th class="text-center">PV</th>
+				<th class="text-center"><?=number_format($rowss['total_per_date'][4])?></th>
+				<?
+				foreach ($rowss['per_date'] as $k => $r):
+					?>
+					<td class="text-center"><?=number_format($r[5])?></td>
+					<?
+				endforeach;
+				?>
+			</tr>
+		</table>
+	</div>
 </div>
-<div id="curve_chart" style="width: 100%; max-width: 1000px;height: 450px;margin:10px auto; overflow-x:auto; overflow-y:hidden"></div>
+
 <div class="row">
 	<!-- pages -->
 	<div class="col-lg-6">
@@ -253,10 +370,10 @@ $json = json_encode($chart_data);
 		var options = {
 			title: '방문자/PV 변화량',
 			// curveType: 'function',
-			legend: { position: 'top', maxLines:2, fontSize:12, },
+			legend: { position: 'top', maxLines:2, fontSize:10, },
 			chartArea: {
 				// leave room for y-axis labels
-				width: '85%',height:'300'
+				width: '70%',height:'300'
 			},
 		};
 
