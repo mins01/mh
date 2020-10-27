@@ -4,10 +4,11 @@
 * proxy.php 에서 사용법을 확인바람.
 * 이 클래스 파일은 수정하지 말고, proxy.php에서 설정 수정으로 사용하라!
 * PHP5 이상 지원
+* https://github.com/mins01/php_Mproxy
 */
 class Mproxy{
-	var $conn_timeout = 5; //연결시간 타임아웃
-	var $exec_timeout = 5; //실행시간 타임아웃
+	public $conn_timeout = 5; //연결시간 타임아웃
+	public $exec_timeout = 5; //실행시간 타임아웃
 
 	/**
 	* 생성자
@@ -15,9 +16,9 @@ class Mproxy{
 	function __construct(){
 		$this->init();
 	}
-	// function Mproxy(){
-	// 	$this->__construct();
-	// }
+	function Mproxy(){
+		$this->__construct();
+	}
 	/**
 	* 초기화
 	*/
@@ -75,6 +76,11 @@ class Mproxy{
 		$cookieRaw = stripslashes($this->http_build_cookie($this->stripslashesForArray($_COOKIE)));
 
 		$opts = array();
+		$opts[CURLOPT_SSL_VERIFYPEER]=false;
+		$opts[CURLOPT_SSL_VERIFYHOST]=false;
+		// $opts[CURLOPT_FOLLOWLOCATION]=true;
+		// $opts[CURLOPT_AUTOREFERER]=true;
+
 		if($_SERVER['SERVER_PROTOCOL']=='HTTP/1.1'){
 			$opts[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1; //HTTP 1.1 사용
 		}else{
@@ -86,16 +92,30 @@ class Mproxy{
 		$res = null;
 		switch($_SERVER['REQUEST_METHOD']){
 			case 'GET':
-				return $this->printResult($this->get($url,$cookieRaw,$headers, $opts));
+				$res =  $this->get($url,$cookieRaw,$headers, $opts);
+				if($res['httpcode']==301 || $res['httpcode']==302){
+					$matches = array();
+					preg_match('/(Location: )(.*)/i',$res['header'],$matches);
+					if(isset($matches[2])){
+						$url = trim($matches[2]);
+						$res =  $this->get($url,$cookieRaw,$headers, $opts);
+					}
+
+				}
+
 			break;
 			case 'POST':
-				return $this->printResult($this->post($url,$postRaw,$cookieRaw,$headers, $opts));
+				$res = $this->post($url,$postRaw,$cookieRaw,$headers, $opts);
 			break;
 			case 'PUT':
-				return $this->printResult($this->put($url,$postRaw,$cookieRaw,$headers, $opts));
+				$res = $this->put($url,$postRaw,$cookieRaw,$headers, $opts);
+			break;
+			default:
+				$res = $this->getContent($url,$postRaw,$cookieRaw,$headers, $opts);
 			break;
 		}
-		$this->printResult($this->getContent($url,$postRaw,$cookieRaw,$headers, $opts));
+		return $this->printResult($res);
+
 	}
 	/**
 	* CURL을 사용해서 페이지를 긁어온다.
@@ -132,7 +152,12 @@ class Mproxy{
 
 		foreach($headers as $k=>$v){
 			//if($k=='Host'){continue;}
-			$c_headers[] = $k.': '.$v;
+			if(is_numeric($k)){ //일반 배열일 경우 값을 그대로 사용
+				$c_headers[] = $v;
+			}else{	// 연관 배열일 경우 key 값을 같이 사용
+				$c_headers[] = $k.': '.$v;
+			}
+
 			//Accept-Encoding , Accept-Language 빼는걸 생각해보자
 		}
 		$c_headers[] = 'X-Forwarded-For: '.(isset($_SERVER['REMOTE_ADDR'][0])?$_SERVER['REMOTE_ADDR']:'CLI'); //요청자IP
