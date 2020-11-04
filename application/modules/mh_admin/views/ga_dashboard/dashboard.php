@@ -18,8 +18,10 @@
 //
 // print_r($rowss['total_page']);
 ?>
-<script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_FixedFrameOnTable/FixedFrameOnTable.js?t=<?=REFLESH_TIME?>"></script>
-<link href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_FixedFrameOnTable/fixedFrameOnTable.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
+<!-- <script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_FixedFrameOnTable/FixedFrameOnTable.js?t=<?=REFLESH_TIME?>"></script>
+<link href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_FixedFrameOnTable/fixedFrameOnTable.css?t=<?=REFLESH_TIME?>" rel="stylesheet"> -->
+<script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/StickyOnTable.js?t=<?=REFLESH_TIME?>"></script>
+<link href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/stickyOnTable.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
 <style>
 .ffot-container-left {
     background-color: #fff;
@@ -31,10 +33,11 @@ $(function(){
 	//-- 수동 생성용
 	// ffot11 = new FixedFrameOnTable(document.querySelector('#ffot11'));
 	//-- 자동 변환용
-	ffot01= FixedFrameOnTable.tableToFfot(document.querySelector('#table_data'),1,2,document.querySelector('#ffot11'))
-	var x = document.querySelector('#table_data');
-	x.parentNode.removeChild(x)
+	// ffot01= FixedFrameOnTable.tableToFfot(document.querySelector('#table_data'),1,2,document.querySelector('#ffot11'))
+	// var x = document.querySelector('#table_data');
+	// x.parentNode.removeChild(x)
 
+	StickyOnTable.apply(document.querySelector('#sot1'))
 })
 </script>
 <h2 style="margin-bottom:0em" class="text-center">Google analytics 대쉬보드 ( <?=$daysAgo?>일간 )</h2>
@@ -69,9 +72,9 @@ $(function(){
 		</table>
 	</div>
 	<div id="curve_chart" style="width: 100%; max-width: 1000px;height: 450px;margin:5px auto; overflow-x:auto; overflow-y:hidden"></div>
-	<div id="ffot11"></div>
-	<div class="table-responsive" style="margin-bottom:1em;">
-		<table class="table table-condensed table-bordered" style="table-layout:fixed" id='table_data'>
+	<!-- <div id="ffot11"></div> -->
+	<div class="table-responsive sot" style="margin-bottom:1em;" id="sot1" data-sot-top="0" data-sot-left="2"  >
+		<table class="table table-condensed table-bordered" style="table-layout:fixed" id='table_data' >
 			<!-- <colgroup>
 				<col width="30">
 				<col>
@@ -81,8 +84,8 @@ $(function(){
 			</colgroup> -->
 			<thead >
 				<tr class="active">
-					<th class="text-center" width='80'>날짜</th>
-					<th class="text-center" width='80'>총</th>
+					<th class="text-center" width='100'>날짜</th>
+					<th class="text-center" width='100'>총</th>
 					<?
 					foreach ($rowss['per_date'] as $k => $r):
 						?>
