@@ -39,6 +39,9 @@ $(function(){
 
 	StickyOnTable.apply(document.querySelector('#sot1'))
 })
+// window.addEventListener('resize',function(){
+// 	StickyOnTable.apply(document.querySelector('#sot1'))
+// });
 </script>
 <h2 style="margin-bottom:0em" class="text-center">Google analytics 대쉬보드 ( <?=$daysAgo?>일간 )</h2>
 <div>
