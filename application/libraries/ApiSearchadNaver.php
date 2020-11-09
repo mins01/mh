@@ -45,7 +45,8 @@ class ApiSearchadNaver{
 	}
 	protected function getTimestamp()
 	{
-			return round(microtime(true) * 1000);
+		return time().'000'; //php 5.2 에서 문제가 되서 '000'만 붙여서 처리.
+		// return round(microtime(true) * 1000);
 	}
 	protected function generateSignature($timestamp, $method, $path)
 	{
