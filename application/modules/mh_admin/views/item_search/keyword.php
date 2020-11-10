@@ -3,6 +3,7 @@
 // $search_totals
 // $managedKeyword
 // $keywordstool
+// $datalab_search
 ?>
 <h2 class="text-right">키워드 상세정보</h2>
 <div>
@@ -144,7 +145,59 @@
 	?>
 </div>
 <div>
-	네이버 데이터랩쪽 정보
+	<hr>
+	<h4>네이버 데이터랩 정보(연관키워드 TOP5 검색률)</h4>
+	<?
+	if(isset($datalab_search)):
+		?>
+		<table class="table table-bordered table-hover table-striped table-condensed">
+			<colgroup>
+				<col width="40">
+				<col width="160"  style="min-width:100px;max-width:180px;">
+				<?
+				foreach($datalab_search['results'][0]['data'] as $v):
+					?>
+					<col width="80">
+					<?
+				endforeach;
+				?>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>NO</th>
+					<th>키워드</th>
+					<?
+					foreach($datalab_search['results'][0]['data'] as $v):
+						?>
+						<th><?=substr($v['period'],0,7)?></th>
+						<?
+					endforeach;
+					?>
+				</tr>
+			</thead>
+			<tbody>
+				<?
+				foreach($datalab_search['results'] as $k => $r):
+					?>
+					<tr>
+						<td><?=$k+1?></td>
+						<td><?=html_escape($r['keywords'][0])?></td>
+						<?
+						foreach($r['data'] as $v):
+							?>
+							<td><?=round($v['ratio'],2)?></td>
+							<?
+						endforeach;
+						?>
+					</tr>
+					<?
+				endforeach;
+				?>
+			</tbody>
+		</table>
+		<?
+	endif;
+	?>
 </div>
 <div>
 </div>

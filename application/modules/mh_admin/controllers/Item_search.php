@@ -49,6 +49,7 @@ class Item_search extends MX_Controller {
 		$search_totals = null;
 		$managedKeyword = null;
 		$keywordstool = null;
+		$datalab_search = null;
 		if(isset($keyword[0])){
 			$search_totals = $this->apiopenapinavercom->v1_search_totals($keyword,'1','1','sim');
 			$managedKeywords = $this->apisearchadnaver->ncc_managedKeyword($keyword);
@@ -56,7 +57,32 @@ class Item_search extends MX_Controller {
 				$managedKeyword = $managedKeywords[0]['managedKeyword'];
 			}
 			$keywordstool = $this->apisearchadnaver->keywordstool($keyword);
-			// var_dump($keywordstool);
+			//상위 5개 뽑기
+			$keywordstool_topN = array();
+			if(isset($keywordstool['keywordList'])){
+				for($i=0,$m=5;$i<$m;$i++){
+					if(!isset($keywordstool['keywordList'][$i]['relKeyword'])){ break;}
+					$keywordstool_topN[] = $keywordstool['keywordList'][$i]['relKeyword'];
+				}
+			}
+
+			//--- 네이버 검색 데이터 랩용
+			$tm = time();
+			$startDate=date('Y-m-d',$tm-86400*365*2);
+			$endDate=date('Y-m-d',$tm);
+			$timeUnit='month'; // date,week,month
+
+			$keywordGroups=array();
+			// $keywordGroups=array(array('groupName'=>$keyword,'keywords'=>array($keyword)));
+			foreach ($keywordstool_topN as $v) {
+				$keywordGroups[]=array('groupName'=>$v,'keywords'=>array($v));
+			}
+			$device=null;
+			$gender=null;
+			$ages=null;
+			$datalab_search = $this->apiopenapinavercom->v1_datalab_search($startDate,$endDate,$timeUnit,$keywordGroups,$device,$gender,$ages);
+			// var_dump($datalab_search);exit;
+
 		}
 
 
@@ -69,6 +95,7 @@ class Item_search extends MX_Controller {
 				'search_totals'=>$search_totals,
 				'managedKeyword'=>$managedKeyword,
 				'keywordstool'=>$keywordstool,
+				'datalab_search'=>$datalab_search,
 			)
 		);
 	}
