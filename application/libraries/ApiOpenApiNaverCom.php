@@ -145,6 +145,7 @@ class ApiOpenApiNaverCom{
 		// print_r($postRaw);
 		return $this->call_api('post_json',$path,$postRaw);
 	}
+	// ======================================-=============== 네이버 검색용
 	// 네이버 검색: 호출용
 	private function v1_search_call_json($service,$query,$display='10',$start='1',$sort='sim'){
 		$path = '/v1/search/'.$service.'.json';
@@ -199,7 +200,7 @@ class ApiOpenApiNaverCom{
 	public function v1_search_shop_json($query,$display='10',$start='1',$sort='sim'){
 		return $this->v1_search_call_json('shop',$query,$display,$start,$sort);
 	}
-
+	
 
 
 }

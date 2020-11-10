@@ -113,6 +113,20 @@ class ApiSearchadNaver{
 		$qs['month']=$month;
 		$qs['showDetail']=$showDetail;
 		$qstr = '?'.http_build_query($qs);
-		return $this->call_api('GET',$path,$qstr,null);
+		$keywordstool = $this->call_api('GET',$path,$qstr,null);
+		if(isset($keywordstool['keywordList'])){
+			foreach ($keywordstool['keywordList'] as $k => & $r) {
+				$t1 = is_numeric($r['monthlyPcQcCnt'])?$r['monthlyPcQcCnt']:0;
+				$t2 = is_numeric($r['monthlyMobileQcCnt'])?$r['monthlyMobileQcCnt']:0;
+				$r['monthlyTotalQcCnt'] = $t1+$t2;
+				$t1 = is_numeric($r['monthlyAvePcClkCnt'])?$r['monthlyAvePcClkCnt']:0;
+				$t2 = is_numeric($r['monthlyAveMobileClkCnt'])?$r['monthlyAveMobileClkCnt']:0;
+				$r['monthlyAveTotalClkCnt'] = $t1+$t2;
+			}
+		}else{
+			return null;
+		}
+
+		return $keywordstool;
 	}
 }

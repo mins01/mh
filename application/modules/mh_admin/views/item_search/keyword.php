@@ -72,14 +72,16 @@
 				<col width="80">
 				<col width="80">
 				<col width="80">
+				<col width="80">
+				<col width="80">
 			</colgroup>
 			<thead>
 				<tr class="success">
 					<th class="text-center" rowspan="2">NO</th>
 					<th class="text-center" rowspan="2">연관키워드</th>
-					<th class="text-center" colspan="2" title="10미만이면 '&lt; 10'으로 표기">합 검색수<sub>/30일</sub></th>
+					<th class="text-center" colspan="3" title="10미만이면 '&lt; 10'으로 표기">합 검색수<sub>/30일</sub></th>
 					<!-- <th class="text-center" width="80">합 MO 검색수<sub>/30일</sub></th> -->
-					<th class="text-center" colspan="2">평균 클릭수<sub>/4주</sub></th>
+					<th class="text-center" colspan="3">평균 클릭수<sub>/4주</sub></th>
 					<!-- <th class="text-center" width="80">평균 MO 클릭수<sub>/4주</sub></th> -->
 					<th class="text-center" colspan="2">평균 클릭률(%)<sub>/4주</sub></th>
 					<!-- <th class="text-center" width="80">평균 MO 클릭률<sub>/4주</sub></th> -->
@@ -91,8 +93,10 @@
 					<th class="text-center" style="min-width:100px;max-width:180px;">연관키워드</th> -->
 					<th class="text-center bg-info">PC</th>
 					<th class="text-center bg-warning">MO</th>
+					<th class="text-center ">Total</th>
 					<th class="text-center bg-info">PC</th>
 					<th class="text-center bg-warning">MO</th>
+					<th class="text-center ">Total</th>
 					<th class="text-center bg-info">PC</th>
 					<th class="text-center bg-warning">MO</th>
 					<th class="text-center bg-info">PC</th>
@@ -113,17 +117,18 @@
 			</thead>
 			<tbody>
 				<?
-				$i=0;
 				foreach ($keywordstool['keywordList'] as $k => $r):
-					if($i++>=500){break;}
+					if($k>=500){break;}
 					?>
 					<tr>
-						<td class="text-center"><?=$i?></td>
+						<td class="text-center"><?=$k+1?></td>
 						<td class="text-center bg-success"><a href='?keyword=<?=urlencode(html_escape($r['relKeyword']))?>'><?=html_escape($r['relKeyword'])?></a></td>
 						<td class="text-right"><?=$r['monthlyPcQcCnt']?></td>
 						<td class="text-right"><?=$r['monthlyMobileQcCnt']?></td>
+						<td class="text-right"><?=$r['monthlyTotalQcCnt']?></td>
 						<td class="text-right"><?=$r['monthlyAvePcClkCnt']?></td>
 						<td class="text-right"><?=$r['monthlyAveMobileClkCnt']?></td>
+						<td class="text-right"><?=$r['monthlyAveTotalClkCnt']?></td>
 						<td class="text-right"><?=$r['monthlyAvePcCtr']?></td>
 						<td class="text-right"><?=$r['monthlyAveMobileCtr']?></td>
 						<td class="text-right"><?=$r['plAvgDepth']?></td>
