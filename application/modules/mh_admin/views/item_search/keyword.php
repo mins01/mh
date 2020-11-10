@@ -49,7 +49,7 @@
 			<li>판매금지 키워드 여부: <?=$managedKeyword['isSellProhibit']?'O':'X'?></li>
 			<li>검색이 적은 키워드 여부: <?=$managedKeyword['isLowSearchVolume']?'O':'X'?></li>
 			<li>등록일: <?=$managedKeyword['regTm']?></li>
-			<li>수정 : <?=$managedKeyword['editTm']?></li>
+			<li>수정일 : <?=isset($managedKeyword['editTm'][0])?$managedKeyword['editTm']:'수정없음'?></li>
 			<li>pc 최대 노출 가능한 광고 갯수: <?=$managedKeyword['PCPLMaxDepth']?></li>
 		</ul>
 		<?

@@ -49,7 +49,8 @@ class ApiOpenApiNaverCom{
 		return $res;
 	}
 	public function call_api($method,$path,$posts=null){
-		$key = __CLASS__.'_'.hash('sha256',serialize(func_get_args()));
+		$args = func_get_args();
+		$key = __CLASS__.'_'.hash('sha256',serialize($args));
 		// $this->mh_cache->use_log_header = 1;
 		$res = $this->mh_cache->get($key);
 		if(!$res){
@@ -200,7 +201,7 @@ class ApiOpenApiNaverCom{
 	public function v1_search_shop_json($query,$display='10',$start='1',$sort='sim'){
 		return $this->v1_search_call_json('shop',$query,$display,$start,$sort);
 	}
-	
+
 
 
 }

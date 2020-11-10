@@ -60,7 +60,8 @@ class ApiSearchadNaver{
 			return base64_encode($signature);
 	}
 	public function call_api($method,$path,$qstr,$posts=null){
-		$key = __CLASS__.'_'.hash('sha256',serialize(func_get_args()));
+		$args = func_get_args();
+		$key = __CLASS__.'_'.hash('sha256',serialize($args));
 		// $this->mh_cache->use_log_header = 1;
 		$res = $this->mh_cache->get($key);
 		if(!$res){
