@@ -5,6 +5,7 @@ https://naver.github.io/searchad-apidoc/#/guides
 class ApiSearchadNaver{
 	private $url_api_naver_com = 'https://api.naver.com';
 	private $mproxy = null;
+	private $mh_cache = null;
 	private $account = null;
 	public function __construct()
 	{
@@ -12,6 +13,9 @@ class ApiSearchadNaver{
 	}
 	public function set_mproxy($mproxy){
 		$this->mproxy = $mproxy;
+	}
+	public function set_mh_cache($mh_cache){
+		$this->mh_cache = $mh_cache;
 	}
 	public function set_account($account){
 		$this->account = $account;
@@ -56,15 +60,21 @@ class ApiSearchadNaver{
 			return base64_encode($signature);
 	}
 	public function call_api($method,$path,$qstr,$posts=null){
-		$url = $this->url_api_naver_com.$path.$qstr;
-		$headers = array();
-		$timestamp = $this->getTimestamp();
-		$headers[] = "X-Timestamp: ".$timestamp;
-		$headers[] = "X-API-KEY: ".$this->account['access_license'];
-		$headers[] = "X-Customer: ".$this->account['customer_id'];
-		$signature =  $this->generateSignature($timestamp, $method, $path);
-		$headers[] = "X-Signature: ".$signature;
-		$res = $this->call('get',$url,$posts,$headers);
+		$key = __CLASS__.'_'.hash('sha256',serialize(func_get_args()));
+		// $this->mh_cache->use_log_header = 1;
+		$res = $this->mh_cache->get($key);
+		if(!$res){
+			$url = $this->url_api_naver_com.$path.$qstr;
+			$headers = array();
+			$timestamp = $this->getTimestamp();
+			$headers[] = "X-Timestamp: ".$timestamp;
+			$headers[] = "X-API-KEY: ".$this->account['access_license'];
+			$headers[] = "X-Customer: ".$this->account['customer_id'];
+			$signature =  $this->generateSignature($timestamp, $method, $path);
+			$headers[] = "X-Signature: ".$signature;
+			$res = $this->call('get',$url,$posts,$headers);
+			$this->mh_cache->save($key,$res,60*60*3);
+		}
 		if($res['errorno']==0){
 			return json_decode($res['body'],true);
 		}

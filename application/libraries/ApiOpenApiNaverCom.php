@@ -1,10 +1,12 @@
 <?
 /*
-https://naver.github.io/searchad-apidoc/#/guides
- */
+https://developers.naver.com/docs/datalab/search/
+https://developers.naver.com/docs/search/blog/
+*/
 class ApiOpenApiNaverCom{
 	private $url_api_naver_com = 'https://openapi.naver.com';
 	private $mproxy = null;
+	private $mh_cache = null;
 	private $account = null;
 	public function __construct()
 	{
@@ -12,6 +14,9 @@ class ApiOpenApiNaverCom{
 	}
 	public function set_mproxy($mproxy){
 		$this->mproxy = $mproxy;
+	}
+	public function set_mh_cache($mh_cache){
+		$this->mh_cache = $mh_cache;
 	}
 	public function set_account($account){
 		$this->account = $account;
@@ -44,11 +49,17 @@ class ApiOpenApiNaverCom{
 		return $res;
 	}
 	public function call_api($method,$path,$posts=null){
-		$url = $this->url_api_naver_com.$path;
-		$headers = array();
-		$headers[] = "X-Naver-Client-Id: ".$this->account['client_id'];
-		$headers[] = "X-Naver-Client-Secret: ".$this->account['client_secret'];
-		$res = $this->call($method,$url,$posts,$headers);
+		$key = __CLASS__.'_'.hash('sha256',serialize(func_get_args()));
+		// $this->mh_cache->use_log_header = 1;
+		$res = $this->mh_cache->get($key);
+		if(!$res){
+			$url = $this->url_api_naver_com.$path;
+			$headers = array();
+			$headers[] = "X-Naver-Client-Id: ".$this->account['client_id'];
+			$headers[] = "X-Naver-Client-Secret: ".$this->account['client_secret'];
+			$res = $this->call($method,$url,$posts,$headers);
+			$this->mh_cache->save($key,$res,60*60*3);
+		}
 		// var_dump($res);
 		if($res['errorno']==0){
 			return json_decode($res['body'],true);
@@ -134,4 +145,61 @@ class ApiOpenApiNaverCom{
 		// print_r($postRaw);
 		return $this->call_api('post_json',$path,$postRaw);
 	}
+	// 네이버 검색: 호출용
+	private function v1_search_call_json($service,$query,$display='10',$start='1',$sort='sim'){
+		$path = '/v1/search/'.$service.'.json';
+		$arr = array();
+		$arr['query'] = $query;
+		$arr['display'] = $display;
+		$arr['start'] = $start;
+		$arr['sort'] = $sort;
+		$qstr = http_build_query($arr);
+		// $postRaw = pretty_json_encode($arr);
+		// print_r($postRaw);
+		return $this->call_api('GET',$path.'?'.$qstr,null);
+	}
+	// 한번에 5번 호출한다. 사용에 주의하라.
+	public function v1_search_totals($query,$display='10',$start='1',$sort='sim'){
+		$totals = array(
+			'blog'=>0,
+			'cafearticle'=>0,
+			'kin'=>0,
+			'webkr'=>0,
+			'shop'=>0,
+		);
+		foreach ($totals as $k => $v) {
+			$res = $this->v1_search_call_json($k,$query,$display,$start,$sort);
+			$totals[$k]=$res['total'];
+		}
+		return $totals;
+
+	}
+	// 네이버 검색: 블로그
+	// https://developers.naver.com/docs/search/blog/
+	public function v1_search_blog_json($query,$display='10',$start='1',$sort='sim'){
+		return $this->v1_search_call_json('blog',$query,$display,$start,$sort);
+	}
+	// 네이버 검색: 카페
+	// https://developers.naver.com/docs/search/cafearticle/
+	public function v1_search_cafearticle_json($query,$display='10',$start='1',$sort='sim'){
+		return $this->v1_search_call_json('cafearticle',$query,$display,$start,$sort);
+	}
+	// 네이버 검색: 지식인
+	// https://developers.naver.com/docs/search/kin/
+	public function v1_search_kin_json($query,$display='10',$start='1',$sort='sim'){
+		return $this->v1_search_call_json('kin',$query,$display,$start,$sort);
+	}
+	// 네이버 검색: 웹문서
+	// https://developers.naver.com/docs/search/web/
+	public function v1_search_webkr_json($query,$display='10',$start='1',$sort='sim'){
+		return $this->v1_search_call_json('webkr',$query,$display,$start,$sort);
+	}
+	// 네이버 검색: 쇼핑
+	// https://developers.naver.com/docs/search/shopping/
+	public function v1_search_shop_json($query,$display='10',$start='1',$sort='sim'){
+		return $this->v1_search_call_json('shop',$query,$display,$start,$sort);
+	}
+
+
+
 }

@@ -1,11 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Api_searchad_naver extends MX_Controller {
+class Item_search extends MX_Controller {
 	private $base_url = null;
+	private $view_dir = 'mh_admin/item_search/';
 	// private $conf_searchad_naver = null;
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->library('Mh_cache');
+		$this->mh_cache->use_log_header = true;
+
 		$this->load->library('Mproxy');
 		$this->config->load('api_searchad_naver');
 		$this->config->load('openapi_naver_com');
@@ -15,8 +19,10 @@ class Api_searchad_naver extends MX_Controller {
 		$this->load->library('ApiOpenApiNaverCom');
 		$this->apisearchadnaver->set_account($conf_api_searchad_naver['accounts']['default']);
 		$this->apisearchadnaver->set_mproxy($this->mproxy);
+		$this->apisearchadnaver->set_mh_cache($this->mh_cache);
 		$this->apiopenapinavercom->set_account($conf_openapi_naver_com['accounts']['default']);
 		$this->apiopenapinavercom->set_mproxy($this->mproxy);
+		$this->apiopenapinavercom->set_mh_cache($this->mh_cache);
 
 	}
 	public function set_mproxy($mproxy){
@@ -32,12 +38,44 @@ class Api_searchad_naver extends MX_Controller {
 		}
 		$this->{$method}($conf,$param);
 	}
-
-
 	public function index($conf,$param){
-		$keywords = '가습기,히터';
-		$res = $this->apisearchadnaver->ncc_managedKeyword($keywords);
-		var_dump($res);
+		// $this->test($conf,$param);
+		$this->keyword($conf,$param);
+	}
+	public function keyword($conf,$param){
+		$keyword = $this->input->get('keyword');
+		if(!isset($keyword)){ $keyword = '';}
+
+		$search_totals = null;
+		$managedKeyword = null;
+		$keywordstool = null;
+		if(isset($keyword[0])){
+			$search_totals = $this->apiopenapinavercom->v1_search_totals($keyword,'1','1','sim');
+			$managedKeywords = $this->apisearchadnaver->ncc_managedKeyword($keyword);
+			if(isset($managedKeywords[0])){
+				$managedKeyword = $managedKeywords[0]['managedKeyword'];
+			}
+			$keywordstool = $this->apisearchadnaver->keywordstool($keyword);
+			// var_dump($keywordstool);
+		}
+
+
+		$this->load->view(
+			$this->view_dir.'keyword',
+			array(
+				'conf'=>$conf,
+				'param'=>$param,
+				'keyword'=>$keyword,
+				'search_totals'=>$search_totals,
+				'managedKeyword'=>$managedKeyword,
+				'keywordstool'=>$keywordstool,
+			)
+		);
+	}
+	public function test($conf,$param){
+		// $keywords = '가습기,히터';
+		// $res = $this->apisearchadnaver->ncc_managedKeyword($keywords);
+		// var_dump($res);
 		// $res = $this->apisearchadnaver->keywordstool($keywords,'','','','',1);
 		// var_dump($res);
 		// var_dump($this->conf_searchad_naver);
@@ -95,6 +133,21 @@ class Api_searchad_naver extends MX_Controller {
 		// $ages=null;
 		// $res = $this->apiopenapinavercom->v1_datalab_search($startDate,$endDate,$timeUnit,$keywordGroups,$device,$gender,$ages);
 		// var_dump($res);
+		// ------------------------- // 네이버 검색
+		$query = '가습기';
+		// $res = $this->apiopenapinavercom->v1_search_blog_json($query,'1','1','sim');
+		// var_dump($res);
+		// $res = $this->apiopenapinavercom->v1_search_cafearticle_json($query,'1','1','sim');
+		// var_dump($res);
+		// $res = $this->apiopenapinavercom->v1_search_kin_json($query,'1','1','sim');
+		// var_dump($res);
+		// $res = $this->apiopenapinavercom->v1_search_webkr_json($query,'1','1','sim');
+		// var_dump($res);
+		// $res = $this->apiopenapinavercom->v1_search_shop_json($query,'1','1','sim');
+		// var_dump($res);
+		$res = $this->apiopenapinavercom->v1_search_totals($query,'1','1','sim');
+		var_dump($res);
+
 		exit;
 	}
 }
