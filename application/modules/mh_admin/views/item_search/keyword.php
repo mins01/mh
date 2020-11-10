@@ -61,7 +61,8 @@
 	<?
 	if(isset($keywordstool['keywordList'])):
 		?>
-		<table class="table table-bordered table-hover table-striped table-condensed">
+		<div class="table-responsive" style="width:100%;height:400px;">
+			<table class="table table-bordered table-hover table-striped table-condensed">
 			<colgroup>
 				<col width="40">
 				<col width="160"  style="min-width:100px;max-width:180px;">
@@ -140,6 +141,7 @@
 				?>
 			</tbody>
 		</table>
+		</div>
 		<?
 	endif;
 	?>
@@ -150,7 +152,8 @@
 	<?
 	if(isset($datalab_search)):
 		?>
-		<table class="table table-bordered table-hover table-striped table-condensed">
+		<div class="table-responsive" style="width:100%;height:400px;">
+			<table class="table table-bordered table-hover table-striped table-condensed">
 			<colgroup>
 				<col width="40">
 				<col width="160"  style="min-width:100px;max-width:180px;">
@@ -195,6 +198,7 @@
 				?>
 			</tbody>
 		</table>
+		</div>
 		<?
 	endif;
 	?>
