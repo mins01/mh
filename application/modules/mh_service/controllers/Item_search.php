@@ -50,8 +50,12 @@ class Item_search extends MX_Controller {
 		$managedKeyword = null;
 		$keywordstool = null;
 		$datalab_search = null;
+		$datalab_shops = null;
 		if(isset($keyword[0])){
 			$search_totals = $this->apiopenapinavercom->v1_search_totals($keyword,'1','1','sim');
+			$search_shop = $this->apiopenapinavercom->v1_search_shop_json($keyword,'10','1','sim');
+			$search_shop_catetories = $this->apiopenapinavercom->categories_v1_search_shop_json($search_shop);
+			// print_r($search_shop_catetories);
 
 			$managedKeywords = $this->apisearchadnaver->ncc_managedKeyword($keyword);
 			if(isset($managedKeywords[0])){
@@ -71,7 +75,7 @@ class Item_search extends MX_Controller {
 
 			//--- 네이버 검색 데이터 랩용
 			$tm = time();
-			$startDate=date('Y-m-d',$tm-86400*365*2);
+			$startDate=date('Y-m-01',$tm-86400*365*2);
 			$endDate=date('Y-m-d',$tm);
 			$timeUnit='month'; // date,week,month
 
@@ -85,8 +89,20 @@ class Item_search extends MX_Controller {
 			$ages=null;
 			$datalab_search = $this->apiopenapinavercom->v1_datalab_search($startDate,$endDate,$timeUnit,$keywordGroups,$device,$gender,$ages);
 			// var_dump($datalab_search);exit;
-			$datalab_search = $this->apiopenapinavercom->extend_v1_datalab_search($datalab_search);
+			$datalab_search = $this->apiopenapinavercom->extend_results($datalab_search);
 			// var_dump($datalab_search);exit;
+			//--- 네이버 데이터랩 쇼핑
+			// $startDate='2019-11-01';
+			// $endDate='2020-10-31';
+			// $timeUnit='month';
+			$category=(string)$search_shop_catetories[0]['cid1'];
+			// $keyword='가습기';
+			$device=null;
+			$gender=null;
+			$ages=null;
+			$datalab_shops = $this->apiopenapinavercom->v1_datalab_shopping_category_keyword_all($startDate,$endDate,$timeUnit,$category,$keyword,$device,$gender,$ages);
+			// print_r($datalab_shops);
+			// exit;
 		}
 
 
@@ -100,6 +116,7 @@ class Item_search extends MX_Controller {
 				'managedKeyword'=>$managedKeyword,
 				'keywordstool'=>$keywordstool,
 				'datalab_search'=>$datalab_search,
+				'datalab_shops'=>$datalab_shops,
 			)
 		);
 	}
@@ -111,6 +128,17 @@ class Item_search extends MX_Controller {
 		// var_dump($res);
 		// var_dump($this->conf_searchad_naver);
 		// -------------------------
+		$startDate='2019-11-01';
+		$endDate='2020-10-31';
+		$timeUnit='month';
+		$category='50000003';
+		$keyword='가습기';
+		$device=null;
+		$gender=null;
+		$ages=null;
+		$res = $this->apiopenapinavercom->v1_datalab_shopping_category_keyword_all($startDate,$endDate,$timeUnit,$category,$keyword,$device,$gender,$ages);
+		var_dump($res);exit;
+		// // -------------------------
 		// $startDate='2020-01-01';
 		// $endDate='2020-10-31';
 		// $timeUnit='month';
@@ -121,7 +149,7 @@ class Item_search extends MX_Controller {
 		// $ages=null;
 		// $res = $this->apiopenapinavercom->v1_datalab_shopping_category_keywords($startDate,$endDate,$timeUnit,$category,$keyword,$device,$gender,$ages);
 		// var_dump($res);
-		// -------------------------
+		// // -------------------------
 		// $startDate='2020-01-01';
 		// $endDate='2020-10-31';
 		// $timeUnit='month';
@@ -132,7 +160,7 @@ class Item_search extends MX_Controller {
 		// $ages=null;
 		// $res = $this->apiopenapinavercom->v1_datalab_shopping_category_keyword_device($startDate,$endDate,$timeUnit,$category,$keyword,$device,$gender,$ages);
 		// var_dump($res);
-		// -------------------------
+		// // -------------------------
 		// $startDate='2020-01-01';
 		// $endDate='2020-10-31';
 		// $timeUnit='month';
@@ -143,7 +171,7 @@ class Item_search extends MX_Controller {
 		// $ages=null;
 		// $res = $this->apiopenapinavercom->v1_datalab_shopping_category_keyword_gender($startDate,$endDate,$timeUnit,$category,$keyword,$device,$gender,$ages);
 		// var_dump($res);
-		// -------------------------
+		// // -------------------------
 		// $startDate='2020-01-01';
 		// $endDate='2020-10-31';
 		// $timeUnit='month';
@@ -154,6 +182,7 @@ class Item_search extends MX_Controller {
 		// $ages=null;
 		// $res = $this->apiopenapinavercom->v1_datalab_shopping_category_keyword_age($startDate,$endDate,$timeUnit,$category,$keyword,$device,$gender,$ages);
 		// var_dump($res);
+		// exit;
 		// -------------------------
 		// $startDate='2020-01-01';
 		// $endDate='2020-10-31';

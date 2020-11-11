@@ -4,6 +4,7 @@
 // $managedKeyword
 // $keywordstool
 // $datalab_search
+// $datalab_shops
 ?>
 
 <script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/StickyOnTable.js?t=<?=REFLESH_TIME?>"></script>
@@ -204,15 +205,11 @@
 		// print_r($datalab_search);exit;
 		?>
 		<?
-			// 차트용 데이터 처리
-			// print_r($rowss['users']);
+			//---- 데이터랩 검색
 			$chart_title = array('키워드');
 			foreach($datalab_search['results'] as $r){
 				$chart_title[]=$r['keywords'][0];
 			}
-
-
-
 
 			$chart_value = array();
 			foreach($datalab_search['results'][0]['data'] as $period => $ratio){
@@ -225,19 +222,46 @@
 					$chart_value[$period][] = round($ratio,2);
 				}
 			}
-			$chart_data = array_merge(array($chart_title),array_values($chart_value));
-			// print_r($chart_data);
-			// exit;
-			$json = json_encode($chart_data);
+			$datalab_search_chart_data = array_merge(array($chart_title),array_values($chart_value));
+			$datalab_search_chart_json = json_encode($datalab_search_chart_data);
+			unset($datalab_search_chart_data);
+			//---- 데이터랩 쇼핑 device
+			// print_r($datalab_shops['results']['device'][0]['ratio']);			exit;
+			$datalab_shops_device_data = array();
+			$datalab_shops_device_data[] = array('device','ratio(%)');
+			$datalab_shops_device_data[] = array('모바일',round($datalab_shops['results']['device'][0]['ratio']['mo']*100,2));
+			$datalab_shops_device_data[] = array('PC',round($datalab_shops['results']['device'][0]['ratio']['pc']*100,2));
+			$datalab_shops_device_json = json_encode($datalab_shops_device_data);
+			unset($datalab_shops_device_data);
+			//---- 데이터랩 쇼핑 device
+			// print_r($datalab_shops['results']['device'][0]['ratio']);			exit;
+			$datalab_shops_gender_data = array();
+			$datalab_shops_gender_data[] = array('device','ratio(%)');
+			$datalab_shops_gender_data[] = array('여성',round($datalab_shops['results']['gender'][0]['ratio']['f']*100,2));
+			$datalab_shops_gender_data[] = array('남성',round($datalab_shops['results']['gender'][0]['ratio']['m']*100,2));
+			$datalab_shops_gender_json = json_encode($datalab_shops_gender_data);
+			unset($datalab_shops_gender_data);
+			//---- 데이터랩 쇼핑 device
+			// print_r($datalab_shops['results']['device'][0]['ratio']);			exit;
+			$datalab_shops_age_data = array();
+			$datalab_shops_age_data[] = array('연령','ratio(%)',array('role'=>'style'));
+			$datalab_shops_age_data[] = array('10대',round($datalab_shops['results']['age'][0]['ratio']['10']*100,2),'#CCAB4C');
+			$datalab_shops_age_data[] = array('20대',round($datalab_shops['results']['age'][0]['ratio']['20']*100,2),'#BD6236');
+			$datalab_shops_age_data[] = array('30대',round($datalab_shops['results']['age'][0]['ratio']['30']*100,2),'#466333');
+			$datalab_shops_age_data[] = array('40대',round($datalab_shops['results']['age'][0]['ratio']['40']*100,2),'#346773');
+			$datalab_shops_age_data[] = array('50대',round($datalab_shops['results']['age'][0]['ratio']['50']*100,2),'#AF342D');
+			$datalab_shops_age_data[] = array('60대',round($datalab_shops['results']['age'][0]['ratio']['60']*100,2),'#CCCCCC');
+			$datalab_shops_age_json = json_encode($datalab_shops_age_data);
+			unset($datalab_shops_age_data);
 		?>
 		<script type="text/javascript">
 			google.charts.load('current', {'packages':['corechart']});
 			google.charts.setOnLoadCallback(drawChart);
-			var chart = null;
-			var chart_data = <?=$json?>;
+			var gChart1 = null,gChart2 = null,gChart3 = null;
+			var datalab_search_chart_json = <?=$datalab_search_chart_json?>;
 			function drawChart() {
 				// var chart_data = [];
-				var data = google.visualization.arrayToDataTable(chart_data);
+				var data = google.visualization.arrayToDataTable(datalab_search_chart_json);
 
 				var options = {
 					title: '연관키워드 TOP5 검색률(%)',
@@ -248,12 +272,79 @@
 						width: '70%',height:'300'
 					},
 				};
+				gChart1 = new google.visualization.LineChart(document.getElementById('gChart1'));
+				gChart1.draw(data, options);
 
-				chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-				chart.draw(data, options);
+				// https://developers.google.com/chart/interactive/docs/gallery/piechart
+				//-----------------------------------------------------------------
+				var datalab_shops_device_json = <?=$datalab_shops_device_json?>;
+				var data = google.visualization.arrayToDataTable(datalab_shops_device_json);
+
+				var options = {
+					title: '모바일,PC',
+					titleTextStyle:{ fontSize: 20,  bold: true,  italic: false },
+					legend: { alignment:'center', position: 'bottom',  textStyle: { fontSize: 16,bold:true},maxLines:1 },
+					pieSliceTextStyle:{fontSize: 20},
+					chartArea: {
+						// leave room for y-axis labels
+						width: '80%',height:'80%'
+					},
+					// is3D: true,
+					pieHole: 0.2,
+					pieStartAngle: 180,
+				};
+				options.title='모바일,PC'
+				options.slices ={
+					0: { color: 'rgb(255, 156, 0)' },
+					1: { color: 'rgb(0, 217, 149)' }
+				}
+				gChart2 = new google.visualization.PieChart(document.getElementById('gChart2'));
+        gChart2.draw(data, options);
+				//----
+				options.title='여성,남성'
+				options.slices ={
+					0: { color: 'rgb(131, 196, 255)' },
+					1: { color: 'rgb(255, 109, 109)' }
+				}
+				var datalab_shops_gender_json = <?=$datalab_shops_gender_json?>;
+				data = google.visualization.arrayToDataTable(datalab_shops_gender_json);
+				gChart3 = new google.visualization.PieChart(document.getElementById('gChart3'));
+        gChart3.draw(data, options);
+
+				// https://developers.google.com/chart/interactive/docs/gallery/columnchart
+				// ---------------------------------------
+
+				var datalab_shops_age_json = <?=$datalab_shops_age_json?>;
+				var data = google.visualization.arrayToDataTable(datalab_shops_age_json);
+
+				var options = {
+					title: '연령별',
+					titleTextStyle:{ fontSize: 20,  bold: true,  italic: false },
+					// legend: { alignment:'center', position: 'bottom',  textStyle: { fontSize: 16,bold:true},maxLines:1 },
+					legend: { position: "none"},
+					pieSliceTextStyle:{fontSize: 20},
+					chartArea: {
+						// leave room for y-axis labels
+						width: '80%',height:'80%'
+					},
+					animation:{
+						duration: 1000,
+						easing: 'out',
+						startup:false
+					},
+					// is3D: true,
+				};
+				options.title='연령별'
+				options.slices ={
+					0: { color: 'rgb(255, 156, 0)' },
+					1: { color: 'rgb(0, 217, 149)' }
+				}
+				gChart2 = new google.visualization.ColumnChart(document.getElementById('gChart4'));
+        gChart2.draw(data, options);
+
 			}
 		</script>
-		<div id="curve_chart" style="width: 100%; max-width: 1000px;height: 450px;margin:5px auto; overflow-x:auto; overflow-y:hidden"></div>
+		<div id="gChart1" style="width: 100%; max-width: 1000px;height: 450px;margin:5px auto; overflow-x:auto; overflow-y:hidden"></div>
 		<div id="sot2" class="sot" data-sot-top="1" data-sot-left="2" style="width:100%;max-height:400px;">
 			<table class="table table-bordered table-hover table-striped table-condensed">
 			<colgroup>
@@ -304,6 +395,22 @@
 		<?
 	endif;
 	?>
+</div>
+<div>
+	<hr>
+	<h4>네이버 데이터랩 쇼핑 정보</h4>
+	<div class="rows">
+		<div class="col-lg-4">
+			<div id="gChart2" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
+		</div>
+		<div class="col-lg-4">
+			<div id="gChart3" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
+		</div>
+		<div class="col-lg-4">
+			<div id="gChart4" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
+		</div>
+	</div>
+
 </div>
 <div>
 </div>
