@@ -52,11 +52,14 @@ class Item_search extends MX_Controller {
 		$datalab_search = null;
 		if(isset($keyword[0])){
 			$search_totals = $this->apiopenapinavercom->v1_search_totals($keyword,'1','1','sim');
+
 			$managedKeywords = $this->apisearchadnaver->ncc_managedKeyword($keyword);
 			if(isset($managedKeywords[0])){
 				$managedKeyword = $managedKeywords[0]['managedKeyword'];
 			}
 			$keywordstool = $this->apisearchadnaver->keywordstool($keyword);
+			// print_r($keywordstool);exit;
+			$search_totals['search'] = $keywordstool['keywordList'][0]['monthlyTotalQcCnt'];
 			//상위 5개 뽑기
 			$keywordstool_topN = array();
 			if(isset($keywordstool['keywordList'])){
@@ -82,7 +85,8 @@ class Item_search extends MX_Controller {
 			$ages=null;
 			$datalab_search = $this->apiopenapinavercom->v1_datalab_search($startDate,$endDate,$timeUnit,$keywordGroups,$device,$gender,$ages);
 			// var_dump($datalab_search);exit;
-
+			$datalab_search = $this->apiopenapinavercom->extend_v1_datalab_search($datalab_search);
+			// var_dump($datalab_search);exit;
 		}
 
 

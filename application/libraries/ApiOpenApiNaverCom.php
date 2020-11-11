@@ -146,6 +146,23 @@ class ApiOpenApiNaverCom{
 		// print_r($postRaw);
 		return $this->call_api('post_json',$path,$postRaw);
 	}
+	public function extend_v1_datalab_search($datalab_search){
+		switch ($datalab_search['timeUnit']) {
+			case 'month':	$group_type='month';	break;
+			// case 'week':	$group_type='week';	break;
+			// case 'date':	$group_type='day';	break;
+			default: show_error('지원되지 않는 날짜형식');	break;
+		}
+		$dates = array_date_key($group_type,$datalab_search['startDate'],$datalab_search['endDate'],0);
+		foreach ($datalab_search['results'] as $k => &$r) {
+			$new_data = $dates;
+			foreach ($r['data'] as  $v) {
+				$new_data[substr($v['period'],0,7)]=$v['ratio'];
+			}
+			$r['data'] = $new_data;
+		}
+		return $datalab_search;
+	}
 	// ======================================-=============== 네이버 검색용
 	// 네이버 검색: 호출용
 	private function v1_search_call_json($service,$query,$display='10',$start='1',$sort='sim'){
