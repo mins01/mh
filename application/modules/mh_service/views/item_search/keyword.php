@@ -400,13 +400,13 @@
 	<hr>
 	<h4>네이버 데이터랩 쇼핑 정보</h4>
 	<div class="rows">
-		<div class="col-lg-4">
+		<div class="col-lg-4 col-sm-6">
 			<div id="gChart2" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
 		</div>
-		<div class="col-lg-4">
+		<div class="col-lg-4 col-sm-6">
 			<div id="gChart3" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
 		</div>
-		<div class="col-lg-4">
+		<div class="col-lg-4 col-sm-6">
 			<div id="gChart4" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
 		</div>
 	</div>
