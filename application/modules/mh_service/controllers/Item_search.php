@@ -51,6 +51,7 @@ class Item_search extends MX_Controller {
 		$keywordstool = null;
 		$datalab_search = null;
 		$datalab_shops = null;
+		$search_shop_catetories = null;
 		if(isset($keyword[0])){
 			$search_totals = $this->apiopenapinavercom->v1_search_totals($keyword,'1','1','sim');
 			$search_shop = $this->apiopenapinavercom->v1_search_shop_json($keyword,'10','1','sim');
@@ -117,8 +118,11 @@ class Item_search extends MX_Controller {
 				'keywordstool'=>$keywordstool,
 				'datalab_search'=>$datalab_search,
 				'datalab_shops'=>$datalab_shops,
+				'search_shop_catetories'=>$search_shop_catetories,
 			)
 		);
+	}
+	public function category($conf,$param){
 	}
 	public function test($conf,$param){
 		// $keywords = '가습기,히터';

@@ -5,6 +5,7 @@
 // $keywordstool
 // $datalab_search
 // $datalab_shops
+// $search_shop_catetories
 ?>
 
 <script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/StickyOnTable.js?t=<?=REFLESH_TIME?>"></script>
@@ -69,6 +70,7 @@
 	</form>
 </div>
 <div>
+	<hr>
 	<h3>검색정보</h3>
 	<?
 	if(isset($search_totals)):
@@ -81,6 +83,31 @@
 			<li>웹문서: <?=number_format($search_totals['webkr'])?></li>
 			<li>쇼핑: <?=number_format($search_totals['shop'])?></li>
 			<li>검색: <?=number_format($search_totals['search'])?></li>
+		</ul>
+		<?
+	endif;
+	?>
+</div>
+<div>
+	<hr>
+	<h3>쇼핑 카테고리 정보</h3>
+	<?
+	if(isset($search_shop_catetories)):
+		?>
+		<ul  class="list-group">
+			<?
+			foreach ($search_shop_catetories as $r):
+				print_r($r);
+				?>
+				<li class="list-group-item">
+					<a  href="./item_search/catetory?cid=<?=urlencode($r['cid1'])?>"><?=html_escape($r['category1'])?></a>
+					&gt; <span onclick="alert('현재 지원되지 않습니다.');return false;"><?=html_escape($r['category2'])?></span>
+					&gt; <span onclick="alert('현재 지원되지 않습니다.');return false;"><?=html_escape($r['category3'])?></span>
+					<? if(isset($r['category4'][0])):?> &gt; <span href="" onclick="alert('현재 지원되지 않습니다.');return false;"><?=html_escape($r['category4'])?></a><? endif; ?>
+				</li>
+				<?
+			endforeach;
+			?>
 		</ul>
 		<?
 	endif;
@@ -199,7 +226,7 @@
 </div>
 <div>
 	<hr>
-	<h4>네이버 데이터랩 정보(연관키워드 TOP5 검색률(%))</h4>
+	<h4>네이버 데이터랩 검색 정보(연관키워드 TOP5 검색률(%))</h4>
 	<?
 	if(isset($datalab_search)):
 		// print_r($datalab_search);exit;
@@ -228,7 +255,7 @@
 			//---- 데이터랩 쇼핑 device
 			// print_r($datalab_shops['results']['device'][0]['ratio']);			exit;
 			$datalab_shops_device_data = array();
-			$datalab_shops_device_data[] = array('device','ratio(%)');
+			$datalab_shops_device_data[] = array('device','비율');
 			$datalab_shops_device_data[] = array('모바일',round($datalab_shops['results']['device'][0]['ratio']['mo']*100,2));
 			$datalab_shops_device_data[] = array('PC',round($datalab_shops['results']['device'][0]['ratio']['pc']*100,2));
 			$datalab_shops_device_json = json_encode($datalab_shops_device_data);
@@ -236,7 +263,7 @@
 			//---- 데이터랩 쇼핑 device
 			// print_r($datalab_shops['results']['device'][0]['ratio']);			exit;
 			$datalab_shops_gender_data = array();
-			$datalab_shops_gender_data[] = array('device','ratio(%)');
+			$datalab_shops_gender_data[] = array('device','비율');
 			$datalab_shops_gender_data[] = array('여성',round($datalab_shops['results']['gender'][0]['ratio']['f']*100,2));
 			$datalab_shops_gender_data[] = array('남성',round($datalab_shops['results']['gender'][0]['ratio']['m']*100,2));
 			$datalab_shops_gender_json = json_encode($datalab_shops_gender_data);
@@ -244,20 +271,32 @@
 			//---- 데이터랩 쇼핑 device
 			// print_r($datalab_shops['results']['device'][0]['ratio']);			exit;
 			$datalab_shops_age_data = array();
-			$datalab_shops_age_data[] = array('연령','ratio(%)',array('role'=>'style'));
-			$datalab_shops_age_data[] = array('10대',round($datalab_shops['results']['age'][0]['ratio']['10']*100,2),'#CCAB4C');
-			$datalab_shops_age_data[] = array('20대',round($datalab_shops['results']['age'][0]['ratio']['20']*100,2),'#BD6236');
-			$datalab_shops_age_data[] = array('30대',round($datalab_shops['results']['age'][0]['ratio']['30']*100,2),'#466333');
-			$datalab_shops_age_data[] = array('40대',round($datalab_shops['results']['age'][0]['ratio']['40']*100,2),'#346773');
-			$datalab_shops_age_data[] = array('50대',round($datalab_shops['results']['age'][0]['ratio']['50']*100,2),'#AF342D');
+			$datalab_shops_age_data[] = array('연령','비율',array('role'=>'style'));
+			$datalab_shops_age_data[] = array('10대',round($datalab_shops['results']['age'][0]['ratio']['10']*100,2),'#ff9c00');
+			$datalab_shops_age_data[] = array('20대',round($datalab_shops['results']['age'][0]['ratio']['20']*100,2),'#83ff95');
+			$datalab_shops_age_data[] = array('30대',round($datalab_shops['results']['age'][0]['ratio']['30']*100,2),'#83c4ff');
+			$datalab_shops_age_data[] = array('40대',round($datalab_shops['results']['age'][0]['ratio']['40']*100,2),'#ff6d6d');
+			$datalab_shops_age_data[] = array('50대',round($datalab_shops['results']['age'][0]['ratio']['50']*100,2),'#d16dff');
 			$datalab_shops_age_data[] = array('60대',round($datalab_shops['results']['age'][0]['ratio']['60']*100,2),'#CCCCCC');
 			$datalab_shops_age_json = json_encode($datalab_shops_age_data);
 			unset($datalab_shops_age_data);
+			//---- 쇼핑/검색 트랜드
+			// print_r($datalab_search['results'][0]['data']);
+			// print_r($datalab_shops['results']['keywords'][0]['data']);
+			// exit;
+			$gChart5_data = array();
+			$gChart5_data[] = array('트렌트','쇼핑트렌트','검색트렌트');
+			foreach ($datalab_shops['results']['keywords'][0]['data'] as $period => $v) {
+				$gChart5_data[]=array($period,(float)$v,(float)isset($datalab_search['results'][0]['data'][$period])?$datalab_search['results'][0]['data'][$period]:0);
+			}
+			// $gChart5_json = pretty_json_encode($gChart5_data);
+			$gChart5_json = json_encode($gChart5_data);
+			// print_r($gChart5_json);exit;
 		?>
 		<script type="text/javascript">
 			google.charts.load('current', {'packages':['corechart']});
 			google.charts.setOnLoadCallback(drawChart);
-			var gChart1 = null,gChart2 = null,gChart3 = null;
+			var gChart1 = null,gChart2 = null,gChart3 = null,gChart4 = null,gChart5 = null;
 			var datalab_search_chart_json = <?=$datalab_search_chart_json?>;
 			function drawChart() {
 				// var chart_data = [];
@@ -270,6 +309,29 @@
 					chartArea: {
 						// leave room for y-axis labels
 						width: '70%',height:'300'
+					},
+					pointSize:10,
+					series: {
+						0: {
+							lineWidth: 4,
+							// lineDashStyle: [5, 1, 5]
+						},
+						1: {
+							lineWidth: 4,
+							// lineDashStyle: [7, 2, 4, 3]
+						},
+						2: {
+							lineWidth: 4,
+							// lineDashStyle: [7, 2, 4, 3]
+						},
+						3: {
+							lineWidth: 4,
+							// lineDashStyle: [7, 2, 4, 3]
+						},
+						4: {
+							lineWidth: 4,
+							// lineDashStyle: [7, 2, 4, 3]
+						}
 					},
 				};
 				gChart1 = new google.visualization.LineChart(document.getElementById('gChart1'));
@@ -290,7 +352,7 @@
 						width: '80%',height:'80%'
 					},
 					// is3D: true,
-					pieHole: 0.2,
+					pieHole: 0.3,
 					pieStartAngle: 180,
 				};
 				options.title='모바일,PC'
@@ -339,12 +401,51 @@
 					0: { color: 'rgb(255, 156, 0)' },
 					1: { color: 'rgb(0, 217, 149)' }
 				}
-				gChart2 = new google.visualization.ColumnChart(document.getElementById('gChart4'));
-        gChart2.draw(data, options);
+				gChart4 = new google.visualization.ColumnChart(document.getElementById('gChart4'));
+        gChart4.draw(data, options);
+				//---- gChart 5
+				var gChart5_json = <?=$gChart5_json?>;
+				var data = google.visualization.arrayToDataTable(gChart5_json);
+
+				var options = {
+					title: '쇼핑/검색 트렌드',
+					titleTextStyle:{ fontSize: 20,  bold: true,  italic: false },
+					// curveType: 'function',
+					legend: { position: 'top', maxLines:2, fontSize:10, },
+					chartArea: {
+						// leave room for y-axis labels
+						width: '70%',height:'300'
+					},
+					pointSize:10,
+					series: {
+						0: {
+							lineWidth: 4,
+							// lineDashStyle: [5, 1, 5]
+						},
+						1: {
+							lineWidth: 4,
+							// lineDashStyle: [7, 2, 4, 3]
+						},
+						2: {
+							lineWidth: 4,
+							// lineDashStyle: [7, 2, 4, 3]
+						},
+						3: {
+							lineWidth: 4,
+							// lineDashStyle: [7, 2, 4, 3]
+						},
+						4: {
+							lineWidth: 4,
+							// lineDashStyle: [7, 2, 4, 3]
+						}
+					},
+				};
+				gChart5 = new google.visualization.LineChart(document.getElementById('gChart5'));
+				gChart5.draw(data, options);
 
 			}
 		</script>
-		<div id="gChart1" style="width: 100%; max-width: 1000px;height: 450px;margin:5px auto; overflow-x:auto; overflow-y:hidden"></div>
+		<div id="gChart1" style="width: 100%; max-width: 1000px;height: 450px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
 		<div id="sot2" class="sot" data-sot-top="1" data-sot-left="2" style="width:100%;max-height:400px;">
 			<table class="table table-bordered table-hover table-striped table-condensed">
 			<colgroup>
@@ -400,6 +501,9 @@
 	<hr>
 	<h4>네이버 데이터랩 쇼핑 정보</h4>
 	<div class="rows">
+		<div class="col-lg-12">
+			<div id="gChart5" style="width: 100%; max-width: 1000px;height: 450px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
+		</div>
 		<div class="col-lg-4 col-sm-6">
 			<div id="gChart2" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
 		</div>
