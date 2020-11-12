@@ -127,7 +127,7 @@
 	<?
 	if(isset($managedKeyword)):
 		?>
-		<div class="infobox-container">
+		<div class="flex-row-container">
 			<dl class="infobox">
 				<dt>성인 키워드</dt>
 				<dd class="dd-v-<?=$managedKeyword['isAdult']?'O':'X'?>"><?=$managedKeyword['isAdult']?'O':'X'?></dd>
@@ -192,7 +192,7 @@
 </div>
 <div>
 	<hr>
-	<h4>네이버 데이터랩 쇼핑 정보</h4>
+	<h3>네이버 데이터랩 쇼핑 정보</h3>
 	<div class="row">
 		<div class="col-lg-12">
 			<div id="gChart5" style="width: 100%; max-width: 1000px;height: 450px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
@@ -210,7 +210,7 @@
 </div>
 <div>
 	<hr>
-	<h4>네이버 검색광고 연관 키워드 정보 <small>( 30일,4주 기준, 최대 500 연관 키워드 )</small></h4>
+	<h3>네이버 검색광고 연관 키워드 정보 <small>( 30일,4주 기준, 최대 500 연관 키워드 )</small></h3>
 
 	<?
 	if(isset($keywordstool['keywordList'])):
@@ -302,7 +302,7 @@
 </div>
 <div>
 	<hr>
-	<h4>네이버 데이터랩 검색 정보(연관키워드 TOP5 검색률(%))</h4>
+	<h3>네이버 데이터랩 검색 정보(연관키워드 TOP5 검색률(%))</h3>
 	<?
 	if(isset($datalab_search)):
 		// print_r($datalab_search);exit;
