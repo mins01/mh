@@ -152,11 +152,20 @@ class ApiOpenApiNaverCom{
 		$rs['results']=array();
 		$rs['results']['keywords']=$d['results'];
 		$d = $this->extend_results($this->v1_datalab_shopping_category_keyword_device($startDate,$endDate,$timeUnit,$category,$keyword,$device,$gender,$ages));
+		$d['results'][0]['ratio'] = array_merge(array('mo'=>0,'pc'=>0),$d['results'][0]['ratio']);
 		$rs['results']['device']=$d['results'];
 		$d = $this->extend_results($this->v1_datalab_shopping_category_keyword_gender($startDate,$endDate,$timeUnit,$category,$keyword,$device,$gender,$ages));
+		$d['results'][0]['ratio'] = array_merge(array('f'=>0,'m'=>0),$d['results'][0]['ratio']);
 		$rs['results']['gender']=$d['results'];
 		$d = $this->extend_results($this->v1_datalab_shopping_category_keyword_age($startDate,$endDate,$timeUnit,$category,$keyword,$device,$gender,$ages));
+		// var_dump($d['results'][0]['ratio']);exit;
+		// $d['results'][0]['ratio'] = array_merge(array('10'=>0,'20'=>0,'30'=>0,'40'=>0,'50'=>0,'60'=>0),$d['results'][0]['ratio']);
+		$d['results'][0]['ratio'] = $d['results'][0]['ratio']+array('10'=>0,'20'=>0,'30'=>0,'40'=>0,'50'=>0,'60'=>0);
+		// ksort($d['results'][0]['ratio']);
+		// var_dump(array(10=>0,20=>0,30=>0,40=>0,50=>0,60=>0));
+		// var_dump($d['results'][0]['ratio']);exit;
 		$rs['results']['age']=$d['results'];
+		// print_r($rs);exit;
 		return $rs;
 	}
 	public function v1_datalab_shopping_category_keyword_call($service,$startDate='',$endDate='',$timeUnit='month',$category='',$keyword='',$device=null,$gender=null,$ages=null){

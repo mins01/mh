@@ -82,7 +82,8 @@ class Item_search extends MX_Controller {
 			}
 			$keywordstool = $this->apisearchadnaver->keywordstool($keyword);
 			// print_r($keywordstool);exit;
-			$search_totals['search'] = $keywordstool['keywordList'][0]['monthlyTotalQcCnt'];
+			$search_totals['search'] = $keywordstool['keywordList'][0]['monthlyTotalQcCnt']; //검색수 추가
+			$search_totals['competitive_strength'] = $search_totals['shop']/$search_totals['search']; //경쟁강도 추가
 			//상위 5개 뽑기
 			$keywordstool_topN = array();
 			if(isset($keywordstool['keywordList'])){

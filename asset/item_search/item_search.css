@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+.flex-row-container{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: left;
+}
+dl.infobox{
+	flex: 0 0 150px;
+	text-align: center;
+	width: 150px;
+	border: 2px solid #ccc;
+	margin:5px;
+	border-radius: 5px;
+	overflow: hidden;
+}
+.infobox dt{
+	text-align: center;
+	margin: 0;
+	padding:5px;
+	display: block;
+	background-color: #eee;
+	border-bottom: 1px solid #ccc;
+}
+.infobox dd{
+	text-align: center;
+	margin: 0;
+	padding:5px;
+	display: block
+}
+
+.dd-v-O{
+	background-color: #fdd;
+}
+.dd-v-X{
+	background-color: #def;
+}

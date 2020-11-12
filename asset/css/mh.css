@@ -120,3 +120,16 @@ last_bbs_columns
 .last-bbs-columns-content{
   break-inside:avoid;
 }
+
+/*
+util
+ */
+.m-0{
+	margin:0;
+}
+.p-0{
+	padding:0;
+}
+.text-bold{
+	font-weight: bold;
+}
