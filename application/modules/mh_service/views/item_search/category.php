@@ -205,9 +205,9 @@ if($rowss):
 				</script>
 				<? //* 수동 생성용 ?>
 				<div id="sot1" class="sot" data-sot-top="2" data-sot-left="1" style="max-width:100%;max-height:600px;height:<?=count($rowss)<3?'auto':'600px;'?>; margin:10px;">
-					<table class="table table-condensed table-bordered table-va-m" style="background-color:#fff;width:20px !important">
+					<table class="table table-condensed table-bordered table-va-m" style="background-color:#fff;width:20px !important; margin:0 auto;">
 						<colgroup>
-							<col width="120" />
+							<col width="180" />
 							<col width="60" />
 							<col width="60" />
 							<col width="60" />
@@ -262,7 +262,7 @@ if($rowss):
 								<tr class="text-center">
 									<td class="text-left" style="padding:0 5px; vertical-align:middle" title="<?=html_escape($r['keyword'])?>">
 										<input type="checkbox" name="keyword" value="<?=html_escape($r['keyword'])?>" <?=in_array($r['keyword'],$shws)?'checked':''?> >
-										<a target="_blank" href="./keyword?keyword=<?=urlencode($r['keyword'])?>"><?=html_escape($r['keyword'])?></a>
+										<a class="inline-block" target="_blank" href="./keyword?keyword=<?=urlencode($r['keyword'])?>"><?=html_escape($r['keyword'])?></a>
 									</td>
 									<td class="c-rank c-rank-<?=floor($r['avg_rank'])?>"><?=round($r['avg_view'],0)?></td>
 									<td class="c-rank <?=$r['dev_rank']>=50?'c-dev-10':''?>"><?=round($r['dev_view'],0)?></td>

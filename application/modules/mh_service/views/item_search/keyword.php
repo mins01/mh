@@ -18,6 +18,8 @@
 <style>
 	.sot table{
 		background: #fff;
+		width:100px !important;
+		margin:0 auto;
 	}
 	.sot .sot-left{
 		background-color: #efc;
@@ -60,7 +62,11 @@
 		});
 	})
 </script>
-<h2 class="text-right">키워드 상세정보</h2>
+<h1 style="font-size:32px;" class="text-center">
+	<b>키워드 상세정보
+	<? if(isset($keyword[0])):?> : <span style="color:#274fa7;"><?=$keyword?></span><? endif; ?>
+	</b>
+</h1>
 <div>
 	<h3>검색</h3>
 	<form action="" method="get">
@@ -158,7 +164,7 @@
 			</dl>
 			<dl class="infobox">
 				<dt>최대노출수</dt>
-				<dd class="dd-v-<?=$managedKeyword['PCPLMaxDepth']?>"><?=$managedKeyword['PCPLMaxDepth']?></dd>
+				<dd><?=$managedKeyword['PCPLMaxDepth']?></dd>
 			</dl>
 		</div>
 		<?
@@ -463,23 +469,7 @@
 					width: '90%',height:'300'
 				},
 				pointSize:10,
-				series: {
-					0: {
-						lineWidth: 4,	// lineDashStyle: [5, 1, 5]
-					},
-					1: {
-						lineWidth: 4,	// lineDashStyle: [7, 2, 4, 3]
-					},
-					2: {
-						lineWidth: 4,	// lineDashStyle: [7, 2, 4, 3]
-					},
-					3: {
-						lineWidth: 4,	// lineDashStyle: [7, 2, 4, 3]
-					},
-					4: {
-						lineWidth: 4,	// lineDashStyle: [7, 2, 4, 3]
-					}
-				},
+				lineWidth: 4,
 			};
 			gChart1 = new google.visualization.LineChart(document.getElementById('gChart1'));
 			gChart1.draw(data, options);
@@ -576,23 +566,7 @@
 					width: '90%',height:'300'
 				},
 				pointSize:10,
-				series: {
-					0: {
-						lineWidth: 4,	// lineDashStyle: [5, 1, 5]
-					},
-					1: {
-						lineWidth: 4,	// lineDashStyle: [7, 2, 4, 3]
-					},
-					2: {
-						lineWidth: 4,	// lineDashStyle: [7, 2, 4, 3]
-					},
-					3: {
-						lineWidth: 4,	// lineDashStyle: [7, 2, 4, 3]
-					},
-					4: {
-						lineWidth: 4,	// lineDashStyle: [7, 2, 4, 3]
-					}
-				},
+				lineWidth: 4,
 			};
 			gChart5 = new google.visualization.LineChart(document.getElementById('gChart5'));
 			gChart5.draw(data, options);
@@ -601,3 +575,6 @@
 
 	}
 </script>
+<ul>
+	<li class="text-danger">* 데이터는 3시간 캐시됩니다.</li>
+</ul>
