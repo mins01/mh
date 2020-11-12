@@ -97,13 +97,13 @@
 		<ul  class="list-group">
 			<?
 			foreach ($search_shop_catetories as $r):
-				print_r($r);
+				// print_r($r);
 				?>
 				<li class="list-group-item">
-					<a  href="./item_search/catetory?cid=<?=urlencode($r['cid1'])?>"><?=html_escape($r['category1'])?></a>
-					&gt; <span onclick="alert('현재 지원되지 않습니다.');return false;"><?=html_escape($r['category2'])?></span>
-					&gt; <span onclick="alert('현재 지원되지 않습니다.');return false;"><?=html_escape($r['category3'])?></span>
-					<? if(isset($r['category4'][0])):?> &gt; <span href="" onclick="alert('현재 지원되지 않습니다.');return false;"><?=html_escape($r['category4'])?></a><? endif; ?>
+					<a  href="./item_search/category?cid=<?=urlencode($r['cid1'])?>"><?=html_escape($r['category1'])?></a>
+					&gt; <span><?=html_escape($r['category2'])?></span>
+					&gt; <span><?=html_escape($r['category3'])?></span>
+					<? if(isset($r['category4'][0])):?> &gt; <span><?=html_escape($r['category4'])?></a><? endif; ?>
 				</li>
 				<?
 			endforeach;

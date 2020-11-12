@@ -4,6 +4,21 @@ class Item_search extends MX_Controller {
 	private $base_url = null;
 	private $view_dir = 'mh_service/item_search/';
 	// private $conf_searchad_naver = null;
+	//
+	public $cids = array(
+		'50000000'=>'패션의류',
+		'50000001'=>'패션잡화',
+		'50000002'=>'화장품/미용',
+		'50000003'=>'디지털/가전',
+		'50000004'=>'가구/인테리어',
+		'50000005'=>'출산/육아',
+		'50000006'=>'식품',
+		'50000007'=>'스포츠/레저',
+		'50000008'=>'생활/건강',
+		// '50000009'=>'여가/생활편의',
+		// '50000010'=>'면세점',
+	);
+	public $group_types = array('day'=>'일별','week'=>'주별','month'=>'월별');
 	public function __construct()
 	{
 		parent::__construct();
@@ -33,14 +48,17 @@ class Item_search extends MX_Controller {
 		// print_r($param);exit;
 		$method = isset($param[0][0])?$param[0]:'index';
 		if(!method_exists($this,$method)){
-			// show_error("지정 메소드가 없습니다.");
+			// show_error("지정 메소드({$method})가 없습니다.");
 			$method = 'index';
 		}
 		$this->{$method}($conf,$param);
 	}
 	public function index($conf,$param){
 		// $this->test($conf,$param);
-		$this->keyword($conf,$param);
+		// $this->keyword($conf,$param);
+		// $this->category($conf,$param);
+		header('Location: '.$conf['base_url'].'/category');
+		exit;
 	}
 	public function keyword($conf,$param){
 		$keyword = $this->input->get('keyword');
@@ -123,6 +141,76 @@ class Item_search extends MX_Controller {
 		);
 	}
 	public function category($conf,$param){
+		$this->load->model('mh_service/keyword_rank_naver_model','kr_m');
+		$cid = $this->input->get('cid');
+
+		// $date_st = $this->input->get('date_st');
+		// if(!$date_st) $date_st = date('Y-m-d',time()-60*60*24*31);
+		// $date_ed = $this->input->get('date_ed');
+		// if(!$date_ed) $date_ed = date('Y-m-d',time()-60*60*24);
+
+		$date_period = $this->input->get('date_period');
+		if(!$date_period) $date_period = 365;
+
+		$date_st = date('Y-m-d',time()-60*60*24*$date_period);
+		$date_ed = date('Y-m-d',time()-60*60*24);
+
+		$shw = $this->input->get('shw');
+		if(!$shw) $shw = '';
+		$shw = trim(preg_replace('/^,+|,+$/','',$shw));
+		$group_type = $this->input->get('group_type');
+		// if(!$group_type) $group_type = 'day';
+		if(!$group_type) $group_type = 'month';
+		if($date_period>=365){
+			$group_type = 'month';
+		}
+
+		$width_dome = 1;
+
+		$period = (strtotime($date_ed) - strtotime($date_st)) / 86400 +1;
+
+		if($period>1000){
+			show_error('기간은 최대 1000일까지 설정이 가능합니다.');
+		}
+
+
+		$rowss = null;
+		$def_date_array = null;
+		$shws = array();
+		if($cid){
+			if(isset($shw[0])){
+				$shws = preg_split('/[\t,]+/',$shw);
+				$shws = array_unique($shws);
+				$shw = implode(',',$shws);
+				// $rowss = $this->kr_m->rows_per_days_extended($this->kr_m->rows_per_days_by_keywords($cid,$date_st,$date_ed,$shws),$date_st,$date_ed);
+				$rowss = $this->kr_m->rows_4_group_extended($this->kr_m->rows_4_group_by_keywords($group_type,$cid,$date_st,$date_ed,$shws,$width_dome),$group_type,$date_st,$date_ed);
+
+			}else{
+				// $rowss = $this->kr_m->rows_per_days_extended($this->kr_m->rows_per_days($cid,$date_st,$date_ed),$date_st,$date_ed);
+				$rowss = $this->kr_m->rows_4_group_extended($this->kr_m->rows_4_group($group_type,$cid,$date_st,$date_ed,$width_dome),$group_type,$date_st,$date_ed);
+
+			}
+			$def_date_array = $this->kr_m->array_date_key($group_type,$date_st,$date_ed,'text');
+
+
+		}
+		$this->load->view($this->view_dir.'category',array(
+			'conf'=>$conf,
+			'param'=>$param,
+			'cids'=>$this->cids,
+			'cid'=>$cid,
+			// 'gdk_date'=>$gdk_date,
+			'date_st'=>$date_st,
+			'date_ed'=>$date_ed,
+			'rowss'=>$rowss,
+			'period'=>$period,
+			'shw'=>$shw,
+			'shws'=>$shws,
+			'group_type'=>$group_type,
+			'group_types'=>$this->group_types,
+			'def_date_array'=>$def_date_array,
+			'date_period'=>$date_period,
+		));
 	}
 	public function test($conf,$param){
 		// $keywords = '가습기,히터';
