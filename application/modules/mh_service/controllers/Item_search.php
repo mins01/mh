@@ -213,6 +213,16 @@ class Item_search extends MX_Controller {
 			'date_period'=>$date_period,
 		));
 	}
+	public function naver_category($conf,$param){
+		$this->load->model('mh_service/keyword_rank_naver_model','kr_m');
+		$ca_rows = $this->kr_m->select_naver_shop_category(array(),'*','nsc_id_1,nsc_id_2,nsc_id_3,nsc_id_4');
+		// print_r($ca_rows);
+		$this->load->view($this->view_dir.'naver_category',array(
+			'conf'=>$conf,
+			'param'=>$param,
+			'ca_rows'=>$ca_rows,
+		));
+	}
 	public function test($conf,$param){
 		// $keywords = '가습기,히터';
 		// $res = $this->apisearchadnaver->ncc_managedKeyword($keywords);

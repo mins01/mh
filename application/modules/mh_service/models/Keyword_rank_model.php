@@ -634,4 +634,11 @@ class Keyword_rank_model extends CI_Model {
 		// echo $sql; exit;
 		return $this->db->query($sql)->result_array();
 	}
+
+	/**
+	 * 네이버 케테고리 목록 가져오기
+	 */
+	 public function select_naver_shop_category($wheres,$select='nsc.*',$order_by='',$limit=null,$offset=null){
+     return $this->db->select($select)->from('naver_shop_category  nsc')->where($wheres)->order_by($order_by)->limit($limit, $offset)->get()->result_array();
+   }
 }
