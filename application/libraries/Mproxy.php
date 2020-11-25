@@ -6,6 +6,9 @@
 * PHP5 이상 지원
 * https://github.com/mins01/php_Mproxy
 */
+
+require_once(dirname(__FILE__).'/lib_Mproxy.php');
+
 class Mproxy{
 	public $conn_timeout = 5; //연결시간 타임아웃
 	public $exec_timeout = 5; //실행시간 타임아웃
@@ -291,6 +294,7 @@ class Mproxy{
 
 		//-- 해더 재출력
 		//print_r($result['header']);
+
 		$c_headers = explode("\r\n",trim($result['header']));
 		$c_headers[] = 'X-Forwarded-Server: '.(isset($_SERVER['SERVER_ADDR'][0])?$_SERVER['SERVER_ADDR']:'CLI'); //프록시서버 아이피
 		foreach($result['curl_info'] as $k=>$v){
@@ -300,12 +304,16 @@ class Mproxy{
 			if(stripos($v,'Transfer-Encoding')===0){ //Transfer-Encoding 는 해더로 재출력하면 안된다.
 				continue;
 			}
+			if(stripos($v,'Content-Encoding')===0){ //Content-Encoding 는 해더로 재출력하면 안된다.
+				continue;
+			}
 			header($v);
 			//echo $v."\n<br>";
 		}
 		$matches = array();
 		preg_match('/(?:Content-Encoding: )(.*)/i',$result['header'],$matches);
 		$contentEncoding = isset($matches[1])?trim($matches[1]):'';
+		// print_r($contentEncoding);exit;
 		if($contentEncoding=='gzip'){
 			echo gzdecode($result['body']);
 		}else if($contentEncoding=='deflate'){
