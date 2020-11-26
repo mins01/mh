@@ -125,40 +125,40 @@ last_bbs_columns
 util
  */
 .m-0{
-	margin:0;
+	margin:0 !important;
 }
 .m-1{
-	margin:0.25em;
+	margin:0.25em !important;
 }
 .m-2{
-	margin:0.5em;
+	margin:0.5em !important;
 }
 .m-3{
-	margin:1em;
+	margin:1em !important;
 }
 .m-4{
-	margin:1.5em;
+	margin:1.5em !important;
 }
 .m-5{
-	margin:3em;
+	margin:3em !important;
 }
 .p-0{
-	padding:0;
+	padding:0 !important;
 }
 .p-1{
-	padding:0.25em;
+	padding:0.25em !important;
 }
 .p-2{
-	padding:0.5em;
+	padding:0.5em !important;
 }
 .p-3{
-	padding:1em;
+	padding:1em !important;
 }
 .p-4{
-	padding:1.5em;
+	padding:1.5em !important;
 }
 .p-5{
-	padding:3em;
+	padding:3em !important;
 }
 .text-bold{
 	font-weight: bold;
