@@ -163,3 +163,12 @@ util
 .text-bold{
 	font-weight: bold;
 }
+
+/*
+출력시 주소가 같이 나오는 것 제거
+ */
+@media print {
+	a[href]:after {
+		content: "" !important;
+	}
+}
