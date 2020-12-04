@@ -9,19 +9,25 @@ class Json_menu extends MX_Controller {
 	private $logedin = null;
 	private $limit = 20;
 
-	public $modules_paths = array(
-		APPPATH.'/modules/mh_service/controllers/',
-		APPPATH.'/modules/mh/controllers/',
-		APPPATH.'/modules/mh_admin/controllers/',
-	);
-	public $page_paths = array(
-		APPPATH.'/modules/mh_service/views/page/',
-		APPPATH.'/modules/mh/views/page/',
-		APPPATH.'/modules/mh_admin/views/page/',
-	);
+	public $modules_paths = array();
+	public $page_paths = array();
 
+	public function init_path(){
+		$this->modules_paths = array(
+			APPPATH.'/modules/mh_service/controllers/',
+			APPPATH.'/modules/mh/controllers/',
+			APPPATH.'/modules/mh_admin/controllers/',
+		);
+		$this->page_paths = array(
+			APPPATH.'/modules/mh_service/views/page/',
+			APPPATH.'/modules/mh/views/page/',
+			APPPATH.'/modules/mh_admin/views/page/',
+		);
+	}
 	public function __construct()
 	{
+		$this->init_path();
+
 		$this->load->model('mh/menu_model','menu_m_f');
 		$this->menu_m_f->set_init_conf('menu',SITE_URI_PREFIX);
 		$this->load->module('mh_admin/layout');
@@ -207,7 +213,7 @@ class Json_menu extends MX_Controller {
 	// page 모듈용
 	public function page_lists(){
 		// $path=APPPATH.$this->page_path;
-
+		$arr = array();
 		foreach ($this->page_paths as $path) {
 			if(!is_dir($path)){ continue;}
 			$d = dir($path);
@@ -222,7 +228,7 @@ class Json_menu extends MX_Controller {
 			}
 			$d->close();
 		}
-		ksort($arr);
+		sort($arr);
 		//print_r($path);
 		return $arr;
 	}

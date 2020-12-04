@@ -11,6 +11,8 @@ class Json_admin_menu extends Json_menu {
 
 	public function __construct()
 	{
+		$this->init_path();
+		
 		$this->load->model('mh/menu_model','menu_m_f');
 		$this->menu_m_f->set_init_conf('admin_menu',ADMIN_URI_PREFIX);
 		$this->load->module('mh_admin/layout');
