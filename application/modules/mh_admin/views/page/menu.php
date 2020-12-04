@@ -172,7 +172,15 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 				</div>
 				<label class="col-sm-2 control-label">레이아웃</label>
 				<div class="col-sm-4">
-					<input type="text" maxlength="100" class="form-control" placeholder="mn_layout" ng-model="selected_obj.mn_layout" ng-disabled="selected_obj.mn_lock=='1'">
+					<select class="form-control" placeholder="mn_arg1"
+					ng-model="selected_obj.mn_layout"
+					ng-disabled="selected_obj.mn_lock=='1'"
+					>
+						<option value="" >#레이아웃 파일#</option>
+						<option ng-repeat="(k, v) in layout_lists" value="{{v}}" >{{v}}</option>
+					</select>
+
+					<!-- <input type="text" maxlength="100" class="form-control" placeholder="mn_layout" ng-model="selected_obj.mn_layout" > -->
 				</div>
 			</div>
 			<div class="form-group">
@@ -333,6 +341,9 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 		}
 		if(data.page_lists){
 			$scope.page_lists = data.page_lists;
+		}
+		if(data.layout_lists){
+			$scope.layout_lists = data.layout_lists;
 		}
 		if(data.mn_id){
 			if($scope.mn_rows["mn-"+data.mn_id]){

@@ -1,18 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 require_once(dirname(__FILE__).'/Json_menu.php');
 class Json_admin_menu extends Json_menu {
-	private $bbs_conf = array();
-	private $bm_row = array();
-	private $m_row = array();
-	private $skin_path = '';
-	private $base_url = '';
-	private $logedin = null;
-	private $limit = 20;
+	
+	public $layout_path = '/modules/mh_admin/views/layout/';
 
 	public function __construct()
 	{
 		$this->init_path();
-		
+
 		$this->load->model('mh/menu_model','menu_m_f');
 		$this->menu_m_f->set_init_conf('admin_menu',ADMIN_URI_PREFIX);
 		$this->load->module('mh_admin/layout');
@@ -39,6 +34,7 @@ class Json_admin_menu extends Json_menu {
 			'mn_rows' => $this->menu_m_f->select(),
 			'module_lists'=>$this->module_lists(),
 			'page_lists'=>$this->page_lists(),
+			'layout_lists'=>$this->layout_lists(),
 		);
 		return $this->echo_json($json);
 	}

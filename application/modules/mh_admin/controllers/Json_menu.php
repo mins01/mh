@@ -1,16 +1,17 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Json_menu extends MX_Controller {
-	private $bbs_conf = array();
-	private $bm_row = array();
-	private $m_row = array();
-	private $skin_path = '';
-	private $base_url = '';
-	private $logedin = null;
-	private $limit = 20;
+	// private $bbs_conf = array();
+	// private $bm_row = array();
+	protected $m_row = array();
+	protected $base_url = '';
+	protected $logedin = null;
+
+	public $layout_path = '/modules/mh/views/layout/';
 
 	public $modules_paths = array();
 	public $page_paths = array();
+	public $layout_paths = array();
 
 	public function init_path(){
 		$this->modules_paths = array(
@@ -22,6 +23,9 @@ class Json_menu extends MX_Controller {
 			APPPATH.'/modules/mh_service/views/page/',
 			APPPATH.'/modules/mh/views/page/',
 			APPPATH.'/modules/mh_admin/views/page/',
+		);
+		$this->layout_paths = array(
+			APPPATH.$this->layout_path
 		);
 	}
 	public function __construct()
@@ -37,8 +41,8 @@ class Json_menu extends MX_Controller {
 
 		$this->m_row = $this->common->get_login();
 		$this->logedin = & $this->common->logedin;
-		$this->config->load('bbs');
-		$this->bbs_conf = $this->config->item('bbs');
+		// $this->config->load('bbs');
+		// $this->bbs_conf = $this->config->item('bbs');
 
 	}
 
@@ -232,6 +236,29 @@ class Json_menu extends MX_Controller {
 		//print_r($path);
 		return $arr;
 	}
+	// page 모듈용
+	public function layout_lists(){
+		// $path=APPPATH.$this->page_path;
+		$arr = array();
+		foreach ($this->layout_paths as $path) {
+			if(!is_dir($path)){ continue;}
+			$d = dir($path);
+			while (false !== ($entry = $d->read())) {
+				if($entry=='.' || $entry=='..'){continue;}
+				if(is_file($path.$entry)){
+					if(strpos($entry,'_head.php')===false){ continue; }
+					$v = str_ireplace('_head.php','',$entry);
+					// $k = basename(dirname(dirname($path))).'/page/'.$v;
+					// $arr[$k] = $v;
+					$arr[]=$v;
+				}
+			}
+			$d->close();
+		}
+		sort($arr);
+		//print_r($path);
+		return $arr;
+	}
 	public function first(){
 		$this->load->model('mh/bbs_master_model','bm_m');
 		$json = array(
@@ -239,6 +266,7 @@ class Json_menu extends MX_Controller {
 			'mn_rows' => $this->menu_m_f->select(),
 			'module_lists'=>$this->module_lists(),
 			'page_lists'=>$this->page_lists(),
+			'layout_lists'=>$this->layout_lists(),
 		);
 		return $this->echo_json($json);
 	}
