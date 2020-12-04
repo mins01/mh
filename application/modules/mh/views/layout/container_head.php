@@ -14,8 +14,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<script src="<?=SITE_URI_ASSET_PREFIX?>js/ForGoogle.js?t=<?=REFLESH_TIME?>"></script>
-
+	<script src="http://www.mins01.com/js/ForGoogle.js?t=<?=REFLESH_TIME?>"></script>
 	<!-- google analytics -->
 	<script>ForGoogle.analytics()</script>
 
