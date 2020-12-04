@@ -8,6 +8,7 @@ class ApiOpenApiNaverCom{
 	private $mproxy = null;
 	private $mh_cache = null;
 	private $account = null;
+	public $error_exit = true;
 	public $cids = array( //우선 1단만
 		'50000000'=>'패션의류',
 		'50000001'=>'패션잡화',
@@ -71,10 +72,23 @@ class ApiOpenApiNaverCom{
 			$headers = array();
 			$headers[] = "X-Naver-Client-Id: ".$this->account['client_id'];
 			$headers[] = "X-Naver-Client-Secret: ".$this->account['client_secret'];
+			// print_r($posts);
+			// var_dump($headers);exit;
 			$res = $this->call($method,$url,$posts,$headers);
 			$this->mh_cache->save($key,$res,60*60*3);
 		}
-		// var_dump($res);
+
+		if($res['httpcode']!=200){
+			echo __METHOD__,"\n";
+			var_dump(func_get_args());
+			var_dump($res);
+			if($this->error_exit){
+				exit;
+			}else{
+				return null;
+			}
+
+		}
 		if($res['errorno']==0){
 			return json_decode($res['body'],true);
 		}
@@ -219,7 +233,7 @@ class ApiOpenApiNaverCom{
 
 	// ======================================-=============== 네이버 검색용
 	// 네이버 검색: 호출용
-	private function v1_search_call_json($service,$query,$display='10',$start='1',$sort='sim'){
+	public function v1_search_call_json($service,$query,$display='10',$start='1',$sort='sim'){
 		$path = '/v1/search/'.$service.'.json';
 		$arr = array();
 		$arr['query'] = $query;

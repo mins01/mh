@@ -7,9 +7,11 @@ class ApiSearchadNaver{
 	private $mproxy = null;
 	private $mh_cache = null;
 	private $account = null;
+	public $use_proxy = 0;
+
 	public function __construct()
 	{
-		// $this->mproxy = new Mproxy();
+		$this->proxy_urls = array('','http://inno.domeggook.com/ex/php_Mproxy/src/proxy.php','https://www.miraeassetstore.com/ex/php_Mproxy/src/proxy.php');
 	}
 	public function set_mproxy($mproxy){
 		$this->mproxy = $mproxy;
@@ -21,9 +23,15 @@ class ApiSearchadNaver{
 		$this->account = $account;
 		// var_dump($this->account);
 	}
+	public function proxy($method,$url,$posts=null,$headers=array()){
+		$proxy_url = $this->proxy_urls[$this->use_proxy];
+		$headers['X-Url'] = $url;
+		$headers['X-Conn-Timeout'] = 120;
+		$headers['X-Exec-Timeout'] = 120;
+		return $this->call($method,$proxy_url,$posts,$headers);
+	}
 	public function call($method,$url,$posts=null,$headers=array()){
 		// $url = $this->client['token_uri']; // https://oauth2.googleapis.com/token
-
 		$opts = array();
 		$opts[CURLOPT_SSL_VERIFYPEER]=false;
 		$opts[CURLOPT_SSL_VERIFYHOST]=false;
@@ -73,8 +81,32 @@ class ApiSearchadNaver{
 			$headers[] = "X-Customer: ".$this->account['customer_id'];
 			$signature =  $this->generateSignature($timestamp, $method, $path);
 			$headers[] = "X-Signature: ".$signature;
-			$res = $this->call('get',$url,$posts,$headers);
-			$this->mh_cache->save($key,$res,60*60*3);
+			// print_r($headers);exit;
+
+			if(!$this->use_proxy){
+				$res = $this->call('get',$url,$posts,$headers);
+			}else{
+				$res = $this->proxy('get',$url,$posts,$headers);
+			}
+			if($res['httpcode']==429){ // Too Many Request 일 경우 쉬었다가 1회에 한해서 한번 더 한다.
+				sleep(rand(2,5));
+				if(!$this->use_proxy){
+					$res = $this->call('get',$url,$posts,$headers);
+				}else{
+					$res = $this->proxy('get',$url,$posts,$headers);
+				}
+			}
+			if($res['httpcode']!=429){
+				$this->mh_cache->save($key,$res,60*60*3);
+			}
+
+		}
+
+		if($res['httpcode']!=200){
+			echo __METHOD__,"\n";
+			var_dump($res);
+			// exit;
+			return null;
 		}
 		if($res['errorno']==0){
 			return json_decode($res['body'],true);
