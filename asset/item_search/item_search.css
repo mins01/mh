@@ -36,3 +36,9 @@ dl.infobox{
 .dd-v-X{
 	background-color: #def;
 }
+
+h1{font-size:36px; font-weight: bold; margin: 0.3em 0; padding: 0;}
+h2{font-size:28px; font-weight: bold; margin: 0.3em 0; padding: 0;}
+h3{font-size:24px; font-weight: bold; margin: 0.3em 0; padding: 0;}
+h4{font-size:20px; font-weight: bold; margin: 0.3em 0; padding: 0;}
+h5{font-size:16px; font-weight: bold; margin: 0.3em 0; padding: 0;}

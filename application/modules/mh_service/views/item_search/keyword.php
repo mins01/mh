@@ -7,14 +7,19 @@
 // $datalab_shops
 // $search_shop_catetories
 ?>
-
+<?
+// require(dirname(__FILE__).'/menu.php');
+?>
 <script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/StickyOnTable.js?t=<?=REFLESH_TIME?>"></script>
 <link href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/stickyOnTable.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
 <link href="<?=SITE_URI_ASSET_PREFIX?>item_search/item_search.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
-
+<script src="./js_cat_rows?t=<?=REFLESH_TIME?>"></script>
+<script src="<?=SITE_URI_ASSET_PREFIX?>item_search/lib_cat_rows.js?t=<?=REFLESH_TIME?>"></script>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
+<script>
+var cat_names = lib_cat_rows.generate_cat_names(cat_rows);
+</script>
 <style>
 	.sot table{
 		background: #fff;
@@ -62,19 +67,20 @@
 		});
 	})
 </script>
-<h1 style="font-size:32px;" class="text-center">
-	<b>키워드 상세정보
-	<? if(isset($keyword[0])):?> : <span style="color:#274fa7;"><?=$keyword?></span><? endif; ?>
-	</b>
-</h1>
+<div  class="container-fluid text-center ">
+	<h2><b>키워드 정보</b>
+		<? if(isset($keyword[0])):?> <b>:</b> <b style="color:#274fa7; display: inline-block;font-weight:bold; margin:0;"><?=$keyword?></b><? endif; ?>
+	</h2>
+</div>
 <div>
+	<hr>
 	<h3>검색</h3>
 	<form action="" method="get">
 		<div class="input-group input-group-lg">
 			<span class="input-group-addon">키워드</span>
 			<input type="text" name="keyword" class="form-control" placeholder="키워드" maxlength="20" value="<?=html_escape($keyword)?>">
 			<span class="input-group-btn">
-				<button class="btn btn-info" type="button">확인</button>
+				<button class="btn btn-info" type="submit">확인</button>
 			</span>
 		</div>
 	</form>
@@ -177,16 +183,34 @@
 	<?
 	if(isset($search_shop_catetories)):
 		?>
+		<script>
+		// $(function(){
+		// 	document.querySelectorAll('.a_cat_keyword').forEach((item, i) => {
+		// 		if(cat_names[item.title]){
+		// 			console.log(item.title,cat_names[item.title].nsc_id);
+		// 			item.href +='?cid='+cat_names[item.title].nsc_id;
+		// 		}
+		// 	});
+		//
+		// })
+		</script>
 		<ul  class="list-group">
 			<?
 			foreach ($search_shop_catetories as $r):
-				// print_r($r);
+				$ts = array();
+				$ts[] = $r['category1'];
+				$ts[] = $r['category2'];
+				$ts[] = $r['category3'];
+				if(isset($r['category4'][0])) $ts[] = $r['category4'];
+				$t = implode('_',$ts);
 				?>
 				<li class="list-group-item">
-					<a  href="./category?cid=<?=urlencode($r['cid1'])?>"><?=html_escape($r['category1'])?></a>
-					&gt; <span><?=html_escape($r['category2'])?></span>
-					&gt; <span><?=html_escape($r['category3'])?></span>
-					<? if(isset($r['category4'][0])):?> &gt; <span><?=html_escape($r['category4'])?></a><? endif; ?>
+					<a class="a_cat_keyword" href="./cat_keyword" title="<?=html_escape($r['category1'])?>"><?=html_escape($r['category1'])?></a>
+					&gt; <a class="a_cat_keyword" href="./cat_keyword" title="<?=html_escape($r['category1'].'-'.$r['category2'])?>"><?=html_escape($r['category2'])?></a>
+					&gt; <a class="a_cat_keyword" href="./cat_keyword" title="<?=html_escape($r['category1'].'-'.$r['category2'].'-'.$r['category3'])?>"><?=html_escape($r['category3'])?></a>
+					<? if(isset($r['category4'][0])):?>
+					&gt; 	<a class="a_cat_keyword" href="./cat_keyword" title="<?=html_escape($r['category1'].'-'.$r['category2'].'-'.$r['category3'].'-'.$r['category4'])?>"><?=html_escape($r['category4'])?></a>
+					<? endif; ?>
 				</li>
 				<?
 			endforeach;
@@ -216,7 +240,11 @@
 </div>
 <div>
 	<hr>
-	<h3>네이버 검색광고 연관 키워드 정보 <small>( 30일,4주 기준, 최대 500 연관 키워드 )</small></h3>
+	<h3>
+		네이버 검색광고 연관 키워드 정보
+		<a href="rel_keyword?keyword=<?=html_escape($keyword)?>" class="btn btn-warning">추천 연관 키워드 확인</a>
+		<small>( 30일,4주 기준, 최대 500 연관 키워드 )</small>
+	</h3>
 
 	<?
 	if(isset($keywordstool['keywordList'])):
@@ -346,7 +374,7 @@
 					?>
 					<tr>
 						<td class="text-center"><?=$k+1?></td>
-						<td class="text-center"><a href='?keyword=<?=urlencode(html_escape($$r['keywords'][0]))?>'><?=html_escape($r['keywords'][0])?></a></td>
+						<td class="text-center"><a href='?keyword=<?=urlencode(html_escape($r['keywords'][0]))?>'><?=html_escape($r['keywords'][0])?></a></td>
 						<?
 						foreach($r['data'] as $period => $ratio):
 							?>

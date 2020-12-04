@@ -58,6 +58,7 @@ class Item_search extends MX_Controller {
 		// $this->keyword($conf,$param);
 		// $this->category($conf,$param);
 		header('Location: '.$conf['base_url'].'/category');
+		header('Location: '.$conf['base_url'].'/keyword');
 		exit;
 	}
 	public function keyword($conf,$param){
