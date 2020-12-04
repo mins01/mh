@@ -205,11 +205,11 @@ require(dirname(__FILE__).'/menu.php');
 				$t = implode('_',$ts);
 				?>
 				<li class="list-group-item">
-					<a class="a_cat_keyword" href="./cat_keyword" title="<?=html_escape($r['category1'])?>"><?=html_escape($r['category1'])?></a>
-					&gt; <a class="a_cat_keyword" href="./cat_keyword" title="<?=html_escape($r['category1'].'-'.$r['category2'])?>"><?=html_escape($r['category2'])?></a>
-					&gt; <a class="a_cat_keyword" href="./cat_keyword" title="<?=html_escape($r['category1'].'-'.$r['category2'].'-'.$r['category3'])?>"><?=html_escape($r['category3'])?></a>
+					<span class="a_cat_keyword" title="<?=html_escape($r['category1'])?>"><?=html_escape($r['category1'])?></span>
+					&gt; <span class="a_cat_keyword" title="<?=html_escape($r['category1'].'-'.$r['category2'])?>"><?=html_escape($r['category2'])?></span>
+					&gt; <span class="a_cat_keyword" title="<?=html_escape($r['category1'].'-'.$r['category2'].'-'.$r['category3'])?>"><?=html_escape($r['category3'])?></span>
 					<? if(isset($r['category4'][0])):?>
-					&gt; 	<a class="a_cat_keyword" href="./cat_keyword" title="<?=html_escape($r['category1'].'-'.$r['category2'].'-'.$r['category3'].'-'.$r['category4'])?>"><?=html_escape($r['category4'])?></a>
+					&gt; 	<span class="a_cat_keyword" title="<?=html_escape($r['category1'].'-'.$r['category2'].'-'.$r['category3'].'-'.$r['category4'])?>"><?=html_escape($r['category4'])?></span>
 					<? endif; ?>
 				</li>
 				<?
