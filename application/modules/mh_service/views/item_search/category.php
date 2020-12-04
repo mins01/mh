@@ -1,6 +1,10 @@
 <?
+//$nsc_rows
 $t_ed = strtotime($date_ed);
 $t_st = strtotime($date_st);
+?>
+<?
+require(dirname(__FILE__).'/menu.php');
 ?>
 <? /*
 <!-- 달력 -->
@@ -27,7 +31,7 @@ $(
 */ ?>
 <script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/StickyOnTable.js?t=<?=REFLESH_TIME?>"></script>
 <link href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/stickyOnTable.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
-
+<link href="<?=SITE_URI_ASSET_PREFIX?>item_search/item_search.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
 
 
 <style>
@@ -96,14 +100,15 @@ endfor;
 }
 </style>
 <div  class="container-fluid text-center ">
-	<h1 style="font-size:32px"><b>쇼핑 키워드 트렌드</b><sup style="font-size:0.5em" class="text-danger"><i>Alpha</i></sup></h1>
-	<h4>기간별 쇼핑 키워드의 변화량을 알려드립니다.</h4>
+	<h2><b>카테고리 키워드</b></h2>
+	<h5>기간별 쇼핑 키워드의 변화량을 알려드립니다.</h5>
 </div>
 <div class="container-fluid ">
 	<!-- <h2><?=isset($group_types[$group_type])?$group_types[$group_type]:'--'?>통계 -->
 	</h2>
 </div>
 <div class="container-fluid ">
+	<hr>
 	<form class="form-inline text-center" name="form_filter">
 		<div>
 			<div class="input-group" style="width: auto;">
@@ -111,13 +116,35 @@ endfor;
 				<select name="cid" class="form-control"  required>
 					<option value="">카테고리선택</option>
 					<?
-					foreach ($cids as $k => $v):
-						$selected = $cid==$k?'selected':'';
+					$t0 = '';
+					foreach ($nsc_rows as $k => $v):
 						?>
-						<option value="<?=html_escape($k)?>" <?=$selected?>><?=html_escape($v)?></option>
+						<?
+						if($t0 != $v['nsc_id_1']):
+							?>
+								<? if($t0 != ''):?></optgroup><? endif; ?>
+								<optgroup label="<?=html_escape($v['nsc_name_1'])?>">
+							<?
+							$t0 = $v['nsc_id_1'];
+						endif;
+						?>
+						<?
+						// print_r($v);
+						$selected = $cid==$v['nsc_id']?'selected':'';
+						if($v['nsc_depth']=='1'){
+							$t = 	$v['nsc_name_1'].' 전체';
+						}
+						if($v['nsc_depth']=='2'){
+							$t = 	$v['nsc_name_1'].' > '.$v['nsc_name_2'];
+						}
+						?>
+							<option value="<?=html_escape($v['nsc_id'])?>" <?=$selected?>><?=html_escape($t)?></option>
 						<?
 					endforeach;
+
 					?>
+					</optgroup>
+
 				</select>
 			</div>
 			<? /* ?>
@@ -176,7 +203,10 @@ if($rowss):
 	?>
 	<hr>
 	<div class="container-fluid ">
-		<h3 class="text-center"><?=html_escape($cids[$cid])?> (<?=html_escape($date_st.' ~ '.$date_ed)?>)</h3>
+		<h3 class="text-center">
+			<div style="display:inline-block;color:#274fa7; font-weight:bold"><?=html_escape($cids[$cid])?></div>
+			<div style="display:inline-block">(<?=html_escape($date_st.' ~ '.$date_ed)?>)</div>
+		</h3>
 		<!-- <div class="text-right">
 			<button class="btn btn-success" type="button" onclick="save_chart_image()" >차트 PNG 다운로드</button>
 			<button class="btn btn-warning" type="button" onclick="save_table_csv()" >테이블 CSV(UTF-8) 다운로드</button>
@@ -203,7 +233,6 @@ if($rowss):
 						StickyOnTable.apply(document.querySelector('#sot1'))
 					})
 				</script>
-				<? //* 수동 생성용 ?>
 				<div id="sot1" class="sot" data-sot-top="2" data-sot-left="1" style="max-width:100%;max-height:600px;height:<?=count($rowss)<3?'auto':'600px;'?>; margin:10px;">
 					<table class="table table-condensed table-bordered table-va-m" style="background-color:#fff;width:20px !important; margin:0 auto;">
 						<colgroup>
@@ -285,136 +314,6 @@ if($rowss):
 						</tbody>
 					</table>
 				</div>
-				<? /*
-				<div id="ffot11" class="ffot" style="width:auto;margin:0 10px;max-width:100%;max-height:600px;height:<?=count($rowss)<10?'auto':'600px;'?>">
-						<div  class="ffot-scrollbar" style="" >
-							<div class="ffot-container-left" style="">
-								<table class="ffot-header-00 table table-condensed table-bordered" style="padding:0;margin:0; background-color:#fff; width:120px">
-									<colgroup>
-										<col width="120" />
-
-									</colgroup>
-									<thead style="background-color:#eee;">
-										<tr >
-											<th class="text-center"  height="60"> 키워드</th>
-										</tr>
-										<tr>
-											<th class="text-center align-middle" style="min-width:8em" height="60"> <button class="btn btn-sm btn-info" type="button" onclick="search_form_table(this.form)">검색</button></th>
-										</tr>
-									</thead>
-								</table>
-								<table class="ffot-header-10 table table-condensed table-bordered" style="padding:0;margin:0; background-color:#fff;width:120px">
-									<tbody class="text-center">
-										<?
-
-										foreach ($rowss as $k => $r):
-											// print_r($r);
-
-											?>
-											<tr>
-												<td class="text-left" style="padding:0 5px; vertical-align:middle" title="<?=html_escape($r['keyword'])?>"><label style="margin:0"><input type="checkbox" name="keyword" value="<?=html_escape($r['keyword'])?>" <?=in_array($r['keyword'],$shws)?'checked':''?> > <?=html_escape($r['keyword'])?></label></td>
-											</tr>
-											<?
-										endforeach;
-										?>
-
-									</tbody>
-								</table>
-							</div>
-							<div class="ffot-container-body" >
-								<table class="ffot-header-01 table table-condensed table-bordered" style="padding:0;margin:0; background-color:#fff;width:auto">
-									<colgroup>
-										<col width="60" />
-										<col width="60" />
-										<col width="60" />
-										<col width="40" />
-										<col width="60" />
-										<col width="60" />
-										<?
-										foreach ($def_date_array as $k => $v):
-											?>
-											<col width="40" />
-											<?
-										endforeach;
-										?>
-									</colgroup>
-									<thead style="background-color:#eee;">
-										<tr>
-											<th class="text-center align-middle" colspan="6">정보</th>
-											<th class="text-center align-middle" colspan="<?=count($def_date_array)?>">
-												트렌드 점수<br><?=html_escape($date_st.' ~ '.$date_ed)?> (<?=$period?>일간)</th>
-										</tr>
-										<tr>
-											<th class="text-center align-middle" rowspan="">평균<br>점수</th>
-											<th class="text-center align-middle" rowspan="">표준<br>편차</th>
-											<th class="text-center align-middle" rowspan="">상승세</th>
-											<th class="text-center align-middle" rowspan="">기간</th>
-											<th class="text-center align-middle" rowspan="">도매꾹<br>점수</th>
-											<th class="text-center align-middle" rowspan="">도매매<br>점수</th>
-											<?
-											foreach ($def_date_array as $k => $v):
-												if($group_type=='day'){$t = date("m\nd",strtotime($k));}
-												else{$t = str_replace('-',"\n",$v);}
-												?>
-												<th style="min-width:2.5em;"  class="text-center align-middle" ><?=nl2br($t)?></th>
-												<?
-											endforeach;
-											?>
-										</tr>
-									</thead>
-								</table>
-								<table class="ffot-content table table-condensed table-bordered" style="padding:0;margin:0; background-color:#fff;width:20px !important">
-									<colgroup>
-										<col width="50" />
-										<col width="50" />
-										<col width="50" />
-										<col width="40" />
-										<col width="60" />
-										<col width="60" />
-										<?
-										foreach ($def_date_array as $k => $v):
-											?>
-											<col width="40" />
-											<?
-										endforeach;
-										?>
-									</colgroup>
-									<tbody class="text-center">
-
-										<?
-
-										foreach ($rowss as $k => $r):
-											$euckr_keyword = iconv('utf-8','euc-kr',$r['keyword']);
-											$domeggook_url = 'http://domeggook.com/main/item/itemList.php?sfc=ttl&sf=ttl&sw='.urlencode($euckr_keyword);
-											$domemedb_url = 'https://domemedb.domeggook.com/index/item/supplyList.php?sf=subject&enc=utf8&fromOversea=0&mode=search&sw='.urlencode($r['keyword']);
-											// print_r($r);
-
-											?>
-											<tr class="text-center">
-												<td class="c-rank c-rank-<?=floor($r['avg_rank'])?>"><?=round($r['avg_view'],0)?></td>
-												<td class="<?=$r['dev_rank']>=50?'c-dev-10':''?>"><?=round($r['dev_view'],0)?></td>
-												<td class="c-step-<?=round($r['slope_view'])?> c-step-<?=is_numeric($r['slope_view'])?($r['slope_view']>0?'p':'m'):'nonum'?>"><?=round(abs($r['slope_view']))?>%</td>
-												<td><?=$r['count_rank']?></td>
-												<td><a class="btn btn-success btn-xs" style="min-width:3em;" title="도매꾹에서 검색" href="<?=html_escape($domeggook_url)?>" target="_blank"><?=$r['sum_upv_domeggook']?></a></td>
-												<td><a class="btn btn-warning btn-xs" style="min-width:3em;" title="도매매에서 검색" href="<?=html_escape($domemedb_url)?>" target="_blank"><?=$r['sum_upv_domeme']?></a></td>
-												<?
-												foreach ($def_date_array as $k => $v):
-													?>
-													<td height="30" class="c-rank c-rank-<?=floor($r['ranks'][$k])?>"><?=$r['views'][$k]?></td>
-													<?
-												endforeach;
-												?>
-											</tr>
-											<?
-										endforeach;
-										?>
-
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				<? //*/ ?>
 			</form>
 		</div>
 		<!-- 차트 처리 -->
@@ -472,7 +371,7 @@ if($rowss):
 <?
 else:
 	?>
-	<h3 class="text-center">사이트 및 날짜를 설정해주세요.</h3>
+	<h3 class="text-center">검색 정보를 설정해주세요.</h3>
 	<?
 endif;
 ?>
@@ -484,5 +383,6 @@ endif;
 		* 데이터의 신뢰도를 보장하지 않습니다.<br>
 		* 데이터 사용에 결과는 사용자 본인의 책임입니다.<br>
 		* 화면이 이상하게 보일 경우, <a href="https://www.google.com/intl/ko/chrome/" target="_blank">구글 크롬 브라우저</a>를 사용해주세요.<br>
+		* 2depth 카테고리는 2020년 10월 01일 부터 조회가 가능합니다.<br>
 	</div>
 </div>

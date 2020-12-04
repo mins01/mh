@@ -1,9 +1,15 @@
 <?
+require(dirname(__FILE__).'/menu.php');
+?>
+<?
 // $ca_rows
+?>
+<?
+$dir_url = dirname($conf['base_url']);
 ?>
 <script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/StickyOnTable.js?t=<?=REFLESH_TIME?>"></script>
 <link href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/stickyOnTable.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
-
+<link href="<?=SITE_URI_ASSET_PREFIX?>item_search/item_search.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
 
 
 <style>
@@ -75,10 +81,10 @@
 					<tr>
 						<td class="text-center" style="position:relative"><a style="position:absolute;top:-80px;visibility: hidden;" id="cid_<?=html_escape($r['nsc_id'])?>"></a><?=html_escape($r['nsc_id'])?></td>
 						<td class="text-center"><?=html_escape($r['nsc_depth'])?></td>
-						<td class="text-center"><a href="#cid_<?=html_escape($r['nsc_id_1'])?>"><?=html_escape($r['nsc_name_1'])?></a></td>
-						<td class="text-center"><a href="#cid_<?=html_escape($r['nsc_id_2'])?>"><?=html_escape($r['nsc_name_2'])?></a></td>
-						<td class="text-center"><a href="#cid_<?=html_escape($r['nsc_id_3'])?>"><?=html_escape($r['nsc_name_3'])?></a></td>
-						<td class="text-center"><a href="#cid_<?=html_escape($r['nsc_id_4'])?>"><?=html_escape($r['nsc_name_4'])?></a></td>
+						<td class="text-center"><a href="<?=html_escape($dir_url.'/category?cid='.urlencode($r['nsc_id_1']))?>"><?=html_escape($r['nsc_name_1'])?></a></td>
+						<td class="text-center"><a href="<?=html_escape($dir_url.'/category?cid='.urlencode($r['nsc_id_2']))?>"><?=html_escape($r['nsc_name_2'])?></a></td>
+						<td class="text-center"><?=html_escape($r['nsc_name_3'])?></td>
+						<td class="text-center"><?=html_escape($r['nsc_name_4'])?></td>
 						<td class="text-left"><?=html_escape(implode(" > ",$t))?></td>
 					</tr>
 					<?

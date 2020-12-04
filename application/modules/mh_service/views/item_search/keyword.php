@@ -8,17 +8,17 @@
 // $search_shop_catetories
 ?>
 <?
-// require(dirname(__FILE__).'/menu.php');
+require(dirname(__FILE__).'/menu.php');
 ?>
 <script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/StickyOnTable.js?t=<?=REFLESH_TIME?>"></script>
 <link href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_StickyOnTable/stickyOnTable.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
 <link href="<?=SITE_URI_ASSET_PREFIX?>item_search/item_search.css?t=<?=REFLESH_TIME?>" rel="stylesheet">
-<script src="./js_cat_rows?t=<?=REFLESH_TIME?>"></script>
-<script src="<?=SITE_URI_ASSET_PREFIX?>item_search/lib_cat_rows.js?t=<?=REFLESH_TIME?>"></script>
+<!-- <script src="./js_cat_rows?t=<?=REFLESH_TIME?>"></script> -->
+<!-- <script src="<?=SITE_URI_ASSET_PREFIX?>item_search/lib_cat_rows.js?t=<?=REFLESH_TIME?>"></script> -->
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-var cat_names = lib_cat_rows.generate_cat_names(cat_rows);
+// var cat_names = lib_cat_rows.generate_cat_names(cat_rows);
 </script>
 <style>
 	.sot table{
@@ -242,7 +242,7 @@ var cat_names = lib_cat_rows.generate_cat_names(cat_rows);
 	<hr>
 	<h3>
 		네이버 검색광고 연관 키워드 정보
-		<a href="rel_keyword?keyword=<?=html_escape($keyword)?>" class="btn btn-warning">추천 연관 키워드 확인</a>
+		<? /* <a href="rel_keyword?keyword=<?=html_escape($keyword)?>" class="btn btn-warning">추천 연관 키워드 확인</a> */ ?>
 		<small>( 30일,4주 기준, 최대 500 연관 키워드 )</small>
 	</h3>
 
