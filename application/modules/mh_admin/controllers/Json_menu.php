@@ -8,9 +8,18 @@ class Json_menu extends MX_Controller {
 	private $base_url = '';
 	private $logedin = null;
 	private $limit = 20;
-	public $modules_path = '/modules/mh/controllers/';
-	public $page_path = '/modules/mh/views/page/';
-	public $page_prefix = 'mh/page/';
+
+	public $modules_paths = array(
+		APPPATH.'/modules/mh_service/controllers/',
+		APPPATH.'/modules/mh/controllers/',
+		APPPATH.'/modules/mh_admin/controllers/',
+	);
+	public $page_paths = array(
+		APPPATH.'/modules/mh_service/views/page/',
+		APPPATH.'/modules/mh/views/page/',
+		APPPATH.'/modules/mh_admin/views/page/',
+	);
+
 	public function __construct()
 	{
 		$this->load->model('mh/menu_model','menu_m_f');
@@ -176,35 +185,44 @@ class Json_menu extends MX_Controller {
 		return $this->echo_json($json);
 	}
 	public function module_lists(){
-		$path=APPPATH.$this->modules_path;
+		// $paths = array(
+		// 	APPPATH.$this->modules_path,
+		// 	APPPATH.$this->modules_mh_service_path
+		// );
 		$arr = array();
-		$d = dir($path);
-		while (false !== ($entry = $d->read())) {
-			if($entry=='.' || $entry=='..'){continue;}
-			if(is_file($path.$entry)){
-				$arr[] = strtolower(str_ireplace('.php','',$entry));
+		foreach ($this->modules_paths as $path) {
+			$d = dir($path);
+			while (false !== ($entry = $d->read())) {
+				if($entry=='.' || $entry=='..'){continue;}
+				if(is_file($path.$entry)){
+					$arr[] = basename(dirname($path)).'/'.strtolower(str_ireplace('.php','',$entry));
+				}
 			}
+			$d->close();
 		}
-		$d->close();
 		sort($arr);
 		//print_r($path);
 		return $arr;
 	}
 	// page 모듈용
 	public function page_lists(){
-		$path=APPPATH.$this->page_path;
-		$arr = array();
-		$d = dir($path);
-		while (false !== ($entry = $d->read())) {
-			if($entry=='.' || $entry=='..'){continue;}
-			if(is_file($path.$entry)){
-				$v = str_ireplace('.php','',$entry);
-				$k = $this->page_prefix.$v;
-				$arr[$k] = $v;
+		// $path=APPPATH.$this->page_path;
+
+		foreach ($this->page_paths as $path) {
+			if(!is_dir($path)){ continue;}
+			$d = dir($path);
+			while (false !== ($entry = $d->read())) {
+				if($entry=='.' || $entry=='..'){continue;}
+				if(is_file($path.$entry)){
+					$v = str_ireplace('.php','',$entry);
+					$k = basename(dirname(dirname($path))).'/page/'.$v;
+					// $arr[$k] = $v;
+					$arr[]=$k;
+				}
 			}
+			$d->close();
 		}
-		$d->close();
-		asort($arr);
+		ksort($arr);
 		//print_r($path);
 		return $arr;
 	}

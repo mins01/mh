@@ -135,22 +135,22 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 				<label class="col-sm-2 control-label">모듈인자1</label>
 				<div class="col-sm-4">
 					<input type="text" maxlength="100" class="form-control" placeholder="mn_arg1" ng-model="selected_obj.mn_arg1"
-					ng-hide="['bbs','page'].indexOf(selected_obj.mn_module)>-1 "
+					ng-hide="['page','bbs','mh/bbs','mh/page','mh_admin/page','mh_service/page'].includes(selected_obj.mn_module)"
 					ng-disabled="selected_obj.mn_lock=='1'"
 					>
 					<select class="form-control" placeholder="mn_arg1"
 					ng-model="selected_obj.mn_arg1"
-					ng-disabled="selected_obj.mn_module!='bbs' || selected_obj.mn_lock=='1'"
-					ng-hide="selected_obj.mn_module!='bbs'"  >
+					ng-disabled="!['bbs','mh/bbs'].includes(selected_obj.mn_module) || selected_obj.mn_lock=='1'"
+					ng-hide="!['bbs','mh/bbs'].includes(selected_obj.mn_module)"  >
 						<option value="" >#게시판 아이디#</option>
 						<option ng-repeat="(k, v) in bbs_lists" value="{{k}}" >[{{k}}] {{v}}</option>
 					</select>
 					<select class="form-control" placeholder="mn_arg1"
 					ng-model="selected_obj.mn_arg1"
-					ng-disabled="selected_obj.mn_module!='page' || selected_obj.mn_lock=='1'"
-					ng-hide="selected_obj.mn_module!='page'"  >
+					ng-disabled="!['page','mh/page','mh_admin/page','mh_service/page'].includes(selected_obj.mn_module) || selected_obj.mn_lock=='1'"
+					ng-hide="!['page','mh/page','mh_admin/page','mh_service/page'].includes(selected_obj.mn_module)"  >
 						<option value="" >#페이지 파일#</option>
-						<option ng-repeat="(k, v) in page_lists" value="{{k}}" >{{v}}</option>
+						<option ng-repeat="(k, v) in page_lists" value="{{v}}" >{{v}}</option>
 					</select>
 				</div>
 			</div>
