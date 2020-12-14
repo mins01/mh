@@ -1,11 +1,13 @@
 <?
 //$bm_row,$b_rows,$b_n_rows
 //$start_num,$count
+//$ics_events
 //print_r($b_rows);
 
 //$b_rowss
 //$b_rowss['maxlength']
 //print_r($b_rowss);
+
 $v_time_st = $time_st;
 $v_date_st = $date_st;
 $v_time_ed = $time_ed;
@@ -155,10 +157,18 @@ $today_date = date('Y-m-d');
 								data-b_idx="<?=$b_row['b_idx']?>"
 								data-plan-len="<?=$plan['len']?>"
 								data-plan-order="<?=$plan['order']?>"
+								data-hover="<?=!(isset($b_row['from_ics']) && $b_row['from_ics'])?'1':'0'?>"
 								>
-									<a href="<?=html_escape($b_row['read_url'])?>">
-									<? if(isset($b_row['b_category'])): ?><span class="hidden-xs label label-primary b_category"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
-									<?=html_escape($label)?></a>
+									<? if(isset($b_row['from_ics']) && $b_row['from_ics']): ?>
+										<span onclick="return false;" class="article">
+										<? if(isset($b_row['b_category'])): ?><span class="hidden-xs label label-primary b_category"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
+										<?=html_escape($label)?></span>
+									<? else: ?>
+										<a href="<?=html_escape($b_row['read_url'])?>" class="article">
+										<? if(isset($b_row['b_category'])): ?><span class="hidden-xs label label-primary b_category"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
+										<?=html_escape($label)?></a>
+									<? endif; ?>
+
 
 									<div class="floating_label hidden-xs">
 										<? if(($b_row['is_new'])): ?>
@@ -209,7 +219,7 @@ $today_date = date('Y-m-d');
 </div>
 <script>
 $(function(){
-	$('.table-calender').on('mouseover','.plan',function(){
+	$('.table-calender').on('mouseover','.plan[data-hover="1"]',function(){
 		var b_idx = $(this).attr('data-b_idx');
 			$('.plan[data-b_idx="'+b_idx+'"]').addClass('plan-on');
 		}).on('mouseout','.plan',function(){

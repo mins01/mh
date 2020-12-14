@@ -283,6 +283,72 @@ class Bbs extends MX_Controller {
 
 		}
 	}
+	public function search_holiday($date_st,$date_ed){
+		if(!isset($this->icalendarreader)){
+			$this->load->library('ICalendarReader');
+			$this->config->load('icalendar');
+			$conf_icalendar = $this->config->item('icalendar');
+
+			$file_ics = $conf_icalendar['dir'].'/'.$conf_icalendar['default_ics'];
+			$this->icalendarreader->load(file_get_contents($file_ics));
+		}
+		$rs = $this->icalendarreader->searchByDate($date_st,$date_ed);
+		// print_r($rs);exit;
+		$rows = array();
+		foreach ($rs as  $r) {
+			$row = array(
+				'b_idx' => 'ics_'.$r['date'],
+				'b_id' => $this->bm_row['b_id'],
+				'b_gidx' => '',
+				'b_gpos' => '',
+				'b_pidx' => '',
+				'b_insert_date' => $r['date'],
+				'b_update_date' => $r['date'],
+				'b_isdel' => '0',
+				'm_idx' => '0',
+				'b_name' => 'system',
+				'b_ip' => '127.0.0.1',
+				'b_notice' => '0',
+				'b_secret' => '0',
+				'b_html' => 'h',
+				'b_link' => '',
+				'b_title' => $r['VEVENT']['SUMMARY'],
+				'b_date_st' => $r['date'],
+				'b_date_ed' => $r['date'],
+				'b_etc_0' => NULL,
+				'b_etc_1' => NULL,
+				'b_etc_2' => NULL,
+				'b_etc_3' => '',
+				'b_etc_4' => NULL,
+				'b_num_0' => '0',
+				'b_num_1' => '0',
+				'b_num_2' => '0',
+				'b_num_3' => NULL,
+				'b_num_4' => NULL,
+				'cutted_b_text' => $r['VEVENT']['SUMMARY'],
+				'bf_cnt' => '0',
+				'bc_cnt' => '0',
+				'bt_cnt' => '0',
+				'bt_tags_string' => '공휴일,기념일',
+				'bf_idx' => NULL,
+				'bf_name' => NULL,
+				'bf_save' => NULL,
+				'bf_size' => NULL,
+				'bf_type' => NULL,
+				'bf_represent' => NULL,
+				'is_external' => '0',
+				'is_image' => '0',
+				'thumbnail_url' => '',
+				'bh_cnt' => '0',
+				'avg_bc_number' => '0',
+				'depth' => '0',
+				'is_new' => '0',
+				'from_ics'=>true,
+			);
+			$rows[] =$row;
+		}
+		return $rows;
+	}
 	public function mode_list_for_calendar($b_idx=null,$with_read=false){
 		$permission = $this->get_permission_lists();
 		if(!$permission['list']){
@@ -292,7 +358,6 @@ class Bbs extends MX_Controller {
 				show_error('권한이 없습니다.',403,'Permission denied');
 			}
 		}
-
 		$get = $this->input->get();
 		// $dt = $this->input->get('dt');
 		if(!isset($get['tq'])){ $get['tq'] = null; }
@@ -306,6 +371,10 @@ class Bbs extends MX_Controller {
 				$get,array('date_st'=>$date_st,'date_ed'=>$date_ed)
 				);
 		$b_rows = $this->bbs_m->select_for_calendar($v_get);
+		if($this->bbs_conf['show_holiday']){
+			$hd_rows = $this->search_holiday($date_st,$date_ed);
+			$b_rows = array_merge($hd_rows,$b_rows);
+		}
 		// echo $this->db->last_query();
 		$b_rowss = $this->bbs_m->exnteds_b_rows_for_calendar($b_rows,$date_st,$date_ed);
 
@@ -362,7 +431,7 @@ class Bbs extends MX_Controller {
 		'time_st'=>$time_st,
 		'time_ed'=>$time_ed,
 		'base_url'=>$this->base_url,
-
+		// 'ics_events'=>$ics_events,
 		));
 
 	}

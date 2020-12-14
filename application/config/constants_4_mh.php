@@ -20,6 +20,7 @@ define('SITE_NAME','공대여자홈');
 define('SITE_ADMIN_MAIL','mins01.lycos.co.kr@gmail.com');
 define('SITE_URI_PREFIX', '/mh/'); // URI 앞부분 경로
 define('SITE_URI_ASSET_PREFIX', '/mh/asset/'); // aaset 폴더 접속용 URI 앞부분 경로
+define('SERVER_PATH_ASSET', APPPATH.'../asset/'); // 서버 내의 aaset 폴더 
 define('ADMIN_PREFIX', '_admin'); // 관리자 URI 기본 경로
 define('ADMIN_URI_PREFIX', SITE_URI_PREFIX.ADMIN_PREFIX.'/'); // 관리자 URI 기본 경로
 define('DB_PREFIX', 'mh_'); // DB 접두사
