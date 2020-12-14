@@ -160,7 +160,7 @@ $today_date = date('Y-m-d');
 								data-hover="<?=!(isset($b_row['from_ics']) && $b_row['from_ics'])?'1':'0'?>"
 								>
 									<? if(isset($b_row['from_ics']) && $b_row['from_ics']): ?>
-										<span onclick="return false;" class="article">
+										<span onclick="return false;" class="article from_ics">
 										<? if(isset($b_row['b_category'])): ?><span class="hidden-xs label label-primary b_category"><?=html_escape($b_row['b_category'])?></span><? endif; ?>
 										<?=html_escape($label)?></span>
 									<? else: ?>

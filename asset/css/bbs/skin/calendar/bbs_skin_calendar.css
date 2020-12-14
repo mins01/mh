@@ -170,6 +170,15 @@ td.day-td.day-td-today>.day>.day-label{
 	background-color:#5e3;
 }
 
+.day > .plan > .from_ics{
+	font-weight: bold;
+	background-color: #993;
+	color: #fff;
+	/* background-image: repeating-linear-gradient(45deg, transparent 0 10%, #363 90% 100%); */
+
+}
+
+
 
 
 .plan[data-plan-len="1"]{width:100%;}
