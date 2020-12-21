@@ -145,6 +145,7 @@ class ICalendarReader{
 			}
 		}
 		$this->recursiveLinks($links);
+		// print_r($links);
 		// $times = $this->generateTimes($links);
 		return array('VCALENDAR'=>$VCALENDAR,'VEVENTs'=>$VEVENTs,'links'=>$links);
 	}
@@ -158,12 +159,13 @@ class ICalendarReader{
 			if(!isset($link['rrules'])){ continue; }
 			// echo "링크\n";
 			// print_r($link);
-			$rrules = $link['rrules'];
-			$currTime = $link['timeStart'];
-			$link['times'] = array_merge($link['times'],$this->calcurateRrules($rrules,$currTime));
+			// $rrules = $link['rrules'];
+			// $currTime = $link['timeStart'];
+			$link['times'] = $this->calcurateRrules($link['rrules'],$link['timeStart']);
+			// print_r($link['times']);
 		}
 	}
-	private function calcurateRrulesByBys($currTime,$BYMONTH,$BYWEEKNO,$BYYEARDAY,$BYDAY,$BYHOUR,$BYMINUTE,$BYSECOND,$BYSETPOS){
+	private function calcurateRrulesByBys($currTime,$BYMONTH,$BYWEEKNO,$BYYEARDAY,$BYMONTHDAY,$BYDAY,$BYHOUR,$BYMINUTE,$BYSECOND,$BYSETPOS){
 		// following order: BYMONTH, BYWEEKNO, BYYEARDAY, BYMONTHDAY, BYDAY, BYHOUR, BYMINUTE, BYSECOND and BYSETPOS; then COUNT and UNTIL are evaluated.
 		$days = array(
 			'MO' => 'Monday',
@@ -174,26 +176,43 @@ class ICalendarReader{
 			'SA' => 'Saturday',
 			'SU' => 'Sunday',
 		);
-		$args = func_get_args();
+		// $args = func_get_args();
 		// echo date('Y-m-d',$currTime).' : ';
 		// print_r(implode(', ',$args));
 		// echo "\n";
-		$curr_Y = date('Y',$currTime);
-		$curr_n = date('n',$currTime);
-		$curr_j = date('j',$currTime);
-		$curr_G = ($BYHOUR!=null)?$BYHOUR:date('G',$currTime);
-		$curr_i = ($BYMINUTE!=null)?$BYMINUTE:intval(date('i',$currTime),10);
-		$curr_s = ($BYSECOND!=null)?$BYSECOND:intval(date('s',$currTime),10);
 		$time = $currTime;
-		if($BYMONTH!=null){
-			$time = mktime($curr_G,$curr_i,$curr_s,$BYMONTH,$curr_j,$curr_Y);
-		}
+		$curr_Y = date('Y',$time);
+		$curr_n = ($BYMONTH!==null)?$BYMONTH:date('n',$time);
+		$curr_j = ($BYMONTHDAY!==null)?$BYMONTHDAY:date('j',$time);
+		$curr_G = ($BYHOUR!==null)?$BYHOUR:date('G',$time);
+		$curr_i = ($BYMINUTE!==null)?$BYMINUTE:intval(date('i',$time),10);
+		$curr_s = ($BYSECOND!==null)?$BYSECOND:intval(date('s',$time),10);
+		$time = mktime($curr_G,$curr_i,$curr_s,$curr_n,$curr_j,$curr_Y);
+		// if($BYMONTH!=null){
+		// 	$time = mktime($curr_G,$curr_i,$curr_s,$BYMONTH,$curr_j,$curr_Y);
+		// 	$curr_Y = date('Y',$time);
+		// 	$curr_n = date('n',$time);
+		// 	$curr_j = date('j',$time);
+		// }
 		if($BYWEEKNO!=null){ // not tested!
 			$time = strtotime($curr_Y.'W'.sprintf('%02d',$BYWEEKNO));
+			$curr_Y = date('Y',$time);
+			$curr_n = date('n',$time);
+			$curr_j = date('j',$time);
 		}
 		if($BYYEARDAY!=null){ // not tested!
 			$time = mktime($curr_G,$curr_i,$curr_s,1,$BYYEARDAY,$curr_Y);
+			$curr_Y = date('Y',$time);
+			$curr_n = date('n',$time);
+			$curr_j = date('j',$time);
 		}
+		// if($BYMONTHDAY!=null){ // not tested!
+		// 	$time = mktime($curr_G,$curr_i,$curr_s,$curr_n,$BYMONTHDAY,$curr_Y);
+		// 	$curr_Y = date('Y',$time);
+		// 	$curr_n = date('n',$time);
+		// 	$curr_j = date('j',$time);
+		// }
+
 		if($BYDAY!=null){
 			$matches = array();
 			preg_match("/(-?\d)([A-Z]{2})/",$BYDAY,$matches);
@@ -237,12 +256,14 @@ class ICalendarReader{
 		foreach ($BYMONTHs as $BYMONTH) {
 			foreach ($BYWEEKNOs as $BYWEEKNO) {
 				foreach ($BYYEARDAYs as $BYYEARDAY) {
-					foreach ($BYDAYs as $BYDAY) {
-						foreach ($BYHOURs as $BYHOUR) {
-							foreach ($BYMINUTEs as $BYMINUTE) {
-								foreach ($BYSECONDs as $BYSECOND) {
-									foreach ($BYSETPOSs as $BYSETPOS) {
-										$times[]=$this->calcurateRrulesByBys($currTime,$BYMONTH,$BYWEEKNO,$BYYEARDAY,$BYDAY,$BYHOUR,$BYMINUTE,$BYSECOND,$BYSETPOS);
+					foreach ($BYMONTHDAYs as $BYMONTHDAY) {
+						foreach ($BYDAYs as $BYDAY) {
+							foreach ($BYHOURs as $BYHOUR) {
+								foreach ($BYMINUTEs as $BYMINUTE) {
+									foreach ($BYSECONDs as $BYSECOND) {
+										foreach ($BYSETPOSs as $BYSETPOS) {
+											$times[]=$this->calcurateRrulesByBys($currTime,$BYMONTH,$BYWEEKNO,$BYYEARDAY,$BYMONTHDAY,$BYDAY,$BYHOUR,$BYMINUTE,$BYSECOND,$BYSETPOS);
+										}
 									}
 								}
 							}
@@ -274,8 +295,36 @@ class ICalendarReader{
 		// print_r($rrules);
 		$FREQ = $rrules['FREQ'];
 		$COUNT = isset($rrules['COUNT'])?(int)$rrules['COUNT']:null;
-		$UNTIL = isset($rrules['UNTIL'])?strtitime($rrules['UNTIL']):null;
-		if($COUNT != null){
+		$UNTIL = isset($rrules['UNTIL'])?strtotime($rrules['UNTIL']):null;
+
+
+		$times = array();
+		$rtimes = $this->calcurateRrulesByRrules($rrules,$currTime);
+		// print_r($rtimes);
+		$currTime = $rtimes[0];
+		$times = array_merge($times,$rtimes);
+
+		//규칙에는 두 조건 모두 없으면 무한. 그래서 6회로 제한한다.
+		if($UNTIL===null && $COUNT===null){
+			$COUNT = 5;
+		}
+
+		if($UNTIL != null){
+			while($currTime <= $UNTIL){
+				if($FREQ =='YEARLY'){
+					$currTime = strtotime("+1 year", $currTime);
+				}else if($FREQ =='MONTHLY'){
+					$currTime = strtotime("+1 month", $currTime);
+				}else if($FREQ =='WEEKLY'){
+					$currTime = strtotime("+1 week", $currTime);
+				}
+				$rtimes = $this->calcurateRrulesByRrules($rrules,$currTime);
+				// print_r($rtimes);
+				if(max($rtimes) > $UNTIL ){ break; }
+				$currTime = max($rtimes);
+				$times = array_merge($times,$rtimes);
+			}
+		}else if($COUNT != null){
 			for($i=0,$m=($COUNT-1);$i<$m;$i++){
 				if($FREQ =='YEARLY'){
 					$currTime = strtotime("+1 year", $currTime);
@@ -286,6 +335,7 @@ class ICalendarReader{
 				}
 				$rtimes = $this->calcurateRrulesByRrules($rrules,$currTime);
 				// print_r($rtimes);
+				// echo date('Y-m-d',$rtimes[0]),"\n";
 				$currTime = $rtimes[0];
 				$times = array_merge($times,$rtimes);
 			}
