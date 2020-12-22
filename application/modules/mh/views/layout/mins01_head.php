@@ -78,12 +78,17 @@
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-left">
-					<? foreach($menu_tree[0]['child'] as $mr):
-						if($mr['mn_hide']!='0'){continue;}
-						$class = $mr['active']?'class="active"':'';
+					<?
+					if(isset($menu_tree[0]['child'])):
+						foreach($menu_tree[0]['child'] as $mr):
+							if($mr['mn_hide']!='0'){continue;}
+							$class = $mr['active']?'class="active"':'';
+							?>
+							<li <?=$class?>><a href="<?=html_escape($mr['url'])?>" target="<?=html_escape($mr['mn_a_target'])?>" <?=$mr['mn_attr']?>><?=html_escape($mr['mn_text'])?></a></li>
+							<?
+						endforeach;
+					endif;
 					?>
-					<li <?=$class?>><a href="<?=html_escape($mr['url'])?>" target="<?=html_escape($mr['mn_a_target'])?>" <?=$mr['mn_attr']?>><?=html_escape($mr['mn_text'])?></a></li>
-					<? endforeach; ?>
 				</ul>
 				<div class="navbar-right">
 					<? if(!$logedin):?>
