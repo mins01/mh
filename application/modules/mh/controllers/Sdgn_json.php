@@ -1,5 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+// header('HTTP/1.0 404 Not Found');
+header("Location: /");
+exit('DontUseIt');
+
 require_once(dirname(__FILE__).'/Bbs.php');
 
 class Sdgn_json extends MX_Controller {
