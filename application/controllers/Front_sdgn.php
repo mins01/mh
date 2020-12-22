@@ -1,4 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+// header('HTTP/1.0 404 Not Found');
+header("Location: /");
+exit('DontUseIt');
 
 class Front_sdgn extends MX_Controller {
 
@@ -12,13 +15,13 @@ class Front_sdgn extends MX_Controller {
 
 		//$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		//$this->load->driver('cache');
-		
+
 		$this->config->load('conf_front'); // 프론트 사이트 설정
 
 		$this->load->module('mh/common');
 		$this->load->module('mh/layout');
-		
-		
+
+
 		$sdgn_menu = $this->get_current_menu('sdgn_menus'); //기본 메뉴 그룹 변경.
 		$this->config->set_item('menu_tree', array($sdgn_menu));
 	}
@@ -31,7 +34,7 @@ class Front_sdgn extends MX_Controller {
 			return call_user_func_array(array($this, $method), array($menu_uri,$params));
 		}
 		$this->index($menu_uri,$params);
-		
+
 	}
 	public function get_current_menu($uri){
 
@@ -57,10 +60,10 @@ class Front_sdgn extends MX_Controller {
 			//show_404();
 			return false;
 		}
-		$this->config->set_item('menu', $menu); 
+		$this->config->set_item('menu', $menu);
 		$conf = array(
 			'menu'=>$menu,
-			'base_url'=>mh_base_url($menu['mn_uri']),	
+			'base_url'=>mh_base_url($menu['mn_uri']),
 		);
 		$this->load->module('mh/'.$menu['mn_module'],$conf);
 		if(!class_exists($menu['mn_module'],false)){
@@ -70,7 +73,7 @@ class Front_sdgn extends MX_Controller {
 		}
 		return true;
 	}
-	
+
 	public function login(){
 		$this->load->module('mh/member');
 		$this->member->login();
@@ -91,7 +94,7 @@ class Front_sdgn extends MX_Controller {
 		$this->load->module('mh/member');
 		$this->member->join();
 	}
-	
+
 	public function search_id(){
 		$this->load->module('mh/member');
 		$this->member->search_id();
@@ -107,9 +110,3 @@ class Front_sdgn extends MX_Controller {
 
 
 }
-
-
-
-
-
-
