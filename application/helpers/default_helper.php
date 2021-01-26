@@ -228,6 +228,10 @@ function is_allowd_ip($pattern,$ip=null){
 
 function only_https($https_port=null){
 	$r = is_https();
+
+	if($https_port===null && defined('HTTPS_PORT')){
+		$https_port = HTTPS_PORT;
+	}
 	if(!$r){
 		$url_parts = array();
 		$url_parts[]='https://';

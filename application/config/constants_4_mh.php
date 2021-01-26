@@ -20,7 +20,7 @@ define('SITE_NAME','공대여자홈');
 define('SITE_ADMIN_MAIL','mins01.lycos.co.kr@gmail.com');
 define('SITE_URI_PREFIX', '/mh/'); // URI 앞부분 경로
 define('SITE_URI_ASSET_PREFIX', '/mh/asset/'); // aaset 폴더 접속용 URI 앞부분 경로
-define('SERVER_PATH_ASSET', APPPATH.'../asset/'); // 서버 내의 aaset 폴더 
+define('SERVER_PATH_ASSET', APPPATH.'../asset/'); // 서버 내의 aaset 폴더
 define('ADMIN_PREFIX', '_admin'); // 관리자 URI 기본 경로
 define('ADMIN_URI_PREFIX', SITE_URI_PREFIX.ADMIN_PREFIX.'/'); // 관리자 URI 기본 경로
 define('DB_PREFIX', 'mh_'); // DB 접두사
@@ -29,15 +29,20 @@ define('HASH_KEY','mh'); //해시용 추가 문자열. 한번 설정 후 바꾸�
 define('IS_DEV', preg_match('/^[^\/]*dev[^\/]*\./',$http_host));
 define('IS_ADMIN', preg_match('|^'.SITE_URI_PREFIX.ADMIN_URI_PREFIX.'|',(isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'')));
 
-define('USE_HTTPS',false); // HTTPS 사용가능여부
 
 if(IS_DEV){
+	define('USE_HTTPS',false); // HTTPS 사용가능여부
+	define('HTTPS_PORT',''); // HTTPS 포트
 	define('LOGIN_NAME','SESD_MH');
 }else{
+	define('USE_HTTPS',false); // HTTPS 사용가능여부
+	define('HTTPS_PORT',''); // HTTPS 포트
 	define('LOGIN_NAME','SESS_MH');
 }
 
 define('MEMBER_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
+define('MEMBER_ONLY_HTTPS', USE_HTTPS && true ); // /mh/member 동작시 https로 강제한다.
+
 //font 의 기본 layout 을 바꾸고 싶다면 conf_front.php를 수정하라.
 
 // define('LOGIN_TYPE','cookie');

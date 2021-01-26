@@ -4,6 +4,9 @@ class Member extends MX_Controller {
 
 	public function __construct()
 	{
+		if(MEMBER_ONLY_HTTPS){
+			only_https();
+		}
 		//var_dump(func_get_args());
 		//var_dump($conf);
 		//$this->load->model('bbs_master_model','bm_m');
@@ -14,7 +17,6 @@ class Member extends MX_Controller {
 		$mn_layout = MEMBER_LAYOUT;
 		$this->config->set_item('layout_view_head',$mn_layout.'_head');
 		$this->config->set_item('layout_view_tail',$mn_layout.'_tail');
-
 	}
 
 	public function login(){
