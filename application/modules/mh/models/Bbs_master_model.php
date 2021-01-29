@@ -153,7 +153,7 @@ class Bbs_master_model extends CI_Model {
 			'bm_lv_edit'=>'',
 			'bm_lv_delete'=>'',
 			'bm_lv_down'=>'',
-			'bm_lv_admin'=>'',
+			'bm_lv_admin'=>'99',
 			'bm_use_comment'=>'',
 			'bm_use_commnet_number'=>'0',
 			'bm_bc_lv_list'=>'',
