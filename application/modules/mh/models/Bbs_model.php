@@ -530,6 +530,7 @@ class Bbs_model extends CI_Model {
 		$this->db->where('b_id',$this->bm_row['b_id']);
 		//-- 필수 where절
 		$row = $this->db->where('b_isdel','0')->where('b.b_idx',$b_idx)->get()->row_array();
+		// echo $this->db->last_query();exit;
 		$this->extends_b_row($row);
 		return $row;
 	}
