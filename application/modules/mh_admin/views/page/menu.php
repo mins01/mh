@@ -14,17 +14,17 @@ $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
 <div ng-app="menuApp" class="row" ng-controller="treeCtrl as treeCtrl" ng-init="treeCtrl.init('<?=$json_url?>')">
 	<script type="text/ng-template" id="field_renderer.html">
 		<span class="menu-label">
-			<span  ng-click="form_update(mn)" ng-bind="mn.mn_text"></span>
+			<span class="mn_text"  ng-click="form_update(mn)" ng-bind="mn.mn_text"></span>
 				<button ng-click="form_update(mn)" title="edit" class="btn btn-link btn-xs glyphicon glyphicon-edit"></button><button ng-click="form_appendChild(mn)" title="add child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign"></button>
 		</span>
 			<ul>
-					<li ng-repeat="mn in mn.child" ng-class="{active: selected_obj.mode=='update' && mn.mn_id==selected_obj.mn_id || selected_obj.mode=='insert' &&mn.mn_id==selected_obj.mn_parent_id}"  ng-include="'field_renderer.html'"></li>
+					<li ng-repeat="mn in mn.child" ng-class="{active: selected_obj.mode=='update' && mn.mn_id==selected_obj.mn_id || selected_obj.mode=='insert' &&mn.mn_id==selected_obj.mn_parent_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}"  ng-include="'field_renderer.html'"></li>
 			</ul>
 	</script>
 	<div class="col-md-4">
 		<div class="menu-tree">
 		<ul>
-			<li ng-repeat="mn in mn_tree" ng-class="{active: mn.mn_id==selected_obj.mn_id}" ng-include="'field_renderer.html'">
+			<li ng-repeat="mn in mn_tree" ng-class="{active: mn.mn_id==selected_obj.mn_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}" ng-include="'field_renderer.html'">
 			</li>
 		</ul>
 		</div>
