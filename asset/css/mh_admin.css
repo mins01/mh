@@ -5,8 +5,8 @@ body {
 .container-fluid{max-width:none;}
 
 .menu-tree li{font-weight:normal}
-.menu-tree .active{}
-.menu-tree .active .menu-label{
+.menu-tree li.active{}
+.menu-tree li.active > .menu-label{
 	font-weight:bold;
 	border-bottom-style: solid
 }
