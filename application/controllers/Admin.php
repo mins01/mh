@@ -29,8 +29,9 @@ class Admin extends MX_Controller {
 
 	}
 	public function log($title,$msg,$result){
+		if(!ADMIN_LOG_AUTO){ return; }
 		// -- 관리자 페이지 로그
-		if($_SERVER['REQUEST_METHOD']=='POST' && ADMIN_LOG_AUTO){
+		if($_SERVER['REQUEST_METHOD']=='POST'){
 			$post = $_POST;
 			if(isset($post['m_pass'])){ $post['m_pass']="****"; }
 			$m_id = $this->common->get_login('m_id');
@@ -42,6 +43,15 @@ class Admin extends MX_Controller {
 				'val1'=>$m_id,
 				'val2'=>isset($post['mode'])?$post['mode']:'',
 				'post'=>$post,
+			));
+		}else if($_SERVER['REQUEST_METHOD']=='GET'){
+			$m_id = $this->common->get_login('m_id');
+			$this->mh_admin_log->info(array(
+				// 'title'=>__METHOD__,
+				'title'=>$title,
+				'msg'=>$msg,
+				'result'=>$result,
+				'val1'=>$m_id,
 			));
 		}
 	}
@@ -133,7 +143,7 @@ class Admin extends MX_Controller {
 		 $this->{$module_name}->index_as_front($conf,$params);
 	 }
 
-	 $this->log($menu['mn_text'],'action_post','end');
+	 $this->log($menu['mn_text'],$_SERVER['REQUEST_METHOD'],'auto');
 	 return true;
  }
 
