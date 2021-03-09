@@ -85,6 +85,7 @@ class Mh_log{
 		$log_input['log_level']=isset($this->levels[$log_level])?$this->levels[$log_level]:$log_level;
 		$log_input['log_gidx']=$this->log_gidx;
 		$log_input['log_insert_date']=date('Y-m-d H:i:s');
+		$log_input['log_method']=isset($_SERVER['REQUEST_METHOD'])?$_SERVER['REQUEST_METHOD']:'CLI';
 		$log_input['log_ip']=isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:'CLI';
 		$log_input['log_svr_ip']=isset($_SERVER['SERVER_ADDR'])?$_SERVER['SERVER_ADDR']:'CLI';
 		$log_input['log_domain']=isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'';
