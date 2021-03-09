@@ -143,7 +143,7 @@ class Admin extends MX_Controller {
 		 $this->{$module_name}->index_as_front($conf,$params);
 	 }
 
-	 $this->log($menu['mn_text'],$_SERVER['REQUEST_METHOD'],'auto');
+	 $this->log($menu['mn_text'],'auto',null);
 	 return true;
  }
 
