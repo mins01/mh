@@ -33,13 +33,14 @@ class Admin extends MX_Controller {
 		if($_SERVER['REQUEST_METHOD']=='POST' && ADMIN_LOG_AUTO){
 			$post = $_POST;
 			if(isset($post['m_pass'])){ $post['m_pass']="****"; }
+			$m_id = $this->common->get_login('m_id');
 			$this->mh_admin_log->info(array(
 				// 'title'=>__METHOD__,
 				'title'=>$title,
 				'msg'=>$msg,
 				'result'=>$result,
-				'val1'=>isset($post['mode'])?$post['mode']:'',
-				'val2'=>isset($post['process'])?$post['process']:'',
+				'val1'=>$m_id,
+				'val2'=>isset($post['mode'])?$post['mode']:'',
 				'post'=>$post,
 			));
 		}
