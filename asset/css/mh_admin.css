@@ -4,7 +4,7 @@ body {
 
 .container-fluid{max-width:none;}
 
-.menu-tree li{font-weight:normal}
+/* .menu-tree li{font-weight:normal}
 .menu-tree li.active{}
 .menu-tree li.active > .menu-label{
 	font-weight:bold;
@@ -31,16 +31,8 @@ body {
 }
 
 .menu-tree li::before{content: "┣	🔗";}
-.menu-tree li:last-child::before{content: "┗ 🔗";}
-.menu-tree .mn_text{
-	padding: 0px 5px;
-}
-.menu-tree .mn_use_0 .mn_text{
-	text-decoration: line-through;
-}
-.menu-tree .mn_hide_1 .mn_text{
-	background-color: #eee;
-}
+.menu-tree li:last-child::before{content: "┗ 🔗";} */
+
 
 
 

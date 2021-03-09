@@ -11,6 +11,39 @@ if($conf['menu']['mn_arg2']=='json_admin_menu'){
 <script>
 var def_mn_m_level = <?=json_encode($def_mn_m_level)?>;
 </script>
+<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>ui_treeList/treeList.css?t=<?=REFLESH_TIME?>">
+<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>ui_treeList/treeList-theme.css?t=<?=REFLESH_TIME?>">
+<style>
+.mn_text{cursor: pointer; display: inline-block;}
+.treeList{
+	overflow-y:auto;
+	max-height: 60vh;
+	min-height: 300px;
+}
+.r-box{
+
+	border:3px solid #ccc;
+	border-radius: 10px;
+	padding:5px;
+}
+.treeList .mn_text{
+	padding: 0px 5px;
+}
+.treeList .mn_use_0 .mn_text{
+	text-decoration: line-through;
+}
+.treeList .mn_hide_1 .mn_text{
+	background-color: #eee;
+}
+.treeList-leaf{display: flex;flex-wrap: wrap;justify-content: flex-end;}
+.mn_text {flex: 1 0 auto;}
+.treeList-branch.active{}
+.treeList-branch.active > .treeList-leaf{
+	font-weight:bold;
+	border-color: #e93;
+	background-color: #fec;
+}
+</style>
 <h4>메뉴설정</h4>
 <datalist id="datalist-mn_a_target">
 		<option value="" >기본</option>
@@ -20,7 +53,7 @@ var def_mn_m_level = <?=json_encode($def_mn_m_level)?>;
 		<option value="_top" >최상위창</option>
 </datalist>
 <div ng-app="menuApp" class="row" ng-controller="treeCtrl as treeCtrl" ng-init="treeCtrl.init('<?=$json_url?>')">
-	<script type="text/ng-template" id="field_renderer.html">
+	<!-- <script type="text/ng-template" id="field_renderer.html">
 		<span class="menu-label">
 			<span class="mn_text"  ng-click="form_update(mn)" ng-bind="mn.mn_text"></span>
 				<button ng-click="form_update(mn)" title="edit" class="btn btn-link btn-xs glyphicon glyphicon-edit"></button><button ng-click="form_appendChild(mn)" title="add child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign"></button>
@@ -28,14 +61,27 @@ var def_mn_m_level = <?=json_encode($def_mn_m_level)?>;
 			<ul>
 					<li ng-repeat="mn in mn.child" ng-class="{active: selected_obj.mode=='update' && mn.mn_id==selected_obj.mn_id || selected_obj.mode=='insert' &&mn.mn_id==selected_obj.mn_parent_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}"  ng-include="'field_renderer.html'"></li>
 			</ul>
+	</script> -->
+	<script type="text/ng-template" id="field_renderer.html">
+		<div class="treeList-leaf">
+			<span class="mn_text"  ng-click="form_update(mn)" ng-bind="mn.mn_text"></span>
+			<button ng-click="form_update(mn)" title="edit" class="btn btn-link btn-xs glyphicon glyphicon-edit"></button><button ng-click="form_appendChild(mn)" title="add child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign"></button>
+		</div>
+		<ul class="treeList-stem">
+			<li class="treeList-branch" ng-repeat="mn in mn.child" ng-class="{active: selected_obj.mode=='update' && mn.mn_id==selected_obj.mn_id || selected_obj.mode=='insert' &&mn.mn_id==selected_obj.mn_parent_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}" ng-include="'field_renderer.html'"></li>
+		</ul>
 	</script>
 	<div class="col-md-4">
-		<div class="menu-tree">
-		<ul>
-			<li ng-repeat="mn in mn_tree" ng-class="{active: mn.mn_id==selected_obj.mn_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}" ng-include="'field_renderer.html'">
-			</li>
-		</ul>
+		<div class="r-box">
+			<div class="treeList">
+				<ul class="treeList-stem">
+					<li class="treeList-branch" ng-repeat="mn in mn_tree" ng-class="{active: mn.mn_id==selected_obj.mn_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}"  ng-include="'field_renderer.html'">
+
+					</li>
+				</ul>
+			</div>
 		</div>
+
 	</div>
 	<div class="col-md-8">
 		<div  ng-show="selected_obj == null" >
