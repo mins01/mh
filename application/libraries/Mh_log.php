@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//== 메뉴 관리 모델
+//== 로그 라이브러리
 
 define('MH_LOG_STORE_FILE',1);
 define('MH_LOG_STORE_DB',2);
@@ -11,7 +11,7 @@ if(!defined('MH_LOG_STORE')){
 }
 class Mh_log{
 	private $log_gidx = '';
-	private $table = 'mh_log';
+	protected $table = 'mh_log';
 	private $ci = '';
 	public $levels = array(
 							'0'=>0,
@@ -25,15 +25,14 @@ class Mh_log{
 							);
 	public $level_2_str = array('none','error','debug','info');
 
-	
+
 	public function __construct()
 	{
 		$this->ci = get_instance();
 		$this->log_gidx = $this->generate_log_gid();
 		$this->table = DB_PREFIX.'log';
-		
 	}
-	
+
 	public function generate_log_gid(){
 		$t = sprintf('%x',rand(0x1000,0xFFFF));
 		return substr(uniqid($t),0,20);
@@ -47,7 +46,7 @@ class Mh_log{
 	public function error($input){
 		return $this->log(1,$input);
 	}
-	
+
 	public function log($log_level,$input){
 		$rs = array();
 		if( (MH_LOG_STORE & MH_LOG_STORE_DB) == MH_LOG_STORE_DB){
@@ -62,7 +61,7 @@ class Mh_log{
 	public function parse_input($log_level,$input){
 		$log_etc = array();
 		$log_input = array();
-		
+
 		$rsv_fs = array(
 			'title',
 			'msg',
@@ -73,8 +72,8 @@ class Mh_log{
 			'num2',
 			//'log_etc',
 		);
-		
-		
+
+
 		foreach($input as $k=>$v){
 			if(in_array($k,$rsv_fs)!==false){
 				$log_input['log_'.$k] = $v;
@@ -101,7 +100,7 @@ class Mh_log{
 		$this->ci->db->from($this->table)->set($this->parse_input($log_level,$input))->insert();
 		return $this->ci->db->insert_id();
 	}
-	
-	
+
+
 
 }

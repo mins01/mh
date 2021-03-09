@@ -61,21 +61,23 @@ class Member extends MX_Controller {
 
 		if(!$m_row){
 			//unset($m_row['m_pass']);
-			$this->mh_log->error(array(
+			$this->mh_admin_log->error(array(
 				'title'=>__METHOD__,
 				'msg'=>'관리자로그인',
-				'result'=>'실패1',
-				'm_row'=>@$m_row,
+				'result'=>'실패-회원정보없음',
+				'val1'=>@$m_id,
+				// 'm_row'=>@$m_row,
 			));
 			return $this->login_process_end(true,'해당 회원 정보가 없습니다.');
 		}
 		if($m_row['m_pass'] != $m_pass && $m_row['m_pass'] != $enc_m_pass){
 			unset($m_row['m_pass']);
-			$this->mh_log->error(array(
+			$this->mh_admin_log->error(array(
 				'title'=>__METHOD__,
 				'msg'=>'관리자로그인',
-				'result'=>'실패2',
-				'm_row'=>@$m_row,
+				'result'=>'실패-비밀번호틀림',
+				'val1'=>@$m_id,
+				// 'm_row'=>@$m_row,
 			));
 			return $this->login_process_end(true,'해당 회원 정보를 찾을 수 없습니다.');
 		}
@@ -84,11 +86,12 @@ class Member extends MX_Controller {
 		if($m_row['m_level'] < 90){ //90이상은 관리자!
 
 			unset($m_row['m_pass']);
-			$this->mh_log->error(array(
+			$this->mh_admin_log->error(array(
 				'title'=>__METHOD__,
 				'msg'=>'관리자로그인',
-				'result'=>'실패3',
-				'm_row'=>@$m_row,
+				'result'=>'실패-관리자레벨필요',
+				'val1'=>@$m_id,
+				// 'm_row'=>@$m_row,
 			));
 
 			return $this->login_process_end(true,'관리자 권한이 필요합니다.');
@@ -96,11 +99,12 @@ class Member extends MX_Controller {
 		$this->common->set_login($m_row);
 
 		unset($m_row['m_pass']);
-		$this->mh_log->error(array(
+		$this->mh_admin_log->error(array(
 			'title'=>__METHOD__,
 			'msg'=>'관리자로그인',
 			'result'=>'성공',
-			'm_row'=>@$m_row,
+			'val1'=>@$m_id,
+			// 'm_row'=>@$m_row,
 		));
 
 		$this->member_m->set_m_login_date($m_row['m_idx']);
@@ -131,7 +135,14 @@ class Member extends MX_Controller {
 		if(!$ret_url){
 			$ret_url = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:base_url();
 		}
+		$m_id = $this->common->get_login('m_id');
 		$this->common->set_logout();
+		$this->mh_admin_log->error(array(
+			'title'=>__METHOD__,
+			'msg'=>'관리자로그아웃',
+			'result'=>'성공',
+			'val1'=>@$m_id,
+		));
 		return $this->login_process_end(false,'로그아웃에 성공하였습니다.',$ret_url);
 	}
 

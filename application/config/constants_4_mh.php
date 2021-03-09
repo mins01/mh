@@ -66,6 +66,8 @@ define('ADMIN_LOGIN_DOAMIN',$http_host);
 define('ADMIN_LOGIN_PATH',substr(ADMIN_URI_PREFIX,0,-1).'; samesite=strict');
 define('ADMIN_LOGIN_PREFIX','');
 define('ADMIN_LOGIN_SECURE',false);
+define('ADMIN_LOG_AUTO',1); //ADMIN 페이지에서 post 동작시 자동으로 로그를 남기기여부.
+
 
 
 define('ENCRYPTION_KEY_PREFIX','MH_');

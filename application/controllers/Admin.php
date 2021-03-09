@@ -11,6 +11,7 @@ class Admin extends MX_Controller {
 		$this->load->module($this->def_module_dir.'layout');
 		$this->load->module($this->def_module_dir.'common');
 		$this->load->model('mh/menu_model','menu_m');
+		$this->load->library('mh_admin_log');
 	}
 
 	public function _remap($method, $params = array())
@@ -20,13 +21,28 @@ class Admin extends MX_Controller {
 		$menu_uri = uri_string();
 		$menu_uri = preg_replace('/^'.ADMIN_PREFIX.'\/?/','',$menu_uri);
 
-
 		if (method_exists($this, $method))
 		{
 			return call_user_func_array(array($this, $method), array($menu_uri,$params));
 		}
 		$this->index($menu_uri,$params);
 
+	}
+	public function log($title,$msg,$result){
+		// -- 관리자 페이지 로그
+		if($_SERVER['REQUEST_METHOD']=='POST' && ADMIN_LOG_AUTO){
+			$post = $_POST;
+			if(isset($post['m_pass'])){ $post['m_pass']="****"; }
+			$this->mh_admin_log->info(array(
+				// 'title'=>__METHOD__,
+				'title'=>$title,
+				'msg'=>$msg,
+				'result'=>$result,
+				'val1'=>isset($post['mode'])?$post['mode']:'',
+				'val2'=>isset($post['process'])?$post['process']:'',
+				'post'=>$post,
+			));
+		}
 	}
 	public function get_current_menu($uri){
 		$current_menu = $this->menu_m->get_current_menu($uri);
@@ -81,6 +97,7 @@ class Admin extends MX_Controller {
 		 }
 
 		 if(!$allowed){
+			 $this->log('메뉴 접근권한 체크',$auth_msg,'실패1');
 			 show_error($auth_msg,401);
 			 //show_404();
 			 return false;
@@ -114,6 +131,8 @@ class Admin extends MX_Controller {
 		 $this->config->set_item('layout_og_description', $this->config->item('layout_og_title'));
 		 $this->{$module_name}->index_as_front($conf,$params);
 	 }
+
+	 $this->log($menu['mn_text'],'action_post','end');
 	 return true;
  }
 
