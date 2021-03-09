@@ -2,7 +2,15 @@
 //$bm_row,$b_rows,$b_n_rows
 //$start_num,$count
 $json_url = dirname($conf['base_url']).'/'.$conf['menu']['mn_arg2'];
+if($conf['menu']['mn_arg2']=='json_admin_menu'){
+	$def_mn_m_level = 99;
+}else{
+	$def_mn_m_level = 0;
+}
 ?>
+<script>
+var def_mn_m_level = <?=json_encode($def_mn_m_level)?>;
+</script>
 <h4>메뉴설정</h4>
 <datalist id="datalist-mn_a_target">
 		<option value="" >기본</option>
@@ -269,12 +277,14 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 		//console.log($scope.selected_obj.mode);
 	}
 	$scope.form_appendChild=function(menu){
-		console.log($scope.mn_rows["mn-"+menu.mn_id]);
+		// console.log($scope.mn_rows["mn-"+menu.mn_id]);
 		if(!$scope.mn_rows["mn-"+menu.mn_id]){
 			return false;
 		}
 		$scope.selected_obj = {}
 		$scope.selected_obj.mn_parent_id  = menu.mn_id;
+		$scope.selected_obj.mn_m_level = def_mn_m_level;// 기본 레벨
+
 		var t = $scope.mn_rows["mn-"+menu.mn_id].child
 		var mx = 0;
 		for(var i=0,m=t.length;i<m;i++){
