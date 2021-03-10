@@ -11,8 +11,8 @@ if($conf['menu']['mn_arg2']=='json_admin_menu'){
 <script>
 var def_mn_m_level = <?=json_encode($def_mn_m_level)?>;
 </script>
-<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>ui_treeList/treeList.css?t=<?=REFLESH_TIME?>">
-<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>ui_treeList/treeList-theme.css?t=<?=REFLESH_TIME?>">
+<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_treeList/treeList.css?t=<?=REFLESH_TIME?>">
+<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_treeList/treeList-theme.css?t=<?=REFLESH_TIME?>">
 <style>
 .mn_text{cursor: pointer; display: inline-block;}
 .treeList{
