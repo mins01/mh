@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//-- 게시판 모델
+//-- 사용안하는 듯 하다. 2021-03-10
+//-- 나중에 지우자
 
 class Staff_model extends CI_Model {
 	public $msg = '';
@@ -10,7 +11,7 @@ class Staff_model extends CI_Model {
 	{
 		// Call the CI_Model constructor
 		parent::__construct();
-		
+
 		$this->tbl_member = 'mh_admin';
 
 		if(!defined('HASH_KEY')){
@@ -19,7 +20,7 @@ class Staff_model extends CI_Model {
 		}
 		$this->hash_key = HASH_KEY;
 	}
-	
+
 	public function hash($str){
 		return hash('sha256',$this->hash_key.$str);
 	}
@@ -65,7 +66,7 @@ class Staff_model extends CI_Model {
 		if($adm_idx){
 			$this->db->where('adm_idx !=',(int)$adm_idx);
 		}
-		
+
 		return !!$this->db->count_all_results();
 	}
 	public function update_row($adm_idx,$sets){
@@ -88,7 +89,7 @@ class Staff_model extends CI_Model {
 		$this->update_row($adm_idx,$sets);
 		return true;
 	}
-	
+
 	public function search_m_id($adm_nick,$adm_id_part){
 		$row = $this->db->from($this->tbl_member)
 			->where('adm_nick',$adm_nick)
@@ -98,26 +99,5 @@ class Staff_model extends CI_Model {
 			->get()->row_array();
 		return isset($row['adm_id'])?$row['adm_id']:null;
 	}
-	
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
