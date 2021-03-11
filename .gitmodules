@@ -1,3 +1,6 @@
 [submodule "asset/etcmodule/ui_treeList"]
 	path = asset/etcmodule/ui_treeList
 	url = https://github.com/mins01/ui_treeList.git
+[submodule "asset/etcmodule/ui_StickyOnTable"]
+	path = asset/etcmodule/ui_StickyOnTable
+	url = https://github.com/mins01/ui_StickyOnTable.git
