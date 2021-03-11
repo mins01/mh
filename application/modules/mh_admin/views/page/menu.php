@@ -59,14 +59,11 @@ $(function(){
 	border-color: #e93;
 	background-color: #fec;
 }
-.treeList-show-stem{
-	display: none;
+.treeList-toggle-stem.glyphicon::before{
+content: "\e118";
 }
-.treeList-hidden-stem .treeList-show-stem{
- display: block;
-}
-.treeList-hidden-stem .treeList-hide-stem{
-display: none;
+.treeList-hidden-stem .treeList-toggle-stem.glyphicon::before{
+content: "\e117";
 }
 
 </style>
@@ -81,8 +78,9 @@ display: none;
 <div ng-app="menuApp" class="row" ng-controller="treeCtrl as treeCtrl" ng-init="treeCtrl.init('<?=$json_url?>')">
 	<script type="text/ng-template" id="field_renderer.html">
 		<div class="treeList-leaf treeList-leaf-flex ">
-			<button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-show-stem glyphicon glyphicon glyphicon-folder-close"></button>
-			<button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-hide-stem glyphicon glyphicon glyphicon-folder-open"></button>
+			<button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-toggle-stem glyphicon "></button>
+			<!-- <button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-toggle-stem glyphicon glyphicon glyphicon-folder-close"></button> -->
+			<!-- <button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-hide-stem glyphicon glyphicon glyphicon-folder-open"></button> -->
 			<div class="mn_text treeList-leaf-flex-text ellipsis"  ng-click="form_update(mn)" ng-bind="mn.mn_text"></div>
 			<button ng-click="form_update(mn)" title="edit" class="btn btn-link btn-xs glyphicon glyphicon-edit"></button>
 			<button ng-click="form_appendChild(mn)" title="add child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign"></button>
