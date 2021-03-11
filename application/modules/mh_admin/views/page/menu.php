@@ -93,7 +93,7 @@ display: none;
 	</script>
 	<div class="col-md-4">
 		<div class="r-box">
-			<div class="treeList treeList-theme-0">
+			<div class="treeList treeList-hover treeList-theme-0">
 				<ul class="treeList-stem">
 					<li class="treeList-branch" ng-repeat="mn in mn_tree" ng-class="{active: mn.mn_id==selected_obj.mn_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}"  ng-include="'field_renderer.html'">
 
