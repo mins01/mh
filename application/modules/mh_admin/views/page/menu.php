@@ -13,6 +13,13 @@ var def_mn_m_level = <?=json_encode($def_mn_m_level)?>;
 </script>
 <link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_treeList/treeList.css?t=<?=REFLESH_TIME?>">
 <link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_treeList/treeList-theme.css?t=<?=REFLESH_TIME?>">
+<script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_treeList/treeList.js?t=<?=REFLESH_TIME?>"></script>
+<script>
+$(function(){
+	// treeList.debug = true;
+	treeList.addEvent();
+})
+</script>
 <style>
 .mn_text{cursor: pointer; display: inline-block;}
 .treeList{
@@ -32,17 +39,36 @@ var def_mn_m_level = <?=json_encode($def_mn_m_level)?>;
 .treeList .mn_use_0 .mn_text{
 	text-decoration: line-through;
 }
-.treeList .mn_hide_1 .mn_text{
+.treeList .mn_hide_1 .treeList-leaf{
 	background-color: #eee;
 }
 .treeList-leaf{display: flex;flex-wrap: wrap;justify-content: flex-end;}
-.mn_text {flex: 1 0 auto;}
+.treeList-leaf-flex{
+	padding:0 !important;
+}
+.treeList-leaf-flex > *{
+	padding:2px !important;
+	margin:0px !important;
+}
+.treeList-leaf-flex-text{
+	padding:2px 5px;
+}
 .treeList-branch.active{}
 .treeList-branch.active > .treeList-leaf{
 	font-weight:bold;
 	border-color: #e93;
 	background-color: #fec;
 }
+.treeList-show-stem{
+	display: none;
+}
+.treeList-hidden-stem .treeList-show-stem{
+ display: block;
+}
+.treeList-hidden-stem .treeList-hide-stem{
+display: none;
+}
+
 </style>
 <h4>메뉴설정</h4>
 <datalist id="datalist-mn_a_target">
@@ -53,27 +79,21 @@ var def_mn_m_level = <?=json_encode($def_mn_m_level)?>;
 		<option value="_top" >최상위창</option>
 </datalist>
 <div ng-app="menuApp" class="row" ng-controller="treeCtrl as treeCtrl" ng-init="treeCtrl.init('<?=$json_url?>')">
-	<!-- <script type="text/ng-template" id="field_renderer.html">
-		<span class="menu-label">
-			<span class="mn_text"  ng-click="form_update(mn)" ng-bind="mn.mn_text"></span>
-				<button ng-click="form_update(mn)" title="edit" class="btn btn-link btn-xs glyphicon glyphicon-edit"></button><button ng-click="form_appendChild(mn)" title="add child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign"></button>
-		</span>
-			<ul>
-					<li ng-repeat="mn in mn.child" ng-class="{active: selected_obj.mode=='update' && mn.mn_id==selected_obj.mn_id || selected_obj.mode=='insert' &&mn.mn_id==selected_obj.mn_parent_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}"  ng-include="'field_renderer.html'"></li>
-			</ul>
-	</script> -->
 	<script type="text/ng-template" id="field_renderer.html">
-		<div class="treeList-leaf">
-			<span class="mn_text"  ng-click="form_update(mn)" ng-bind="mn.mn_text"></span>
-			<button ng-click="form_update(mn)" title="edit" class="btn btn-link btn-xs glyphicon glyphicon-edit"></button><button ng-click="form_appendChild(mn)" title="add child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign"></button>
+		<div class="treeList-leaf treeList-leaf-flex ">
+			<button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-show-stem glyphicon glyphicon glyphicon-folder-close"></button>
+			<button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-hide-stem glyphicon glyphicon glyphicon-folder-open"></button>
+			<div class="mn_text treeList-leaf-flex-text ellipsis"  ng-click="form_update(mn)" ng-bind="mn.mn_text"></div>
+			<button ng-click="form_update(mn)" title="edit" class="btn btn-link btn-xs glyphicon glyphicon-edit"></button>
+			<button ng-click="form_appendChild(mn)" title="add child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign"></button>
 		</div>
-		<ul class="treeList-stem">
+		<ul class="treeList-stem" ng-if="mn.child.length>0">
 			<li class="treeList-branch" ng-repeat="mn in mn.child" ng-class="{active: selected_obj.mode=='update' && mn.mn_id==selected_obj.mn_id || selected_obj.mode=='insert' &&mn.mn_id==selected_obj.mn_parent_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}" ng-include="'field_renderer.html'"></li>
 		</ul>
 	</script>
 	<div class="col-md-4">
 		<div class="r-box">
-			<div class="treeList">
+			<div class="treeList treeList-theme-0">
 				<ul class="treeList-stem">
 					<li class="treeList-branch" ng-repeat="mn in mn_tree" ng-class="{active: mn.mn_id==selected_obj.mn_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}"  ng-include="'field_renderer.html'">
 
