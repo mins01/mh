@@ -14,11 +14,85 @@ var def_mn_m_level = <?=json_encode($def_mn_m_level)?>;
 <link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_treeList/treeList.css?t=<?=REFLESH_TIME?>">
 <link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_treeList/treeList-theme.css?t=<?=REFLESH_TIME?>">
 <script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_treeList/treeList.js?t=<?=REFLESH_TIME?>"></script>
+<link rel="stylesheet" href="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_dragAndDrop/dragAndDrop.css?t=<?=REFLESH_TIME?>">
+<script src="<?=SITE_URI_ASSET_PREFIX?>etcmodule/ui_dragAndDrop/dragAndDrop.js?t=<?=REFLESH_TIME?>"></script>
 <script>
 $(function(){
 	// treeList.debug = true;
+	// treeList.debug = true;
 	treeList.addEvent();
+	// dragAndDrop.debug = true;
+	dragAndDrop.dropEffect = "move";
+	dragAndDrop.enable();
 })
+</script>
+<script>
+dragAndDrop.ondrop = function(evt,dropzone,dragNode,dropNode){
+
+	if(dragNode===dropNode){return;}
+	// alert(selected_obj);
+	// console.log(evt,dropzone,dragNode,dropNode);
+	//-- 앞에 위치, 뒤에 위치
+	let mask = dragNode.compareDocumentPosition(dropNode)
+	// console.log(mask);
+	if(mask & Node.DOCUMENT_POSITION_CONTAINED_BY){
+		console.log("dropNode의 위치가 dragNode의 자식 노드");
+		return false;
+	}
+	// console.log(evt,dropzone,dragNode,dropNode);
+	let p = dragNode.parentNode.closest('.treeList-branch');
+
+
+	let menuAppScp = angular.element(document.querySelector('div[ng-app="menuApp"]')).scope()
+
+	let dragNodeMn = angular.element(dragNode).scope().$parent.mn
+	let dropNodeMn = angular.element(dropNode).scope().$parent.mn
+
+
+
+	console.log(dragNodeMn,dropNodeMn);
+	if(dropzone.classList.contains('dropzone-add-child')){ //자식으로 추가
+		console.log("서브메뉴 이동");
+		if(!confirm(dropNodeMn.mn_text+' 서브메뉴에 포함하겠습니까?')){
+			return;
+		}
+		dragNodeMn.mn_parent_id = dropNodeMn.mn_id;	
+		let next_sort = dropzone.querySelector(":scope >ul>li:last-child")?angular.element(dropzone.querySelector(":scope >ul>li:last-child")).scope().$parent.mn.mn_sort:10;
+		dragNodeMn.mn_sort = Math.round((parseInt(dropNodeMn.mn_sort,10)+next_sort)/2).toString();
+		menuAppScp.$apply(function () {
+					menuAppScp.form_update(dragNodeMn);
+					setTimeout(function(){
+						menuAppScp.$apply(function () {
+							menuAppScp.form_submit();
+						})
+					},500)
+
+			});
+	}else{
+		console.log("다음으로 이동");
+		if(!confirm(dropNodeMn.mn_text+' 다음으로 이동 하시겠습니까?')){
+			return;
+		}
+
+		let next_sort = dropNodeMn.mn_sort
+		if(dropNode.nextElementSibling){
+			next_sort = angular.element(dropNode.nextElementSibling).scope().$parent.mn.mn_sort;
+		}
+		next_sort = parseInt(next_sort,10);
+		dragNodeMn.mn_parent_id = dropNodeMn.mn_parent_id;
+		dragNodeMn.mn_sort = Math.round((parseInt(dropNodeMn.mn_sort,10)+next_sort)/2+1).toString();
+		menuAppScp.$apply(function () {
+					menuAppScp.form_update(dragNodeMn);
+					setTimeout(function(){
+						menuAppScp.$apply(function () {
+							menuAppScp.form_submit();
+						})
+					},500)
+
+			});
+	}
+	return true;
+}
 </script>
 <style>
 .mn_text{cursor: pointer; display: inline-block;}
@@ -66,6 +140,10 @@ content: "\e118";
 content: "\e117";
 }
 
+.dnd-dropzone.dnd-dropzone-dragenter:not(.dnd-draggable-dragging){
+  filter: none;
+	border-color: #f00;
+}
 </style>
 <h4>메뉴설정</h4>
 <datalist id="datalist-mn_a_target">
@@ -77,8 +155,9 @@ content: "\e117";
 </datalist>
 <div ng-app="menuApp" class="row" ng-controller="treeCtrl as treeCtrl" ng-init="treeCtrl.init('<?=$json_url?>')">
 	<script type="text/ng-template" id="field_renderer.html">
-		<div class="treeList-leaf treeList-leaf-flex ">
-			<button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-toggle-stem glyphicon "></button>
+		<div class="treeList-leaf treeList-leaf-flex dnd-dropzone dropzone-move-next">
+			<button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-toggle-stem glyphicon dnd-dropzone dropzone-add-child"></button>
+			<button ng-if="mn.child.length==0" title="add-child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign  dnd-dropzone dropzone-add-child" disabled></button>
 			<!-- <button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-toggle-stem glyphicon glyphicon glyphicon-folder-close"></button> -->
 			<!-- <button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-hide-stem glyphicon glyphicon glyphicon-folder-open"></button> -->
 			<div class="mn_text treeList-leaf-flex-text ellipsis"  ng-click="form_update(mn)" ng-bind="mn.mn_text"></div>
@@ -86,14 +165,14 @@ content: "\e117";
 			<button ng-click="form_appendChild(mn)" title="add child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign"></button>
 		</div>
 		<ul class="treeList-stem" ng-if="mn.child.length>0">
-			<li class="treeList-branch" ng-repeat="mn in mn.child" ng-class="{active: selected_obj.mode=='update' && mn.mn_id==selected_obj.mn_id || selected_obj.mode=='insert' &&mn.mn_id==selected_obj.mn_parent_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}" ng-include="'field_renderer.html'"></li>
+			<li class="treeList-branch dnd-node dnd-draggable" draggable="true" ng-repeat="mn in mn.child" ng-class="{active: selected_obj.mode=='update' && mn.mn_id==selected_obj.mn_id || selected_obj.mode=='insert' &&mn.mn_id==selected_obj.mn_parent_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}" ng-include="'field_renderer.html'"></li>
 		</ul>
 	</script>
 	<div class="col-md-4">
 		<div class="r-box">
-			<div class="treeList treeList-hover treeList-theme-0">
+			<div class="treeList treeList-hover treeList-theme-0 dnd-drop-animation">
 				<ul class="treeList-stem">
-					<li class="treeList-branch" ng-repeat="mn in mn_tree" ng-class="{active: mn.mn_id==selected_obj.mn_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}"  ng-include="'field_renderer.html'">
+					<li class="treeList-branch  dnd-node dnd-draggable" ng-repeat="mn in mn_tree" ng-class="{active: mn.mn_id==selected_obj.mn_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}"  ng-include="'field_renderer.html'">
 
 					</li>
 				</ul>
@@ -308,8 +387,11 @@ content: "\e117";
 
 
 <script>
+var w_scope = null;
 var menuApp = angular.module('menuApp', []);
 menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', function ($scope,$http,$httpParamSerializer) {
+	console.log($scope);
+	w_scope = $scope;
 	this.init = function(json_url){
 		$scope.json_url = json_url;
 		$scope.call_lists();
@@ -338,7 +420,7 @@ menuApp.controller('treeCtrl', ['$scope','$http','$httpParamSerializer', functio
 		}else{
 			$scope.selected_obj.mn_sort = 0;
 		}
-		//console.log($scope.selected_obj.mode);
+		// console.log($scope.selected_obj,$scope.selected_obj.mode);
 	}
 	$scope.form_appendChild=function(menu){
 		// console.log($scope.mn_rows["mn-"+menu.mn_id]);
