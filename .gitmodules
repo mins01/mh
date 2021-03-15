@@ -4,3 +4,6 @@
 [submodule "asset/etcmodule/ui_StickyOnTable"]
 	path = asset/etcmodule/ui_StickyOnTable
 	url = https://github.com/mins01/ui_StickyOnTable.git
+[submodule "asset/etcmodule/ui_dragAndDrop"]
+	path = asset/etcmodule/ui_dragAndDrop
+	url = https://github.com/mins01/ui_dragAndDrop.git
