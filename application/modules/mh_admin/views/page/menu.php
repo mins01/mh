@@ -56,7 +56,7 @@ dragAndDrop.ondrop = function(evt,dropzone,dragNode,dropNode){
 		if(!confirm(dropNodeMn.mn_text+' 서브메뉴에 포함하겠습니까?')){
 			return;
 		}
-		dragNodeMn.mn_parent_id = dropNodeMn.mn_id;	
+		dragNodeMn.mn_parent_id = dropNodeMn.mn_id;
 		let next_sort = dropzone.querySelector(":scope >ul>li:last-child")?angular.element(dropzone.querySelector(":scope >ul>li:last-child")).scope().$parent.mn.mn_sort:10;
 		dragNodeMn.mn_sort = Math.round((parseInt(dropNodeMn.mn_sort,10)+next_sort)/2).toString();
 		menuAppScp.$apply(function () {
@@ -157,12 +157,12 @@ content: "\e117";
 	<script type="text/ng-template" id="field_renderer.html">
 		<div class="treeList-leaf treeList-leaf-flex dnd-dropzone dropzone-move-next">
 			<button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-toggle-stem glyphicon dnd-dropzone dropzone-add-child"></button>
-			<button ng-if="mn.child.length==0" title="add-child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign  dnd-dropzone dropzone-add-child" disabled></button>
+			<button ng-click="form_appendChild(mn)" title="add child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign dnd-dropzone dropzone-add-child"></button>
 			<!-- <button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-toggle-stem glyphicon glyphicon glyphicon-folder-close"></button> -->
 			<!-- <button ng-if="mn.child.length>0" title="toggle-child" class="btn btn-link btn-xs treeList-hide-stem glyphicon glyphicon glyphicon-folder-open"></button> -->
 			<div class="mn_text treeList-leaf-flex-text ellipsis"  ng-click="form_update(mn)" ng-bind="mn.mn_text"></div>
-			<button ng-click="form_update(mn)" title="edit" class="btn btn-link btn-xs glyphicon glyphicon-edit"></button>
-			<button ng-click="form_appendChild(mn)" title="add child" class="btn btn-link btn-xs glyphicon glyphicon-plus-sign"></button>
+			<!-- <button ng-click="form_update(mn)" title="edit" class="btn btn-link btn-xs glyphicon glyphicon-edit"></button> -->
+
 		</div>
 		<ul class="treeList-stem" ng-if="mn.child.length>0">
 			<li class="treeList-branch dnd-node dnd-draggable" draggable="true" ng-repeat="mn in mn.child" ng-class="{active: selected_obj.mode=='update' && mn.mn_id==selected_obj.mn_id || selected_obj.mode=='insert' &&mn.mn_id==selected_obj.mn_parent_id, 'mn_use_0':mn.mn_use=='0', 'mn_hide_1':mn.mn_hide=='1'}" ng-include="'field_renderer.html'"></li>
