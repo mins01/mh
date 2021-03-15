@@ -88,24 +88,14 @@ class Mh_util{
 	* 최대 10번 재처리
 	*/
 	static function convertOneventXSS($str){
-		// $str='<div onclikc="ssdad" class=" onzcxzxc ontt" xxonxx ="asd" onxxx ="asd" src=" onasdasd-asdas /on/sasd asd zx on the  "></div>';
-		// var_dump($str);
-		// exit;
-		// $p = '/((?:<)(?:[^>]*)\s+)(\bon)((?:[^=]*)+(?:=[^>]*>))/im';
-		$p = '/(<[^\s>]*[^>]*\s+)(\bon)([^>="\']+)(=[^>]*>)/im';
+		$p = '/(<[^\s>]*[^>]*(?:\s|\'|"))(on)([^>="\']+)(\s*=[^>]*>)/im';
 		$r = '$1xsson$3$4';
-		// $shp = '/(?:<)(?:[^>]*\s+)(\bon)(?:[^=]*)+(?:=[^>]*>)/im';
-		$shp = '/(?:<[^\s>]*[^>]*\s+)(\bon)(?:[^>="\']+)(?:=[^>]*>)/im';
-		// $searched = null;
-		// preg_match_all($shp,$str,$searched);
-		// print_r($searched);
+		$shp = '/(?:<[^\s>]*[^>]*(?:\s|\'|"))(on)(?:[^>="\']+)(?:\s*=[^>]*>)/im';
 
 		$limit = 100;
 		while(preg_match($shp,$str) && $limit-- > 0){
 			$str = preg_replace($p,$r,$str);
 		}
-		// var_dump($str);
-		// exit;
 		return $str;
 	}
 	/** XSS Style 회피용
