@@ -10,3 +10,9 @@
 [submodule "asset/etcmodule/ui_MultipleInputBox"]
 	path = asset/etcmodule/ui_MultipleInputBox
 	url = https://github.com/mins01/ui_MultipleInputBox.git
+[submodule "asset/etcmodule/ui_FixedFrameOnTable"]
+	path = asset/etcmodule/ui_FixedFrameOnTable
+	url = https://github.com/mins01/ui_FixedFrameOnTable.git
+[submodule "asset/etcmodule/ui_SlideList"]
+	path = asset/etcmodule/ui_SlideList
+	url = https://github.com/mins01/ui_SlideList.git
