@@ -7,3 +7,6 @@
 [submodule "asset/etcmodule/ui_dragAndDrop"]
 	path = asset/etcmodule/ui_dragAndDrop
 	url = https://github.com/mins01/ui_dragAndDrop.git
+[submodule "asset/etcmodule/ui_MultipleInputBox"]
+	path = asset/etcmodule/ui_MultipleInputBox
+	url = https://github.com/mins01/ui_MultipleInputBox.git
