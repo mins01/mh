@@ -107,7 +107,7 @@ if($mode=='write'||$mode=='answer'){
 				<li class="list-group-item">
 					<div class="input-group">
 						<div class="input-group-addon">Tag</div>
-						<div class="multipleInputBox form-control" style="height:auto" data-removeEmptyBox data-inputBoxType="custom" <?=$bm_row['bm_use_tag']=='2'?'data-once-required':''?> data-min="1" data-max="10"  data-autoAddInputBox data-autoRemoveInputBox data-prefix="#" data-separator=" " >
+						<div class="multipleInputBox form-control" style="height:auto" data-removeEmptyBox data-inputBoxType="custom" <?=$bm_row['bm_use_tag']=='2'?'data-once-required':''?> data-min="1" data-max="10"  data-autoAddInputBoxOnlyTap data-autoRemoveInputBox data-prefix="#" data-separator=" " >
 							<input type="hidden" maxlength="200" class="form-control multipleInputBox-sync" <?=$bm_row['bm_use_tag']=='2'?'required':''?>  id="bt_tags_string" name="bt_tags_string" placeholder="tags (separator = ',',';',whitespace)" value="<?=html_escape(implode(' ',$bt_tags))?>">
 						</div>
 
