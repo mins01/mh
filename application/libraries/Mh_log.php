@@ -89,7 +89,7 @@ class Mh_log{
 		$log_input['log_ip']=isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:'CLI';
 		$log_input['log_svr_ip']=isset($_SERVER['SERVER_ADDR'])?$_SERVER['SERVER_ADDR']:'CLI';
 		$log_input['log_domain']=isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'';
-		$log_input['log_url']=isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'';
+		$log_input['log_url']=isset($_SERVER['REQUEST_URI'])?strtok($_SERVER['REQUEST_URI'],'?'):'';
 		$log_input['log_qstr']=isset($_SERVER['QUERY_STRING'])?$_SERVER['QUERY_STRING']:'';
 		$log_input['log_referer']=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
 		return $log_input;
