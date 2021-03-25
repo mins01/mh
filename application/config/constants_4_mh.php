@@ -26,7 +26,9 @@ define('ADMIN_URI_PREFIX', SITE_URI_PREFIX.ADMIN_PREFIX.'/'); // 관리자 URI �
 define('DB_PREFIX', 'mh_'); // DB 접두사
 define('HASH_KEY','mh'); //해시용 추가 문자열. 한번 설정 후 바꾸면 안됩니다!
 
-define('IS_DEV', preg_match('/^[^\/]*dev[^\/]*\./',$http_host));
+if(!defined('IS_DEV')){
+	define('IS_DEV', preg_match('/^[^\/]*dev[^\/]*\./',$http_host));
+}
 define('IS_ADMIN', preg_match('|^'.SITE_URI_PREFIX.ADMIN_URI_PREFIX.'|',(isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'')));
 
 

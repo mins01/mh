@@ -64,7 +64,7 @@ $query_builder = TRUE;
 
 require(dirname(__FILE__).'/../../../conf/database.php');
 
-if(IS_DEV || is_cli()){
+if(IS_DEV){
 	$db['default'] = $db['dev'];
 }else{
 	$db['default'] = $db['real'];
