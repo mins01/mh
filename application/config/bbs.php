@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+// ver.2021040909
 //== BBS에서 사용할 설정!
 
 $config['bbs'] = array(
@@ -47,4 +47,6 @@ $config['bbs'] = array(
 		'100'=>'사용금지',
 	),
 	'show_holiday'=>true, //ics 를 사용한 달력스킨 휴일 표기설정용
+	'upload_dir_permission'=>0777,  //업로드 경로 permission read+write+exec
+	'upload_file_permission'=>0666,  //업로드 파일 permission read+write
 );

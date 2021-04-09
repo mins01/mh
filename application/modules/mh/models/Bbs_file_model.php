@@ -12,6 +12,8 @@ class Bbs_file_model extends CI_Model {
 	public $msgs = '';
 	private $file_dir = '';
 	private $save_file_dir = '';
+	private $upload_dir_permission = 0666;
+	private $upload_file_permission = 0666;
 	public function __construct()
 	{
 		// Call the CI_Model constructor
@@ -19,6 +21,8 @@ class Bbs_file_model extends CI_Model {
 		$this->config->load('bbs');
 		$conf_bbs = $this->config->item('bbs');
 		$this->file_dir = $conf_bbs['file_dir'];
+		$this->upload_dir_permission = $conf_bbs['upload_dir_permission'];
+		$this->upload_file_permission = $conf_bbs['upload_file_permission'];
 
 	}
 	public function set_base_url($base_url){
@@ -99,11 +103,11 @@ class Bbs_file_model extends CI_Model {
 	}
 	public function create_save_dir($b_idx){
 		$save_dir = $this->extends_save_dir($b_idx);
-		if(!file_exists($save_dir) && !mkdir($save_dir,0777,true)){
+		if(!file_exists($save_dir) && !mkdir($save_dir,$this->upload_dir_permission,true)){
 			$this->msg ='MKDIR FAIL : '.$save_dir;
 			return false;
 		}
-		chmod($save_dir,0777);
+		chmod($save_dir,$this->upload_dir_permission);
 		return realpath($save_dir);
 	}
 	public function insert_bf_row($sets){
@@ -328,7 +332,7 @@ class Bbs_file_model extends CI_Model {
 			$this->msg = 'UPLOAD FAIL';
 			return false;
 		}
-		chmod($save_file,0777);
+		chmod($save_file,$this->upload_file_permission);
 		return $this->insert_bf_row($vals);
 	}
 
