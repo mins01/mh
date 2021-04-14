@@ -105,17 +105,18 @@ class Front extends MX_Controller {
 		}else{
 			$this->config->set_item('layout_og_title', $this->config->item('layout_og_title').' : '.$menu['mn_text']);
 			$this->config->set_item('layout_og_description', $this->config->item('layout_og_title'));
-
-			if (method_exists($this->{$module_name}, 'index_as_front')) //모듈타입 1. 모듈의 index_as_front 메소드만 호출한다.
-			{
-				$this->{$module_name}->index_as_front($conf,$params); 
-			}else if($this->{$module_name}->module_type=='2'){ //모듈타입 2. 경로에 따라 모듈의 메소드를 호출한다.
-				$method = isset($params[0])?$params[0]:'index';
-				if(method_exists($this->{$module_name}, $method)){
-					$this->{$module_name}->{$method}($conf,$params);
+			
+			$module = $this->{$module_name};
+			$method = isset($params[0])?$params[0]:'index';
+			if(isset($module->module_type) && $module->module_type=='2'){ //모듈타입 2. 경로에 따라 모듈의 메소드를 호출한다.
+				if(method_exists($module, $method) && is_callable(array($module,$method),false)){
+					$module->{$method}($conf,$params);
 				}else{
-					show_error("허용되지 않는 파라메터입니다. - {$module_name}::{$method}",500);
+					show_error("허용되지 않는 메소드입니다. - {$module_name}::{$method}",500);
+					// show_404();
 				}
+			}else if(method_exists($module, 'index_as_front')){ //모듈타입 1. 모듈의 index_as_front 메소드만 호출한다.
+				$module->index_as_front($conf,$params); 
 			}else{
 				show_error("지원되지 않는 모듈입니다. - {$module_name}",500);
 			}
