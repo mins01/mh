@@ -136,11 +136,26 @@ class Admin extends MX_Controller {
 	 $module_name = basename($menu['mn_module']);
 
 	 if(!class_exists($module_name,false)){
-		 show_error("모듈이 없습니다.($module_name , {$menu['mn_module']})",500);
+		 show_error("모듈이 없습니다. - $module_name",500);
 	 }else{
 		 $this->config->set_item('layout_og_title', $this->config->item('layout_og_title').' : '.$menu['mn_text']);
 		 $this->config->set_item('layout_og_description', $this->config->item('layout_og_title'));
-		 $this->{$module_name}->index_as_front($conf,$params);
+		 
+		 $module = $this->{$module_name};
+		 $method = isset($params[0])?$params[0]:'index';
+		 if(isset($module->module_type) && $module->module_type=='2'){ //모듈타입 2. 경로에 따라 모듈의 메소드를 호출한다.
+			 if(method_exists($module, $method) && is_callable(array($module,$method),false)){
+				 $module->{$method}($conf,$params);
+			 }else{
+				 show_error("허용되지 않는 메소드입니다. - {$module_name}::{$method}",500);
+				 // show_404();
+			 }
+		 }else if(method_exists($module, 'index_as_front')){ //모듈타입 1. 모듈의 index_as_front 메소드만 호출한다.
+			 $module->index_as_front($conf,$params); 
+		 }else{
+			 show_error("지원되지 않는 모듈입니다. - {$module_name}",500);
+		 }
+		 
 	 }
 
 	 $this->log($menu['mn_text'],'auto',null);
