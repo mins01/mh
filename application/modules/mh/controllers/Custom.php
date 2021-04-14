@@ -2,22 +2,14 @@
 /**
 * 이 모듈속의 동작은 자동화하지 않는다. 스스로 커스터마이즈 해야함!
 */
-class Custom extends MX_Controller {
-
-	public function __construct($conf=array())
+// module v2 방식
+class Custom extends MX_Controller{
+	public $module_type = 2; //index_as_front 를 사용안한다.
+	public function __construct()
 	{
 
 	}
-
-		// front 컨트롤에서 접근할 경우.
-	public function index_as_front($conf,$param){
-		$base_url = $conf['base_url'];
-		$view = $conf['menu']['mn_arg1'];
-		$this->action($conf,$param);
-	}
-
-	public function action($conf,$param){
-
+	public function index($conf=array(),$param=array()){ // 기본 메소드
 		if(isset($conf['menu']['mn_arg1']) && method_exists($this,$conf['menu']['mn_arg1'])){
 			$this->{$conf['menu']['mn_arg1']}($conf,$param);
 		}else{
@@ -25,7 +17,15 @@ class Custom extends MX_Controller {
 		}
 	}
 
-	public function last_bbs($conf,$param){
+	private function aa($conf=array(),$param=array()){ // private 메소드 테스트용 (외부에서 호출 불가)
+		if(isset($conf['menu']['mn_arg1']) && method_exists($this,$conf['menu']['mn_arg1'])){
+			$this->{$conf['menu']['mn_arg1']}($conf,$param);
+		}else{
+			show_error('지원되지 않는 메뉴 아규먼트1 입니다.');
+		}
+	}
+
+	private function last_bbs($conf,$param){
 		// // //-- 웹 캐시 설정
 		// $this->load->library('mheader');
 		// $sec = 30; //캐시시간
