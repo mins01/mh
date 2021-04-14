@@ -19,7 +19,7 @@ define('REFLESH_TIME','20210219_0'); //query string 에 붙여서 파일 웹 캐
 define('SITE_NAME','공대여자홈');
 define('SITE_ADMIN_MAIL','mins01.lycos.co.kr@gmail.com');
 define('SITE_URI_PREFIX', '/mh/'); // URI 앞부분 경로
-define('SITE_URI_ASSET_PREFIX', '/mh/asset/'); // aaset 폴더 접속용 URI 앞부분 경로
+define('SITE_URI_ASSET_PREFIX', '/mh/asset/'); // asset 폴더 접속용 URI 앞부분 경로
 define('SERVER_PATH_ASSET', APPPATH.'../asset/'); // 서버 내의 aaset 폴더
 define('ADMIN_PREFIX', '_admin'); // 관리자 URI 기본 경로
 define('ADMIN_URI_PREFIX', SITE_URI_PREFIX.ADMIN_PREFIX.'/'); // 관리자 URI 기본 경로
@@ -31,6 +31,9 @@ if(!defined('IS_DEV')){
 }
 define('IS_ADMIN', preg_match('|^'.SITE_URI_PREFIX.ADMIN_URI_PREFIX.'|',(isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'')));
 
+if(!defined('AUTOLOAD_DATABASE')){
+	define('AUTOLOAD_DATABASE',true); //자동으로 DATABASE를 로드하는 경우 true, 아니면 false
+}
 
 if(IS_DEV){
 	define('USE_HTTPS',false); // HTTPS 사용가능여부

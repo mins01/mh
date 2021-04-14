@@ -60,8 +60,12 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
 
-$autoload['libraries'] = array('database','mh_util','mh_log','session',);
+// $autoload['libraries'] = array('database','mh_util','mh_log','session',);
+$autoload['libraries'] = array('mh_util','mh_log','session',);
 
+if(AUTOLOAD_DATABASE){
+	$autoload['libraries'][] = 'database';
+}
 
 /*
 | -------------------------------------------------------------------
