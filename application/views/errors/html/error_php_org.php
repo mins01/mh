@@ -8,16 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <p>Severity: <?php echo $severity; ?></p>
 <p>Message:  <?php echo $message; ?></p>
-<? if(SHOW_DEBUG_DETAIL): ?>
-	<p>Filename: <?php echo $filepath; ?></p>
-	<p>Line Number: <?php echo $line; ?></p>
-<? else: ?>
-	<p>Filename: <?php echo str_replace('.php','',basename($filepath)); ?></p>
-	<p>Line Number: <?php echo $line; ?></p>
-<? endif;?>
+<p>Filename: <?php echo $filepath; ?></p>
+<p>Line Number: <?php echo $line; ?></p>
 
-
-<?php if (SHOW_DEBUG_DETAIL && defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
+<?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
 
 	<p>Backtrace:</p>
 	<?php foreach (debug_backtrace() as $error): ?>

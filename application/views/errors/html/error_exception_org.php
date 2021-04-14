@@ -8,15 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <p>Type: <?php echo get_class($exception); ?></p>
 <p>Message: <?php echo $message; ?></p>
-<? if(SHOW_DEBUG_DETAIL): ?>
-	<p>Filename: <?php echo $exception->getFile(); ?></p>
-	<p>Line Number: <?php echo $exception->getLine(); ?></p>
-	<? else: ?>
-	<p>Filename: <?php echo str_replace('.php','',basename($exception->getFile())); ?></p>
-	<p>Line Number: <?php echo $exception->getLine(); ?></p>
-<? endif;?>
+<p>Filename: <?php echo $exception->getFile(); ?></p>
+<p>Line Number: <?php echo $exception->getLine(); ?></p>
 
-<?php if (SHOW_DEBUG_DETAIL && defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
+<?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
 
 	<p>Backtrace:</p>
 	<?php foreach ($exception->getTrace() as $error): ?>

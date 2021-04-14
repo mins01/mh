@@ -32,17 +32,19 @@ if(!defined('IS_DEV')){
 define('IS_ADMIN', preg_match('|^'.SITE_URI_PREFIX.ADMIN_URI_PREFIX.'|',(isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'')));
 
 if(!defined('AUTOLOAD_DATABASE')){
-	define('AUTOLOAD_DATABASE',true); //자동으로 DATABASE를 로드하는 경우 true, 아니면 false
+	define('AUTOLOAD_DATABASE',TRUE); //자동으로 DATABASE를 로드하는 경우 true, 아니면 false
 }
 
 if(IS_DEV){
 	define('USE_HTTPS',false); // HTTPS 사용가능여부
 	define('HTTPS_PORT',''); // HTTPS 포트
 	define('LOGIN_NAME','SESD_MH');
+	define('SHOW_DEBUG_DETAIL', TRUE || isset($_GET['SHOW_DEBUG_DETAIL'])); // IS_DEV에서는 상세 에러내역을 보여준다.
 }else{
 	define('USE_HTTPS',false); // HTTPS 사용가능여부
 	define('HTTPS_PORT',''); // HTTPS 포트
 	define('LOGIN_NAME','SESS_MH');
+	define('SHOW_DEBUG_DETAIL', FALSE || isset($_GET['SHOW_DEBUG_DETAIL'])); 
 }
 
 define('MEMBER_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
