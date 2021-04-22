@@ -58,8 +58,8 @@ $route['default_controller'] = 'front/index';
 //$route[ADMIN_URI_PREFIX] = 'mh/admin/index';
 //$route[ADMIN_URI_PREFIX.'/(.*)'] = 'mh/admin/index';
 //$route['(.*)/(:any)'] = 'front/$2';
-$route['member'] = 'front_member/index'; //바꾸지 마시오!
-$route['member/(.*)'] = 'front_member/$1'; //바꾸지 마시오!
+// $route['member'] = 'front_member/index'; //바꾸지 마시오!  // 메뉴에서 관리할 수 있도록 변경함
+// $route['member/(.*)'] = 'front_member/$1'; //바꾸지 마시오!// 메뉴에서 관리할 수 있도록 변경함
 
 $route['_test/(.*)'] = 'front_test/$1'; //개발 테스트용. 필요 없으면 주석처리.
 
