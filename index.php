@@ -1,4 +1,9 @@
 <?php
+if (php_sapi_name() == "cli") {
+	exit('Not support '.php_sapi_name());
+} else {
+	//--- web
+}
 if($_SERVER['HTTP_HOST']!='www.mins01.com' && $_SERVER['HTTP_HOST']!='wwwdev.mins01.com' && $_SERVER['HTTP_HOST']!='wwwdevlcl.mins01.com'){
 	header('Location: http://www.mins01.com'.$_SERVER['REQUEST_URI']);
 	exit();
