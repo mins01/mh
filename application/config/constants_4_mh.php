@@ -29,6 +29,10 @@ define('HASH_KEY','mh'); //해시용 추가 문자열. 한번 설정 후 바꾸�
 if(!defined('IS_DEV')){
 	define('IS_DEV', preg_match('/^[^\/]*dev[^\/]*\./',$http_host));
 }
+if(!defined('IS_LCL')){
+	define('IS_LCL', preg_match('/^[^\/]*lcl[^\/]*\./',$http_host));
+}
+
 define('IS_ADMIN', preg_match('|^'.SITE_URI_PREFIX.ADMIN_URI_PREFIX.'|',(isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'')));
 
 if(!defined('AUTOLOAD_DATABASE')){
