@@ -20,7 +20,6 @@ define('SITE_NAME','공대여자홈');
 define('SITE_ADMIN_MAIL','mins01.lycos.co.kr@gmail.com');
 define('SITE_URI_PREFIX', '/mh/'); // URI 앞부분 경로
 define('SITE_URI_ASSET_PREFIX', '/mh/asset/'); // asset 폴더 접속용 URI 앞부분 경로
-define('SITE_URI_MEMBER_PREFIX', '/mh/member/'); // 회원부분 URI 앞부분
 define('SERVER_PATH_ASSET', APPPATH.'../asset/'); // 서버 내의 aaset 폴더
 define('ADMIN_PREFIX', '_admin'); // 관리자 URI 기본 경로
 define('ADMIN_URI_PREFIX', SITE_URI_PREFIX.ADMIN_PREFIX.'/'); // 관리자 URI 기본 경로
@@ -28,10 +27,10 @@ define('DB_PREFIX', 'mh_'); // DB 접두사
 define('HASH_KEY','mh'); //해시용 추가 문자열. 한번 설정 후 바꾸면 안됩니다!
 
 if(!defined('IS_DEV')){
-	define('IS_DEV', preg_match('/^[^\/]*dev[^\/]*\./',$http_host));
+	define('IS_DEV', preg_match('/^[^\.\/]*dev[^\.\/]*\./',$http_host));
 }
 if(!defined('IS_LCL')){
-	define('IS_LCL', preg_match('/^[^\/]*lcl[^\/]*\./',$http_host));
+	define('IS_LCL', preg_match('/^[^\.\/]*lcl[^\.\/]*\./',$http_host));
 }
 
 define('IS_ADMIN', preg_match('|^'.SITE_URI_PREFIX.ADMIN_URI_PREFIX.'|',(isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'')));
@@ -52,8 +51,11 @@ if(IS_DEV){
 	define('SHOW_DEBUG_DETAIL', FALSE || isset($_GET['SHOW_DEBUG_DETAIL'])); 
 }
 
-define('MEMBER_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...)
+// *. member 관련
+// define('MEMBER_LAYOUT','default'); //Member layout 설정. 기본:default, (empty ...) //더이상 사용안한다.
 define('MEMBER_ONLY_HTTPS', USE_HTTPS && true ); // /mh/member 동작시 https로 강제한다.
+define('SITE_URI_MEMBER_PREFIX', '/mh/member/'); // 회원부분 URI 앞부분
+
 
 //font 의 기본 layout 을 바꾸고 싶다면 conf_front.php를 수정하라.
 

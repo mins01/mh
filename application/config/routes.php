@@ -75,8 +75,8 @@ $route['misc/(.*)'] = 'misc/$1'; //기타
 
 
 
-$route['sdgn'] = 'front_sdgn/index';
-$route['sdgn/(.*)'] = 'front_sdgn/$1';
+// $route['sdgn'] = 'front_sdgn/index'; // 더이상 안 씀
+// $route['sdgn/(.*)'] = 'front_sdgn/$1'; // 더이상 안 씀
 
 $route['crlud_test'] = 'mh_util/crlud_test';
 $route['crlud'] = 'mh_util/crlud';
