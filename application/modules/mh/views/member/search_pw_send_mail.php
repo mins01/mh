@@ -53,7 +53,7 @@
 		<div class="text-right">
 			<div class="btn-group" role="group" aria-label="">
 
-				<button type="button" onclick="history.back()" class="btn btn-danger glyphicon glyphicon-ban-circle"> 뒤로</button>
+				<button type="button" onclick="history.back()" class="btn btn-danger glyphicon glyphicon-ban-circle"> 취소</button>
 			</div>
 		</div>
 	</div>

@@ -39,7 +39,9 @@ class Common extends MX_Controller {
 	public function required_login(){
 		if(!$this->logedin){
 			header("HTTP/1.1 401 Unauthorized");
-			$ret_url = SITE_URI_PREFIX.'member/login';
+			// $ret_url = SITE_URI_PREFIX.'member/login';
+			$ret_url = SITE_URI_MEMBER_PREFIX.'login';
+			
 			$this->redirect('로그인이 필요합니다.',$ret_url);
 			return false;
 		}

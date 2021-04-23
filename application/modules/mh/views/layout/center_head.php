@@ -70,7 +70,7 @@
 	</div>
 	<!-- //배너용 기준위치 -->
 <? if(!$hide):?>
-	<div class="flex-center-center" style="height:100vh">
-		<div class="container">
+	<div class="flex-center-center" style="min-height:100vh;">
+		<div class="container" style="width: 98vw;margin:1vh 1vw">
 		<?=$top_html?>
 <? endif; ?>

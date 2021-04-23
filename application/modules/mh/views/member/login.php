@@ -34,14 +34,14 @@
 				<button type="button" onclick="history.back()" class="btn btn-danger glyphicon glyphicon-ban-circle"> 취소</button>
 			</div>
 			<div class="btn-group" role="group" aria-label="">
-				<a href="<?=SITE_URI_PREFIX.'member/join'?>"  class="btn btn-success glyphicon glyphicon-ok-circle"> 회원가입</a>
+				<a href="<?=html_escape(SITE_URI_MEMBER_PREFIX.'join')?>"  class="btn btn-success glyphicon glyphicon-ok-circle"> 회원가입</a>
 			</div>
 		</div>
 	</div>
 	<div class="panel-body" >
 		<div class="alert alert-danger text-center" role="alert" style="margin-bottom:5px;" ><b>주의 : 공개된 장소에서는 사용 완료 후 꼭 로그아웃을 하시기바랍니다.</b></div>
 		<ul  class="list-group">
-			<li  class="list-group-item active text-center">개인정보 오남용 피해예방 10계명 <a style="color:#fff;" target="_blank" class="glyphicon glyphicon-link text-primary" href="https://privacy.kisa.or.kr/kor/privacy/privacy03_new.jsp"></a></li>
+			<li  class="list-group-item active text-center">개인정보 오남용 피해예방 10계명 <a style="color:#fff;" target="_blank" class="glyphicon glyphicon-link text-primary" href="https://www.privacy.go.kr/nns/ntc/cmd/tenCommandments.do"></a></li>
 			<li  class="list-group-item">01. 개인정보처리방침 및 이용약관 꼼꼼히 살피기</li>
 			<li  class="list-group-item">02. 비밀번호는 문자와 숫자로 8자리 이상</li>
 			<li  class="list-group-item">03. 비밀번호는 주기적으로 변경하기</li>

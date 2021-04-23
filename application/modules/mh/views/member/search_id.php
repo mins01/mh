@@ -27,11 +27,12 @@
 		</div>
 		<hr>
 		<div class="text-right">
-			<div class="btn-group  pull-right" role="group" aria-label="">
-				<button  class="btn btn-primary glyphicon glyphicon-ok-circle"> 찾기</button>
+			<div class="btn-group" role="group" aria-label="">
+				<button  class="btn btn-primary glyphicon glyphicon-ok-circle"> 확인</button>
+				<button type="button" onclick="history.back()" class="btn btn-danger glyphicon glyphicon-ban-circle"> 취소</button>
 			</div>
 			<div class="btn-group pull-left" role="group" aria-label="">
-				<button type="button" onclick="window.open('<?=base_url('member/search_pw')?>','_self')" class="btn btn-info glyphicon glyphicon-link"> 비밀번호 찾기</button>
+				<button type="button" onclick="window.open('<?=html_escape(SITE_URI_MEMBER_PREFIX.'search_pw')?>','_self')" class="btn btn-info glyphicon glyphicon-link"> 비밀번호 찾기</button>
 			</div>
 			<div class="clearfix"></div>
 		</div>

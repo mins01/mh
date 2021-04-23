@@ -115,13 +115,9 @@ class Front extends MX_Controller {
 					show_error("허용되지 않는 메소드입니다. - {$module_name}::{$method}",500);
 					// show_404();
 				}
-			}else if(isset($module->module_type) && $module->module_type=='3'){ //모듈타입 3. $conf,$params 를 한번만 넘긴다.
-				if(method_exists($module, $method) && is_callable(array($module,$method),false)){
-					if(!isset($module->conf) || !isset($module->params)){
-						show_error("필수 멤버 변수가 없습니다. - {$module_name}",500);
-					}
-					$module->conf=$conf;
-					$module->params=$params;
+			}else if(is_callable(array($module,'init_as_front'),false)){ //모듈타입 3. 모듈의 init_as_front 초기화 메소드 호출 후 동작 메소드 호출
+				if(is_callable(array($module,$method),false)){
+					$module->init_as_front($conf,$params); 
 					$module->{$method}();
 				}else{
 					show_error("허용되지 않는 메소드입니다. - {$module_name}::{$method}",500);
