@@ -5,11 +5,12 @@ class Page_member_manager extends Page {
 
 	public function __construct()
 	{
+		parent::__construct();
+	}
+	public function index($conf=array(),$view=array()){
 		$this->config->load('bbs');
 		$this->bbs_conf = $this->config->item('bbs');
 		$this->levels = $this->bbs_conf['levels'];
-	}
-	public function action($conf,$view){
 		$view = 'mh_admin/page/member_manager'; //강제 고정
 		// $this->config->set_item('layout_head_contents','<script>console.log("xxx");</script>');
 		$this->config->set_item('layout_hide',false);
