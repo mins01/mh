@@ -16,3 +16,6 @@
 [submodule "asset/etcmodule/ui_SlideList"]
 	path = asset/etcmodule/ui_SlideList
 	url = https://github.com/mins01/ui_SlideList.git
+[submodule "asset/etcmodule/ui_menu"]
+	path = asset/etcmodule/ui_menu
+	url = https://github.com/mins01/ui_menu.git
