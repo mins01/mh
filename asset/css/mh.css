@@ -164,6 +164,20 @@ util
 	font-weight: bold;
 }
 
+
+/* for pc */
+@media all and (min-width:576px) {
+	.mh-menu .menu-label{
+		background-color: transparent;
+	}
+}
+/* for mobile */
+@media all and (max-width:575px) {
+	.mh-menu .menu-label{
+		background-color: transparent;
+	}
+}
+
 /*
 출력시 주소가 같이 나오는 것 제거
  */
