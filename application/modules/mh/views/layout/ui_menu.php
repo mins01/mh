@@ -1,5 +1,5 @@
 <div class="mh-menu" style="z-index: 10; position: relative;background-color:#f8f8f8;padding:0px;margin-bottom:5px;border-bottom:1px solid #ddd;">
-	<div class="menu-for-xs " style=" display:flex ">
+	<div class="menu-for-xs  menu-theme-01" style=" display:flex ">
 		<div>
 			<a class="menu-misc" href="/" style=""><img
 					src="<?=SITE_URI_ASSET_PREFIX?>img/logo.png?t=<?=REFLESH_TIME?>"
@@ -34,14 +34,14 @@
 				<li class="menu menu-for-sm">
 					<a class="menu-misc  " href="/" style=""><img
 							src="<?=SITE_URI_ASSET_PREFIX?>img/logo.png?t=<?=REFLESH_TIME?>"
-							style="max-height: 100%;height:30px;" alt="logo image"></a>
+							style="max-height: 100%;height:34px;" alt="logo image"></a>
 				</li>
 				<?
 				if(isset($menu_tree[0]['child'])):
 					ui_menu_echo_menu($menu_tree[0]['child']);
 				endif;
 				?>
-				<li class="menu" style=" flex: 1 0 auto; text-align: right;">
+				<li class="menu" style=" flex: 1 0 auto; text-align: right; display: flex; align-items: center; justify-content: flex-end;">
 					<div class="menu-misc"  data-menu-dismiss>
 						<? if(!$logedin):?>
 							<button type="button" class="btn btn-success btn-xs"
@@ -64,7 +64,31 @@
 		</div>
 		
 	</div>
+	
 </div>
+<div class="container-fluid">
+	<div class="mh-breadcrumbs">
+		<div class="mh-breadcrumb">
+			<a class="" href="<?=html_escape(SITE_URI_PREFIX)?>" target="_self" >HOME</a>
+		</div>
+	<?
+	$ts = array();
+	foreach($menu['breadcrumbs'] as $k=>$v):
+		if($k==0){continue;}
+		$mr = $menu_rows[$v];
+	?>
+		<div class="mh-breadcrumb">
+			<a class="" href="<?=html_escape($mr['url'])?>" target="<?=html_escape($mr['mn_a_target'])?>" <?=$mr['mn_attr']?>><?=html_escape($mr['mn_text'])?></a>
+		</div>
+	<?
+	endforeach;
+
+	?>
+	</div>
+</div>
+<!-- <?
+print_r($menu);
+?> -->
 <?
 function ui_menu_echo_menu($menus){
 	foreach($menus as $mr):
@@ -92,3 +116,5 @@ function ui_menu_echo_menu($menus){
 	endforeach;
 }
 ?>
+
+

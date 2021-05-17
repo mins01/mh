@@ -14,7 +14,7 @@ define('USE_CACHE',true); //전역 캐시 사용여부
 define('USE_MH_CACHE',USE_CACHE && true); //Mh_cache만 캐시 사용여부
 
 
-define('REFLESH_TIME','20210219_0'); //query string 에 붙여서 파일 웹 캐싱 무시용. 수동으로 변경한다.
+define('REFLESH_TIME','20210517_0'); //query string 에 붙여서 파일 웹 캐싱 무시용. 수동으로 변경한다.
 
 define('SITE_NAME','공대여자홈');
 define('SITE_ADMIN_MAIL','mins01.lycos.co.kr@gmail.com');
