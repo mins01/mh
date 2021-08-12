@@ -42,8 +42,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 application/logs/*
-_files/*
-_logs/*
-/_cache
-_temp/*
-_tmp/*
+/_files/*
+/_logs/*
+/_cache/*
+/_temp/*
+/_tmp/*
+!.htaccess
