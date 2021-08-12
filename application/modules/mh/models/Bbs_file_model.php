@@ -459,7 +459,7 @@ class Bbs_file_model extends CI_Model {
 		}
 
 		//--- 정보정의
-		$file_type = isset($bf_row['bf_type']{0})?$bf_row['bf_type']:'application/octet-stream'; //파일타입
+		$file_type = isset($bf_row['bf_type'][0])?$bf_row['bf_type']:'application/octet-stream'; //파일타입
 		if($debug) $file_type = 'text/plain';
 		$file_name = $bf_row['bf_name']; //파일이름
 		$file_name = str_replace(array("'",'"',';',':','/','\\'),'_',$file_name);	//위험단어 변환
