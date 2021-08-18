@@ -73,9 +73,13 @@ class Ga_dashboard extends MX_Controller {
 		$nocache = $this->input->get('nocache');
 		if($nocache || !$rowss){
 			$rowss = $this->get_ga_rowss($this->profileId,$this->daysAgo);
+			
 			$this->mh_cache->save($key,$rowss,60*30); //30분 캐시
 		}
-
+		// var_dump($rowss);exit;
+		if(!isset($rowss['per_date']) || $rowss['per_date']==null){
+			show_error('데이터가 없습니다.');
+		}
 		// print_r($rowss);
 		// echo 'dashboard';
 
@@ -272,7 +276,9 @@ class Ga_dashboard extends MX_Controller {
 		// print_r($res);exit;
 		$res_rowss = $this->googleanalyticsreportingapiv4->extract_rowss($res);
 		// print_r($res_rowss);exit;
-
+		if(!isset($res_rowss[0])){
+			return null;
+		}
 		$rowss = array(
 			'per_date' => $res_rowss[0],
 			'pages' => $res_rowss[1],
