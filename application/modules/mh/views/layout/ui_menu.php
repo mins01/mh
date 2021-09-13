@@ -87,7 +87,7 @@
 	</div>
 </div>
 <!-- <?
-print_r($menu);
+// print_r($menu);
 ?> -->
 <?
 function ui_menu_echo_menu($menus){
