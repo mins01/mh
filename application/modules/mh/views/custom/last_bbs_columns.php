@@ -45,7 +45,7 @@
 	$v_url = base_url($mn_url);
 	if($b_id=='freegame'):
 		?>
-		<div class="last-bbs-columns-content">
+		<div class="last-bbs-columns-content" style="grid-area:3/2">
 			<div class="list-group">
 				<a class="list-group-item list-group-item-success" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?> 최근 글</a>
 				<? if(count($b_rows)!==0):?>
@@ -209,7 +209,7 @@
 	$bt_rows = $v[5];
 	$v_url = base_url($mn_url);
 	?>
-	<div class="last-bbs-columns-content">
+	<div class="last-bbs-columns-content" style="grid-area:3/3">
 		<div class="list-group">
 			<a class="list-group-item list-group-item-warning" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?> 최근 태그</a>
 			<? foreach($bt_rows as $bt_row):
