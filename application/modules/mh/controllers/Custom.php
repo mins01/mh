@@ -45,6 +45,7 @@ class Custom extends MX_Controller{
 		$this->load->library('mh_cache');
 		$key = __FUNCTION__;
 		// var_dump($this->mh_cache);
+		// $this->mh_cache->use_cache = false;
 		$this->load->model('mh/custom_model','custom_m');
 		// $b_rowss = array();
 		// $b_rowss['tech'] = $this->custom_m->get_list_rows('tech',7,50);

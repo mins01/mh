@@ -124,7 +124,8 @@
 				<? foreach($b_rows as $b_row):
 					$url = base_url($mn_url.'/read/'.$b_row['b_idx']);
 				?>
-				<a class="list-group-item bbs-flex-box"  href="<?=html_escape($url)?>">
+				<a class="list-group-item "  href="<?=html_escape($url)?>">
+				<div class="bbs-flex-box">
 					<span class="bbs-flex-main bbs-flex-main-fullsize text-primary"><?=html_escape($b_row['b_title'])?></span>
 					<span class="bbs-flex-sub bbs-flex-sub-right">
 						<? if($b_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
@@ -144,6 +145,8 @@
 								}
 							?></span>
 					</span>
+				</div>
+					
 				</a>
 				<? endforeach;?>
 				<? if(count($b_rows)==0):?><div class="list-group-item text-center">최근 내용이 없습니다.</div><? endif;?>
@@ -173,12 +176,15 @@
 			<? foreach($bc_rows as $bc_row):
 				$url = base_url($mn_url.'/read/'.$bc_row['b_idx']);
 			?>
-			<a href="<?=html_escape($url)?>" class="list-group-item bbs-flex-box">
-				<span class="bbs-flex-main bbs-flex-main-fullsize text-primary" ><?=html_escape($bc_row['bc_comment'])?></span>
-				<span class="bbs-flex-sub bbs-flex-sub-right">
-					<? if($bc_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
-					<span class=" label label-info"><? echo date('m-d H시',strtotime($bc_row['bc_insert_date'])); ?></span>
-				</span>
+			<a href="<?=html_escape($url)?>" class="list-group-item">
+				<div class="bbs-flex-box">
+					<span class="bbs-flex-main bbs-flex-main-fullsize text-primary" ><?=html_escape($bc_row['bc_comment'])?></span>
+					<span class="bbs-flex-sub bbs-flex-sub-right">
+						<? if($bc_row['b_secret']!='0'):?><span class="b_secret label label-default" title="비밀">S</span><? endif; ?>
+						<span class=" label label-info"><? echo date('m-d H시',strtotime($bc_row['bc_insert_date'])); ?></span>
+					</span>
+				</div>
+				
 			</a>
 			<? endforeach;?>
 			<? if(count($bc_rows)==0):?><div class="list-group-item text-center">최근 내용이 없습니다.</div><? endif;?>
@@ -205,12 +211,15 @@
 			<? foreach($bt_rows as $bt_row):
 				$url = base_url($mn_url).'/list?tag='.urlencode($bt_row['bt_tag']);
 			?>
-			<a href="<?=html_escape($url)?>" class="list-group-item bbs-flex-box">
-				<span class="bbs-flex-main bbs-flex-main-fullsize text-primary" ><?=html_escape($bt_row['bt_tag'])?></span>
-				<span class="bbs-flex-sub bbs-flex-sub-right">
-					<span class=" label label-warning" title=""><?=html_escape($bt_row['cnt'])?></span>
-					<span class=" label label-info"><? echo date('m-d H시',strtotime($bt_row['bt_update_date'])); ?></span>
-				</span>
+			<a href="<?=html_escape($url)?>" class="list-group-item">
+				<div class="bbs-flex-box">
+					<span class="bbs-flex-main bbs-flex-main-fullsize text-primary" ><?=html_escape($bt_row['bt_tag'])?></span>
+					<span class="bbs-flex-sub bbs-flex-sub-right">
+						<span class=" label label-warning" title=""><?=html_escape($bt_row['cnt'])?></span>
+						<span class=" label label-info"><? echo date('m-d H시',strtotime($bt_row['bt_update_date'])); ?></span>
+					</span>	
+				</div>
+				
 
 			</a>
 			<? endforeach;?>
