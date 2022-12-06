@@ -129,17 +129,17 @@ last_bbs_columns
 	grid-auto-flow:row dense;
 }
 .last-bbs-grid-3{
-	grid-template-columns: 1fr ;
-	grid-template-rows: auto auto auto;
+	grid-template-columns: repeat(1, minmax(33%, 1fr)) ;
+	/* grid-template-rows: auto auto auto; */
 }
 @media (min-width: 768px) {
 	.last-bbs-grid-3{
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: repeat(2, minmax(33%, 1fr));
 	}
 }
 @media (min-width: 992px){
 	.last-bbs-grid-3{
-		grid-template-columns: 1fr 1fr 1fr;;
+		grid-template-columns:repeat(3, minmax(33%, 1fr));
 	}
 }
 
