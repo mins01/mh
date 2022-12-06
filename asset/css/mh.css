@@ -99,8 +99,9 @@ padding-left:5px; padding-right:5px;
 
 /*
 last_bbs_columns
+2022-12-06 왜인지 크롬에서 화면 그리지 못하고 무한루프 돈다. 사용하지 마라.
 */
-.last-bbs-columns{
+/* .last-bbs-columns{
 
 }
 .last-bbs-columns-3{
@@ -119,6 +120,27 @@ last_bbs_columns
 }
 .last-bbs-columns-content{
   break-inside:avoid;
+} */
+
+
+.last-bbs-grid{
+	display: grid;
+	gap: 10px;
+	grid-auto-flow:row dense;
+}
+.last-bbs-grid-3{
+	grid-template-columns: 1fr ;
+	grid-template-rows: auto auto auto;
+}
+@media (min-width: 768px) {
+	.last-bbs-grid-3{
+		grid-template-columns: 1fr 1fr;
+	}
+}
+@media (min-width: 992px){
+	.last-bbs-grid-3{
+		grid-template-columns: 1fr 1fr 1fr;;
+	}
 }
 
 /*

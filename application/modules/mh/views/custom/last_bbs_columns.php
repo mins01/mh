@@ -30,7 +30,7 @@
 </style>
 
 <!-- <h2>최근 글</h2> -->
-<div class="last-bbs-columns last-bbs-columns-3">
+<div class="last-bbs-grid last-bbs-grid-3">
 <?
 //-- 최근 글
 	$tm = time();
@@ -48,6 +48,7 @@
 		<div class="last-bbs-columns-content">
 			<div class="list-group">
 				<a class="list-group-item list-group-item-success" href="<?=html_escape($v_url)?>"><?=html_escape($mn_text)?> 최근 글</a>
+				<? if(count($b_rows)!==0):?>
 				<div class="list-group-item" style="padding:0;" >
 					<div class="slideList slideList-h" id="sl01" style="margin:5px 0px;height:240px">
 						<?
@@ -92,29 +93,32 @@
 							<?
 						endforeach;
 						?>
-					</div>
+					</div>					
 					<div style="flex:0 0 40px; display:flex;flex-direction: row;">
 						<button class="btn btn-success" onclick="sl01.prev();if(sl01.isAuto){sl01.playAuto()}" style="flex: 1 1 50%; margin:5px;">◀</button>
 						<button class="btn btn-success" onclick="sl01.next();if(sl01.isAuto){sl01.playAuto()}" style="flex: 1 1 50%; margin:5px;">▶</button>
 					</div>
+					<script>
+					//<!--
+					var sl01= null;
+					$(function(){
+						sl01 = new SlideList(document.querySelector("#sl01"));
+						sl01.isRepeat = true;
+						var t = document.querySelectorAll("#sl01 .slideList-item")
+						// console.log(t);
+						if(t && t.length>1){
+							sl01.playAuto(5000,0);
+						}
+					});
+					//-->
+					</script>
 				</div>
+				<? endif; ?>
+				<? if(count($b_rows)==0):?><div class="list-group-item text-center">최근 내용이 없습니다.</div><? endif;?>
 			</div>
 
 		</div>
-		<script>
-		<!--
-		var sl01= null;
-		$(function(){
-			sl01 = new SlideList(document.querySelector("#sl01"));
-			sl01.isRepeat = true;
-			var t = document.querySelectorAll("#sl01 .slideList-item")
-			// console.log(t);
-			if(t && t.length>1){
-				sl01.playAuto(5000,0);
-			}
-		});
-		-->
-		</script>
+		
 		<?
 	else:
 		?>
