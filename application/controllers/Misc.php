@@ -79,47 +79,62 @@ class Misc extends MX_Controller {
 			// var_dump($t);
 			// var_dump($call_url);
 			// exit;
-			set_time_limit(120);// 동작 타임아웃
-			$this->mproxy->conn_timeout = 60;
-			$this->mproxy->exec_timeout = 60;
-			$res = $this->mproxy->get($call_url,null,array(),$opts);
+			$res = null;
+			if(filter_var($url, FILTER_VALIDATE_URL)){
+				set_time_limit(120);// 동작 타임아웃
+				$this->mproxy->conn_timeout = 60;
+				$this->mproxy->exec_timeout = 60;
+				$res = $this->mproxy->get($call_url,null,array(),$opts);
+			}
 
 			// echo $url;
 			// print_r($res);exit;
-			if($res['errorno']!=0 ){
-				show_error($res['errormsg'],$res['httpcode'],$res['errormsg']);
+			if(!isset($res)){
+				// show_error($res['errormsg'],$res['httpcode'],$res['errormsg']);
+				$opgs['title'] = "{$url}";
+				$opgs['og:title'] = "wrong URL";
+				$opgs['og:description'] = "wrong URL";
+			}else if($res['errorno']!=0 ){
+				// show_error($res['errormsg'],$res['httpcode'],$res['errormsg']);
+				$opgs['title'] = "{$url}";
+				$opgs['og:title'] = "{$res['errormsg']}";
+				$opgs['og:description'] = "{$res['errormsg']}";
 			}else if(!isset($res['body'][0]) || stripos('html',$res['body'])!==false){
-				show_error('not html contents');
+				// show_error('not html contents');
 				// exit;
-			}
-			$content = $res['body'];
-			$charset = 'utf-8';
-			$matches = array();
-			preg_match('/charset=([^\s\n>"\']*)/',$res['header'],$matches);
-			if(isset($matches[1])){
-				$charset = $matches[1];
+				$opgs['title'] = "{$url}";
+				$opgs['og:title'] = "empty response";
+				$opgs['og:description'] = "empty response";
 			}else{
+				$content = $res['body'];
+				$charset = 'utf-8';
 				$matches = array();
-				preg_match('/charset=([^\s\n>]*)/',$content,$matches);
+				preg_match('/charset=([^\s\n>"\']*)/',$res['header'],$matches);
 				if(isset($matches[1])){
 					$charset = $matches[1];
+				}else{
+					$matches = array();
+					preg_match('/charset=([^\s\n>]*)/',$content,$matches);
+					if(isset($matches[1])){
+						$charset = $matches[1];
+					}
 				}
-			}
-			$charset = str_replace(array("'",'"','>'),'',$charset);
-			$charset = strtolower($charset);
-			// echo $charset;
-			$this->load->library('mh_util');
-
-			if($charset == 'ks_c_5601-1987'){
-				$charset = 'uhc';
-			}
-			if($charset != 'utf-8'){
+				$charset = str_replace(array("'",'"','>'),'',$charset);
+				$charset = strtolower($charset);
 				// echo $charset;
-				$content = @iconv($charset,'UTF-8//IGNORE',$content);
-				// echo $content;
+				$this->load->library('mh_util');
+	
+				if($charset == 'ks_c_5601-1987'){
+					$charset = 'uhc';
+				}
+				if($charset != 'utf-8'){
+					// echo $charset;
+					$content = @iconv($charset,'UTF-8//IGNORE',$content);
+					// echo $content;
+				}
+				// echo $content ;
+				$opgs = $this->mh_util->parseOgp($content,$url);
 			}
-			// echo $content ;
-			$opgs = $this->mh_util->parseOgp($content,$url);
 			// var_dump($opgs);
 			if(empty($opgs)){
 				$opgs['title']='not opg meta!';
