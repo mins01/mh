@@ -51,7 +51,7 @@
 </head>
 <body>
 <? if(!$hide):?>
-	<nav class="navbar navbar-default ">
+	<nav class="navbar navbar-default hidden-print">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -86,7 +86,7 @@
 
 	<div class="container-fluid contents">
 		<div class="row">
-			<nav class="col-lg-2 col-md-3">
+			<nav class="col-lg-2 col-md-3 hidden-print">
 				<div class="list-group">
 				<?
 					if(isset($menu['breadcrumbs'][1])):
