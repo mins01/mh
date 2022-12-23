@@ -26,6 +26,7 @@ class Item_search extends MX_Controller {
 		$this->load->library('Mh_cache');
 		$this->load->library('mheader');
 		$this->mh_cache->use_log_header = true;
+		$this->mh_cache->use_cache = true;
 
 		$this->load->library('Mproxy');
 		$this->config->load('api_searchad_naver');
