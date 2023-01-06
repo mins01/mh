@@ -28,7 +28,7 @@
 
 		</div>
 	</div>
-	<div class="table-responsive">
+	<div class="table-responsive-x">
 		<table class="table table-condensed bbs-list-table" style="table-layout:fixed">
 			<tr >
 				<th class="text-center hidden-xs" width="80">No</th>
