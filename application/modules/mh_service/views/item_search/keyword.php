@@ -69,7 +69,7 @@ require(dirname(__FILE__).'/menu.php');
 </script>
 <div  class="container-fluid text-center ">
 	<h2><b>키워드 정보</b>
-		<? if(isset($keyword[0])):?> <b>:</b> <b style="color:#274fa7; display: inline-block;font-weight:bold; margin:0;"><?=$keyword?></b><? endif; ?>
+		<? if(isset($keyword[0])):?> <b>:</b> <b class="text-keyword" style="color:#274fa7; display: inline-block;font-weight:bold; margin:0;"><?=$keyword?></b><? endif; ?>
 	</h2>
 </div>
 <div>
@@ -84,6 +84,48 @@ require(dirname(__FILE__).'/menu.php');
 			</span>
 		</div>
 	</form>
+</div>
+<div>
+	<hr>
+	<h3>프린트/다운로드</h3>
+	<div class="text-right">
+		<button class="btn btn-info" type="button" onclick="window.print()">프린트</button>
+		<button class="btn btn-info" type="button" onclick="download_html()">HTML 다운로드</button>
+	</div>
+	<script>
+		function download_html(){
+			let html = document.querySelector('html').cloneNode(true);
+			
+			html.querySelectorAll('*[src^="/"]').forEach((el)=>{
+				if(el.src != el.getAttribute('src')){
+					el.setAttribute('src',el.src);
+				}
+			})
+			html.querySelectorAll('*[href^="/"]').forEach((el)=>{
+				if(el.href != el.getAttribute('href')){
+					el.setAttribute('href',el.href);
+				}
+			})
+			html.querySelectorAll('.hidden-print').forEach((el)=>{
+				el.remove();
+			})
+			html.querySelector('.main').classList.replace('col-lg-10','col-lg-12');
+			html.querySelector('input[type="text"][name="keyword"]').disabled= true;
+			
+			
+			let type ='text/html; charset=UTF-8';
+			let file = new Blob([html.outerHTML], {type: type});
+			let filename = (new Date()).toISOString().replace(/[^\d]/g,'')+'_'+document.querySelector('.text-keyword').textContent+'.html'
+			let url = URL.createObjectURL(file);
+			var a = document.createElement("a");
+			a.href = url;
+        	a.download = filename;
+			document.body.appendChild(a);
+        	a.click();
+			a.remove();
+			window.URL.revokeObjectURL(url);
+		}
+	</script>
 </div>
 <div>
 	<hr>
@@ -225,18 +267,24 @@ require(dirname(__FILE__).'/menu.php');
 	<h3>네이버 데이터랩 쇼핑 정보</h3>
 	<div class="row">
 		<div class="col-lg-12">
-			<div id="gChart5" style="width: 100%; max-width: 1000px;height: 450px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
+			<div id="gChart5" class="g-chart-wrap" style="width: 100%; max-width: 1000px;height: 450px;margin:20px auto; overflow-x:hidden; overflow-y:hidden"></div>
 		</div>
 		<div class="col-lg-4 col-sm-6">
-			<div id="gChart2" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
+			<div id="gChart2" class="g-chart-wrap" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:hidden; overflow-y:hidden"></div>
 		</div>
 		<div class="col-lg-4 col-sm-6">
-			<div id="gChart3" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
+			<div id="gChart3" class="g-chart-wrap" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:hidden; overflow-y:hidden"></div>
 		</div>
 		<div class="col-lg-4 col-sm-6">
-			<div id="gChart4" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:auto; overflow-y:hidden"></div>
+			<div id="gChart4" class="g-chart-wrap" style="width: 300px; max-width: 300px;height: 300px;margin:20px auto; overflow-x:hidden; overflow-y:hidden"></div>
 		</div>
 	</div>
+	<style>
+		/* 크롬에서 프린트할 때 차트가 짤리는 경우가 있어서 */
+		.g-chart-wrap > div > div > div{
+			position: static !important;
+		}
+	</style>
 </div>
 <div>
 	<hr>

@@ -111,7 +111,7 @@
 
 
 
-			<div class="col-lg-10 col-md-9">
+			<div class="col-lg-10 col-md-9 main">
 				<h3 class="text-right"><?=$top_html?></h3>
 
 
