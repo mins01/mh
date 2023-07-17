@@ -3,7 +3,8 @@
 https://naver.github.io/searchad-apidoc/#/guides
  */
 class ApiSearchadNaver{
-	private $url_api_naver_com = 'https://api.naver.com';
+	// private $url_api_naver_com = 'https://api.naver.com';
+	private $url_api_naver_com = 'https://api.searchad.naver.com'; // 2023-07-17
 	private $mproxy = null;
 	private $mh_cache = null;
 	private $account = null;
