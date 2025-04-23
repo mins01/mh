@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-if(isset($_SERVER['REMOTE_ADDR'][0]) && $_SERVER['REMOTE_ADDR']=='121.189.37.55'){ //과도 접근자.
+if(isset($_SERVER['REMOTE_ADDR'][0]) && ( $_SERVER['REMOTE_ADDR']=='121.189.37.55' || $_SERVER['REMOTE_ADDR']=='122.136.188.132' ) ){ //과도 접근자.
 	header('Location: http://www.police.go.kr');
 	exit('');
 }
