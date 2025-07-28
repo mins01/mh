@@ -9,6 +9,31 @@ if($_SERVER['HTTP_HOST']!='www.mins01.com' && $_SERVER['HTTP_HOST']!='wwwdev.min
 	exit();
 }
 
+
+
+$http_host = isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'';
+if(preg_match('/^[^\.\/]*devlcl(_|\.|\-)/',$http_host)){   // wwwdevlcl.XXX.com
+    defined('IS_DEV') OR define('IS_DEV',true);    // 개발DB 사용
+    defined('IS_LCL') OR define('IS_LCL',true);    // 로컬PC 환경
+}else if(preg_match('/^[^\.\/]*dev(_|\.|\-)/',$http_host)){ // wwwdev.XXX.com
+    defined('IS_DEV') OR define('IS_DEV',true);    // 개발DB 사용
+    defined('IS_LCL') OR define('IS_LCL',false);   // 로컬PC 환경
+}else if(preg_match('/^[^\.\/]*lcl(_|\.|\-)/',$http_host)){ // wwwlcl.XXX.com
+    defined('IS_DEV') OR define('IS_DEV',false);   // 개발DB 사용
+    defined('IS_LCL') OR define('IS_LCL',true);    // 로컬PC 환경
+}else{                                              // www.XXX.com  //운영서버
+    defined('IS_DEV') OR define('IS_DEV',false);   // 개발DB 사용
+    defined('IS_LCL') OR define('IS_LCL',false);    // 로컬PC 환경
+}
+if(IS_DEV || IS_LCL){ // 개발DB나 로컬PC 인경우
+    header('X-Is-Dev: '.(IS_DEV?'Y':'N'));
+    header('X-Is-Lcl: '.(IS_LCL?'Y':'N'));
+	$_SERVER['CI_ENV']='development'; // 강제로 개발모드로 설정.
+}else if(!isset($_SERVER['CI_ENV'])){
+	$_SERVER['CI_ENV']='production'; // 다른 설정이 없다면 운영모드로 동작. (에러 메세지 안보임!!)
+}
+
+
 /**
  * CodeIgniter
  *
