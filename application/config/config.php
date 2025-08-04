@@ -377,6 +377,10 @@ $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
 
+// ini_set('session.gc_maxlifetime', 3600);
+ini_set('session.gc_probability', 10); //10% 확률
+ini_set('session.gc_divisor', 100);
+
 /*
 |--------------------------------------------------------------------------
 | Cookie Related Variables
