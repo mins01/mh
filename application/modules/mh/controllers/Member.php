@@ -53,6 +53,17 @@ class Member extends MX_Controller {
 		$this->config->set_item('layout_hide',true);
 		$this->config->set_item('layout_title','로그인 처리');
 
+
+		$login_failed_count = $this->session->userdata('login_failed_count'); //로그인 실패 횟수
+		if (!$login_failed_count) { $login_failed_count = 0; }
+		if($login_failed_count>5){
+			$login_failed_time = $this->session->userdata('login_failed_time'); //마지막 실패 시간
+			if(time()-60*5 < $login_failed_time){
+				show_error("Too many login attempts. Please try again later.", 403, "Login Blocked");
+			}
+		}
+
+
 		$m_id = $this->input->post('m_id');
 		$m_pass = $this->input->post('m_pass');
 
@@ -72,9 +83,14 @@ class Member extends MX_Controller {
 
 		$res = $this->process_login_process($m_id,$m_pass);
 		if($res['is_error']){
+			$login_failed_count++;
+			$this->session->set_userdata('login_failed_count', $login_failed_count); // 실패 횟수 증가
+			$this->session->set_userdata('login_failed_time', time()); // 실패 횟수 증가
+
 			$fail_url = '?ret_url='.urlencode($ret_url);
 			$this->login_process_end($res['is_error'],$res['msg'],$fail_url);
 		}else{
+			$this->session->set_userdata('login_failed_count', 0); // 실패 횟수 초기화
 			$m_row = $res['m_row'];
 			$this->common->set_login($m_row);
 			$this->member_m->set_m_login_date($m_row['m_idx']);
