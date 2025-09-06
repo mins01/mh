@@ -4,6 +4,13 @@ class InitIpHook {
         $CI =& get_instance();
         $CI->load->library('session');
         if (!$CI->session->userdata('ip_address_init')) {
+            $cnt = $CI->mh_log->countFromLogIpForInit($_SERVER['REMOTE_ADDR'],date('Y-m-d 00:00:00',time()-60*60));
+
+            if($cnt>100){
+                redirect('https://www.police.go.kr/', 'location', 302);
+	            exit('');
+            }
+            
             $CI->session->set_userdata('ip_address_init', $CI->input->ip_address());
             $CI->mh_log->info(array(
               'title'=>__METHOD__,
@@ -12,7 +19,7 @@ class InitIpHook {
               'ip_address_init'=>$CI->input->ip_address(),
             ));
 
-            $cnt = $CI->mh_log->countFromLogIpForInit($_SERVER['REMOTE_ADDR'],date('Y-m-d 00:00:00',time()-60*60));
+            
             if($cnt>30){ //같은 IP로 첫방문 체크
                 $CI->mh_log->info(array(
                 'title'=>__METHOD__,
