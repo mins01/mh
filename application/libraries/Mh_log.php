@@ -103,5 +103,11 @@ class Mh_log{
 	}
 
 
+	public function countFromLogIpForInit($log_ip,$fromDate=null){
+		if(!$fromDate){$fromDate = date('Y-m-d 00:00:00');}
+		return $this->ci->db->from($this->table)->where('log_insert_date >',$fromDate)->where('log_ip',$log_ip)->where('log_msg','첫방문')->select('count(*) as cnt')->get()->row()->cnt;
+	}
+
+
 
 }
