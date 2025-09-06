@@ -31,6 +31,8 @@ if(IS_DEV || IS_LCL){ // 개발DB나 로컬PC 인경우
 	$_SERVER['CI_ENV']='development'; // 강제로 개발모드로 설정.
 }else if(!isset($_SERVER['CI_ENV'])){
 	$_SERVER['CI_ENV']='production'; // 다른 설정이 없다면 운영모드로 동작. (에러 메세지 안보임!!)
+}else{
+	$_SERVER['CI_ENV']='production'; // 다른 설정이 없다면 운영모드로 동작. (에러 메세지 안보임!!)
 }
 
 
