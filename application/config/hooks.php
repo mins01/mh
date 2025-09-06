@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 if(is_cli()){
 	
 }else{
-	$hook['post_controller_constructor'][] = array(
+	$hook['post_controller_constructor'] = array(
 			'class'    => 'InitIpHook',
 			'function' => 'setInitialIp',
 			'filename' => 'InitIpHook.php',
