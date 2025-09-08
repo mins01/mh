@@ -7,8 +7,19 @@ class InitIpHook {
             $cnt = $CI->mh_log->countFromLogIpForInit($_SERVER['REMOTE_ADDR'],date('Y-m-d 00:00:00',time()-60*60));
 
             if($cnt>100){
-                redirect('https://www.police.go.kr/', 'location', 302);
-	            exit('');
+                $this->session->sess_destroy();
+
+                $CI->mh_log->error(
+                    array(
+                        'title'=>__METHOD__,
+                        'msg'=>'접근차단',
+                        'result'=>'redirect',
+                        'count'=>$cnt,
+                    )
+                );
+                // redirect('https://www.fbi.gov/', 'location', 302);
+                redirect('https://thetestdata.com/assets/video/mp4/highquality/4k_Thetestdata.mp4', 'location', 302); // MP4	154.47 MB
+                exit();
             }
             
             $CI->session->set_userdata('ip_address_init', $CI->input->ip_address());
@@ -21,7 +32,7 @@ class InitIpHook {
 
             
             if($cnt>30){ //같은 IP로 첫방문 체크
-                $CI->mh_log->info(array(
+                $CI->mh_log->error(array(
                 'title'=>__METHOD__,
                 'msg'=>'이상방문자',
                 'result'=>'sleep',
