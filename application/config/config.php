@@ -371,7 +371,8 @@ $config['encryption_key'] = '98ca4c5ff2a8a1032920d977947f6537'; // 바꾸면 enc
 
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'SESSIDMH';
-$config['sess_expiration'] = 60*60*24*7;
+// $config['sess_expiration'] = 60*60*24*7;
+$config['sess_expiration'] = 3600; //60*60;
 $config['sess_save_path'] = realpath(APPPATH.'../_tmp/');
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
