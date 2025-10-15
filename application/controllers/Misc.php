@@ -82,9 +82,27 @@ class Misc extends MX_Controller {
 			$res = null;
 			if(filter_var($url, FILTER_VALIDATE_URL)){
 				set_time_limit(120);// 동작 타임아웃
-				$this->mproxy->conn_timeout = 60;
-				$this->mproxy->exec_timeout = 60;
-				$res = $this->mproxy->get($call_url,null,array(),$opts);
+				// $this->mproxy->conn_timeout = 60;
+				// $this->mproxy->exec_timeout = 60;
+				// $res = $this->mproxy->get($call_url,null,array(),$opts);
+				// print_r($res);exit;
+
+				$conn = curl_init($url);
+				$conn_timeout	=	3;
+				$exec_timeout	 =	3;
+				curl_setopt($conn, CURLOPT_HEADER, false); //응답헤더 OFF. ON 할경우 받는 파일에 헤더가 붙음.
+				curl_setopt($conn, CURLOPT_RETURNTRANSFER , true); //응답 내용 가져올지 여부. TRUE면 내용을 리턴. FALSE면 직접 브라우저에 출력
+				curl_setopt($conn, CURLOPT_USERAGENT,"Mozilla/5.0 mins01"); //User Agent 설정
+				curl_setopt($conn, CURLOPT_CONNECTTIMEOUT, $conn_timeout); //서버 접속시 timeout 설정
+				curl_setopt($conn, CURLOPT_CONNECTTIMEOUT, $exec_timeout); //서버 접속시 timeout 설정
+				curl_setopt($conn, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($conn, CURLOPT_SSL_VERIFYHOST, FALSE);
+				$res = array();
+				$res['body'] = curl_exec($conn);
+				$res['errormsg'] = curl_error($conn);
+				$res['errorno'] = curl_errno($conn);
+				$res['httpcode'] = curl_getinfo($conn,CURLINFO_HTTP_CODE);
+				// print_r($result);exit;
 			}
 
 			// echo $url;
