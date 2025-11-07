@@ -1,16 +1,4 @@
 <?php
-if (php_sapi_name() == "cli") {
-	exit('Not support '.php_sapi_name());
-} else {
-	//--- web
-}
-if($_SERVER['HTTP_HOST']!='www.mins01.com' && $_SERVER['HTTP_HOST']!='wwwdev.mins01.com' && $_SERVER['HTTP_HOST']!='wwwdevlcl.mins01.com'){
-	header('Location: http://www.mins01.com'.$_SERVER['REQUEST_URI']);
-	exit();
-}
-
-
-
 $http_host = isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'';
 if(preg_match('/^[^\.\/]*devlcl(_|\.|\-)/',$http_host)){   // wwwdevlcl.XXX.com
     defined('IS_DEV') OR define('IS_DEV',true);    // 개발DB 사용
@@ -33,6 +21,17 @@ if(IS_DEV || IS_LCL){ // 개발DB나 로컬PC 인경우
 	$_SERVER['CI_ENV']='production'; // 다른 설정이 없다면 운영모드로 동작. (에러 메세지 안보임!!)
 }else{
 	$_SERVER['CI_ENV']='production'; // 다른 설정이 없다면 운영모드로 동작. (에러 메세지 안보임!!)
+}
+
+
+if (php_sapi_name() == "cli") {
+	exit('Not support '.php_sapi_name());
+} else {
+	//--- web
+}
+if(!IS_DEV && !IS_LCL && $_SERVER['HTTP_HOST']!='www.mins01.com'){
+	header('Location: http://www.mins01.com'.$_SERVER['REQUEST_URI']);
+	exit();
 }
 
 
@@ -105,6 +104,10 @@ switch (ENVIRONMENT)
 	case 'development':
 		error_reporting(-1);
 		ini_set('display_errors', 1);
+		if (version_compare(PHP_VERSION, '8.2', '>='))
+		{
+			error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_USER_DEPRECATED);
+		}
 	break;
 
 	case 'testing':

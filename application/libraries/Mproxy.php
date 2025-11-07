@@ -184,8 +184,8 @@ class Mproxy{
 		//print_r($c_headers);
 
 		curl_setopt($conn, CURLOPT_FAILONERROR, 1);
-
-
+		// print_r($_SERVER['HTTP_USER_AGENT']);exit;
+		curl_setopt($conn, CURLOPT_USERAGENT,isset($_SERVER['HTTP_USER_AGENT'])?$_SERVER['HTTP_USER_AGENT']:"Mozilla/5.0 mproxy");
 
 		//curl_setopt( $conn, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 		//curl_setopt( $conn, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
